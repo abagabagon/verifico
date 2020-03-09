@@ -2,11 +2,10 @@ package automation.web.appium;
 
 import java.util.List;
 
-
-import automation.web.WebAutomation;
+import automation.web.GeneralWebAutomation;
 import enums.Browser;
 
-public class AppiumWebAutomation implements WebAutomation {
+public class AppiumWebAutomation extends GeneralWebAutomation {
 
 	@Override
 	public void openBrowser(Browser browser) {
