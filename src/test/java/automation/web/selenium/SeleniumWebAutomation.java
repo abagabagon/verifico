@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
@@ -23,11 +24,11 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import automation.web.WebAutomation;
+import automation.web.GeneralWebAutomation;
 import enums.Browser;
 import settings.Settings;
 
-public class SeleniumWebAutomation implements WebAutomation {
+public class SeleniumWebAutomation extends GeneralWebAutomation {
 
 	private WebDriver driver;
 	private Logger log;
@@ -276,7 +277,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void mouseHover(Object locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			this.action = new Actions(this.driver);
 			this.action.moveToElement(element).perform();
@@ -293,7 +294,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void click(Object locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			element = this.waitForElementToBeClickable(locator);
 			element.click();
@@ -310,7 +311,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void clickJS(Object locator) {
-		WebElement element =  this.driver.findElement(By.xpath(locator.toString()));
+		WebElement element =  this.driver.findElement((By)locator);
 		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
 		executor.executeScript("arguments[0].click();", element);
 		
@@ -318,7 +319,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void fill(Object locator, String inputText) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			element.clear();
 			element.sendKeys(inputText);
@@ -337,7 +338,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void clear(Object locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			element.clear();
 		} catch (StaleElementReferenceException e) {
@@ -353,7 +354,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean see(Object locator) {
-		List<WebElement> elements = this.driver.findElements(By.xpath(locator.toString()));
+		List<WebElement> elements = this.driver.findElements((By)locator);
 		boolean seeElement = false;
 		if (elements.size() > 0) {
 			seeElement = true;
@@ -373,7 +374,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public Boolean isClickable(String locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			this.wait.until(ExpectedConditions.elementToBeClickable(element));
 			this.log.info("The element" + locator + " is clickable.");
@@ -386,7 +387,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void select(Object locator, String option) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			this.select = new Select(element);
 		} catch (UnexpectedTagNameException e) {
@@ -414,7 +415,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void deselect(Object locator, String option) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			this.select = new Select(element);
 		} catch (UnexpectedTagNameException e) {
@@ -444,7 +445,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public Object getElement(Object locator) {
 		WebElement element = null;
 		try {
-			element = this.driver.findElement(By.xpath(locator.toString()));
+			element = this.driver.findElement((By)locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
 			element = this.waitForElementToBeVisible(locator);
@@ -464,7 +465,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public List<Object> getElements(Object locator) {
-		List<WebElement> listOfElements = this.driver.findElements(By.xpath(locator.toString()));
+		List<WebElement> listOfElements = this.driver.findElements((By)locator);
 		List<Object> elements = listOfElements.stream().collect(Collectors.toList());
 		try {
 			this.log.info("Elements found with xpath: " + locator.toString());
@@ -477,7 +478,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public String getText(Object locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		String text = null;
 		try {
 			text = element.getText();
@@ -499,7 +500,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public String getValue(Object locator) {
 		String text = null;
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			text = element.getAttribute("value");
 			if (text.length() == 0) {
@@ -520,7 +521,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public String getAttributeValue(Object locator, String attribute) {
 		String text = null;
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		try {
 			text = element.getAttribute(attribute);
 			if (text.length() == 0) {
@@ -540,7 +541,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public String getDropDownListValue(Object locator) {
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		this.select = new Select(element);
 		String text = null;
 		try {
@@ -580,7 +581,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertValue(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Box or Area Value is displayed.");
-		this.getElement(locator.toString());
+		this.getElement(locator);
 		String actualValue = this.getValue(locator.toString());
 		Assert.assertEquals(actualValue, expectedValue,
 				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
@@ -590,7 +591,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertDropDownListValue(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Drop-down List Value is displayed.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		Select select = new Select(element);
 		String actualValue = select.getFirstSelectedOption().getText().toLowerCase();
 		Assert.assertEquals(actualValue, expectedValue,
@@ -610,7 +611,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertDisplayed(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is displayed.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		boolean isDisplayed = element.isDisplayed();
 		Assert.assertTrue(isDisplayed, "The element \"" + locator.toString() + "\" is not displayed.");
 		this.log.info("The element \"" + locator.toString() + "\" is displayed.");
@@ -619,10 +620,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertNotDisplayed(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not displayed.");
-		//Boolean isNotDisplayed = this.waitForElementToBeInvisible(this.driver.findElement(By.xpath(locator.toString())));
+		//Boolean isNotDisplayed = this.waitForElementToBeInvisible(this.driver.findElement((By)locator));
 		boolean isNotDisplayed;
 		try {
-			this.driver.findElement(By.xpath(locator.toString()));
+			this.driver.findElement((By)locator);
 			isNotDisplayed = false;
 		}catch(NoSuchElementException e) {
 			isNotDisplayed = true;
@@ -634,7 +635,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertEnabled(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is enabled.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		Assert.assertTrue(isEnabled, "The element \"" + locator.toString() + "\" is disabled.");
 		this.log.info("The element \"" + locator.toString() + "\" is enabled.");
@@ -643,7 +644,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertDisabled(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is disabled.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		boolean isDisabled = element.isEnabled();
 		Assert.assertFalse(isDisabled, "The element \"" + locator.toString() + "\" is enabled.");
 		this.log.info("The element \"" + locator.toString() + "\" is disabled.");
@@ -652,7 +653,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertSelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is selected.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		this.waitForElementSelectionStateToBe(element, true);
 		boolean isSelected = element.isSelected();
 		Assert.assertTrue(isSelected, "The element \"" + locator.toString() + "\" is not selected.");
@@ -662,7 +663,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertNotSelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not selected.");
-		WebElement element = (WebElement) this.getElement(locator.toString());
+		WebElement element = (WebElement) this.getElement(locator);
 		this.waitForElementSelectionStateToBe(element, false);
 		boolean isNotSelected = element.isSelected();
 		Assert.assertFalse(isNotSelected, "The element \"" + locator.toString() + "\" is selected.");
@@ -724,7 +725,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be visible.");
 		WebElement element = null;
 		try {
-			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator.toString())));
+			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated((By)locator));
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
@@ -747,7 +748,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be clickable.");
 		WebElement element = null;
 		try {
-			element = this.wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator.toString())));
+			element = this.wait.until(ExpectedConditions.elementToBeClickable((By)locator));
 			this.log.trace("Web Element had become clickable!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
@@ -770,7 +771,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be invisible.");
 		boolean isVisible = true;
 		try {
-			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(locator.toString())));
+			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated((By)locator));
 			this.log.trace("Web Element had become invisible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
@@ -792,7 +793,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element Selection State is " + selectionState + "!");
 		boolean status = false;
 		try {
-			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe(By.xpath(locator.toString()), selectionState));
+			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe((By)locator, selectionState));
 			this.log.trace("Web Element Selection State is " + selectionState + "!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
