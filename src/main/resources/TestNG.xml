@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Verifico">
+	<parameter name="environment" value="STAGING"></parameter>
+	<listeners>
+		<listener class-name="listeners.TestListener" />
+	</listeners>
+	<test name="Get Started" preserve-order="true" enabled="false">
+		<parameter name="platform" value="CHROME"></parameter>
+		<classes>
+			<class name="test.login.TestLogin">
+				<methods>
+					<include name="C1" description="Verify Successful Login"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
