@@ -126,12 +126,6 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		}
 	}
 	
-	/**
-	 * 	Switching to Tabs
-	 * 
-	 * @param option - Title or URL , identifier - the title or the URL itself
-	 */
-
 	@Override
 	public boolean switchTabByTitle(String title) {
 		String parentWindow = this.driver.getWindowHandle();
@@ -229,10 +223,6 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		}
 	}
 	
-	/**
-	 * Maximizes Browser Window.
-	 */
-	
 	@Override
 	public void maximizeBrowserWindow() {
 		this.log.debug("Maximizing Web Browser Window.");
@@ -240,10 +230,6 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		this.log.debug("Successfully maximized Web Browser Window.");
 	}
 
-	/**
-	 * Deletes all cookies.
-	 */
-	
 	@Override
 	public void deleteAllCookies() {
 		this.log.debug("Deleting all cookies.");
@@ -251,19 +237,11 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		this.log.debug("Successfully deleted all cookies.");
 	}
 
-	/**
-	 * Initializes Selenium WebDriver Implicit Wait
-	 */
-
 	private void initializeImplicitWait() {
 		this.log.debug("Initializing Implicit Wait.");
 		this.driver.manage().timeouts().implicitlyWait(this.implicitWaitDuration, TimeUnit.SECONDS);
 		this.log.debug("Successfully initialized Implicit Wait.");
 	}
-
-	/**
-	 * Initializes Selenium WebDriver Explicit Wait
-	 */
 
 	private void initializeExplicitWait() {
 		this.log.debug("Initializing Explicit Wait.");
@@ -459,8 +437,8 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
 			element = this.waitForElementToBeVisible(locator);
 		}
-		Object objElem = element;
-		return objElem;
+		Object object = element;
+		return object;
 	}
 	
 	@Override
@@ -718,7 +696,7 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 	/**
 	 * Waits for WebElement to be visible at the Web Page.
 	 * 
-	 * @param element Target WebElement to be visible.
+	 * @param locator Object used to locate element to wait for.
 	 */
 
 	private final WebElement waitForElementToBeVisible(Object locator) {
@@ -741,7 +719,7 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 	/**
 	 * Waits for WebElement to be clickable at the Web Page.
 	 * 
-	 * @param element Target WebElement to be clickable.
+	 * @param locator Object used to locate element to wait for.
 	 */
 
 	private WebElement waitForElementToBeClickable(Object locator) {
@@ -763,7 +741,7 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 	/**
 	 * Waits for WebElement to be invisible at the Web Page.
 	 * 
-	 * @param element Target WebElement to be invisible.
+	 * @param locator Object used to locate element to wait for.
 	 */
 
 	@SuppressWarnings("unused")

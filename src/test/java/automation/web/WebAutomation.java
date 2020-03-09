@@ -11,10 +11,14 @@ public interface WebAutomation {
 	/*#######################################################*/
 	
 	/**
-	 * Closes Web Browser.
+	 * Opens Web Browser.
 	 */
 
 	public void openBrowser(Browser browser);
+	
+	/**
+	 * Opens Tab.
+	 */
 	
 	public void openTab(String url);
 	
@@ -26,7 +30,23 @@ public interface WebAutomation {
 
 	public void goTo(String url);
 	
+	/**
+	 * Switch to a Tab based on Page Title.
+	 * 
+	 * @param 	expectedTitle Expected Page Title to switch into.
+	 * @return	<code>true</code> if switch is successful.
+	 * 			<code>false</code> if switch is unsuccessful.
+	 */
+	
 	public boolean switchTabByTitle(String expectedTitle);
+	
+	/**
+	 * Switch to a Tab based on Page URL.
+	 * 
+	 * @param 	url Expected Page URL to switch into.
+	 * @return	<code>true</code> if switch is successful.
+	 * 			<code>false</code> if switch is unsuccessful.
+	 */
 
 	public boolean switchTabByURL(String url);
 	
@@ -84,74 +104,85 @@ public interface WebAutomation {
 	/*#######################################################*/
 	
 	/**
+	 * Hover to the specified element.
 	 * 
-	 * @param locator
+	 * @param locator Object used to locate element to hover into.
 	 */
 	
 	public void mouseHover(Object locator);
 	
 	/**
-	 * Clicks the element specified. Used for Elements that are clickable (excluding
-	 * Radio Buttons & Check Boxes).
+	 * Clicks the specified element. Used for Elements that are clickable.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
+	 * @param locator Object used to locate element to be clicked.
 	 */
 
 	public void click(Object locator);
 	
+	/**
+	 * Clicks the specified element (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param locator Object used to locate element to be clicked.
+	 */
+	
 	public void clickJS(Object locator);
 	
 	/**
-	 * Simulates typing into an element, which may set its value. Text entry
+	 * Simulates typing into a text box/area element, which may set its value. Text entry
 	 * elements are INPUT and TEXTAREA elements.
 	 * 
-	 * @param map       Object containing a WebPage Object's Name, Type, XPath,
-	 *                  WebElement & By Locator.
+	 * @param locator 	Object used to locate element to be clicked.
 	 * @param inputText Text to enter.
 	 */
 
 	public void fill(Object locator, String inputText);
 	
 	/**
-	 * Clears value of a text area element. Text entry elements are INPUT and
+	 * Clears value of a text box/area element. Text entry elements are INPUT and
 	 * TEXTAREA elements.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
+	 * @param locator Object used to locate element to clear value of.
 	 */
 
 	public void clear(Object locator);
 	
 	/**
-	 * Checks of element exists on Web Page.
+	 * Checks if element exists on Web Page.
 	 * 
-	 * @param  locator
-	 * @return 
+	 * @param	locator Object used to locate element to check.
+	 * @return	<code>true</code> if element exists on Web Page.
+	 * 			<code>false</code> if element does not exist on Web Page.
 	 */
 	
 	public boolean see(Object locator);
 	
 	/**
+	 * Checks Page Title of Web Page if equal to the expected Title.
 	 * 
-	 * @param expectedTitle
-	 * @return
+	 * @param	expectedTitle Expected Page Title to compare into
+	 * @return	<code>true</code> if Page Title is equal to expected Title.
+	 * 			<code>false</code> if Page Title is not equal to expected Title.
 	 */
 	
 	public boolean seeTitle(String expectedTitle);
 	
 	/**
+	 * Checks Page URL of Web Page if equal to the expected URL.
 	 * 
-	 * @param expectedUrl
-	 * @return
+	 * @param	expectedUrl Expected Page URL to compare into
+	 * @return	<code>true</code> if Page URL is equal to expected URL.
+	 * 			<code>false</code> if Page URL is not equal to expected URL.
 	 */
 
 	public boolean seeUrl(String expectedUrl);
+
 	
 	/**
 	 * Function to know if the element is clickable or not.
 	 * 
-	 * @param locator 
+	 * @param locator Object used to locate element to check.
+	 * @return	<code>true</code> if element is clickable.
+	 * 			<code>false</code> if element is not clickable.
 	 */
 	
 	public Boolean isClickable(String locator);
@@ -159,9 +190,8 @@ public interface WebAutomation {
 	/**
 	 * Selects a Drop-down List WebElement Option.
 	 * 
-	 * @param map    Object containing a WebPage Object's Name, Type, XPath,
-	 *               WebElement & By Locator.
-	 * @param option Option to be selected.
+	 * @param locator	Object used to locate element to select an option from.
+	 * @param option	Option to be selected.
 	 */
 
 	public void select(Object locator, String option);
@@ -169,9 +199,8 @@ public interface WebAutomation {
 	/**
 	 * Deselects a Multi-select WebElement Option.
 	 * 
-	 * @param map    Object containing a WebPage Object's Name, Type, XPath,
-	 *               WebElement & By Locator.
-	 * @param option Option to be selected.
+	 * @param locator	Object used to locate element to select an option from.
+	 * @param option	Option to be selected.
 	 */
 
 	public void deselect(Object locator, String option);
@@ -179,8 +208,8 @@ public interface WebAutomation {
 	/**
 	 * Get a Web Element in a form of Object from a Web Page.
 	 * 
-	 * @param  locator Object that locates the specific Web Element from the Web Page.
-	 * @return List of Elements in a form of Object.
+	 * @param  locator Object used to locate element to get.
+	 * @return Element in a form of Object.
 	 */
 	
 	public Object getElement(Object locator);
@@ -188,7 +217,7 @@ public interface WebAutomation {
 	/**
 	 * Get a list of Web Elements in a form of Object from a Web Page.
 	 * 
-	 * @param  locator Object that locates the specific Web Element from the Web Page.
+	 * @param  locator Object used to locate list of elements to get.
 	 * @return List of Elements in a form of Object.
 	 */
 	
@@ -198,20 +227,17 @@ public interface WebAutomation {
 	 * Get the visible innerText of this element, including sub-elements, without
 	 * any leading or trailing whitespace.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
-	 * @return Retrieved WebElement Text.
+	 * @param	locator Object used to locate element to get text from.
+	 * @return	Retrieved WebElement Text.
 	 */
 	
 	public String getText(Object locator);
 	
 	/**
-	 * Get the visible innerText of this element, including sub-elements, without
-	 * any leading or trailing whitespace.
+	 * Get the value of the specified attribute of the element.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
-	 * @return Retrieved WebElement Text.
+	 * @param	locator Object used to locate element to get attribute value from.
+	 * @return	Retrieved WebElement attribute value.
 	 */
 	
 	public String getAttributeValue(Object locator, String attribute);
@@ -219,9 +245,8 @@ public interface WebAutomation {
 	/**
 	 * Gets the value of the INPUT and TEXTAREA WebElements.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
-	 * @return Retrieved value of the INPUT/TEXTAREA WebElement.
+	 * @param	locator Object used to locate element to get value from.
+	 * @return	Retrieved value of the INPUT/TEXTAREA WebElement.
 	 */
 	
 	public String getValue(Object locator);
@@ -229,9 +254,8 @@ public interface WebAutomation {
 	/**
 	 * Gets the selected option of the Drop-down List WebElement.
 	 * 
-	 * @param map Object containing a WebPage Object's Name, Type, XPath, WebElement
-	 *            & By Locator.
-	 * @return Retrieved value of the Drop-down List WebElement.
+	 * @param	locator Object used to locate element to get selected option from.
+	 * @return	Retrieved value of the Drop-down List WebElement.
 	 */
 
 	public String getDropDownListValue(Object locator);
@@ -239,7 +263,7 @@ public interface WebAutomation {
 	/**
 	 * Waits for a specific time (Seconds).
 	 * 
-	 * @param locator By locator of target WebElement to be present.
+	 * @param duration Duration of time to wait (Seconds).
 	 */
 
 	public void wait(int duration);
@@ -249,12 +273,11 @@ public interface WebAutomation {
 	/*#######################################################*/
 
 	/**
-	 * Checks the value of INPUT or TEXTAREA WebElements if equal to the expected
+	 * Asserts the value of INPUT or TEXTAREA WebElements if equal to the expected
 	 * value.
 	 * 
-	 * @param map           Object containing a WebPage Object's Name, Type, XPath,
-	 *                      WebElement & By Locator.
-	 * @param expectedValue Expected value of the WebElement Text Box.
+	 * @param locator		Object used to locate element to assert the value from.
+	 * @param expectedValue	Expected value of the WebElement Text Box.
 	 */
 
 	public void assertValue(Object locator, String expectedValue);
@@ -262,9 +285,8 @@ public interface WebAutomation {
 	/**
 	 * Asserts Drop-down List WebElement Value if equal to expected text value.
 	 * 
-	 * @param map          Map Object containing WebElement, By, XPath & other String
-	 *                     Objects relating to an Element.
-	 * @param expectedText expected drop-down list value
+	 * @param locator		Object used to locate element to assert the value from.
+	 * @param expectedText	Expected drop-down list value
 	 */
 
 	public void assertDropDownListValue(Object locator, String expectedValue);
@@ -272,18 +294,16 @@ public interface WebAutomation {
 	/**
 	 * Asserts WebElement with text if equal to expected text value.
 	 * 
-	 * @param map          Map Object containing WebElement, By, XPath & other String
-	 *                     Objects relating to an Element.
-	 * @param expectedText expected text value
+	 * @param locator		Object used to locate element to assert the value from.
+	 * @param expectedText	Expected text value
 	 */
 
 	public void assertText(Object locator, String expectedValue);
 	
 	/**
-	 * Asserts WebElement is present on the Web Page.
+	 * Asserts WebElement is displayed on the Web Page.
 	 * 
-	 * @param map Map Object containing WebElement, By, XPath & other String
-	 *            Objects relating to an Element.
+	 * @param locator Object used to locate element to assert.
 	 */
 	
 	public void assertDisplayed(Object locator);
@@ -291,9 +311,7 @@ public interface WebAutomation {
 	/**
 	 * Asserts WebElement is not displayed on the Web Page.
 	 * 
-	 * @param map Map Object containing WebElement, By, XPath & other String
-	 *            Objects relating to an Element.
-	 *            
+	 * @param @param locator Object used to locate element to assert.   
 	 */
 
 	public void assertNotDisplayed(Object locator);
@@ -301,64 +319,55 @@ public interface WebAutomation {
 	/**
 	 * Asserts WebElement is enabled on the Web Page.
 	 * 
-	 * @param map Map Object containing WebElement, By, XPath & other String
-	 *            Objects relating to an Element.
+	 * @param locator Object used to locate element to assert.
 	 */
 
 	public void assertEnabled(Object locator);
 	
 	/**
-	 * Asserts WebElement is not disabled on the Web Page.
+	 * Asserts WebElement is disabled on the Web Page.
 	 * 
-	 * @param map Map Object containing WebElement, By, XPath & other String
-	 *            Objects relating to an Element.
+	 * @param locator Object used to locate element to assert.
 	 */
 
 	public void assertDisabled(Object locator);
 	
 	/**
-	 * Asserts WebElement is selected on the Web Page.
+	 * Asserts WebElement is selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
-	 * @param element WebElement to be verified.
-	 * @param type    Type of option to be verified (can either be Index,
-	 *                VisibleText or Value)
+	 * @param locator Object used to locate element to assert.
 	 */
 
 	public void assertSelected(Object locator);
 	
 	/**
-	 * Asserts WebElement is not selected on the Web Page.
+	 * Asserts WebElement is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
-	 * @param element WebElement to be verified.
-	 * @param type    Type of option to be verified (can either be Index,
-	 *                VisibleText or Value)
+	 * @param locator Object used to locate element to assert.
 	 */
 
 	public void assertNotSelected(Object locator);
 	
 	/**
-	 * Checks if current Web Page's Title is equal to the expected Title.
+	 * Asserts if current Web Page's Title is equal to the expected Title.
 	 * 
-	 * @param expectedTitle expected Web Page Title.
-	 * @param pageName      name of the Web Page.
+	 * @param expectedTitle Expected Web Page Title.
 	 */
 
 	public void assertTitle(String expectedTitle);
 	
 	/**
-	 * Asserts if current Web Page's Url is equal to the expected Url.
+	 * Asserts if current Web Page's URL is equal to the expected URL.
 	 * 
-	 * @param expectedUrl expected Url
-	 * @param pagename    name of the Web Page.
+	 * @param expectedUrl Expected Web Page URL
 	 */
 
 	public void assertUrl(String expectedUrl);
 	
 	/**
-	 * Asserts if current Web Page's Url is equal to the expected Url.
+	 * Asserts if current Web Page's URL is partially equal to the specified partial URL.
 	 * 
-	 * @param expectedUrl expected Url
-	 * @param pagename    name of the Web Page.
+	 * @param partialUrl Expected Web Page URL
 	 */
 
 	public void assertPartialUrl(String partialUrl);
