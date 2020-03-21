@@ -1,6 +1,9 @@
 # VERIFICO
 Verifico is a Test Automation Framework that aims to automate both Web and Mobile Applications.
 
+## Background
+The Verifico Project is the result of a need to attain knowledge in Test Automation and develop a working Test Automation Framework.
+
 ## Built With
 The Test Automation Framework is built with the following:
 * [Eclipse](https://www.eclipse.org/downloads/) - Integrated Development Enviroment (IDE)
