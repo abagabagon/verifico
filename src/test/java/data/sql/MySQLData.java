@@ -52,6 +52,7 @@ public class MySQLData implements SQLData {
 	 * @throws ExceptionInInitializerError
 	 */
 	
+	@SuppressWarnings("deprecation")
 	private void createSQLInstance() throws ExceptionInInitializerError {
 		this.log.debug("Initializing MySQL JDBC Driver.");
 		try {
@@ -115,9 +116,7 @@ public class MySQLData implements SQLData {
 		String sqlQuery = null;
 		try {
 			this.log.debug("Reading SQL Script.");
-			@SuppressWarnings("resource")
 			FileReader fileReader = new FileReader(sqlFilePath);
-			@SuppressWarnings("resource")
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			sqlQuery = bufferedReader.readLine();
 			bufferedReader.close();

@@ -52,6 +52,7 @@ public class OracleData implements SQLData {
 	 * @throws ExceptionInInitializerError
 	 */
 	
+	@SuppressWarnings("deprecation")
 	private void createSQLInstance() throws ExceptionInInitializerError {
 		this.log.debug("Initializing Oracle JDBC Driver.");
 		try {
@@ -115,9 +116,7 @@ public class OracleData implements SQLData {
 		String sqlQuery = null;
 		try {
 			this.log.debug("Reading SQL Script.");
-			@SuppressWarnings("resource")
 			FileReader fileReader = new FileReader(sqlFilePath);
-			@SuppressWarnings("resource")
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			sqlQuery = bufferedReader.readLine();
 			bufferedReader.close();
