@@ -99,6 +99,22 @@ public interface WebAutomation {
 	
 	public void deleteAllCookies();
 	
+	/**
+	 * Scrolls Page Vertically
+	 * 
+	 * @param pixel
+	 */
+	
+	public void scrollPageVertically(String pixel);
+	
+	/**
+	 * Scrolls Page Horizontally
+	 * 
+	 * @param pixel
+	 */
+	
+	public void scrollPageHorizontally(String pixel);
+	
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */
 	/*#######################################################*/
@@ -127,15 +143,28 @@ public interface WebAutomation {
 	
 	public void clickJS(Object locator);
 	
+	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
+	
 	/**
 	 * Simulates typing into a text box/area element, which may set its value. Text entry
 	 * elements are INPUT and TEXTAREA elements.
 	 * 
-	 * @param locator 	Object used to locate element to be clicked.
+	 * @param locator 	Object used to locate element to type into.
 	 * @param inputText Text to enter.
 	 */
 
 	public void fill(Object locator, String inputText);
+	
+	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
+	
+	/**
+	 * Simulates pressing of characters into a text box/area element.
+	 * 
+	 * @param locator 	Object used to locate element to type into.
+	 * @param keyButton	Key Button to press
+	 */
+	
+	public void press(Object locator, Object keyButton);
 	
 	/**
 	 * Clears value of a text box/area element. Text entry elements are INPUT and
@@ -232,6 +261,8 @@ public interface WebAutomation {
 	 */
 	
 	public String getText(Object locator);
+	
+	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
 	
 	/**
 	 * Get the value of the specified attribute of the element.

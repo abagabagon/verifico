@@ -83,6 +83,17 @@ public class GeneralWebAutomation implements WebAutomation {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void scrollPageVertically(String pixel) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void scrollPageHorizontally(String pixel) {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void mouseHover(Object locator) {
@@ -101,9 +112,26 @@ public class GeneralWebAutomation implements WebAutomation {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void fill(Object locator, String inputText) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void press(Object locator, Object keyButton) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,6 +192,12 @@ public class GeneralWebAutomation implements WebAutomation {
 
 	@Override
 	public String getText(Object locator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
 		// TODO Auto-generated method stub
 		return null;
 	}

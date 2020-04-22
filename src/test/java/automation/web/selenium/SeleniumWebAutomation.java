@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -236,6 +237,20 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		this.driver.manage().deleteAllCookies();
 		this.log.debug("Successfully deleted all cookies.");
 	}
+	
+	@Override
+	public void scrollPageVertically(String pixel) {
+		String script = "window.scrollBy(0," + pixel + ")";
+		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+		executor.executeScript(script);
+	}
+	
+	@Override
+	public void scrollPageHorizontally(String pixel) {
+		String script = "window.scrollBy(" + pixel + ", 0)";
+		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
+		executor.executeScript(script);
+	}
 
 	private void initializeImplicitWait() {
 		this.log.debug("Initializing Implicit Wait.");
@@ -292,7 +307,25 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 		WebElement element =  this.driver.findElement((By)locator);
 		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
 		executor.executeScript("arguments[0].click();", element);
-		
+	}
+	
+	@Override
+	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
+		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
+		List<WebElement> elementToClick = this.getListOfElements((By)objectToClick);
+		int size = elementToClick.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				elementToClick.get(i).click();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
 	}
 	
 	@Override
@@ -311,6 +344,44 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			this.log.warn("Encountered Exception while entering text at WebElement.");
 			element = this.waitForElementToBeVisible(locator);
 			element.sendKeys(inputText);
+		}
+	}
+	
+	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
+		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
+		List<WebElement> elementToFill = this.getListOfElements((By)objectToFill);
+		int size = elementToFill.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				elementToFill.get(i).sendKeys(inputText);
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+	}
+	
+	@Override
+	public void press(Object locator, Object keyButton) {
+		WebElement element = (WebElement) this.getElement(locator);
+		Keys keys = (Keys) keyButton;
+		try {
+			element.clear();
+			element.sendKeys(keys);
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while entering text at WebElement.");
+			element = this.waitForElementToBeVisible(locator);
+			element.sendKeys(keys);
+		} catch (IllegalArgumentException e) {
+			this.log.warn("Encountered IllegalArgumentException while entering text at WebElement. Input Text is NULL");
+		} catch (Exception e) {
+			this.log.warn("Encountered Exception while entering text at WebElement.");
+			element = this.waitForElementToBeVisible(locator);
+			element.sendKeys(keys);
 		}
 	}
 
@@ -384,11 +455,10 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 				this.log.debug("I select Option \"" + option + "\".");
 				break;
 			}
-			if (flgOptionSelected == false) {
-				this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
-			}
 		}
-
+		if (flgOptionSelected == false) {
+			this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
+		}
 	}
 
 	@Override
@@ -453,6 +523,26 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			return null;
 		}	
 	}
+	
+	public List<WebElement> getListOfElements(Object locator) {
+		List<WebElement> elements;
+		try {
+			elements = this.driver.findElements((By)locator);
+		} catch (NullPointerException e) {
+			this.log.warn("Encountered NullPointerException while getting WebElement.");
+			elements = this.waitForElementsToBeVisible((By)locator);
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while getting WebElement.");
+			elements = this.waitForElementsToBeVisible((By)locator);
+		} catch (NoSuchElementException e) {
+			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
+			elements = this.waitForElementsToBeVisible((By)locator);
+		} catch (Exception e) {
+			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
+			elements = this.waitForElementsToBeVisible((By)locator);
+		}
+		return elements;
+	}
 
 	@Override
 	public String getText(Object locator) {
@@ -473,6 +563,27 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			element.getText();
 		}
 		return text;
+	}
+	
+	@Override
+	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
+		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
+		List<WebElement> elementToClick = this.getListOfElements((By)objectToGetTextFrom);
+		int size = elementToClick.size();
+		boolean flgTextFound = false;
+		String retrievedText = null;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				retrievedText = elementToClick.get(i).getText();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+		return retrievedText;
 	}
 
 	@Override
@@ -714,6 +825,29 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			Assert.fail("Encountered Exception while waiting for element to be visible!");
 		}
 		return element;
+	}
+	
+	/**
+	 * Waits for WebElements to be visible at the Web Page.
+	 * 
+	 * @param locator Object used to locate elements to wait for.
+	 */
+	
+	private final List<WebElement> waitForElementsToBeVisible(Object locator) {
+		this.log.trace("Waiting for Web Element to be visible.");
+		List<WebElement> elements = null;
+		try {
+			elements = this.wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy((By)locator));
+			this.log.trace("Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Web Element to be visible has expired!");
+			Assert.fail("Encountered TimeoutException while waiting for element to be visible!");
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for element to be visible!");
+			e.printStackTrace();
+			Assert.fail("Encountered Exception while waiting for element to be visible!");
+		}
+		return elements;
 	}
 
 	/**
