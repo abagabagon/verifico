@@ -31,7 +31,7 @@
 						<version>3.0.0-M3</version>
 						<configuration>
 							<suiteXmlFiles>
-								<suiteXmlFile>src/main/resources/TestNG.xml</suiteXmlFile>
+								<suiteXmlFile>src/main/resources/config/TestNG.xml</suiteXmlFile>
 							</suiteXmlFiles>
 						</configuration>
 					</plugin>
