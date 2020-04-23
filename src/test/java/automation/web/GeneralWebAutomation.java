@@ -85,14 +85,9 @@ public class GeneralWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void scrollPageVertically(String pixel) {
+	public void scrollPage(String pixelHorizontal, String pixelVertical) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void scrollPageHorizontally(String pixel) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override

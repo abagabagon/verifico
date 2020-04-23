@@ -239,15 +239,8 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 	}
 	
 	@Override
-	public void scrollPageVertically(String pixel) {
-		String script = "window.scrollBy(0," + pixel + ")";
-		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-		executor.executeScript(script);
-	}
-	
-	@Override
-	public void scrollPageHorizontally(String pixel) {
-		String script = "window.scrollBy(" + pixel + ", 0)";
+	public void scrollPage(String pixelHorizontal, String pixelVertical) {
+		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
 		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
 		executor.executeScript(script);
 	}

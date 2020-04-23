@@ -100,20 +100,12 @@ public interface WebAutomation {
 	public void deleteAllCookies();
 	
 	/**
-	 * Scrolls Page Vertically
+	 * Scrolls Page
 	 * 
 	 * @param pixel
 	 */
 	
-	public void scrollPageVertically(String pixel);
-	
-	/**
-	 * Scrolls Page Horizontally
-	 * 
-	 * @param pixel
-	 */
-	
-	public void scrollPageHorizontally(String pixel);
+	public void scrollPage(String pixelHorizontal, String pixelVertical);
 	
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */
