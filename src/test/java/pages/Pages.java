@@ -12,13 +12,12 @@ public class Pages {
 	private static Logger log;
 	
 	public Pages(WebAutomation I) {
-		Pages.I = I;
-		Pages.log = LogManager.getLogger(this.getClass());
+		log = LogManager.getLogger(this.getClass());
 		log.debug("Initializing Pages Class.");
+		Pages.I = I;
 		log.debug("Successfully initialized Pages Class.");
 	}
 	
-	@SuppressWarnings("static-method")
 	public final void initializePages() {
 		log.info("Initializing Pages.");
 		log.info("Successfully initialized Pages.");

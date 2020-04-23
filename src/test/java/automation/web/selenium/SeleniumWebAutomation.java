@@ -443,8 +443,8 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			this.log.error("Failed to select an option. Element \"" + locator + "\" is not a SELECT!");
 			Assert.fail("Failed to select an option. Element \"" + locator + "\" is not a SELECT!");
 		} catch (Exception e) {
-			this.log.error("Encountered Exception while checking if WebElement is a SELECT.");
-			Assert.fail("Encountered Exception while checking if WebElement is a SELECT.");
+			this.log.error("Encountered Exception while checking if WebElement.");
+			Assert.fail("Encountered Exception while checking if WebElement.");
 		}
 		int size = this.select.getOptions().size();
 		boolean flgOptionSelected = false;
@@ -470,8 +470,8 @@ public class SeleniumWebAutomation extends GeneralWebAutomation {
 			this.log.error("Failed to select an option. Element \"" + locator + "\" is not a SELECT!");
 			Assert.fail("Failed to select an option. Element \"" + locator + "\" is not a SELECT!");
 		} catch (Exception e) {
-			this.log.error("Encountered Exception while checking if WebElement is a SELECT.");
-			Assert.fail("Encountered Exception while checking if WebElement is a SELECT.");
+			this.log.error("Encountered Exception while checking if WebElement.");
+			Assert.fail("Encountered Exception while checking if WebElement.");
 		}
 		int size = this.select.getOptions().size();
 		boolean flgOptionDeselected = false;

@@ -24,7 +24,6 @@ public class Tests {
 	Pages pages;
 	String testSuiteName;
 	Logger log;
-
 	
 	@BeforeSuite(alwaysRun = true)
 	@Parameters("environment")
@@ -48,7 +47,6 @@ public class Tests {
 	public static void afterTest() {
 		I.closeBrowser();
 	}
-
 	
 	@AfterSuite
 	public static void afterSuite() {
