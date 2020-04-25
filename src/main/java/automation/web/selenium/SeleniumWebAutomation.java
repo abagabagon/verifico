@@ -25,7 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import automation.web.WebAutomation;
-import enums.Browser;
+import data.enums.Browser;
 import settings.Settings;
 
 public class SeleniumWebAutomation implements WebAutomation {

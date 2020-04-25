@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
 
-import enums.Environment;
+import data.enums.Environment;
 
 public class Settings {
 	

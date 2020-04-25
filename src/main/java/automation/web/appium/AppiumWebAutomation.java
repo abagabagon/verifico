@@ -1,7 +1,7 @@
 package automation.web.appium;
 
 import automation.web.WebAutomation;
-import enums.Browser;
+import data.enums.Browser;
 
 public class AppiumWebAutomation implements WebAutomation {
 

@@ -10,8 +10,8 @@ import org.testng.annotations.Parameters;
 
 import automation.Automation;
 import automation.web.WebAutomation;
-import enums.Browser;
-import enums.Environment;
+import data.enums.Browser;
+import data.enums.Environment;
 import pages.Pages;
 import reporters.extentreport.ExtentReport;
 import settings.Settings;

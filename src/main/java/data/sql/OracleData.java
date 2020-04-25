@@ -16,7 +16,7 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import enums.Environment;
+import data.enums.Environment;
 import settings.Settings;
 
 public class OracleData implements SQLData {

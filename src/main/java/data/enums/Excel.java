@@ -1,4 +1,4 @@
-package enums;
+package data.enums;
 
 public enum Excel {
 	
