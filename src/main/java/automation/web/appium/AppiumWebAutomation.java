@@ -2,10 +2,10 @@ package automation.web.appium;
 
 import java.util.List;
 
-import automation.web.GeneralWebAutomation;
+import automation.web.WebAutomation;
 import enums.Browser;
 
-public class AppiumWebAutomation extends GeneralWebAutomation {
+public class AppiumWebAutomation implements WebAutomation {
 
 	@Override
 	public void openBrowser(Browser browser) {
@@ -86,6 +86,12 @@ public class AppiumWebAutomation extends GeneralWebAutomation {
 	}
 
 	@Override
+	public void scrollPage(String pixelHorizontal, String pixelVertical) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void mouseHover(Object locator) {
 		// TODO Auto-generated method stub
 		
@@ -104,7 +110,26 @@ public class AppiumWebAutomation extends GeneralWebAutomation {
 	}
 
 	@Override
+	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void fill(Object locator, String inputText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill,
+			String inputText) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void press(Object locator, Object keyButton) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -165,6 +190,13 @@ public class AppiumWebAutomation extends GeneralWebAutomation {
 
 	@Override
 	public String getText(Object locator) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck,
+			Object objectToGetTextFrom) {
 		// TODO Auto-generated method stub
 		return null;
 	}

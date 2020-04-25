@@ -25,11 +25,11 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import automation.web.GeneralWebAutomation;
+import automation.web.WebAutomation;
 import enums.Browser;
 import settings.Settings;
 
-public class SeleniumWebAutomation extends GeneralWebAutomation {
+public class SeleniumWebAutomation implements WebAutomation {
 
 	private WebDriver driver;
 	private Logger log;
