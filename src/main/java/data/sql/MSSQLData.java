@@ -52,11 +52,10 @@ public class MSSQLData implements SQLData {
 	 * @throws ExceptionInInitializerError
 	 */
 	
-	@SuppressWarnings("deprecation")
 	private void createSQLInstance() throws ExceptionInInitializerError {
 		this.log.debug("Initializing MSSQL JDBC Driver.");
 		try {
-			Class.forName(this.DRIVER_MSSQL).newInstance();
+			Class.forName(this.DRIVER_MSSQL).getDeclaredConstructor().newInstance();
 			this.log.debug("Successfully instantiated MSSQL JDBC Driver.");
 		} catch (LinkageError e) {
 			this.log.fatal("Encountered LinkageError while instantiating MSSQL JDBC Driver!");

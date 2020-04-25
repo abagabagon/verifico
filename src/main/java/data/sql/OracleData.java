@@ -52,11 +52,10 @@ public class OracleData implements SQLData {
 	 * @throws ExceptionInInitializerError
 	 */
 	
-	@SuppressWarnings("deprecation")
 	private void createSQLInstance() throws ExceptionInInitializerError {
 		this.log.debug("Initializing Oracle JDBC Driver.");
 		try {
-			Class.forName(this.DRIVER_ORACLE).newInstance();
+			Class.forName(this.DRIVER_ORACLE).getDeclaredConstructor().newInstance();
 			this.log.debug("Successfully instantiated Oracle JDBC Driver.");
 		} catch (LinkageError e) {
 			this.log.fatal("Encountered LinkageError while instantiating Oracle JDBC Driver!");

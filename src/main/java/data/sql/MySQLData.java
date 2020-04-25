@@ -52,11 +52,10 @@ public class MySQLData implements SQLData {
 	 * @throws ExceptionInInitializerError
 	 */
 	
-	@SuppressWarnings("deprecation")
 	private void createSQLInstance() throws ExceptionInInitializerError {
 		this.log.debug("Initializing MySQL JDBC Driver.");
 		try {
-			Class.forName(this.DRIVER_MYSQL).newInstance();
+			Class.forName(this.DRIVER_MYSQL).getDeclaredConstructor().newInstance();
 			this.log.debug("Successfully instantiated MySQL JDBC Driver.");
 		} catch (LinkageError e) {
 			this.log.fatal("Encountered LinkageError while instantiating MySQL JDBC Driver!");
