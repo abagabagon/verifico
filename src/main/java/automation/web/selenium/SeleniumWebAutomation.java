@@ -45,6 +45,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private long explicitWaitDuration;
 
 	private SeleniumWebDriver seleniumWebDriver;
+	private SeleniumEventListener seleniumEventListener;
 
 	public SeleniumWebAutomation() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -102,6 +103,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		
 		this.eDriver = this.seleniumWebDriver.getEventFiringWebDriver();
+		this.seleniumEventListener.initializeEventMonitor(this.eDriver);
 		initializeImplicitWait();
 		initializeExplicitWait();
 		maximizeBrowserWindow();
