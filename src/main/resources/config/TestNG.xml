@@ -1,6 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Verifico">
 	<parameter name="environment" value="STAGING"></parameter>
+	<parameter name="organization" value="PouchNATION"></parameter>
 	<listeners>
 		<listener class-name="listeners.TestListener" />
 	</listeners>
