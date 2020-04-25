@@ -18,6 +18,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
@@ -30,7 +31,9 @@ import settings.Settings;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
+	@SuppressWarnings("unused")
 	private WebDriver driver;
+	private EventFiringWebDriver eDriver;
 	private Logger log;
 	private WebDriverWait wait;
 	private Select select;
@@ -44,7 +47,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private SeleniumWebDriver seleniumWebDriver;
 
 	public SeleniumWebAutomation() {
-		this.log = LogManager.getLogger(SeleniumWebAutomation.class);
+		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.implicitWaitDuration = Settings.getImplicitWaitDuration();
@@ -97,7 +100,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 			e.printStackTrace();
 			System.exit(1);
 		}
-
+		
+		this.eDriver = this.seleniumWebDriver.getEventFiringWebDriver();
 		initializeImplicitWait();
 		initializeExplicitWait();
 		maximizeBrowserWindow();
@@ -108,7 +112,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void openTab(String url) {
 		this.log.info("Creating New Tab.");
-		this.javascriptExecutor = (JavascriptExecutor)this.driver;
+		this.javascriptExecutor = (JavascriptExecutor)this.eDriver;
 		String link = "window.open('" + url + "', '_blank');";
 		this.javascriptExecutor.executeScript(link);
 		this.log.info("Successfully created new tab.");
@@ -117,7 +121,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void goTo(String url) {
 		try {
-			this.driver.get(url);
+			this.eDriver.get(url);
 		} catch (TimeoutException e) {
 			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
 			Assert.fail("Encountered TimeoutException while navigating to Url: " + url);
@@ -129,19 +133,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean switchTabByTitle(String title) {
-		String parentWindow = this.driver.getWindowHandle();
-		Set<String> windows = this.driver.getWindowHandles();
+		String parentWindow = this.eDriver.getWindowHandle();
+		Set<String> windows = this.eDriver.getWindowHandles();
 		this.log.info("Total Tabs Open: " + windows.size());
 		boolean isExisting = false;
 		for (String winID : windows) {
 			if (!winID.equals(parentWindow)) {
-				this.driver.switchTo().window(winID);
-				if (this.driver.getTitle().equals(title)) {
+				this.eDriver.switchTo().window(winID);
+				if (this.eDriver.getTitle().equals(title)) {
 					this.log.info("Successfully switched tab to " + title + ".");
 					isExisting = true;
 					return isExisting;
 				}
-				this.driver.switchTo().window(parentWindow);
+				this.eDriver.switchTo().window(parentWindow);
 			}
 		}
 		this.log.info("Tab with the title " + title + " was not found.");
@@ -150,19 +154,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean switchTabByURL(String url) {
-		String parentWindow = this.driver.getWindowHandle();
-		Set<String> windows = this.driver.getWindowHandles();
+		String parentWindow = this.eDriver.getWindowHandle();
+		Set<String> windows = this.eDriver.getWindowHandles();
 		this.log.info("Total Tabs Open " + windows.size());
 		boolean isExisting = false;
 		for (String winID : windows) {
 			if (!winID.equals(parentWindow)) {
-				this.driver.switchTo().window(winID);
-				if (this.driver.getCurrentUrl().equals(url)) {
+				this.eDriver.switchTo().window(winID);
+				if (this.eDriver.getCurrentUrl().equals(url)) {
 					this.log.info("Successfully switched tab to " + url + ".");
 					isExisting = true;
 					return isExisting;
 				}
-				this.driver.switchTo().window(parentWindow);
+				this.eDriver.switchTo().window(parentWindow);
 			}
 		}
 		this.log.info("Tab with the url " + url + " was not found.");
@@ -172,29 +176,29 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void switchTabToOriginal() {
 		this.log.info("Switching back to original window.");
-		this.tabs = new ArrayList<String>(this.driver.getWindowHandles());
-		this.driver.switchTo().window(this.tabs.get(0));
+		this.tabs = new ArrayList<String>(this.eDriver.getWindowHandles());
+		this.eDriver.switchTo().window(this.tabs.get(0));
 		this.log.info("Switched back to Original.");
 	}
 
 	@Override
 	public void back() {
 		this.log.info("I click back.");
-		this.driver.navigate().back();
+		this.eDriver.navigate().back();
 		this.log.info("I clicked back.");
 	}
 
 	@Override
 	public void forward() {
 		this.log.info("I click forward.");
-		this.driver.navigate().forward();
+		this.eDriver.navigate().forward();
 		this.log.info("I clicked forward.");
 	}
 
 	@Override
 	public void refresh() {
 		this.log.info("I click refresh.");
-		this.driver.navigate().refresh();
+		this.eDriver.navigate().refresh();
 		this.log.info("I clicked refresh.");
 	}
 
@@ -202,7 +206,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void closeTab() {
 		try {
 			this.log.info("I close Tab.");
-			this.driver.close();
+			this.eDriver.close();
 			this.log.info("I closed Tab.");
 		} catch (NullPointerException e) {
 			this.log.error("Encountered NullPointerException while closing WebDriver Instance.");
@@ -215,7 +219,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void closeBrowser() {
 		try {
 			this.log.info("I close Browser.");
-			this.driver.quit();
+			this.eDriver.quit();
+			this.eDriver = null;
 			this.driver = null;
 			this.log.info("I closed Browser.");
 		} catch (NullPointerException e) {
@@ -228,33 +233,33 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void maximizeBrowserWindow() {
 		this.log.debug("Maximizing Web Browser Window.");
-		this.driver.manage().window().maximize();
+		this.eDriver.manage().window().maximize();
 		this.log.debug("Successfully maximized Web Browser Window.");
 	}
 
 	@Override
 	public void deleteAllCookies() {
 		this.log.debug("Deleting all cookies.");
-		this.driver.manage().deleteAllCookies();
+		this.eDriver.manage().deleteAllCookies();
 		this.log.debug("Successfully deleted all cookies.");
 	}
 	
 	@Override
 	public void scrollPage(String pixelHorizontal, String pixelVertical) {
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
-		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor = (JavascriptExecutor) this.eDriver;
 		this.javascriptExecutor.executeScript(script);
 	}
 
 	private void initializeImplicitWait() {
 		this.log.debug("Initializing Implicit Wait.");
-		this.driver.manage().timeouts().implicitlyWait(this.implicitWaitDuration, TimeUnit.SECONDS);
+		this.eDriver.manage().timeouts().implicitlyWait(this.implicitWaitDuration, TimeUnit.SECONDS);
 		this.log.debug("Successfully initialized Implicit Wait.");
 	}
 
 	private void initializeExplicitWait() {
 		this.log.debug("Initializing Explicit Wait.");
-		this.wait = new WebDriverWait(this.driver, this.explicitWaitDuration);
+		this.wait = new WebDriverWait(this.eDriver, this.explicitWaitDuration);
 		this.log.debug("Successfully initialized Explicit Wait.");
 	}
 	
@@ -266,7 +271,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void mouseHover(Object locator) {
 		WebElement element = (WebElement) this.getElement(locator);
 		try {
-			this.action = new Actions(this.driver);
+			this.action = new Actions(this.eDriver);
 			this.action.moveToElement(element).perform();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while mouse hover action.");
@@ -299,7 +304,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void clickJS(Object locator) {
 		WebElement element =  (WebElement) this.getElement((By)locator);
-		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor = (JavascriptExecutor) this.eDriver;
 		this.javascriptExecutor.executeScript("arguments[0].click();", element);
 	}
 	
@@ -397,7 +402,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean see(Object locator) {
-		List<WebElement> elements = this.driver.findElements((By)locator);
+		List<WebElement> elements = this.eDriver.findElements((By)locator);
 		boolean seeElement = false;
 		if (elements.size() > 0) {
 			seeElement = true;
@@ -486,7 +491,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public WebElement getElement(Object locator) {
 		WebElement element = null;
 		try {
-			element = this.driver.findElement((By)locator);
+			element = this.eDriver.findElement((By)locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
 			element = this.waitForElementToBeVisible(locator);
@@ -506,7 +511,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private List<WebElement> getElements(Object locator) {
 		List<WebElement> elements;
 		try {
-			elements = this.driver.findElements((By)locator);
+			elements = this.eDriver.findElements((By)locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
 			elements = this.waitForElementsToBeVisible((By)locator);
@@ -688,10 +693,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertNotDisplayed(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not displayed.");
-		//Boolean isNotDisplayed = this.waitForElementToBeInvisible(this.driver.findElement((By)locator));
+		//Boolean isNotDisplayed = this.waitForElementToBeInvisible(this.eDriver.findElement((By)locator));
 		boolean isNotDisplayed;
 		try {
-			this.driver.findElement((By)locator);
+			this.eDriver.findElement((By)locator);
 			isNotDisplayed = false;
 		}catch(NoSuchElementException e) {
 			isNotDisplayed = true;
@@ -742,7 +747,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void assertTitle(String expectedTitle) {
 		this.log.info("Verifying \"" + expectedTitle + "\" Page Title Value is displayed.");
 		this.wait.until(ExpectedConditions.titleIs(expectedTitle));
-		String actualTitle = this.driver.getTitle();
+		String actualTitle = this.eDriver.getTitle();
 		Assert.assertEquals(actualTitle, expectedTitle,
 				"Expected \"" + expectedTitle + "\" but found \"" + actualTitle + "\".");
 		this.log.info("Page Title is \"" + expectedTitle + "\".");
@@ -752,7 +757,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void assertUrl(String expectedUrl) {
 		this.log.info("Verifying \"" + expectedUrl + "\" Page URL Value is displayed.");
 		this.wait.until(ExpectedConditions.urlMatches(expectedUrl));
-		String actualUrl = this.driver.getCurrentUrl();
+		String actualUrl = this.eDriver.getCurrentUrl();
 		Assert.assertEquals(actualUrl, expectedUrl,
 				"Expected \"" + expectedUrl + "\" but found \"" + actualUrl + "\".");
 		this.log.info("Url is \"" + expectedUrl + "\".");
@@ -761,7 +766,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertPartialUrl(String partialUrl) {
 		this.log.info("Verifying \"" + partialUrl + "\" Partial Page URL Value is displayed.");
-		String actualUrl = this.driver.getCurrentUrl();
+		String actualUrl = this.eDriver.getCurrentUrl();
 		if (!actualUrl.contains(partialUrl)) {
 			Assert.fail("Expected \"" + partialUrl + "\" but found \"" + actualUrl + "\".");
 		}
@@ -772,7 +777,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void assertAlertMessage(String expectedMessage) {
 		this.log.info("Verifying \"" + expectedMessage + "\" Alert Message is displayed.");
 		this.waitForAlertToBePresent();
-		Alert alert = this.driver.switchTo().alert();
+		Alert alert = this.eDriver.switchTo().alert();
 		String actualMessage = alert.getText();
 		Assert.assertEquals(actualMessage, expectedMessage,
 				"Expected \"" + expectedMessage + "\" but found \"" + actualMessage + "\".");

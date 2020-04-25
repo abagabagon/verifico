@@ -16,6 +16,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import utilities.OperatingSystem;
@@ -24,11 +25,25 @@ public class SeleniumWebDriver {
 	
 	private Logger log;
 	private WebDriver driver;
+	private EventFiringWebDriver eDriver;
 	
 	public SeleniumWebDriver() {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebDriver Class.");
 		this.log.debug("Successfully initialized SeleniumWebDriver Class.");
+	}
+	
+	/**
+	 * Initializes and returns EventFiringWebDriver Object.
+	 * 
+	 * @return EventFiringWebDriver Object
+	 */
+	
+	EventFiringWebDriver getEventFiringWebDriver() {
+		this.log.debug("Initializing EventFiringWebDriver.");
+		this.eDriver = new EventFiringWebDriver(this.driver);
+		this.log.debug("Successfully initialized EventFiringWebDriver.");
+		return this.eDriver;
 	}
 	
 	/**
