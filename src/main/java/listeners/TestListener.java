@@ -22,10 +22,6 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-import com.aventstack.extentreports.markuputils.ExtentColor;
-import com.aventstack.extentreports.markuputils.Markup;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
-
 import reporters.ExtentReport;
 
 public class TestListener implements ITestListener {
@@ -66,9 +62,7 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestSuccess(ITestResult arg0) {
-        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "PASSED" + "</b>";
-        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.GREEN);
-		ExtentReport.logPassed(markUp);
+		ExtentReport.logPassed(this.testCaseName);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " PASSED");
 		this.log.info("------------------------------------------------------------------------");
@@ -76,9 +70,8 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestFailure(ITestResult arg0) {
-        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "FAILED" + "</b>";
-        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.RED);
-		ExtentReport.logFailed(markUp);
+		ExtentReport.logError(arg0.getThrowable().getStackTrace().toString());
+		ExtentReport.logFailed(this.testCaseName);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " FAILED");
 		this.log.info("------------------------------------------------------------------------");
@@ -86,9 +79,8 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestSkipped(ITestResult arg0) {
-        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "SKIPPED" + "</b>";
-        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.YELLOW);
-		ExtentReport.logSkipped(markUp);
+		ExtentReport.logError(arg0.getThrowable().getStackTrace().toString());
+		ExtentReport.logSkipped(this.testCaseName);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " SKIPPED");
 		this.log.info("------------------------------------------------------------------------");

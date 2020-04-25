@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.Markup;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
@@ -156,30 +158,46 @@ public class ExtentReport {
 	}
 	
 	/**
-	 * Logs test event as PASSED
+	 * Logs test event as INFO
 	 * 
 	 * @param details Details of the Test Event.
 	 */
 	
-	public static final void logPassed(Markup details) {
+	public static final void logInfo(String details) {
 		if(isExtentTestNull()) {
-			log.warn("\"PASS\" Status could not be logged at ExtentReports.");
+			log.warn("\"INFO\" Status could not be logged at ExtentReports.");
 		} else {
-			test.log(Status.PASS, details);
+			test.log(Status.INFO, details);
 		}
 	}
-
+	
 	/**
 	 * Logs test event as having ERRORS
 	 * 
 	 * @param details Details of the Test Event.
 	 */
 	
-	public static final void logError(Markup details) {
+	public static final void logError(String details) {
 		if(isExtentTestNull()) {
 			log.warn("\"ERROR\" Status could not be logged at ExtentReports.");
 		} else {
 			test.log(Status.ERROR, details);
+		}
+	}
+	
+	/**
+	 * Logs test event as PASSED
+	 * 
+	 * @param details Details of the Test Event.
+	 */
+	
+	public static final void logPassed(String testCaseName) {
+		if(isExtentTestNull()) {
+			log.warn("\"PASS\" Status could not be logged at ExtentReports.");
+		} else {
+	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "PASSED" + "</b>";
+	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.GREEN);
+			test.log(Status.PASS, markUp);
 		}
 	}
 
@@ -189,11 +207,13 @@ public class ExtentReport {
 	 * @param details Details of the Test Event.
 	 */
 	
-	public static final void logFailed(Markup details) {
+	public static final void logFailed(String testCaseName) {
 		if(isExtentTestNull()) {
 			log.warn("\"FAIL\" Status could not be logged at ExtentReports.");
 		} else {
-			test.log(Status.FAIL, details);
+	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "FAILED" + "</b>";
+	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.RED);
+			test.log(Status.FAIL, markUp);
 		}
 	}
 
@@ -203,11 +223,13 @@ public class ExtentReport {
 	 * @param details Details of the Test Event.
 	 */
 	
-	public static final void logSkipped(Markup details) {
+	public static final void logSkipped(String testCaseName) {
 		if(isExtentTestNull()) {
 			log.warn("\"SKIP\" Status could not be logged at ExtentReports.");
 		} else {
-			test.log(Status.SKIP, details);
+	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "SKIPPED" + "</b>";
+	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.YELLOW);
+			test.log(Status.SKIP, markUp);
 		}
 	}
 	
