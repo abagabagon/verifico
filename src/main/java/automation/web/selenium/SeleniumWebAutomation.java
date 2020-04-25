@@ -37,6 +37,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private Select select;
 	private Alert alert;
 	private Actions action;
+	private JavascriptExecutor javascriptExecutor;
 	private ArrayList<String> tabs;
 	private long implicitWaitDuration;
 	private long explicitWaitDuration;
@@ -108,9 +109,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void openTab(String url) {
 		this.log.info("Creating New Tab.");
-		JavascriptExecutor jse = (JavascriptExecutor)this.driver;
+		this.javascriptExecutor = (JavascriptExecutor)this.driver;
 		String link = "window.open('" + url + "', '_blank');";
-		jse.executeScript(link);
+		this.javascriptExecutor.executeScript(link);
 		this.log.info("Successfully created new tab.");
 	}
 
@@ -241,8 +242,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void scrollPage(String pixelHorizontal, String pixelVertical) {
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
-		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-		executor.executeScript(script);
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor.executeScript(script);
 	}
 
 	private void initializeImplicitWait() {
@@ -298,8 +299,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void clickJS(Object locator) {
 		WebElement element =  this.driver.findElement((By)locator);
-		JavascriptExecutor executor = (JavascriptExecutor) this.driver;
-		executor.executeScript("arguments[0].click();", element);
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor.executeScript("arguments[0].click();", element);
 	}
 	
 	@Override
