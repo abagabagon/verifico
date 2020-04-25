@@ -22,7 +22,11 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
-import reporters.extentreport.ExtentReport;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.Markup;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
+
+import reporters.ExtentReport;
 
 public class TestListener implements ITestListener {
 
@@ -53,9 +57,8 @@ public class TestListener implements ITestListener {
 	public void onTestStart(ITestResult arg0) {
 		this.testCaseName = arg0.getMethod().getMethodName();
 		this.testCaseDescription = arg0.getMethod().getDescription();
-		ExtentReport.setTest(this.testCaseName);
+		ExtentReport.setTest(this.testCaseName, this.testCaseDescription);
 		ExtentReport.setCategory(this.testName);
-		ExtentReport.setDescription(this.testCaseDescription);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " TEST START");
 		this.log.info("------------------------------------------------------------------------");
@@ -63,8 +66,9 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestSuccess(ITestResult arg0) {
-		ExtentReport.logPassed(this.testCaseName);
-		ExtentReport.endTest();
+        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "PASSED" + "</b>";
+        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.GREEN);
+		ExtentReport.logPassed(markUp);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " PASSED");
 		this.log.info("------------------------------------------------------------------------");
@@ -72,9 +76,9 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestFailure(ITestResult arg0) {
-		ExtentReport.logError(arg0.getThrowable().toString());
-		ExtentReport.logFailed(this.testCaseName);
-		ExtentReport.endTest();
+        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "FAILED" + "</b>";
+        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.RED);
+		ExtentReport.logFailed(markUp);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " FAILED");
 		this.log.info("------------------------------------------------------------------------");
@@ -82,9 +86,9 @@ public class TestListener implements ITestListener {
 
 	@Override
 	public void onTestSkipped(ITestResult arg0) {
-		ExtentReport.logError(arg0.getThrowable().toString());
-		ExtentReport.logSkipped(this.testCaseName);
-		ExtentReport.endTest();
+        String details = "Test Case: \"" + this.testCaseName + "\" has " + "<b>" + "SKIPPED" + "</b>";
+        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.YELLOW);
+		ExtentReport.logSkipped(markUp);
 		this.log.info("------------------------------------------------------------------------");
 		this.log.info(this.testCaseName + " SKIPPED");
 		this.log.info("------------------------------------------------------------------------");

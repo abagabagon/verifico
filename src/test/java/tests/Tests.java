@@ -13,7 +13,7 @@ import automation.web.WebAutomation;
 import data.enums.Browser;
 import data.enums.Environment;
 import pages.Pages;
-import reporters.extentreport.ExtentReport;
+import reporters.ExtentReport;
 import settings.Settings;
 
 public class Tests {
@@ -26,13 +26,13 @@ public class Tests {
 	Logger log;
 	
 	@BeforeSuite(alwaysRun = true)
-	@Parameters("environment")
-	public void beforeSuite(Environment environment, ITestContext arg0) {
+	@Parameters({"environment", "organization"})
+	public void beforeSuite(Environment environment, String organization, ITestContext arg0) {
 		this.settings = new Settings(environment);
 		this.automation = new Automation();
 		I = this.automation.getWebAutomation(Settings.getAutomationTool());
 		this.testSuiteName = arg0.getSuite().getName();
-		ExtentReport.setReport(this.testSuiteName);
+		ExtentReport.setExtentReport(this.testSuiteName, organization);
 	}
 
 	@BeforeTest
