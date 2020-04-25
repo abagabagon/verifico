@@ -5,11 +5,15 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 
@@ -36,7 +40,8 @@ public class SeleniumWebDriver {
 	WebDriver getChromeDriver() {
 		this.log.debug("Initializing Google Chrome Driver.");
 		WebDriverManager.chromedriver().setup();
-		this.driver = new ChromeDriver();
+		ChromeOptions options = this.setChromeDriverOptions(); 
+		this.driver = new ChromeDriver(options);
 		this.log.debug("Successfully initialized Google Chrome Driver.");
 		return this.driver;
 	}
@@ -50,7 +55,8 @@ public class SeleniumWebDriver {
 	WebDriver getFirefoxDriver() {
 		this.log.debug("Initializing Mozilla Firefox Driver.");
 		WebDriverManager.firefoxdriver().setup();
-		this.driver = new FirefoxDriver();
+		FirefoxOptions options = this.setFirefoxDriverOptions();
+		this.driver = new FirefoxDriver(options);
 		this.log.debug("Successfully initialized Mozilla Firefox Driver.");
 		return this.driver;
 	}
@@ -92,7 +98,8 @@ public class SeleniumWebDriver {
 	WebDriver getIEDriver() {
 		this.log.debug("Initializing Internet Explorer Driver.");
 		WebDriverManager.iedriver().setup();
-		this.driver = new InternetExplorerDriver();
+		InternetExplorerOptions options = this.setInternetExplorerDriverOptions();
+		this.driver = new InternetExplorerDriver(options);
 		this.log.debug("Successfully initialized Internet Explorer Driver.");
 		return this.driver;
 	}
@@ -137,5 +144,46 @@ public class SeleniumWebDriver {
 		this.log.debug("Successfully initialized PhantomJS Driver.");
 		return this.driver;
 	}
+	
+	/**
+	 * Sets ChromeOptions for ChromeDriver.
+	 * 
+	 * @return ChromeOptions
+	 */
+	
+	private ChromeOptions setChromeDriverOptions() {
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("disable-infobars");
+		return options;
+    }
+	
+	/**
+	 * Sets FirefoxOptions for FirefoxDriver
+	 * 
+	 * @return FirefoxOptions
+	 */
+	
+	private FirefoxOptions setFirefoxDriverOptions() {
+		FirefoxOptions options = new FirefoxOptions();
+		options.setCapability(CapabilityType.HAS_NATIVE_EVENTS, false);
+		return options;
+	}
+	
+	/**
+	 * Sets InternetExplorerOptions for InternetExplorerDriver
+	 * 
+	 * @return InternetExplorerOptions
+	 */
+
+	private InternetExplorerOptions setInternetExplorerDriverOptions() {
+		InternetExplorerOptions options = new InternetExplorerOptions();
+		options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+		options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
+		options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
+		options.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
+		options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+		options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+		return options;
+    }
 
 }
