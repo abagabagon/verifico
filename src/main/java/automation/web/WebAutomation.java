@@ -1,7 +1,5 @@
 package automation.web;
 
-import java.util.List;
-
 import enums.Browser;
 
 public interface WebAutomation {
@@ -225,24 +223,6 @@ public interface WebAutomation {
 	 */
 
 	public void deselect(Object locator, String option);
-	
-	/**
-	 * Get a Web Element in a form of Object from a Web Page.
-	 * 
-	 * @param  locator Object used to locate element to get.
-	 * @return Element in a form of Object.
-	 */
-	
-	public Object getElement(Object locator);
-	
-	/**
-	 * Get a list of Web Elements in a form of Object from a Web Page.
-	 * 
-	 * @param  locator Object used to locate list of elements to get.
-	 * @return List of Elements in a form of Object.
-	 */
-	
-	public List<Object> getElements(Object locator);
 	
 	/**
 	 * Get the visible innerText of this element, including sub-elements, without

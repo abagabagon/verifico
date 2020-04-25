@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -217,6 +216,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.log.info("I close Browser.");
 			this.driver.quit();
+			this.driver = null;
 			this.log.info("I closed Browser.");
 		} catch (NullPointerException e) {
 			this.log.error("Encountered NullPointerException while closing WebDriver Instance.");
@@ -271,11 +271,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while mouse hover action.");
 			element = this.waitForElementToBeVisible(locator);
-			element.clear();
+			this.action.moveToElement(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while mouse hover action.");
 			element = this.waitForElementToBeVisible(locator);
-			element.clear();
+			this.action.moveToElement(element).perform();
 		}
 	}
 
@@ -298,15 +298,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void clickJS(Object locator) {
-		WebElement element =  this.driver.findElement((By)locator);
+		WebElement element =  (WebElement) this.getElement((By)locator);
 		this.javascriptExecutor = (JavascriptExecutor) this.driver;
 		this.javascriptExecutor.executeScript("arguments[0].click();", element);
 	}
 	
 	@Override
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
-		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
-		List<WebElement> elementToClick = this.getListOfElements((By)objectToClick);
+		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
+		List<WebElement> elementToClick = this.getElements((By)objectToClick);
 		int size = elementToClick.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -342,8 +342,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
-		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
-		List<WebElement> elementToFill = this.getListOfElements((By)objectToFill);
+		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
+		List<WebElement> elementToFill = this.getElements((By)objectToFill);
 		int size = elementToFill.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -483,8 +483,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 
-	@Override
-	public Object getElement(Object locator) {
+	public WebElement getElement(Object locator) {
 		WebElement element = null;
 		try {
 			element = this.driver.findElement((By)locator);
@@ -501,24 +500,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
 			element = this.waitForElementToBeVisible(locator);
 		}
-		Object object = element;
-		return object;
+		return element;
 	}
 	
-	@Override
-	public List<Object> getElements(Object locator) {
-		List<WebElement> listOfElements = this.driver.findElements((By)locator);
-		List<Object> elements = listOfElements.stream().collect(Collectors.toList());
-		try {
-			this.log.info("Elements found with xpath: " + locator.toString());
-			return elements;	
-		}catch (Exception e) {
-			this.log.info("No element found.");
-			return null;
-		}	
-	}
-	
-	public List<WebElement> getListOfElements(Object locator) {
+	private List<WebElement> getElements(Object locator) {
 		List<WebElement> elements;
 		try {
 			elements = this.driver.findElements((By)locator);
@@ -561,8 +546,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
-		List<WebElement> elementToCheckText = this.getListOfElements((By)objectToCheckText);
-		List<WebElement> elementToClick = this.getListOfElements((By)objectToGetTextFrom);
+		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
+		List<WebElement> elementToClick = this.getElements((By)objectToGetTextFrom);
 		int size = elementToClick.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;

@@ -1,7 +1,5 @@
 package automation.web.appium;
 
-import java.util.List;
-
 import automation.web.WebAutomation;
 import enums.Browser;
 
@@ -174,18 +172,6 @@ public class AppiumWebAutomation implements WebAutomation {
 	public void deselect(Object locator, String option) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Object getElement(Object locator) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Object> getElements(Object locator) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
