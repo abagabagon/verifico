@@ -133,6 +133,14 @@ public interface WebAutomation {
 	
 	public void clickJS(Object locator);
 	
+	/**
+	 * Clicks the specified element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText	Object from which to check the specified text to check.
+	 * @param textToCheck		Text to check at the specified object.
+	 * @param objectToClick		Object from same row to click if text is found on that row.
+	 */
+	
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
 	
 	/**
@@ -144,6 +152,15 @@ public interface WebAutomation {
 	 */
 
 	public void fill(Object locator, String inputText);
+	
+	/**
+	 * Fill the specified element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText	Object from which to check the specified text to check.
+	 * @param textToCheck		Text to check at the specified object.
+	 * @param objectToFill		Object from same row to click if text is found on that row.
+	 * @param inputText			Text value to input
+	 */
 	
 	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
 	
@@ -233,6 +250,14 @@ public interface WebAutomation {
 	 */
 	
 	public String getText(Object locator);
+	
+	/**
+	 * Get text of the specified element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText		Object from which to check the specified text to check.
+	 * @param textToCheck			Text to check at the specified object.
+	 * @param objectToGetTextFrom	Object from same row to get text from if text is found on that row.
+	 */
 	
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
 	
