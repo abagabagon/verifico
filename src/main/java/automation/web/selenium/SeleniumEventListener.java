@@ -25,7 +25,7 @@ public class SeleniumEventListener implements WebDriverEventListener {
 
 	private Logger log;
 
-	public void initializeEventMonitor(EventFiringWebDriver driver) {
+	public SeleniumEventListener(EventFiringWebDriver driver) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumEventListener Class.");
 		driver.register(this);
