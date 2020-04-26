@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Properties>
+		<Property name="filepath">./logs</Property>
+	</Properties>
+	<Appenders>
+		<Console name="Console">
+			<PatternLayout pattern="%d{MM/dd/YYYY HH:mm:ss.SSS} %-5level %msg%n" />
+		</Console>
+		<RollingFile name="File" fileName="${filepath}/test-inventory-dashboard.log" filePattern="${filepath}/venue-dashboard-test-%d{MMddYYYYHHmmssSSS}.log">
+			<PatternLayout pattern="%d{MM/dd/YYYY HH:mm:ss.SSS} %-5level %msg%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="5000000" />
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+	<Loggers>
+		<Root level="INFO">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Root>
+		<Logger name="Test" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+	</Loggers>
+</Configuration>
