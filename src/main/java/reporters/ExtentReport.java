@@ -261,7 +261,7 @@ public class ExtentReport {
 	 */
 	
 	private static boolean isExtentReportsNull() {
-		log.debug("Checking if ExtentReport is NULL");
+		log.trace("Checking if ExtentReport is NULL");
 		if(report == null) {
 			log.debug("ExtentReport Instance is NULL.");
 			return true;
@@ -278,7 +278,7 @@ public class ExtentReport {
 	 */
 	
 	private static boolean isExtentTestNull() {
-		log.debug("Checking if ExtentTest is NULL");
+		log.trace("Checking if ExtentTest is NULL");
 		if(test == null) {
 			log.debug("ExtentTest Instance is NULL.");
 			return true;
