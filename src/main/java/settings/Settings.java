@@ -34,7 +34,7 @@ public class Settings {
 	public Settings(Environment environment) {
 		log = LogManager.getLogger(Settings.class);
 		log.debug("Initializing Settings Class.");
-		initializePropertiesFile("./src/main.resources/config/config.properties");
+		initializePropertiesFile("./src/main/resources/config/config.properties");
 		setImplicitWaitDuration();
 		setExplicitWaitDuration();
 		setAutomationTool();
