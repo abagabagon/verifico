@@ -221,7 +221,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if element is not clickable.
 	 */
 	
-	public Boolean isClickable(String locator);
+	public Boolean isClickable(Object locator);
 
 	/**
 	 * Selects a Drop-down List WebElement Option.
@@ -309,6 +309,17 @@ public interface WebAutomation {
 	 */
 
 	public void assertValue(Object locator, String expectedValue);
+	
+	/**
+	 * Asserts the value of the specified attribute if equal to the expected
+	 * value.
+	 * 
+	 * @param locator		Object used to locate element to assert the value from.
+	 * @param attribute		Name of attribute to assert the value from.
+	 * @param expectedValue	Expected value of the WebElement Attribute.
+	 */
+
+	public void assertAttributeValue(Object locator, String attribute, String expectedValue);
 
 	/**
 	 * Asserts Drop-down List WebElement Value if equal to expected text value.

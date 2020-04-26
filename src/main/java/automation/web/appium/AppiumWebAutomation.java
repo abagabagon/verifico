@@ -157,7 +157,7 @@ public class AppiumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public Boolean isClickable(String locator) {
+	public Boolean isClickable(Object locator) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -213,6 +213,12 @@ public class AppiumWebAutomation implements WebAutomation {
 
 	@Override
 	public void assertValue(Object locator, String expectedValue) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void assertAttributeValue(Object locator, String attribute, String expectedValue) {
 		// TODO Auto-generated method stub
 		
 	}
