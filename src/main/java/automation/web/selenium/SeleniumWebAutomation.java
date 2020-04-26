@@ -45,6 +45,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private long explicitWaitDuration;
 
 	private SeleniumWebDriver seleniumWebDriver;
+	@SuppressWarnings("unused")
 	private SeleniumEventListener seleniumEventListener;
 
 	public SeleniumWebAutomation() {
@@ -103,7 +104,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		
 		this.eDriver = this.seleniumWebDriver.getEventFiringWebDriver();
-		this.seleniumEventListener.initializeEventMonitor(this.eDriver);
+		this.seleniumEventListener = new SeleniumEventListener(this.eDriver);
 		initializeImplicitWait();
 		initializeExplicitWait();
 		maximizeBrowserWindow();
@@ -656,7 +657,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertValue(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Box or Area Value is displayed.");
-		this.getElement((By)locator);
 		String actualValue = this.getValue((By)locator);
 		Assert.assertEquals(actualValue, expectedValue,
 				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
@@ -666,8 +666,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertAttributeValue(Object locator, String attribute, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Box or Area Value is displayed.");
-		this.getElement((By)locator);
-		String actualValue = this.getAttributeValue(locator, attribute);
+		String actualValue = this.getAttributeValue((By)locator, attribute);
 		Assert.assertEquals(actualValue, expectedValue,
 				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
 		this.log.info("I filled \"" + expectedValue + "\" at element \"" + locator.toString() + "\".");
@@ -687,7 +686,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void assertText(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Value is displayed.");
-		String actualText = this.getText(locator.toString());
+		String actualText = this.getText((By)locator);
 		Assert.assertEquals(actualText, expectedValue,
 				"Expected \"" + expectedValue + "\" but found \"" + actualText + "\".");
 		this.log.info("I see text \"" + expectedValue + "\" from element \"" + locator.toString() + "\".");
