@@ -26,8 +26,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import automation.web.WebAutomation;
-import data.enums.Browser;
-import settings.Settings;
+import enums.Browser;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
@@ -52,8 +51,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
-		this.implicitWaitDuration = Settings.getImplicitWaitDuration();
-		this.explicitWaitDuration = Settings.getExplicitWaitDuration();
+		this.implicitWaitDuration = 20;
+		this.explicitWaitDuration = 20;
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
@@ -105,8 +104,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 		
 		this.eDriver = this.seleniumWebDriver.getEventFiringWebDriver();
 		this.seleniumEventListener = new SeleniumEventListener(this.eDriver);
-		initializeImplicitWait();
-		initializeExplicitWait();
+		initializeImplicitWait(this.implicitWaitDuration);
+		initializeExplicitWait(this.explicitWaitDuration);
 		maximizeBrowserWindow();
 		deleteAllCookies();
 		this.log.info("I opened Web Browser.");
@@ -254,15 +253,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.javascriptExecutor.executeScript(script);
 	}
 
-	private void initializeImplicitWait() {
+	private void initializeImplicitWait(long duration) {
 		this.log.debug("Initializing Implicit Wait.");
-		this.eDriver.manage().timeouts().implicitlyWait(this.implicitWaitDuration, TimeUnit.SECONDS);
+		this.eDriver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 		this.log.debug("Successfully initialized Implicit Wait.");
 	}
 
-	private void initializeExplicitWait() {
+	private void initializeExplicitWait(long duration) {
 		this.log.debug("Initializing Explicit Wait.");
-		this.wait = new WebDriverWait(this.eDriver, this.explicitWaitDuration);
+		this.wait = new WebDriverWait(this.eDriver, duration);
 		this.log.debug("Successfully initialized Explicit Wait.");
 	}
 	
@@ -536,7 +535,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement element = this.getElement((By)locator);
 		String text = null;
 		try {
-			text = element.getText();
+			text = element.getText().trim();
 			if (text.length() == 0) {
 				this.log.debug("WebElement has no text.");
 			}
@@ -562,7 +561,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < size; i++) {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
-				retrievedText = elementToClick.get(i).getText();
+				retrievedText = elementToClick.get(i).getText().trim();
 				flgTextFound = true;
 				break;
 			}
@@ -585,11 +584,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from WebElement.");
 			element = this.waitForElementToBeVisible((By)locator);
-			element.getAttribute("value");
+			text = element.getAttribute("value");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from WebElement.");
 			element = this.waitForElementToBeVisible((By)locator);
-			element.getAttribute("value");
+			text = element.getAttribute("value");
 		}
 		return text;
 	}
@@ -606,11 +605,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from WebElement.");
 			element = this.waitForElementToBeVisible((By)locator);
-			element.getAttribute(attribute);
+			text = element.getAttribute(attribute);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from WebElement.");
 			element = this.waitForElementToBeVisible((By)locator);
-			element.getAttribute(attribute);
+			text = element.getAttribute(attribute);
 		}
 		return text;
 	}
@@ -809,6 +808,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be visible.");
 		WebElement element = null;
 		try {
+			this.initializeImplicitWait(0);
 			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated((By)locator));
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
@@ -819,6 +819,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			e.printStackTrace();
 			Assert.fail("Encountered Exception while waiting for element to be visible!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return element;
 	}
 	
@@ -832,6 +833,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be visible.");
 		List<WebElement> elements = null;
 		try {
+			this.initializeImplicitWait(0);
 			elements = this.wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy((By)locator));
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
@@ -842,6 +844,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			e.printStackTrace();
 			Assert.fail("Encountered Exception while waiting for element to be visible!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return elements;
 	}
 
@@ -855,6 +858,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be clickable.");
 		WebElement element = null;
 		try {
+			this.initializeImplicitWait(0);
 			element = this.wait.until(ExpectedConditions.elementToBeClickable((By)locator));
 			this.log.trace("Web Element had become clickable!");
 		} catch (TimeoutException e) {
@@ -864,6 +868,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
 			Assert.fail("Encountered Exception while waiting for element to be clickable!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return element;
 	}
 
@@ -878,6 +883,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element to be invisible.");
 		boolean isVisible = true;
 		try {
+			this.initializeImplicitWait(0);
 			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated((By)locator));
 			this.log.trace("Web Element had become invisible!");
 		} catch (TimeoutException e) {
@@ -886,6 +892,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
 			Assert.fail("Encountered Exception while waiting for element to be invisible!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return isVisible;
 	}
 
@@ -900,6 +907,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("Waiting for Web Element Selection State is " + selectionState + "!");
 		boolean status = false;
 		try {
+			this.initializeImplicitWait(0);
 			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe((By)locator, selectionState));
 			this.log.trace("Web Element Selection State is " + selectionState + "!");
 		} catch (TimeoutException e) {
@@ -912,6 +920,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			Assert.fail("Encountered Exception while waiting for Web Element Selection State to be " + selectionState
 					+ " has expired!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return status;
 	}
 
@@ -921,6 +930,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	private final Alert waitForAlertToBePresent() {
 		try {
+			this.initializeImplicitWait(0);
 			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Alert to be displayed has expired!");
@@ -929,6 +939,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("Encountered Exception while getting Alert Message!");
 			Assert.fail("Encountered Exception while getting Alert Message!");
 		}
+		this.initializeImplicitWait(this.implicitWaitDuration);
 		return this.alert;
 	}
 	

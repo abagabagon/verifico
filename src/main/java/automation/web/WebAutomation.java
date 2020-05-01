@@ -1,6 +1,6 @@
 package automation.web;
 
-import data.enums.Browser;
+import enums.Browser;
 
 public interface WebAutomation {
 	

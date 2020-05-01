@@ -8,6 +8,8 @@ import automation.mobile.appium.AppiumMobileAutomation;
 import automation.web.WebAutomation;
 import automation.web.appium.AppiumWebAutomation;
 import automation.web.selenium.SeleniumWebAutomation;
+import enums.MobileAutomationTool;
+import enums.WebAutomationTool;
 
 public class Automation {
 	
@@ -15,8 +17,6 @@ public class Automation {
 	
 	public Automation() {
 		this.log = LogManager.getLogger(Automation.class);
-		this.log.debug("Initializing Automation Class.");
-		this.log.debug("Successfully initialized Automation Class.");
 	}
 	
 	/**
@@ -25,23 +25,22 @@ public class Automation {
 	 * @return
 	 */
 	
-	public final WebAutomation getWebAutomation(String automationTool) {
+	public final WebAutomation getWebAutomation(WebAutomationTool tool) {
 		this.log.debug("Initializing Web Automation.");
-		WebAutomation I = null;
-		automationTool = automationTool.trim().toUpperCase();
-		switch(automationTool) {
-		case "SELENIUM":
-			I = new SeleniumWebAutomation();
+		WebAutomation webAutomation = null;
+		switch(tool) {
+		case SELENIUM:
+			webAutomation = new SeleniumWebAutomation();
 			break;
-		case "APPIUM":
-			I = new AppiumWebAutomation();
+		case APPIUM:
+			webAutomation = new AppiumWebAutomation();
 			this.log.fatal("Appium Web Automation is not yet implemented. Please report issue to QA Team.");
 			break;
 		default:
 			this.log.fatal("Unsupported Web Browser. Please report issue to QA Team.");
 		}
 		this.log.debug("Successfully initialized Web Automation.");
-		return I;
+		return webAutomation;
 	}
 	
 	/**
@@ -50,20 +49,19 @@ public class Automation {
 	 * @return
 	 */
 	
-	public final MobileAutomation getMobileAutomation(String automationTool) {
+	public final MobileAutomation getMobileAutomation(MobileAutomationTool tool) {
 		this.log.debug("Initializing Mobile Automation.");
-		MobileAutomation I = null;
-		automationTool = automationTool.trim().toUpperCase();
-		switch(automationTool) {
-		case "APPIUM":
-			I = new AppiumMobileAutomation();
+		MobileAutomation mobileAutomation = null;
+		switch(tool) {
+		case APPIUM:
+			mobileAutomation = new AppiumMobileAutomation();
 			this.log.fatal("Appium Mobile Automation is not yet implemented. Please report issue to QA Team.");
 			break;
 		default:
 			this.log.fatal("Unsupported Web Browser. Please report issue to QA Team.");
 		}
 		this.log.debug("Successfully initialized Mobile Automation.");
-		return I;
+		return mobileAutomation;
 	}
 
 }
