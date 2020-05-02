@@ -42,6 +42,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	private SeleniumWebDriver seleniumWebDriver;
 	private SeleniumWait seleniumWait;
+	private boolean testNgEnabled;
 
 	public SeleniumWebAutomation() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -50,6 +51,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.implicitWaitDuration = 20;
 		this.explicitWaitDuration = 20;
 		this.seleniumWait = new SeleniumWait(this.wait);
+		this.testNgEnabled = false;
+		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
+	}
+	
+	public SeleniumWebAutomation(boolean testNgEnabled) {
+		this.log = LogManager.getLogger(this.getClass());
+		this.log.debug("Initializing SeleniumWebAutomation Class.");
+		this.seleniumWebDriver = new SeleniumWebDriver();
+		this.implicitWaitDuration = 20;
+		this.explicitWaitDuration = 20;
+		this.seleniumWait = new SeleniumWait(this.wait);
+		this.testNgEnabled = testNgEnabled;
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
@@ -689,6 +702,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\".");
+			this.fail();
 		}
 		return status;
 	}
@@ -705,6 +719,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\".");
+			this.fail();
 		}
 		return status;	
 	}
@@ -720,6 +735,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\".");
+			this.fail();
 		}
 		return status;
 	}
@@ -735,6 +751,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not clickable.");
+			this.fail();
 		}
 		return status;
 	}
@@ -751,6 +768,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.fail();
 		}
 		return status;	
 	}
@@ -767,6 +785,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.fail();
 		}
 		return status;	
 	}
@@ -785,6 +804,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.fail();
 		}
 		return status;
 	}
@@ -801,6 +821,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.fail();
 		}
 		return status;
 	}
@@ -816,6 +837,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
+			this.fail();
 		}
 		return status;
 	}
@@ -831,6 +853,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
+			this.fail();
 		}
 		return status;
 	}
@@ -847,6 +870,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not enabled.");
+			this.fail();
 		}
 		return status;
 	}
@@ -863,6 +887,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not disabled.");
+			this.fail();
 		}
 		return status;
 	}
@@ -880,6 +905,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
+			this.fail();
 		}
 		return status;
 	}
@@ -897,6 +923,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is selected.");
+			this.fail();
 		}
 		return status;
 	}
@@ -914,8 +941,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see alert message: \"" + expectedMessage + "\".");
+			this.fail();
 		}
 		return status;
+	}
+	
+	private void fail() {
+		if (this.testNgEnabled) {
+			Assert.fail();
+		}
 	}
 
 }
