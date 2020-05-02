@@ -12,13 +12,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-public class SeleniumWaits {
+public class SeleniumWait {
 	
 	private Logger log;
 	private WebDriverWait wait;
 	private Alert alert;
 	
-	public SeleniumWaits(WebDriverWait wait) {
+	public SeleniumWait(WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWaits Class.");
 		this.wait = wait;

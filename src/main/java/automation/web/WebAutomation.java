@@ -1,6 +1,7 @@
 package automation.web;
 
 import enums.Browser;
+import enums.TestStatus;
 
 public interface WebAutomation {
 	
@@ -206,47 +207,6 @@ public interface WebAutomation {
 	 */
 
 	public void clear(Object locator);
-	
-	/**
-	 * Checks if element exists on Web Page.
-	 * 
-	 * @param	locator Object used to locate element to check.
-	 * @return	<code>true</code> if element exists on Web Page.
-	 * 			<code>false</code> if element does not exist on Web Page.
-	 */
-	
-	public boolean see(Object locator);
-	
-	/**
-	 * Checks Page Title of Web Page if equal to the expected Title.
-	 * 
-	 * @param	expectedTitle Expected Page Title to compare into
-	 * @return	<code>true</code> if Page Title is equal to expected Title.
-	 * 			<code>false</code> if Page Title is not equal to expected Title.
-	 */
-	
-	public boolean seeTitle(String expectedTitle);
-	
-	/**
-	 * Checks Page URL of Web Page if equal to the expected URL.
-	 * 
-	 * @param	expectedUrl Expected Page URL to compare into
-	 * @return	<code>true</code> if Page URL is equal to expected URL.
-	 * 			<code>false</code> if Page URL is not equal to expected URL.
-	 */
-
-	public boolean seeUrl(String expectedUrl);
-
-	
-	/**
-	 * Function to know if the element is clickable or not.
-	 * 
-	 * @param locator Object used to locate element to check.
-	 * @return	<code>true</code> if element is clickable.
-	 * 			<code>false</code> if element is not clickable.
-	 */
-	
-	public Boolean isClickable(Object locator);
 
 	/**
 	 * Selects a Drop-down List WebElement Option.
@@ -324,6 +284,46 @@ public interface WebAutomation {
 	/*#######################################################*/
 	/*                      ASSERTIONS                       */
 	/*#######################################################*/
+	
+	/**
+	 * Verifies Page URL of Web Page if equal to the expected URL.
+	 * 
+	 * @param	expectedUrl Expected Page URL to compare into
+	 * @return	<code>PASSED</code> if Page URL is equal to expected URL.
+	 * 			<code>FAILED</code> if Page URL is not equal to expected URL.
+	 */
+
+	public TestStatus verifyUrl(String expectedUrl);
+	
+	/**
+	 * Verifies Page Title of Web Page if equal to the expected Title.
+	 * 
+	 * @param	expectedTitle Expected Page Title to compare into
+	 * @return	<code>PASSED</code> if Page Title is equal to expected Title.
+	 * 			<code>FAILED</code> if Page Title is not equal to expected Title.
+	 */
+	
+	public TestStatus verifyTitle(String expectedTitle);
+	
+	/**
+	 * Verifies Page URL of Web Page if partially equal to the expected URL.
+	 * 
+	 * @param	expectedUrl Expected Page URL to compare into
+	 * @return	<code>PASSED</code> if Page URL is partially equal to expected URL.
+	 * 			<code>FAILED</code> if Page URL is not partially equal to expected URL.
+	 */
+
+	public TestStatus verifyPartialUrl(String expectedUrl);
+	
+	/**
+	 * Verifies if the element is clickable or not.
+	 * 
+	 * @param locator Object used to locate element to check.
+	 * @return	<code>PASSED</code> if element is clickable.
+	 * 			<code>FAILED</code> if element is not clickable.
+	 */
+	
+	public TestStatus verifyClickable(Object locator);
 
 	/**
 	 * Verifies the value of INPUT or TEXTAREA WebElements if equal to the expected
@@ -331,9 +331,11 @@ public interface WebAutomation {
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
 	 * @param expectedValue	Expected value of the WebElement Text Box.
+	 * @return	<code>PASSED</code> if value is equal to expected value.
+	 * 			<code>FAILED</code> if value is not equal to expected value.
 	 */
 
-	public void verifyValue(Object locator, String expectedValue);
+	public TestStatus verifyValue(Object locator, String expectedValue);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -342,107 +344,103 @@ public interface WebAutomation {
 	 * @param locator		Object used to locate element to assert the value from.
 	 * @param attribute		Name of attribute to assert the value from.
 	 * @param expectedValue	Expected value of the WebElement Attribute.
+	 * @return	<code>PASSED</code> if value is equal to expected attribute value.
+	 * 			<code>FAILED</code> if value is not equal to expected attribute value.
 	 */
 
-	public void verifyAttributeValue(Object locator, String attribute, String expectedValue);
+	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue);
 
 	/**
 	 * Verifies Drop-down List WebElement Value if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
-	 * @param expectedText	Expected drop-down list value
+	 * @param expectedValue	Expected drop-down list value
+	 * @return	<code>PASSED</code> if value is equal to expected drop-down list value.
+	 * 			<code>FAILED</code> if value is not equal to expected drop-down list value.
 	 */
 
-	public void verifyDropDownListValue(Object locator, String expectedValue);
+	public TestStatus verifyDropDownListValue(Object locator, String expectedValue);
 
 	/**
 	 * Verifies WebElement with text if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
-	 * @param expectedText	Expected text value
+	 * @param expectedValue	Expected text value
+	 * @return	<code>PASSED</code> if value is equal to expected value.
+	 * 			<code>FAILED</code> if value is not equal to expected value.
 	 */
 
-	public void verifyText(Object locator, String expectedValue);
+	public TestStatus verifyText(Object locator, String expectedValue);
 	
 	/**
-	 * Verifies WebElement is displayed on the Web Page.
+	 * Verifies if element is displayed on Web Page.
 	 * 
-	 * @param locator Object used to locate element to assert.
+	 * @param	locator Object used to locate element to check.
+	 * @return	<code>PASSED</code> if element is displayed on Web Page.
+	 * 			<code>FAILED</code> if element is not displayed on Web Page.
 	 */
 	
-	public void verifyDisplayed(Object locator);
+	public TestStatus verifyDisplayed(Object locator);
 	
 	/**
 	 * Verifies WebElement is not displayed on the Web Page.
 	 * 
-	 * @param @param locator Object used to locate element to assert.   
+	 * @param @param locator Object used to locate element to assert.  
+	 * @return	<code>PASSED</code> if element is not displayed on Web Page.
+	 * 			<code>FAILED</code> if element is displayed on Web Page.
 	 */
 
-	public void verifyNotDisplayed(Object locator);
+	public TestStatus verifyNotDisplayed(Object locator);
 	
 	/**
 	 * Verifies WebElement is enabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate element to assert.
+	 * @return	<code>PASSED</code> if element is enabled on Web Page.
+	 * 			<code>FAILED</code> if element is not enabled on Web Page.
 	 */
 
-	public void verifyEnabled(Object locator);
+	public TestStatus verifyEnabled(Object locator);
 	
 	/**
 	 * Verifies WebElement is disabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate element to assert.
+	 * @return	<code>PASSED</code> if element is disabled on Web Page.
+	 * 			<code>FAILED</code> if element is not disabled on Web Page.
 	 */
 
-	public void verifyDisabled(Object locator);
+	public TestStatus verifyDisabled(Object locator);
 	
 	/**
 	 * Verifies WebElement is selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
 	 * @param locator Object used to locate element to assert.
+	 * @return	<code>PASSED</code> if element is selected on Web Page.
+	 * 			<code>FAILED</code> if element is not selected on Web Page.
 	 */
 
-	public void verifySelected(Object locator);
+	public TestStatus verifySelected(Object locator);
 	
 	/**
 	 * Verifies WebElement is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
 	 * @param locator Object used to locate element to assert.
+	 * @return	<code>PASSED</code> if element is not selected on Web Page.
+	 * 			<code>FAILED</code> if element is selected on Web Page.
 	 */
 
-	public void verifyNotSelected(Object locator);
-	
-	/**
-	 * Verifies if current Web Page's Title is equal to the expected Title.
-	 * 
-	 * @param expectedTitle Expected Web Page Title.
-	 */
-
-	public void verifyTitle(String expectedTitle);
-	
-	/**
-	 * Verifies if current Web Page's URL is equal to the expected URL.
-	 * 
-	 * @param expectedUrl Expected Web Page URL
-	 */
-
-	public void verifyUrl(String expectedUrl);
-	
-	/**
-	 * Verifies if current Web Page's URL is partially equal to the specified partial URL.
-	 * 
-	 * @param partialUrl Expected Web Page URL
-	 */
-
-	public void verifyPartialUrl(String partialUrl);
+	public TestStatus verifyNotSelected(Object locator);
 	
 	/**
 	 * Verifies Javascript Alert Message displayed if equal to
 	 * expected message.
 	 * 
 	 * @param expectedMessage Expected message displayed.
+	 * @return	<code>PASSED</code> if message is equal to expected alert message.
+	 * 			<code>FAILED</code> if message is not equal to expected alert message.
 	 */
 
-	public void verifyAlertMessage(String expectedMessage);
+	public TestStatus verifyAlertMessage(String expectedMessage);
 
 }
