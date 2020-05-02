@@ -18,7 +18,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -133,10 +132,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.driver.get(url);
 		} catch (TimeoutException e) {
 			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
-			Assert.fail("Encountered TimeoutException while navigating to Url: " + url);
+			this.fail();
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while navigating to Url \"" + url + "\" .");
-			Assert.fail("Encountered Exception while navigating to Url \"" + url + "\" .");
+			this.fail();
 		}
 	}
 	
@@ -694,7 +693,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public TestStatus verifyUrl(String expectedUrl) {
 		this.log.info("I verify Page URL: \"" + expectedUrl + "\".");
-		boolean isUrlEqual = this.wait.until(ExpectedConditions.urlMatches(expectedUrl));
+		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
 			status = TestStatus.PASSED;
@@ -727,7 +726,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public TestStatus verifyTitle(String expectedTitle) {
 		this.log.info("I verify Page Title: \"" + expectedTitle + "\".");
-		boolean isTitleEqual = this.wait.until(ExpectedConditions.titleIs(expectedTitle));
+		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
 		TestStatus status = TestStatus.FAILED;
 		if(isTitleEqual) {
 			status = TestStatus.PASSED;

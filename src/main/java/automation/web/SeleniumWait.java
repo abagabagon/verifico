@@ -17,12 +17,68 @@ public class SeleniumWait {
 	private Logger log;
 	private WebDriverWait wait;
 	private Alert alert;
+	private boolean testNgEnabled;
 	
 	public SeleniumWait(WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWaits Class.");
 		this.wait = wait;
+		this.testNgEnabled = false;
 		this.log.debug("Successfully initialized SeleniumWaits Class.");
+	}
+	
+	public SeleniumWait(WebDriverWait wait, boolean testNgEnabled) {
+		this.log = LogManager.getLogger(this.getClass());
+		this.log.debug("Initializing SeleniumWaits Class.");
+		this.wait = wait;
+		this.testNgEnabled = testNgEnabled;
+		this.log.debug("Successfully initialized SeleniumWaits Class.");
+	}
+	
+	/**
+	 * Waits for Page URL Value to be the same as expected value.
+	 * 
+	 * @param expectedUrl Expected Page URL to compare into
+	 */
+
+	public final boolean waitForUrlToBe(String expectedUrl) {
+		this.log.trace("Waiting for Page URL to match expected value.");
+		boolean isUrlEqual = false;
+		try {
+			isUrlEqual = this.wait.until(ExpectedConditions.urlMatches(expectedUrl));
+			this.log.trace("Page URL had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Page URL to match the expected URL Value has expired!");
+			this.fail();
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Page URL to match expected value!");
+			e.printStackTrace();
+			this.fail();
+		}
+		return isUrlEqual;
+	}
+	
+	/**
+	 * Waits for Page Title Value to be the same as expected value.
+	 * 
+	 * @param expectedTitle Expected Page Title to compare into
+	 */
+
+	public final boolean waitForTitleToBe(String expectedTitle) {
+		this.log.trace("Waiting for Page Title to match expected value.");
+		boolean isTitleEqual = false;
+		try {
+			isTitleEqual = this.wait.until(ExpectedConditions.titleIs(expectedTitle));
+			this.log.trace("Page Title had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Page Title to match the expected URL Value has expired!");
+			this.fail();
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Page Title to match expected value!");
+			e.printStackTrace();
+			this.fail();
+		}
+		return isTitleEqual;
 	}
 	
 	/**
@@ -39,11 +95,11 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be visible!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			e.printStackTrace();
-			Assert.fail("Encountered Exception while waiting for element to be visible!");
+			this.fail();
 		}
 		return element;
 	}
@@ -62,11 +118,11 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be visible!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			e.printStackTrace();
-			Assert.fail("Encountered Exception while waiting for element to be visible!");
+			this.fail();
 		}
 		return elements;
 	}
@@ -85,10 +141,10 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become clickable!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be clickable!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
-			Assert.fail("Encountered Exception while waiting for element to be clickable!");
+			this.fail();
 		}
 		return element;
 	}
@@ -107,9 +163,10 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become invisible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
-			Assert.fail("Encountered Exception while waiting for element to be invisible!");
+			this.fail();
 		}
 		return isVisible;
 	}
@@ -129,10 +186,10 @@ public class SeleniumWait {
 			this.log.trace("Web Element Selection State is " + selectionState + "!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for Web Element Selection State to be " + selectionState + " has expired!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + selectionState + " has expired!");
-			Assert.fail("Encountered Exception while waiting for Web Element Selection State to be " + selectionState + " has expired!");
+			this.fail();
 		}
 		return status;
 	}
@@ -146,12 +203,18 @@ public class SeleniumWait {
 			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Alert to be displayed has expired!");
-			Assert.fail("Encountered TimeoutException while getting Alert Message!");
+			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while getting Alert Message!");
-			Assert.fail("Encountered Exception while getting Alert Message!");
+			this.fail();
 		}
 		return this.alert;
+	}
+	
+	private void fail() {
+		if (this.testNgEnabled) {
+			Assert.fail();
+		}
 	}
 
 }
