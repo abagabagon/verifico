@@ -1,4 +1,4 @@
-package automation.web.selenium;
+package automation.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,6 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import automation.web.WebAutomation;
 import enums.Browser;
 import enums.TestStatus;
 

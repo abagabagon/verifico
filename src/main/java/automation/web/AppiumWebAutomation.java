@@ -1,6 +1,4 @@
-package automation.web.appium;
-
-import automation.web.selenium.SeleniumWebAutomation;
+package automation.web;
 
 public class AppiumWebAutomation extends SeleniumWebAutomation {
 	

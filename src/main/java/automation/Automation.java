@@ -3,11 +3,11 @@ package automation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import automation.mobile.AppiumMobileAutomation;
 import automation.mobile.MobileAutomation;
-import automation.mobile.appium.AppiumMobileAutomation;
+import automation.web.AppiumWebAutomation;
+import automation.web.SeleniumWebAutomation;
 import automation.web.WebAutomation;
-import automation.web.appium.AppiumWebAutomation;
-import automation.web.selenium.SeleniumWebAutomation;
 import enums.MobileAutomationTool;
 import enums.WebAutomationTool;
 
