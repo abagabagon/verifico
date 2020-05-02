@@ -110,12 +110,12 @@ public interface WebAutomation {
 	/*#######################################################*/
 	
 	/**
-	 * Hover to the specified element.
+	 * Point mouse to the specified element.
 	 * 
-	 * @param locator Object used to locate element to hover into.
+	 * @param locator Object used to locate element to point the mouse into.
 	 */
 	
-	public void mouseHover(Object locator);
+	public void point(Object locator);
 	
 	/**
 	 * Clicks the specified element. Used for Elements that are clickable.
@@ -124,6 +124,22 @@ public interface WebAutomation {
 	 */
 
 	public void click(Object locator);
+	
+	/**
+	 * Double clicks the specified element. Used for Elements that are clickable.
+	 * 
+	 * @param locator Object used to locate element to be clicked.
+	 */
+
+	public void doubleClick(Object locator);
+	
+	/**
+	 * Clicks and holds the specified element. Used for Elements that are clickable.
+	 * 
+	 * @param locator Object used to locate element to be clicked and held.
+	 */
+
+	public void clickAndHold(Object locator);
 	
 	/**
 	 * Clicks the specified element (utilizing Javascript). Used for Elements that are clickable.
@@ -142,6 +158,15 @@ public interface WebAutomation {
 	 */
 	
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
+	
+	/**
+	 * Drags a specified element and drops it at target element. Used for Elements that can be dragged.
+	 * 
+	 * @param sourceObject Object used to locate element to be drag.
+	 * @param targetObject Object used to locate element where the dragged element will be dropped into.
+	 */
+
+	public void dragAndDrop(Object sourceObject, Object targetObject);
 	
 	/**
 	 * Simulates typing into a text box/area element, which may set its value. Text entry
@@ -301,17 +326,17 @@ public interface WebAutomation {
 	/*#######################################################*/
 
 	/**
-	 * Asserts the value of INPUT or TEXTAREA WebElements if equal to the expected
+	 * Verifies the value of INPUT or TEXTAREA WebElements if equal to the expected
 	 * value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
 	 * @param expectedValue	Expected value of the WebElement Text Box.
 	 */
 
-	public void assertValue(Object locator, String expectedValue);
+	public void verifyValue(Object locator, String expectedValue);
 	
 	/**
-	 * Asserts the value of the specified attribute if equal to the expected
+	 * Verifies the value of the specified attribute if equal to the expected
 	 * value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
@@ -319,105 +344,105 @@ public interface WebAutomation {
 	 * @param expectedValue	Expected value of the WebElement Attribute.
 	 */
 
-	public void assertAttributeValue(Object locator, String attribute, String expectedValue);
+	public void verifyAttributeValue(Object locator, String attribute, String expectedValue);
 
 	/**
-	 * Asserts Drop-down List WebElement Value if equal to expected text value.
+	 * Verifies Drop-down List WebElement Value if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
 	 * @param expectedText	Expected drop-down list value
 	 */
 
-	public void assertDropDownListValue(Object locator, String expectedValue);
+	public void verifyDropDownListValue(Object locator, String expectedValue);
 
 	/**
-	 * Asserts WebElement with text if equal to expected text value.
+	 * Verifies WebElement with text if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate element to assert the value from.
 	 * @param expectedText	Expected text value
 	 */
 
-	public void assertText(Object locator, String expectedValue);
+	public void verifyText(Object locator, String expectedValue);
 	
 	/**
-	 * Asserts WebElement is displayed on the Web Page.
+	 * Verifies WebElement is displayed on the Web Page.
 	 * 
 	 * @param locator Object used to locate element to assert.
 	 */
 	
-	public void assertDisplayed(Object locator);
+	public void verifyDisplayed(Object locator);
 	
 	/**
-	 * Asserts WebElement is not displayed on the Web Page.
+	 * Verifies WebElement is not displayed on the Web Page.
 	 * 
 	 * @param @param locator Object used to locate element to assert.   
 	 */
 
-	public void assertNotDisplayed(Object locator);
+	public void verifyNotDisplayed(Object locator);
 	
 	/**
-	 * Asserts WebElement is enabled on the Web Page.
+	 * Verifies WebElement is enabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate element to assert.
 	 */
 
-	public void assertEnabled(Object locator);
+	public void verifyEnabled(Object locator);
 	
 	/**
-	 * Asserts WebElement is disabled on the Web Page.
+	 * Verifies WebElement is disabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate element to assert.
 	 */
 
-	public void assertDisabled(Object locator);
+	public void verifyDisabled(Object locator);
 	
 	/**
-	 * Asserts WebElement is selected on the Web Page. Used for Check Boxes and Radio Buttons.
+	 * Verifies WebElement is selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
 	 * @param locator Object used to locate element to assert.
 	 */
 
-	public void assertSelected(Object locator);
+	public void verifySelected(Object locator);
 	
 	/**
-	 * Asserts WebElement is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
+	 * Verifies WebElement is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
 	 * @param locator Object used to locate element to assert.
 	 */
 
-	public void assertNotSelected(Object locator);
+	public void verifyNotSelected(Object locator);
 	
 	/**
-	 * Asserts if current Web Page's Title is equal to the expected Title.
+	 * Verifies if current Web Page's Title is equal to the expected Title.
 	 * 
 	 * @param expectedTitle Expected Web Page Title.
 	 */
 
-	public void assertTitle(String expectedTitle);
+	public void verifyTitle(String expectedTitle);
 	
 	/**
-	 * Asserts if current Web Page's URL is equal to the expected URL.
+	 * Verifies if current Web Page's URL is equal to the expected URL.
 	 * 
 	 * @param expectedUrl Expected Web Page URL
 	 */
 
-	public void assertUrl(String expectedUrl);
+	public void verifyUrl(String expectedUrl);
 	
 	/**
-	 * Asserts if current Web Page's URL is partially equal to the specified partial URL.
+	 * Verifies if current Web Page's URL is partially equal to the specified partial URL.
 	 * 
 	 * @param partialUrl Expected Web Page URL
 	 */
 
-	public void assertPartialUrl(String partialUrl);
+	public void verifyPartialUrl(String partialUrl);
 	
 	/**
-	 * Asserts Javascript Alert Message displayed if equal to
+	 * Verifies Javascript Alert Message displayed if equal to
 	 * expected message.
 	 * 
 	 * @param expectedMessage Expected message displayed.
 	 */
 
-	public void assertAlertMessage(String expectedMessage);
+	public void verifyAlertMessage(String expectedMessage);
 
 }

@@ -90,13 +90,25 @@ public class AppiumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void mouseHover(Object locator) {
+	public void point(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void click(Object locator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doubleClick(Object locator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clickAndHold(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -109,6 +121,12 @@ public class AppiumWebAutomation implements WebAutomation {
 
 	@Override
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dragAndDrop(Object sourceObject, Object targetObject) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -212,85 +230,85 @@ public class AppiumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void assertValue(Object locator, String expectedValue) {
+	public void verifyValue(Object locator, String expectedValue) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertAttributeValue(Object locator, String attribute, String expectedValue) {
+	public void verifyAttributeValue(Object locator, String attribute, String expectedValue) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertDropDownListValue(Object locator, String expectedValue) {
+	public void verifyDropDownListValue(Object locator, String expectedValue) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertText(Object locator, String expectedValue) {
+	public void verifyText(Object locator, String expectedValue) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertDisplayed(Object locator) {
+	public void verifyDisplayed(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertNotDisplayed(Object locator) {
+	public void verifyNotDisplayed(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertEnabled(Object locator) {
+	public void verifyEnabled(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertDisabled(Object locator) {
+	public void verifyDisabled(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertSelected(Object locator) {
+	public void verifySelected(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertNotSelected(Object locator) {
+	public void verifyNotSelected(Object locator) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertTitle(String expectedTitle) {
+	public void verifyTitle(String expectedTitle) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertUrl(String expectedUrl) {
+	public void verifyUrl(String expectedUrl) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertPartialUrl(String partialUrl) {
+	public void verifyPartialUrl(String partialUrl) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void assertAlertMessage(String expectedMessage) {
+	public void verifyAlertMessage(String expectedMessage) {
 		// TODO Auto-generated method stub
 		
 	}

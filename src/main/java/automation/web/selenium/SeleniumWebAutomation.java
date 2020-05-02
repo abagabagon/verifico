@@ -46,6 +46,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private SeleniumWebDriver seleniumWebDriver;
 	@SuppressWarnings("unused")
 	private SeleniumEventListener seleniumEventListener;
+	private SeleniumWaits seleniumWaits;
 
 	public SeleniumWebAutomation() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -53,6 +54,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.implicitWaitDuration = 20;
 		this.explicitWaitDuration = 20;
+		this.seleniumWaits = new SeleniumWaits(this.wait);
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
@@ -258,7 +260,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.eDriver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 		this.log.debug("Successfully initialized Implicit Wait.");
 	}
-
+	
 	private void initializeExplicitWait(long duration) {
 		this.log.debug("Initializing Explicit Wait.");
 		this.wait = new WebDriverWait(this.eDriver, duration);
@@ -270,42 +272,76 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/* ####################################################### */
 	
 	@Override
-	public void mouseHover(Object locator) {
-		WebElement element = this.getElement((By)locator);
+	public void point(Object locator) {
+		WebElement element = this.getElement(locator);
 		try {
 			this.action = new Actions(this.eDriver);
 			this.action.moveToElement(element).perform();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered StaleElementReferenceException while mouse hover action.");
-			element = this.waitForElementToBeVisible((By)locator);
+			this.log.warn("Encountered StaleElementReferenceException while pointing at WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			this.action.moveToElement(element).perform();
 		} catch (Exception e) {
-			this.log.warn("Encountered Exception while mouse hover action.");
-			element = this.waitForElementToBeVisible((By)locator);
+			this.log.warn("Encountered Exception while pointing at WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			this.action.moveToElement(element).perform();
 		}
 	}
 
 	@Override
 	public void click(Object locator) {
-		WebElement element =  this.getElement((By)locator);
+		WebElement element =  this.getElement(locator);
 		try {
-			element = this.waitForElementToBeClickable((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
 			element.click();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while clicking on WebElement.");
-			element = this.waitForElementToBeClickable((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
 			element.click();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking on WebElement.");
-			element = this.waitForElementToBeClickable((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
 			element.click();
+		}
+	}
+	
+	@Override
+	public void doubleClick(Object locator) {
+		WebElement element = this.getElement(locator);
+		try {
+			this.action = new Actions(this.eDriver);
+			this.action.doubleClick(element).perform();
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while double clicking at WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
+			this.action.doubleClick(element).perform();
+		} catch (Exception e) {
+			this.log.warn("Encountered Exception while double clicking at WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
+			this.action.doubleClick(element).perform();
+		}
+	}
+	
+	@Override
+	public void clickAndHold(Object locator) {
+		WebElement element = this.getElement(locator);
+		try {
+			this.action = new Actions(this.eDriver);
+			this.action.clickAndHold(element).perform();
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while clicking and holding WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
+			this.action.clickAndHold(element).perform();
+		} catch (Exception e) {
+			this.log.warn("Encountered Exception while clicking and holding WebElement.");
+			element = this.seleniumWaits.waitForObjectToBeClickable((By)locator);
+			this.action.clickAndHold(element).perform();
 		}
 	}
 
 	@Override
 	public void clickJS(Object locator) {
-		WebElement element =  this.getElement((By)locator);
+		WebElement element =  this.getElement(locator);
 		this.javascriptExecutor = (JavascriptExecutor) this.eDriver;
 		this.javascriptExecutor.executeScript("arguments[0].click();", element);
 	}
@@ -330,20 +366,40 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void dragAndDrop(Object sourceObject, Object targetObject) {
+		WebElement sourceElement = this.getElement(sourceObject);
+		WebElement targetElement = this.getElement(targetObject);
+		try {
+			this.action = new Actions(this.eDriver);
+			this.action.dragAndDrop(sourceElement, targetElement).perform();
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while clicking and holding WebElement.");
+			sourceElement = this.seleniumWaits.waitForObjectToBeClickable((By)sourceObject);
+			targetElement = this.seleniumWaits.waitForObjectToBeVisible((By)targetObject);
+			this.action.dragAndDrop(sourceElement, targetElement).perform();
+		} catch (Exception e) {
+			this.log.warn("Encountered Exception while clicking and holding WebElement.");
+			sourceElement = this.seleniumWaits.waitForObjectToBeClickable((By)sourceObject);
+			targetElement = this.seleniumWaits.waitForObjectToBeVisible((By)targetObject);
+			this.action.dragAndDrop(sourceElement, targetElement).perform();
+		}
+	}
+	
+	@Override
 	public void fill(Object locator, String inputText) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		try {
 			element.clear();
 			element.sendKeys(inputText);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while entering text at WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(inputText);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Encountered IllegalArgumentException while entering text at WebElement. Input Text is NULL");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while entering text at WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(inputText);
 		}
 	}
@@ -368,43 +424,43 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void press(Object locator, Object keyButton) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		Keys keys = (Keys) keyButton;
 		try {
 			element.clear();
 			element.sendKeys(keys);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while entering text at WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(keys);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Encountered IllegalArgumentException while entering text at WebElement. Input Text is NULL");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while entering text at WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(keys);
 		}
 	}
 
 	@Override
 	public void clear(Object locator) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		try {
 			element.clear();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while clearing on WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clearing on WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.clear();
 		}
 	}
 
 	@Override
 	public boolean see(Object locator) {
-		List<WebElement> elements = this.eDriver.findElements((By)locator);
+		List<WebElement> elements = this.getElements(locator);
 		boolean seeElement = false;
 		if (elements.size() > 0) {
 			seeElement = true;
@@ -424,7 +480,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public Boolean isClickable(Object locator) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		try {
 			this.wait.until(ExpectedConditions.elementToBeClickable(element));
 			this.log.info("The element" + locator + " is clickable.");
@@ -437,7 +493,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void select(Object locator, String option) {
-		WebElement element =  this.getElement((By)locator);
+		WebElement element =  this.getElement(locator);
 		try {
 			this.select = new Select(element);
 		} catch (UnexpectedTagNameException e) {
@@ -464,7 +520,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void deselect(Object locator, String option) {
-		WebElement element =  this.getElement((By)locator);
+		WebElement element =  this.getElement(locator);
 		try {
 			this.select = new Select(element);
 		} catch (UnexpectedTagNameException e) {
@@ -490,22 +546,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 
-	public WebElement getElement(Object locator) {
+	private WebElement getElement(Object locator) {
 		WebElement element = null;
 		try {
 			element = this.eDriver.findElement((By)locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while getting WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 		} catch (NoSuchElementException e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 		}
 		return element;
 	}
@@ -516,23 +572,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 			elements = this.eDriver.findElements((By)locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
-			elements = this.waitForElementsToBeVisible((By)locator);
+			elements = this.seleniumWaits.waitForObjectsToBeVisible((By)locator);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while getting WebElement.");
-			elements = this.waitForElementsToBeVisible((By)locator);
+			elements = this.seleniumWaits.waitForObjectsToBeVisible((By)locator);
 		} catch (NoSuchElementException e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			elements = this.waitForElementsToBeVisible((By)locator);
+			elements = this.seleniumWaits.waitForObjectsToBeVisible((By)locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			elements = this.waitForElementsToBeVisible((By)locator);
+			elements = this.seleniumWaits.waitForObjectsToBeVisible((By)locator);
 		}
 		return elements;
 	}
 
 	@Override
 	public String getText(Object locator) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		String text = null;
 		try {
 			text = element.getText().trim();
@@ -541,11 +597,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving text from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.getText();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving text from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			element.getText();
 		}
 		return text;
@@ -575,7 +631,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public String getValue(Object locator) {
 		String text = null;
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		try {
 			text = element.getAttribute("value");
 			if (text.length() == 0) {
@@ -583,11 +639,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute("value");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute("value");
 		}
 		return text;
@@ -596,7 +652,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public String getAttributeValue(Object locator, String attribute) {
 		String text = null;
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		try {
 			text = element.getAttribute(attribute);
 			if (text.length() == 0) {
@@ -604,11 +660,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute(attribute);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from WebElement.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute(attribute);
 		}
 		return text;
@@ -616,7 +672,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public String getDropDownListValue(Object locator) {
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		this.select = new Select(element);
 		String text = null;
 		try {
@@ -626,12 +682,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving Drop-down List Value.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		} catch (Exception e) {
 			this.log.debug("Encountered Exception while retrieving Drop-down List Value.");
-			element = this.waitForElementToBeVisible((By)locator);
+			element = this.seleniumWaits.waitForObjectToBeVisible((By)locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		}
@@ -654,56 +710,52 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/* ####################################################### */
 
 	@Override
-	public void assertValue(Object locator, String expectedValue) {
+	public void verifyValue(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Box or Area Value is displayed.");
 		String actualValue = this.getValue((By)locator);
-		Assert.assertEquals(actualValue, expectedValue,
-				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
+		Assert.assertEquals(actualValue, expectedValue, "Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
 		this.log.info("I filled \"" + expectedValue + "\" at element \"" + locator.toString() + "\".");
 	}
 	
 	@Override
-	public void assertAttributeValue(Object locator, String attribute, String expectedValue) {
-		this.log.info("Verifying \"" + expectedValue + "\" Text Box or Area Value is displayed.");
+	public void verifyAttributeValue(Object locator, String attribute, String expectedValue) {
+		this.log.info("Verifying \"" + expectedValue + "\" Attribute Value is displayed.");
 		String actualValue = this.getAttributeValue((By)locator, attribute);
-		Assert.assertEquals(actualValue, expectedValue,
-				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
+		Assert.assertEquals(actualValue, expectedValue, "Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
 		this.log.info("I filled \"" + expectedValue + "\" at element \"" + locator.toString() + "\".");
 	}
 
 	@Override
-	public void assertDropDownListValue(Object locator, String expectedValue) {
+	public void verifyDropDownListValue(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Drop-down List Value is displayed.");
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		Select select = new Select(element);
 		String actualValue = select.getFirstSelectedOption().getText().toLowerCase();
-		Assert.assertEquals(actualValue, expectedValue,
-				"Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
+		Assert.assertEquals(actualValue, expectedValue, "Expected \"" + expectedValue + "\" but found \"" + actualValue + "\".");
 		this.log.info("I selected \"" + expectedValue + "\" at element \"" + locator.toString() + "\".");
 	}
 
 	@Override
-	public void assertText(Object locator, String expectedValue) {
+	public void verifyText(Object locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Value is displayed.");
 		String actualText = this.getText((By)locator);
-		Assert.assertEquals(actualText, expectedValue,
-				"Expected \"" + expectedValue + "\" but found \"" + actualText + "\".");
+		Assert.assertEquals(actualText, expectedValue, "Expected \"" + expectedValue + "\" but found \"" + actualText + "\".");
 		this.log.info("I see text \"" + expectedValue + "\" from element \"" + locator.toString() + "\".");
 	}
 
 	@Override
-	public void assertDisplayed(Object locator) {
+	public void verifyDisplayed(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is displayed.");
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		boolean isDisplayed = element.isDisplayed();
 		Assert.assertTrue(isDisplayed, "The element \"" + locator.toString() + "\" is not displayed.");
 		this.log.info("The element \"" + locator.toString() + "\" is displayed.");
 	}
 
 	@Override
-	public void assertNotDisplayed(Object locator) {
+	public void verifyNotDisplayed(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not displayed.");
-		//Boolean isNotDisplayed = this.waitForElementToBeInvisible(this.eDriver.findElement((By)locator));
+		//Boolean isNotDisplayed = this.seleniumWaits.waitForObjectToBeInvisible(this.eDriver.findElement((By)locator));
 		boolean isNotDisplayed;
 		try {
 			this.eDriver.findElement((By)locator);
@@ -716,65 +768,63 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void assertEnabled(Object locator) {
+	public void verifyEnabled(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is enabled.");
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		Assert.assertTrue(isEnabled, "The element \"" + locator.toString() + "\" is disabled.");
 		this.log.info("The element \"" + locator.toString() + "\" is enabled.");
 	}
 
 	@Override
-	public void assertDisabled(Object locator) {
+	public void verifyDisabled(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is disabled.");
-		WebElement element = this.getElement((By)locator);
+		WebElement element = this.getElement(locator);
 		boolean isDisabled = element.isEnabled();
 		Assert.assertFalse(isDisabled, "The element \"" + locator.toString() + "\" is enabled.");
 		this.log.info("The element \"" + locator.toString() + "\" is disabled.");
 	}
 
 	@Override
-	public void assertSelected(Object locator) {
+	public void verifySelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is selected.");
-		WebElement element = this.getElement((By)locator);
-		this.waitForElementSelectionStateToBe(element, true);
+		WebElement element = this.getElement(locator);
+		this.seleniumWaits.waitForObjectSelectionStateToBe(element, true);
 		boolean isSelected = element.isSelected();
 		Assert.assertTrue(isSelected, "The element \"" + locator.toString() + "\" is not selected.");
 		this.log.info("The element \"" + locator.toString() + "\" is selected.");
 	}
 
 	@Override
-	public void assertNotSelected(Object locator) {
+	public void verifyNotSelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not selected.");
-		WebElement element = this.getElement((By)locator);
-		this.waitForElementSelectionStateToBe(element, false);
+		WebElement element = this.getElement(locator);
+		this.seleniumWaits.waitForObjectSelectionStateToBe(element, false);
 		boolean isNotSelected = element.isSelected();
 		Assert.assertFalse(isNotSelected, "The element \"" + locator.toString() + "\" is selected.");
 		this.log.info("The element \"" + locator.toString() + "\" is not selected.");
 	}
 
 	@Override
-	public void assertTitle(String expectedTitle) {
+	public void verifyTitle(String expectedTitle) {
 		this.log.info("Verifying \"" + expectedTitle + "\" Page Title Value is displayed.");
 		this.wait.until(ExpectedConditions.titleIs(expectedTitle));
 		String actualTitle = this.eDriver.getTitle();
-		Assert.assertEquals(actualTitle, expectedTitle,
-				"Expected \"" + expectedTitle + "\" but found \"" + actualTitle + "\".");
+		Assert.assertEquals(actualTitle, expectedTitle, "Expected \"" + expectedTitle + "\" but found \"" + actualTitle + "\".");
 		this.log.info("Page Title is \"" + expectedTitle + "\".");
 	}
 
 	@Override
-	public void assertUrl(String expectedUrl) {
+	public void verifyUrl(String expectedUrl) {
 		this.log.info("Verifying \"" + expectedUrl + "\" Page URL Value is displayed.");
 		this.wait.until(ExpectedConditions.urlMatches(expectedUrl));
 		String actualUrl = this.eDriver.getCurrentUrl();
-		Assert.assertEquals(actualUrl, expectedUrl,
-				"Expected \"" + expectedUrl + "\" but found \"" + actualUrl + "\".");
+		Assert.assertEquals(actualUrl, expectedUrl, "Expected \"" + expectedUrl + "\" but found \"" + actualUrl + "\".");
 		this.log.info("Url is \"" + expectedUrl + "\".");
 	}
 
 	@Override
-	public void assertPartialUrl(String partialUrl) {
+	public void verifyPartialUrl(String partialUrl) {
 		this.log.info("Verifying \"" + partialUrl + "\" Partial Page URL Value is displayed.");
 		String actualUrl = this.eDriver.getCurrentUrl();
 		if (!actualUrl.contains(partialUrl)) {
@@ -784,163 +834,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void assertAlertMessage(String expectedMessage) {
+	public void verifyAlertMessage(String expectedMessage) {
 		this.log.info("Verifying \"" + expectedMessage + "\" Alert Message is displayed.");
-		this.waitForAlertToBePresent();
-		Alert alert = this.eDriver.switchTo().alert();
-		String actualMessage = alert.getText();
-		Assert.assertEquals(actualMessage, expectedMessage,
-				"Expected \"" + expectedMessage + "\" but found \"" + actualMessage + "\".");
+		this.seleniumWaits.waitForAlertToBePresent();
+		this.alert = this.eDriver.switchTo().alert();
+		String actualMessage = this.alert.getText();
+		Assert.assertEquals(actualMessage, expectedMessage, "Expected \"" + expectedMessage + "\" but found \"" + actualMessage + "\".");
 		this.log.info("I see Alert Message \"" + expectedMessage + "\".");
 	}
 
-	/*#######################################################*/
-	/*                  SUPPORTIVE METHODS                   */
-	/*#######################################################*/
-	
-	/**
-	 * Waits for WebElement to be visible at the Web Page.
-	 * 
-	 * @param locator Object used to locate element to wait for.
-	 */
-
-	private final WebElement waitForElementToBeVisible(Object locator) {
-		this.log.trace("Waiting for Web Element to be visible.");
-		WebElement element = null;
-		try {
-			this.initializeImplicitWait(0);
-			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated((By)locator));
-			this.log.trace("Web Element had become visible!");
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Web Element to be visible has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be visible!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for element to be visible!");
-			e.printStackTrace();
-			Assert.fail("Encountered Exception while waiting for element to be visible!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return element;
-	}
-	
-	/**
-	 * Waits for WebElements to be visible at the Web Page.
-	 * 
-	 * @param locator Object used to locate elements to wait for.
-	 */
-	
-	private final List<WebElement> waitForElementsToBeVisible(Object locator) {
-		this.log.trace("Waiting for Web Element to be visible.");
-		List<WebElement> elements = null;
-		try {
-			this.initializeImplicitWait(0);
-			elements = this.wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy((By)locator));
-			this.log.trace("Web Element had become visible!");
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Web Element to be visible has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be visible!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for element to be visible!");
-			e.printStackTrace();
-			Assert.fail("Encountered Exception while waiting for element to be visible!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return elements;
-	}
-
-	/**
-	 * Waits for WebElement to be clickable at the Web Page.
-	 * 
-	 * @param locator Object used to locate element to wait for.
-	 */
-
-	private WebElement waitForElementToBeClickable(Object locator) {
-		this.log.trace("Waiting for Web Element to be clickable.");
-		WebElement element = null;
-		try {
-			this.initializeImplicitWait(0);
-			element = this.wait.until(ExpectedConditions.elementToBeClickable((By)locator));
-			this.log.trace("Web Element had become clickable!");
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Web Element to be clickable has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for element to be clickable!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for element to be clickable!");
-			Assert.fail("Encountered Exception while waiting for element to be clickable!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return element;
-	}
-
-	/**
-	 * Waits for WebElement to be invisible at the Web Page.
-	 * 
-	 * @param locator Object used to locate element to wait for.
-	 */
-
-	@SuppressWarnings("unused")
-	private final boolean waitForElementToBeInvisible(Object locator) {
-		this.log.trace("Waiting for Web Element to be invisible.");
-		boolean isVisible = true;
-		try {
-			this.initializeImplicitWait(0);
-			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated((By)locator));
-			this.log.trace("Web Element had become invisible!");
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Web Element to be invisible has expired!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for element to be invisible!");
-			Assert.fail("Encountered Exception while waiting for element to be invisible!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return isVisible;
-	}
-
-	/**
-	 * Waits for an element's selection state to be the expected selection state.
-	 * 
-	 * @param element        Target WebElement for checking of selection state.
-	 * @param selectionState expected selection state.
-	 */
-
-	private final boolean waitForElementSelectionStateToBe(Object locator, boolean selectionState) {
-		this.log.trace("Waiting for Web Element Selection State is " + selectionState + "!");
-		boolean status = false;
-		try {
-			this.initializeImplicitWait(0);
-			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe((By)locator, selectionState));
-			this.log.trace("Web Element Selection State is " + selectionState + "!");
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
-			Assert.fail("Encountered TimeoutException while waiting for Web Element Selection State to be "
-					+ selectionState + " has expired!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + selectionState
-					+ " has expired!");
-			Assert.fail("Encountered Exception while waiting for Web Element Selection State to be " + selectionState
-					+ " has expired!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return status;
-	}
-
-	/**
-	 * Waits for a Javascript Alert to be present on the WebPage.
-	 */
-
-	private final Alert waitForAlertToBePresent() {
-		try {
-			this.initializeImplicitWait(0);
-			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
-		} catch (TimeoutException e) {
-			this.log.error("Wait time for Alert to be displayed has expired!");
-			Assert.fail("Encountered TimeoutException while getting Alert Message!");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while getting Alert Message!");
-			Assert.fail("Encountered Exception while getting Alert Message!");
-		}
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		return this.alert;
-	}
-	
 }
