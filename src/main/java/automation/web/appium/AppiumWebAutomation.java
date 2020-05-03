@@ -252,12 +252,12 @@ public class AppiumWebAutomation implements WebAutomation {
 		this.javascriptExecutor.executeScript(script);
 	}
 
-	protected void initializeImplicitWait(long duration) {
+	private void initializeImplicitWait(long duration) {
 		this.log.debug("I initialize Implicit Wait.");
 		this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 	}
 	
-	protected void initializeExplicitWait(long duration) {
+	private void initializeExplicitWait(long duration) {
 		this.log.debug("I initialize Explicit Wait.");
 		this.wait = new WebDriverWait(this.driver, duration);
 	}
@@ -266,7 +266,7 @@ public class AppiumWebAutomation implements WebAutomation {
 	/*                       USER ACTIONS                      */
 	/* ####################################################### */
 	
-	protected WebElement getElement(Object locator) {
+	private WebElement getElement(Object locator) {
 		WebElement element = null;
 		try {
 			element = this.driver.findElement((By)locator);
@@ -286,7 +286,7 @@ public class AppiumWebAutomation implements WebAutomation {
 		return element;
 	}
 	
-	protected List<WebElement> getElements(Object locator) {
+	private List<WebElement> getElements(Object locator) {
 		List<WebElement> elements;
 		try {
 			elements = this.driver.findElements((By)locator);
@@ -941,7 +941,7 @@ public class AppiumWebAutomation implements WebAutomation {
 		return status;
 	}
 	
-	protected void fail() {
+	private void fail() {
 		if (this.testNgEnabled) {
 			Assert.fail();
 		}

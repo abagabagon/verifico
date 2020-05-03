@@ -31,7 +31,7 @@ public class AppiumWebDriver {
 	 * @return AppiumDriver Object
 	 */
 	
-	protected AppiumDriver<WebElement> getChromeDriver(Mobile platformName, String platformVersion, String deviceName) {
+	AppiumDriver<WebElement> getChromeDriver(Mobile platformName, String platformVersion, String deviceName) {
 		this.log.debug("Initializing Google Chrome Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName.toString());
@@ -50,7 +50,7 @@ public class AppiumWebDriver {
 	 * @return AppiumDriver Object
 	 */
 
-	protected AppiumDriver<WebElement> getSafariDriver(Mobile platformName, String platformVersion, String deviceName) {
+	AppiumDriver<WebElement> getSafariDriver(Mobile platformName, String platformVersion, String deviceName) {
 		this.log.debug("Setting Property of Safari Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName.toString());
