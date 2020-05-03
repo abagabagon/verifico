@@ -1,4 +1,4 @@
-package automation.web;
+package automation.web.selenium;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +39,7 @@ public class SeleniumWebDriver {
 	 * @return EventFiringWebDriver Object
 	 */
 	
-	EventFiringWebDriver getEventFiringWebDriver() {
+	protected EventFiringWebDriver getEventFiringWebDriver() {
 		this.log.debug("Initializing EventFiringWebDriver.");
 		this.eDriver = new EventFiringWebDriver(this.driver);
 		this.log.debug("Successfully initialized EventFiringWebDriver.");
@@ -52,7 +52,7 @@ public class SeleniumWebDriver {
 	 * @return Google Chrome WebDriver Object
 	 */
 	
-	WebDriver getChromeDriver() {
+	protected WebDriver getChromeDriver() {
 		this.log.debug("Initializing Google Chrome Driver.");
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = this.setChromeDriverOptions(); 
@@ -67,7 +67,7 @@ public class SeleniumWebDriver {
 	 * @return Mozilla Firefox (Gecko) WebDriver Object
 	 */
 	
-	WebDriver getFirefoxDriver() {
+	protected WebDriver getFirefoxDriver() {
 		this.log.debug("Initializing Mozilla Firefox Driver.");
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions options = this.setFirefoxDriverOptions();
@@ -82,7 +82,7 @@ public class SeleniumWebDriver {
 	 * @return Opera WebDriver Object
 	 */
 	
-	WebDriver getOperaDriver() {
+	protected WebDriver getOperaDriver() {
 		this.log.debug("Initializing Opera Driver.");
 		WebDriverManager.operadriver().setup();
 		this.driver = new OperaDriver();
@@ -96,7 +96,7 @@ public class SeleniumWebDriver {
 	 * @return Microsoft Edge WebDriver Object
 	 */
 	
-	WebDriver getEdgeDriver() {
+	protected WebDriver getEdgeDriver() {
 		this.log.debug("Initializing Microsoft Edge Driver.");
 		WebDriverManager.edgedriver().setup();
 		this.driver = new EdgeDriver();
@@ -110,7 +110,7 @@ public class SeleniumWebDriver {
 	 * @return Internet Explorer WebDriver Object
 	 */
 	
-	WebDriver getIEDriver() {
+	protected WebDriver getIEDriver() {
 		this.log.debug("Initializing Internet Explorer Driver.");
 		WebDriverManager.iedriver().setup();
 		InternetExplorerOptions options = this.setInternetExplorerDriverOptions();
@@ -125,7 +125,7 @@ public class SeleniumWebDriver {
 	 * @return Safari WebDriver Object
 	 */
 
-	WebDriver getSafariDriver() {
+	protected WebDriver getSafariDriver() {
 		this.log.debug("Setting Property of Safari Driver.");
 		Platform operatingSystem = OperatingSystem.getOS();
 		
@@ -148,7 +148,7 @@ public class SeleniumWebDriver {
 	 * @return PhantomJS WebDriver Object
 	 */
 
-	WebDriver getPhantomJSDriver() {
+	protected WebDriver getPhantomJSDriver() {
 		this.log.debug("Initializing PhantomJS Driver.");
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setJavascriptEnabled(true);                

@@ -1,4 +1,4 @@
-package automation.web;
+package automation.web.selenium;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import automation.web.WebAutomation;
 import enums.Browser;
 import enums.TestStatus;
 
@@ -98,7 +99,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.driver = this.seleniumWebDriver.getIEDriver();
 				break;
 			default:
-				this.log.fatal("Unsupported Web Browser. Please report issue to QA Team.");
+				this.log.fatal("Unsupported Web Browser.");
 				System.exit(1);
 			}
 		} catch (WebDriverException e) {
