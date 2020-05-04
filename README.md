@@ -6,7 +6,7 @@ The Verifico Project is the result of a need to attain knowledge in Test Automat
 
 ## **Built With**
 The Test Automation Framework is built with the following:
-* [Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Programming Language
+* [Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Programming Language (1.8)
 * [Selenium](https://www.seleniumhq.org/download/) - Web Test Automation Tool
 * [Appium](http://appium.io/downloads.html) - Mobile Test Automation Tool
 * [TestNG](http://testng.org/doc/download.html) - Testing Framework
@@ -25,12 +25,25 @@ The following are the supported automation tools:
 WebAutomation I = new SeleniumWebAutomation();
 ```
 
+Available commands require Objects as `By` Objects. So it's recommended to apply Page Object Model for its usage.
+
+```
+I.fill(PageLogin.EMAIL_ADDRESS_TEXTBOX, "abagabagon@yopmail.com");
+I.fill(PageLogin.PASSWORD_TEXTBOX, "ABCabc123");
+I.click(PageLogin.LOGIN_BUTTON);
+```
+
 #### **Mobile Web Automation**
-
-```
-WebAutomation I = new AppiumWebAutomation(Mobile.Android, "http://127.0.0.1:4723/wd/hub", "6.0.1", "YT9117XT7C");
-```
-
 ##### **Appium**
+
+```
+URL appiumServer = new URL("http://127.0.0.1:4723/wd/hub");
+String platformVersion = "6.0.1";
+String deviceName = "YT9117XT7C";
+WebAutomation I = new AppiumWebAutomation(Mobile.Android, appiumServer, platformVersion, deviceName);
+```
+
+Same with `Selenium`, available commands require Objects as `By` Objects.
+
 #### **Mobile Automation**
 ##### **Appium** (Development In-progress)
