@@ -1,10 +1,10 @@
-# ***VERIFICO***
+# **VERIFICO**
 Verifico is a Test Automation Framework that aims to automate both Web and Mobile Applications.
 
-## ***Background***
+## **Background**
 The Verifico Project is the result of a need to attain knowledge in Test Automation and develop a working Test Automation Framework.
 
-## ***Built With***
+## **Built With**
 The Test Automation Framework is built with the following:
 * [Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Programming Language
 * [Selenium](https://www.seleniumhq.org/download/) - Web Test Automation Tool
@@ -15,18 +15,18 @@ The Test Automation Framework is built with the following:
 * [Apache POI](https://poi.apache.org/download.html) - Test Data Access (API for MS Office)
 * [Maven](https://maven.apache.org/download.cgi) - Build Management Tool / Dependency Management
 
-## ***Usage***
-### ***Automation***
+## **Usage**
+### **Automation**
 The following are the supported automation tools:
-#### ***Web Automation***
-##### ***Selenium***
+#### **Web Automation**
+##### **Selenium**
 
 ```WebAutomation I = new SeleniumWebAutomation();```
 
-#### ***Mobile Web Automation***
+#### **Mobile Web Automation**
 
 ```WebAutomation I = new AppiumWebAutomation(Mobile.Android, "http://127.0.0.1:4723/wd/hub", "6.0.1", "YT9117XT7C");```
 
-##### ***Appium***
-#### ***Mobile Automation***
-##### ***Appium*** (Development In-progress)
+##### **Appium**
+#### **Mobile Automation**
+##### **Appium** (Development In-progress)
