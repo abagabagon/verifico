@@ -21,11 +21,15 @@ The following are the supported automation tools:
 #### **Web Automation**
 ##### **Selenium**
 
-```WebAutomation I = new SeleniumWebAutomation();```
+```
+WebAutomation I = new SeleniumWebAutomation();
+```
 
 #### **Mobile Web Automation**
 
-```WebAutomation I = new AppiumWebAutomation(Mobile.Android, "http://127.0.0.1:4723/wd/hub", "6.0.1", "YT9117XT7C");```
+```
+WebAutomation I = new AppiumWebAutomation(Mobile.Android, "http://127.0.0.1:4723/wd/hub", "6.0.1", "YT9117XT7C");
+```
 
 ##### **Appium**
 #### **Mobile Automation**
