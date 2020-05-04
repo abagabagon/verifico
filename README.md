@@ -14,3 +14,19 @@ The Test Automation Framework is built with the following:
 * [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/) - Reporting Tool
 * [Apache POI](https://poi.apache.org/download.html) - Test Data Access (API for MS Office)
 * [Maven](https://maven.apache.org/download.cgi) - Build Management Tool / Dependency Management
+
+## Usage
+### Automation
+The following are the supported automation tools:
+* Web Automation:
+** Selenium
+
+`WebAutomation I = new SeleniumWebAutomation();`
+
+* Mobile Web Automation
+
+`WebAutomation I = new AppiumWebAutomation(Mobile.Android, "http://127.0.0.1:4723/wd/hub", "6.0.1", "YT9117XT7C");
+
+** Appium
+* Mobile Automation:
+** Appium (Development In-progress)
