@@ -37,6 +37,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 URL appiumServer = new URL("http://127.0.0.1:4723/wd/hub");
 String platformVersion = "6.0.1";
 String deviceName = "YT9117XT7C";
+
 WebAutomation I = new AppiumWebAutomation(Mobile.Android, appiumServer, platformVersion, deviceName);
 ```
 
@@ -46,21 +47,40 @@ Same with `Selenium`, available commands require Objects as `By` Objects.
 1. **Appium** (Development In-progress)
 
 ### **Excel Data**
+
+Data retrieval from Excel Files is also included which can be used for providing test data to automated tests. `Apache POI` is utilized to be able to do just that. Supported file formats are as follows:
+
 1. **XLS Excel Files**
 
 ```java
-String filePath = "src/resources/excel/staffaccounts.xls";
+String filePath = "./src/resources/data/excel/staff-accounts.XLS";
+
 ExcelData excelData = new XLSExcelData(filePath);
 ```
 
 2. **XLSX Excel Files**
 
 ```java
-String filePath = "src/resources/excel/staffaccounts.xlsx";
+String filePath = "./src/resources/data/excel/staff-accounts.XLSX";
+
 ExcelData excelData = new XLSXExcelData(filePath);
 ```
 
+Originally intended for use in a TestNG Test Framework, it can be used for retrieving test data for tests in a `@DataProvider` Method.
+
+```java
+@DataProvider(name = "Accounts")
+public Object[][] getAccountsData() {
+	ExcelData excelData = new XLSXExcelData("./src/resources/data/excel/staff-accounts.XLSX");
+	Object[][] data = excelData.getSheetData("Manager", false);
+	return data;
+}
+```
+
 ### **SQL Data**
+
+Data retrieval from SQL is also included. It can be used for back end data verification. Supported SQL Types are as follows:
+
 1. **MySQL Data**
 
 ```java
@@ -68,6 +88,7 @@ String dbServer = "127.0.0.1";
 String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
+
 SQLData sqlData = new MySQLData(dbServer, dbName, user, password);
 ```
 
@@ -78,5 +99,6 @@ String dbServer = "127.0.0.1";
 String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
+
 SQLData sqlData = new MSSQLData(dbServer, dbName, user, password);
 ```
