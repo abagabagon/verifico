@@ -1,16 +1,19 @@
 package utilities;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ObjectParser {
+public class Parser {
 	
 	private static Logger log;
 	
 	static {
-		log = LogManager.getLogger(ObjectParser.class);
-		log.debug("Initializing Object Parser Class.");
-		log.debug("Successfully initialized Object Parser Class.");
+		log = LogManager.getLogger(Parser.class);
+		log.debug("Initializing Parser Class.");
+		log.debug("Successfully initialized Parser Class.");
 	}
 	
 	public static final String[] parseObjectArrayToStringArray(Object[] object) {
@@ -51,5 +54,37 @@ public class ObjectParser {
 			log.trace("Successfully parsed Object to Boolean: " + parsed[i]);
 		}
 		return parsed;
+	}
+	
+	/**
+	 * Parses an input Result Set to an Object Array.
+	 * 
+	 * @param  resultSet Input ResultSet Object
+	 * @return Parsed Object Array
+	 */
+	
+	public static Object[][] parseResultSetToObjectArray(ResultSet resultSet, int columnCount, int rowCount) {
+		Object[][] sqlData = null;
+		try {
+			sqlData = new Object[rowCount][columnCount];
+			if (rowCount > 0) {
+				for (int i = 0; i < rowCount; i++) {
+					for (int j = 0; j < columnCount; j++) {
+						resultSet.next();
+						sqlData[i][j] = resultSet.getObject(j + 1);
+						continue;
+					}
+				}
+			} else {
+				log.fatal("No Data is available.");
+			}
+		} catch(SQLException e) {
+			log.fatal("Encountered SQLException while retrieving SQL Data!");
+			e.printStackTrace();
+		} catch(Exception e) {
+			log.fatal("Encountered Exception while retrieving SQL Data!");
+			e.printStackTrace();
+		}
+		return sqlData;
 	}
 }

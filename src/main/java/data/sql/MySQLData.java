@@ -14,6 +14,8 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import utilities.Parser;
+
 public class MySQLData implements SQLData {
 	
 	private Logger log;
@@ -144,42 +146,10 @@ public class MySQLData implements SQLData {
 		} else {
 			this.log.error("Invalid SQL Script! \"SELECT\" SQL Statements are expected.");
 		}
-		sqlData = this.parseResultSetToObjectArray(this.resultSet);
+		int columnCount = this.getColumnCount();
+		int rowCount = this.getRowCount();
+		sqlData = Parser.parseResultSetToObjectArray(this.resultSet, columnCount, rowCount);
 		this.closeConnection();
-		return sqlData;
-	}
-	
-	/**
-	 * Parses an input Result Set to an Object Array.
-	 * 
-	 * @param  resultSet Input ResultSet Object
-	 * @return Parsed Object Array
-	 */
-	
-	private Object[][] parseResultSetToObjectArray(ResultSet resultSet) {
-		Object[][] sqlData = null;
-		try {
-			int columnCount = this.getColumnCount();
-			int rowCount = this.getRowCount();
-			sqlData = new Object[rowCount][columnCount];
-			if (rowCount > 0) {
-				for (int i = 0; i < rowCount; i++) {
-					for (int j = 0; j < columnCount; j++) {
-						resultSet.next();
-						sqlData[i][j] = resultSet.getObject(j + 1);
-						continue;
-					}
-				}
-			} else {
-				this.log.fatal("No Data is available.");
-			}
-		} catch(SQLException e) {
-			this.log.fatal("Encountered SQLException while retrieving SQL Data!");
-			e.printStackTrace();
-		} catch(Exception e) {
-			this.log.fatal("Encountered Exception while retrieving SQL Data!");
-			e.printStackTrace();
-		}
 		return sqlData;
 	}
 	
