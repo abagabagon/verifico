@@ -71,7 +71,7 @@ String password = "ABCabc123";
 SQLData sqlData = new MySQLData(dbServer, dbName, user, password);
 ```
 
-2. **MySQL Data**
+2. **MSSQL Data**
 
 ```java
 String dbServer = "127.0.0.1";
