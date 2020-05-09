@@ -432,27 +432,29 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void fill(Object locator, String inputText) {
-		this.log.info("I fill Web Element: \"" + locator.toString() + "\" with \"" + inputText + "\".");
+	public void type(Object locator, String inputText) {
+		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
 			element.clear();
 			element.sendKeys(inputText);
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered StaleElementReferenceException while filling text at Web Element: \"" + locator.toString() + "\"");
+			this.log.warn("Encountered StaleElementReferenceException while typing text at Web Element: \"" + locator.toString() + "\"");
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(inputText);
 		} catch (IllegalArgumentException e) {
-			this.log.warn("Encountered IllegalArgumentException while filling text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
+			this.log.warn("Encountered IllegalArgumentException while typing text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 		} catch (Exception e) {
-			this.log.warn("Encountered Exception while filling text at Web Element: \"" + locator.toString() + "\".");
+			this.log.warn("Encountered Exception while typing text at Web Element: \"" + locator.toString() + "\".");
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(inputText);
 		}
 	}
 	
-	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
-		this.log.info("I fill a Web Element based on Text: \"" + textToCheck + "\".");
+	
+	@Override
+	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
+		this.log.info("I type at Web Element based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
 		List<WebElement> elementToFill = this.getElements((By)objectToFill);
 		int size = elementToFill.size();

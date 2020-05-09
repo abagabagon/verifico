@@ -177,10 +177,10 @@ public interface WebAutomation {
 	 * @param inputText Text to enter.
 	 */
 
-	public void fill(Object locator, String inputText);
+	public void type(Object locator, String inputText);
 	
 	/**
-	 * Fill the specified element from a row in a table based on text value from the same row.
+	 * Type input text at the specified element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.
 	 * @param textToCheck		Text to check at the specified object.
@@ -188,7 +188,7 @@ public interface WebAutomation {
 	 * @param inputText			Text value to input
 	 */
 	
-	public void fillFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
+	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
 	
 	/**
 	 * Simulates pressing of characters into a text box/area element.
