@@ -111,47 +111,47 @@ public interface WebAutomation {
 	/*#######################################################*/
 	
 	/**
-	 * Point mouse to the specified element.
+	 * Point mouse to the specified Web Element.
 	 * 
-	 * @param locator Object used to locate element to point the mouse into.
+	 * @param locator Object used to locate Web Element to point the mouse into.
 	 */
 	
 	public void point(Object locator);
 	
 	/**
-	 * Clicks the specified element. Used for Elements that are clickable.
+	 * Clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
-	 * @param locator Object used to locate element to be clicked.
+	 * @param locator Object used to locate Web Element to be clicked.
 	 */
 
 	public void click(Object locator);
 	
 	/**
-	 * Double clicks the specified element. Used for Elements that are clickable.
+	 * Double clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
-	 * @param locator Object used to locate element to be clicked.
+	 * @param locator Object used to locate Web Element to be double-clicked.
 	 */
 
 	public void doubleClick(Object locator);
 	
 	/**
-	 * Clicks and holds the specified element. Used for Elements that are clickable.
+	 * Clicks and holds the specified Web Element. Used for Elements that are clickable.
 	 * 
-	 * @param locator Object used to locate element to be clicked and held.
+	 * @param locator Object used to locate Web Element to be clicked and held.
 	 */
 
 	public void clickAndHold(Object locator);
 	
 	/**
-	 * Clicks the specified element (utilizing Javascript). Used for Elements that are clickable.
+	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
 	 * 
-	 * @param locator Object used to locate element to be clicked.
+	 * @param locator Object used to locate Web Element to be clicked.
 	 */
 	
 	public void clickJS(Object locator);
 	
 	/**
-	 * Clicks the specified element from a row in a table based on text value from the same row.
+	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.
 	 * @param textToCheck		Text to check at the specified object.
@@ -161,26 +161,26 @@ public interface WebAutomation {
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
 	
 	/**
-	 * Drags a specified element and drops it at target element. Used for Elements that can be dragged.
+	 * Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.
 	 * 
-	 * @param sourceObject Object used to locate element to be drag.
-	 * @param targetObject Object used to locate element where the dragged element will be dropped into.
+	 * @param sourceObject Object used to locate Web Element to be dragged.
+	 * @param targetObject Object used to locate Web Element where the dragged Web Element will be dropped into.
 	 */
 
 	public void dragAndDrop(Object sourceObject, Object targetObject);
 	
 	/**
-	 * Simulates typing into a text box/area element, which may set its value. Text entry
-	 * elements are INPUT and TEXTAREA elements.
+	 * Simulates typing into a text box/area Web Element, which may set its value. Text entry
+	 * Web Elements are INPUT and TEXTAREA Web Elements.
 	 * 
-	 * @param locator 	Object used to locate element to type into.
+	 * @param locator 	Object used to locate Web Element to type into.
 	 * @param inputText Text to enter.
 	 */
 
 	public void type(Object locator, String inputText);
 	
 	/**
-	 * Type input text at the specified element from a row in a table based on text value from the same row.
+	 * Type input text at the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.
 	 * @param textToCheck		Text to check at the specified object.
@@ -191,53 +191,53 @@ public interface WebAutomation {
 	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
 	
 	/**
-	 * Simulates pressing of characters into a text box/area element.
+	 * Simulates pressing of characters into a text box/area Web Element.
 	 * 
-	 * @param locator 	Object used to locate element to type into.
+	 * @param locator 	Object used to locate Web Element to type into.
 	 * @param keyButton	Key Button to press
 	 */
 	
 	public void press(Object locator, Object keyButton);
 	
 	/**
-	 * Clears value of a text box/area element. Text entry elements are INPUT and
-	 * TEXTAREA elements.
+	 * Clears value of a text box/area Web Element. Text entry Web Elements are INPUT and
+	 * TEXTAREA Web Elements.
 	 * 
-	 * @param locator Object used to locate element to clear value of.
+	 * @param locator Object used to locate Web Element to clear value of.
 	 */
 
 	public void clear(Object locator);
 
 	/**
-	 * Selects a Drop-down List WebElement Option.
+	 * Selects a Drop-down List Web Element Option.
 	 * 
-	 * @param locator	Object used to locate element to select an option from.
+	 * @param locator	Object used to locate Web Element to select an option from.
 	 * @param option	Option to be selected.
 	 */
 
 	public void select(Object locator, String option);
 	
 	/**
-	 * Deselects a Multi-select WebElement Option.
+	 * Deselects a Multi-select Web Element Option.
 	 * 
-	 * @param locator	Object used to locate element to select an option from.
+	 * @param locator	Object used to locate Web Element to select an option from.
 	 * @param option	Option to be selected.
 	 */
 
 	public void deselect(Object locator, String option);
 	
 	/**
-	 * Get the visible innerText of this element, including sub-elements, without
+	 * Get the visible innerText of this Web Element, including sub-elements, without
 	 * any leading or trailing whitespace.
 	 * 
-	 * @param	locator Object used to locate element to get text from.
-	 * @return	Retrieved WebElement Text.
+	 * @param	locator Object used to locate Web Element to get text from.
+	 * @return	Retrieved Web Element Text.
 	 */
 	
 	public String getText(Object locator);
 	
 	/**
-	 * Get text of the specified element from a row in a table based on text value from the same row.
+	 * Get text of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText		Object from which to check the specified text to check.
 	 * @param textToCheck			Text to check at the specified object.
@@ -247,28 +247,28 @@ public interface WebAutomation {
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
 	
 	/**
-	 * Get the value of the specified attribute of the element.
+	 * Get the value of the specified attribute of the Web Element.
 	 * 
-	 * @param	locator Object used to locate element to get attribute value from.
-	 * @return	Retrieved WebElement attribute value.
+	 * @param	locator Object used to locate Web Element to get attribute value from.
+	 * @return	Retrieved Web Element attribute value.
 	 */
 	
 	public String getAttributeValue(Object locator, String attribute);
 
 	/**
-	 * Gets the value of the INPUT and TEXTAREA WebElements.
+	 * Gets the value of the INPUT and TEXTAREA Web Element.
 	 * 
-	 * @param	locator Object used to locate element to get value from.
-	 * @return	Retrieved value of the INPUT/TEXTAREA WebElement.
+	 * @param	locator Object used to locate Web Element to get value from.
+	 * @return	Retrieved value of the INPUT/TEXTAREA Web Element.
 	 */
 	
 	public String getValue(Object locator);
 	
 	/**
-	 * Gets the selected option of the Drop-down List WebElement.
+	 * Gets the selected option of the Drop-down List Web Element.
 	 * 
-	 * @param	locator Object used to locate element to get selected option from.
-	 * @return	Retrieved value of the Drop-down List WebElement.
+	 * @param	locator Object used to locate Web Element to get selected option from.
+	 * @return	Retrieved value of the Drop-down List Web Element.
 	 */
 
 	public String getDropDownListValue(Object locator);
@@ -282,7 +282,7 @@ public interface WebAutomation {
 	public void wait(int duration);
 	
 	/*#######################################################*/
-	/*                      ASSERTIONS                       */
+	/*                     VERIFICATIONS                     */
 	/*#######################################################*/
 	
 	/**
@@ -316,21 +316,21 @@ public interface WebAutomation {
 	public TestStatus verifyPartialUrl(String expectedUrl);
 	
 	/**
-	 * Verifies if the element is clickable or not.
+	 * Verifies if the Web Element is clickable or not.
 	 * 
-	 * @param locator Object used to locate element to check.
-	 * @return	<code>PASSED</code> if element is clickable.
-	 * 			<code>FAILED</code> if element is not clickable.
+	 * @param locator Object used to locate Web Element to check.
+	 * @return	<code>PASSED</code> if Web Element is clickable.
+	 * 			<code>FAILED</code> if Web Element is not clickable.
 	 */
 	
 	public TestStatus verifyClickable(Object locator);
 
 	/**
-	 * Verifies the value of INPUT or TEXTAREA WebElements if equal to the expected
+	 * Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected
 	 * value.
 	 * 
-	 * @param locator		Object used to locate element to assert the value from.
-	 * @param expectedValue	Expected value of the WebElement Text Box.
+	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param expectedValue	Expected value of the Web Element Text Box.
 	 * @return	<code>PASSED</code> if value is equal to expected value.
 	 * 			<code>FAILED</code> if value is not equal to expected value.
 	 */
@@ -341,9 +341,9 @@ public interface WebAutomation {
 	 * Verifies the value of the specified attribute if equal to the expected
 	 * value.
 	 * 
-	 * @param locator		Object used to locate element to assert the value from.
+	 * @param locator		Object used to locate Web Element to assert the value from.
 	 * @param attribute		Name of attribute to assert the value from.
-	 * @param expectedValue	Expected value of the WebElement Attribute.
+	 * @param expectedValue	Expected value of the Web Element Attribute.
 	 * @return	<code>PASSED</code> if value is equal to expected attribute value.
 	 * 			<code>FAILED</code> if value is not equal to expected attribute value.
 	 */
@@ -351,9 +351,9 @@ public interface WebAutomation {
 	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue);
 
 	/**
-	 * Verifies Drop-down List WebElement Value if equal to expected text value.
+	 * Verifies Drop-down List Web Element Value if equal to expected text value.
 	 * 
-	 * @param locator		Object used to locate element to assert the value from.
+	 * @param locator		Object used to locate Web Element to assert the value from.
 	 * @param expectedValue	Expected drop-down list value
 	 * @return	<code>PASSED</code> if value is equal to expected drop-down list value.
 	 * 			<code>FAILED</code> if value is not equal to expected drop-down list value.
@@ -362,9 +362,9 @@ public interface WebAutomation {
 	public TestStatus verifyDropDownListValue(Object locator, String expectedValue);
 
 	/**
-	 * Verifies WebElement with text if equal to expected text value.
+	 * Verifies Web Element with text if equal to expected text value.
 	 * 
-	 * @param locator		Object used to locate element to assert the value from.
+	 * @param locator		Object used to locate Web Element to assert the value from.
 	 * @param expectedValue	Expected text value
 	 * @return	<code>PASSED</code> if value is equal to expected value.
 	 * 			<code>FAILED</code> if value is not equal to expected value.
@@ -373,61 +373,61 @@ public interface WebAutomation {
 	public TestStatus verifyText(Object locator, String expectedValue);
 	
 	/**
-	 * Verifies if element is displayed on Web Page.
+	 * Verifies if Web Element is displayed on Web Page.
 	 * 
-	 * @param	locator Object used to locate element to check.
-	 * @return	<code>PASSED</code> if element is displayed on Web Page.
-	 * 			<code>FAILED</code> if element is not displayed on Web Page.
+	 * @param	locator Object used to locate Web Element to check.
+	 * @return	<code>PASSED</code> if Web Element is displayed on Web Page.
+	 * 			<code>FAILED</code> if Web Element is not displayed on Web Page.
 	 */
 	
 	public TestStatus verifyDisplayed(Object locator);
 	
 	/**
-	 * Verifies WebElement is not displayed on the Web Page.
+	 * Verifies Web Element is not displayed on the Web Page.
 	 * 
-	 * @param @param locator Object used to locate element to assert.  
-	 * @return	<code>PASSED</code> if element is not displayed on Web Page.
-	 * 			<code>FAILED</code> if element is displayed on Web Page.
+	 * @param @param locator Object used to locate Web Element to assert.  
+	 * @return	<code>PASSED</code> if Web Element is not displayed on Web Page.
+	 * 			<code>FAILED</code> if Web Element is displayed on Web Page.
 	 */
 
 	public TestStatus verifyNotDisplayed(Object locator);
 	
 	/**
-	 * Verifies WebElement is enabled on the Web Page.
+	 * Verifies Web Element is enabled on the Web Page.
 	 * 
-	 * @param locator Object used to locate element to assert.
-	 * @return	<code>PASSED</code> if element is enabled on Web Page.
-	 * 			<code>FAILED</code> if element is not enabled on Web Page.
+	 * @param locator Object used to locate Web Element to assert.
+	 * @return	<code>PASSED</code> if Web Element is enabled on Web Page.
+	 * 			<code>FAILED</code> if Web Element is not enabled on Web Page.
 	 */
 
 	public TestStatus verifyEnabled(Object locator);
 	
 	/**
-	 * Verifies WebElement is disabled on the Web Page.
+	 * Verifies Web Element is disabled on the Web Page.
 	 * 
-	 * @param locator Object used to locate element to assert.
-	 * @return	<code>PASSED</code> if element is disabled on Web Page.
-	 * 			<code>FAILED</code> if element is not disabled on Web Page.
+	 * @param locator Object used to locate Web Element to assert.
+	 * @return	<code>PASSED</code> if Web Element is disabled on Web Page.
+	 * 			<code>FAILED</code> if Web Element is not disabled on Web Page.
 	 */
 
 	public TestStatus verifyDisabled(Object locator);
 	
 	/**
-	 * Verifies WebElement is selected on the Web Page. Used for Check Boxes and Radio Buttons.
+	 * Verifies Web Element is selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
-	 * @param locator Object used to locate element to assert.
-	 * @return	<code>PASSED</code> if element is selected on Web Page.
-	 * 			<code>FAILED</code> if element is not selected on Web Page.
+	 * @param locator Object used to locate Web Element to assert.
+	 * @return	<code>PASSED</code> if Web Element is selected on Web Page.
+	 * 			<code>FAILED</code> if Web Element is not selected on Web Page.
 	 */
 
 	public TestStatus verifySelected(Object locator);
 	
 	/**
-	 * Verifies WebElement is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
+	 * Verifies Web Element is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
 	 * 
-	 * @param locator Object used to locate element to assert.
-	 * @return	<code>PASSED</code> if element is not selected on Web Page.
-	 * 			<code>FAILED</code> if element is selected on Web Page.
+	 * @param locator Object used to locate Web Element to assert.
+	 * @return	<code>PASSED</code> if Web Element is not selected on Web Page.
+	 * 			<code>FAILED</code> if Web Element is selected on Web Page.
 	 */
 
 	public TestStatus verifyNotSelected(Object locator);
