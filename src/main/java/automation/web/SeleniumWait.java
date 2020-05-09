@@ -1,4 +1,4 @@
-package automation.web.selenium;
+package automation.web;
 
 import java.util.List;
 

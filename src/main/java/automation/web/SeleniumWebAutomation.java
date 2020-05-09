@@ -1,4 +1,4 @@
-package automation.web.selenium;
+package automation.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,26 +23,25 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import automation.web.WebAutomation;
 import enums.Browser;
 import enums.TestStatus;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
-	private WebDriver driver;
-	private Logger log;
-	private WebDriverWait wait;
-	private Select select;
-	private Alert alert;
-	private Actions action;
-	private JavascriptExecutor javascriptExecutor;
-	private ArrayList<String> tabs;
-	private long implicitWaitDuration;
-	private long explicitWaitDuration;
+	WebDriver driver;
+	Logger log;
+	WebDriverWait wait;
+	Select select;
+	Alert alert;
+	Actions action;
+	JavascriptExecutor javascriptExecutor;
+	ArrayList<String> tabs;
+	long implicitWaitDuration;
+	long explicitWaitDuration;
+	boolean testNgEnabled;
+	SeleniumWait seleniumWait;
 
 	private SeleniumWebDriver seleniumWebDriver;
-	private SeleniumWait seleniumWait;
-	private boolean testNgEnabled;
 
 	public SeleniumWebAutomation() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -257,12 +256,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.javascriptExecutor.executeScript(script);
 	}
 
-	private void initializeImplicitWait(long duration) {
+	void initializeImplicitWait(long duration) {
 		this.log.debug("I initialize Implicit Wait.");
 		this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 	}
 	
-	private void initializeExplicitWait(long duration) {
+	void initializeExplicitWait(long duration) {
 		this.log.debug("I initialize Explicit Wait.");
 		this.wait = new WebDriverWait(this.driver, duration);
 	}
@@ -271,7 +270,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/*                       USER ACTIONS                      */
 	/* ####################################################### */
 	
-	private WebElement getElement(Object locator) {
+	WebElement getElement(Object locator) {
 		WebElement element = null;
 		try {
 			element = this.driver.findElement((By)locator);
@@ -291,7 +290,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		return element;
 	}
 	
-	private List<WebElement> getElements(Object locator) {
+	List<WebElement> getElements(Object locator) {
 		List<WebElement> elements;
 		try {
 			elements = this.driver.findElements((By)locator);
@@ -946,7 +945,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		return status;
 	}
 	
-	private void fail() {
+	void fail() {
 		if (this.testNgEnabled) {
 			Assert.fail();
 		}

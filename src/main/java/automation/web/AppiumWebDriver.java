@@ -1,9 +1,10 @@
-package automation.web.appium;
+package automation.web;
 
 import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -15,7 +16,7 @@ import io.appium.java_client.remote.MobileCapabilityType;
 public class AppiumWebDriver {
 	
 	private Logger log;
-	private AppiumDriver<WebElement> driver;
+	private WebDriver driver;
 	private URL appiumServerUrl;
 	
 	public AppiumWebDriver(URL appiumServerUrl) {
@@ -28,10 +29,10 @@ public class AppiumWebDriver {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Chrome.
 	 * 
-	 * @return AppiumDriver Object
+	 * @return WebDriver Object
 	 */
 	
-	AppiumDriver<WebElement> getChromeDriver(Mobile platformName, String platformVersion, String deviceName) {
+	WebDriver getChromeDriver(Mobile platformName, String platformVersion, String deviceName) {
 		this.log.debug("Initializing Google Chrome Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName.toString());
@@ -47,10 +48,10 @@ public class AppiumWebDriver {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Safari.
 	 * 
-	 * @return AppiumDriver Object
+	 * @return WebDriver Object
 	 */
 
-	AppiumDriver<WebElement> getSafariDriver(Mobile platformName, String platformVersion, String deviceName) {
+	WebDriver getSafariDriver(Mobile platformName, String platformVersion, String deviceName) {
 		this.log.debug("Setting Property of Safari Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName.toString());
