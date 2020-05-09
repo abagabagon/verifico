@@ -41,7 +41,7 @@ public class SeleniumWait {
 	 * @param expectedUrl Expected Page URL to compare into
 	 */
 
-	protected final boolean waitForUrlToBe(String expectedUrl) {
+	final boolean waitForUrlToBe(String expectedUrl) {
 		this.log.trace("Waiting for Page URL to match expected value.");
 		boolean isUrlEqual = false;
 		try {
@@ -64,7 +64,7 @@ public class SeleniumWait {
 	 * @param expectedTitle Expected Page Title to compare into
 	 */
 
-	protected final boolean waitForTitleToBe(String expectedTitle) {
+	final boolean waitForTitleToBe(String expectedTitle) {
 		this.log.trace("Waiting for Page Title to match expected value.");
 		boolean isTitleEqual = false;
 		try {
@@ -87,7 +87,7 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	protected final WebElement waitForObjectToBeVisible(Object locator) {
+	final WebElement waitForObjectToBeVisible(Object locator) {
 		this.log.trace("Waiting for Web Element to be visible.");
 		WebElement element = null;
 		try {
@@ -110,7 +110,7 @@ public class SeleniumWait {
 	 * @param locator Object used to locate elements to wait for.
 	 */
 	
-	protected final List<WebElement> waitForObjectsToBeVisible(Object locator) {
+	final List<WebElement> waitForObjectsToBeVisible(Object locator) {
 		this.log.trace("Waiting for Web Element to be visible.");
 		List<WebElement> elements = null;
 		try {
@@ -133,7 +133,7 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	protected WebElement waitForObjectToBeClickable(Object locator) {
+	WebElement waitForObjectToBeClickable(Object locator) {
 		this.log.trace("Waiting for Web Element to be clickable.");
 		WebElement element = null;
 		try {
@@ -155,7 +155,7 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	protected final boolean waitForObjectToBeInvisible(Object locator) {
+	final boolean waitForObjectToBeInvisible(Object locator) {
 		this.log.trace("Waiting for Web Element to be invisible.");
 		boolean isVisible = true;
 		try {
@@ -178,7 +178,7 @@ public class SeleniumWait {
 	 * @param selectionState expected selection state.
 	 */
 
-	protected final boolean waitForObjectSelectionStateToBe(Object locator, boolean selectionState) {
+	final boolean waitForObjectSelectionStateToBe(Object locator, boolean selectionState) {
 		this.log.trace("Waiting for Web Element Selection State is " + selectionState + "!");
 		boolean status = false;
 		try {
@@ -198,7 +198,7 @@ public class SeleniumWait {
 	 * Waits for a Javascript Alert to be present on the WebPage.
 	 */
 
-	protected final Alert waitForAlertToBePresent() {
+	final Alert waitForAlertToBePresent() {
 		try {
 			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
 		} catch (TimeoutException e) {
@@ -211,7 +211,7 @@ public class SeleniumWait {
 		return this.alert;
 	}
 	
-	protected void fail() {
+	void fail() {
 		if (this.testNgEnabled) {
 			Assert.fail();
 		}
