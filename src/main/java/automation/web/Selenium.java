@@ -868,8 +868,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifySelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is selected.");
+		this.seleniumWait.waitForObjectSelectionStateToBe((By)locator, true);
 		WebElement element = this.getElement(locator);
-		this.seleniumWait.waitForObjectSelectionStateToBe(element, true);
 		boolean isSelected = element.isSelected();
 		TestStatus status = TestStatus.FAILED;
 		if (isSelected) {
@@ -885,8 +885,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyNotSelected(Object locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not selected.");
+		this.seleniumWait.waitForObjectSelectionStateToBe((By)locator, false);
 		WebElement element = this.getElement(locator);
-		this.seleniumWait.waitForObjectSelectionStateToBe(element, false);
 		boolean isSelected = element.isSelected();
 		TestStatus status = TestStatus.FAILED;
 		if (!isSelected) {
