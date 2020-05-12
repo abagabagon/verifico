@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import enums.Mobile;
 import enums.TestStatus;
@@ -25,7 +24,7 @@ import io.appium.java_client.touch.offset.ElementOption;
 public class Appium implements MobileAutomation {
 	
 	AppiumDriver<MobileElement> driver;
-	TouchAction<?> touchAction;
+	TouchAction<?> action;
 	Logger log;
 	File applicationFile;
 	long implicitWaitDuration;
@@ -54,11 +53,11 @@ public class Appium implements MobileAutomation {
 		switch(this.mobile) {
 		case iOS:
 			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName, this.applicationFile);
-			this.touchAction = new TouchAction<IOSTouchAction>(this.driver);
+			this.action = new TouchAction<IOSTouchAction>(this.driver);
 			break;
 		case Android:
 			this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
-			this.touchAction = new TouchAction<AndroidTouchAction>(this.driver);
+			this.action = new TouchAction<AndroidTouchAction>(this.driver);
 			break;
 		default:
 			this.log.fatal("Encountered unsupported Mobile Platform while initializing AppiumDriver. Check defined Mobile Platform.");
@@ -84,7 +83,7 @@ public class Appium implements MobileAutomation {
 		this.log.info("I tap on Mobile Element: \"" + locator.toString() + "\".");
 		TapOptions tapOptions = new TapOptions();
 		MobileElement element = this.driver.findElement((By)locator);
-		this.touchAction.tap(tapOptions.withElement(ElementOption.element(element))).perform();
+		this.action.tap(tapOptions.withElement(ElementOption.element(element))).perform();
 	}
 	
 	@Override
@@ -98,7 +97,7 @@ public class Appium implements MobileAutomation {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
 				TapOptions tapOptions = new TapOptions();
-				this.touchAction.tap(tapOptions.withElement(ElementOption.element(elementToTap.get(i)))).perform();
+				this.action.tap(tapOptions.withElement(ElementOption.element(elementToTap.get(i)))).perform();
 				flgTextFound = true;
 				break;
 			}
@@ -113,7 +112,7 @@ public class Appium implements MobileAutomation {
 		this.log.info("I long press on Mobile Element: \"" + locator.toString() + "\".");
 		LongPressOptions longPressOptions = new LongPressOptions();
 		MobileElement element = this.driver.findElement((By)locator);
-		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release().perform();
+		this.action.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release().perform();
 	}
 	
 	@Override
@@ -127,7 +126,7 @@ public class Appium implements MobileAutomation {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
 				LongPressOptions longPressOptions = new LongPressOptions();
-				this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(elementToLongPress.get(i))).withDuration(Duration.ofSeconds(duration))).release().perform();
+				this.action.longPress(longPressOptions.withElement(ElementOption.element(elementToLongPress.get(i))).withDuration(Duration.ofSeconds(duration))).release().perform();
 				flgTextFound = true;
 				break;
 			}
@@ -209,7 +208,7 @@ public class Appium implements MobileAutomation {
 	public String getAttributeValue(Object locator, String attribute) {
 		this.log.info("I get attribute value from Web Element: \"" + locator.toString() + "\".");
 		String text = null;
-		WebElement element = this.getElement(locator);
+		MobileElement element = this.getElement(locator);
 		text = element.getAttribute(attribute);
 		if (text.length() == 0) {
 			this.log.debug("The Attribute: " + attribute + " of Web Element: \"" + locator.toString() + "\".");
@@ -221,7 +220,7 @@ public class Appium implements MobileAutomation {
 	public String getValue(Object locator) {
 		this.log.info("I get value from Mobile Element: \"" + locator.toString() + "\".");
 		String text = null;
-		WebElement element = this.getElement(locator);
+		MobileElement element = this.getElement(locator);
 		text = element.getAttribute("value");
 		if (text.length() == 0) {
 			this.log.debug("The Text Box/Area Web Element: \"" + locator.toString() + "\" has no value.");
