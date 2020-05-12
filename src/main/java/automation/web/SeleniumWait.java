@@ -10,28 +10,17 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 public class SeleniumWait {
 	
 	private Logger log;
 	private WebDriverWait wait;
 	private Alert alert;
-	private boolean testNgEnabled;
 	
 	public SeleniumWait(WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWaits Class.");
 		this.wait = wait;
-		this.testNgEnabled = false;
-		this.log.debug("Successfully initialized SeleniumWaits Class.");
-	}
-	
-	public SeleniumWait(WebDriverWait wait, boolean testNgEnabled) {
-		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing SeleniumWaits Class.");
-		this.wait = wait;
-		this.testNgEnabled = testNgEnabled;
 		this.log.debug("Successfully initialized SeleniumWaits Class.");
 	}
 	
@@ -49,11 +38,9 @@ public class SeleniumWait {
 			this.log.trace("Page URL had matched the expected value!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Page URL to match the expected URL Value has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Page URL to match expected value!");
 			e.printStackTrace();
-			this.fail();
 		}
 		return isUrlEqual;
 	}
@@ -72,11 +59,9 @@ public class SeleniumWait {
 			this.log.trace("Page Title had matched the expected value!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Page Title to match the expected URL Value has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Page Title to match expected value!");
 			e.printStackTrace();
-			this.fail();
 		}
 		return isTitleEqual;
 	}
@@ -95,11 +80,9 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			e.printStackTrace();
-			this.fail();
 		}
 		return element;
 	}
@@ -118,11 +101,9 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			e.printStackTrace();
-			this.fail();
 		}
 		return elements;
 	}
@@ -141,10 +122,8 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become clickable!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
-			this.fail();
 		}
 		return element;
 	}
@@ -163,10 +142,8 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become invisible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
-			this.fail();
 		}
 		return isVisible;
 	}
@@ -186,10 +163,8 @@ public class SeleniumWait {
 			this.log.trace("Web Element Selection State is " + selectionState + "!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + selectionState + " has expired!");
-			this.fail();
 		}
 		return status;
 	}
@@ -203,18 +178,10 @@ public class SeleniumWait {
 			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Alert to be displayed has expired!");
-			this.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while getting Alert Message!");
-			this.fail();
 		}
 		return this.alert;
-	}
-	
-	void fail() {
-		if (this.testNgEnabled) {
-			Assert.fail();
-		}
 	}
 
 }
