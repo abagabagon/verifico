@@ -125,7 +125,7 @@ public class Appium implements MobileAutomation {
 		this.log.info("I long press on Mobile Element: \"" + locator.toString() + "\".");
 		LongPressOptions longPressOptions = new LongPressOptions();
 		MobileElement element = this.driver.findElement((By)locator);
-		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release();
+		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release().perform();
 	}
 
 	@Override
