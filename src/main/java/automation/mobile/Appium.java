@@ -3,19 +3,13 @@ package automation.mobile;
 import java.io.File;
 import java.net.URL;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import enums.Mobile;
 import enums.TestStatus;
@@ -33,12 +27,6 @@ public class Appium implements MobileAutomation {
 	AppiumDriver<MobileElement> driver;
 	TouchAction<?> touchAction;
 	Logger log;
-	WebDriverWait wait;
-	Select select;
-	Alert alert;
-	Actions action;
-	JavascriptExecutor javascriptExecutor;
-	ArrayList<String> tabs;
 	File applicationFile;
 	long implicitWaitDuration;
 	long explicitWaitDuration;
