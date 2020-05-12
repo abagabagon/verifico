@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.touch.TouchActions;
 
 import enums.Mobile;
 import enums.TestStatus;
@@ -25,6 +26,7 @@ public class Appium implements MobileAutomation {
 	
 	AppiumDriver<MobileElement> driver;
 	TouchAction<?> action;
+	TouchActions actions;
 	Logger log;
 	File applicationFile;
 	long implicitWaitDuration;
@@ -52,7 +54,7 @@ public class Appium implements MobileAutomation {
 		this.log.info("I open application.");
 		switch(this.mobile) {
 		case iOS:
-			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName, this.applicationFile);
+			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName);
 			this.action = new TouchAction<IOSTouchAction>(this.driver);
 			break;
 		case Android:
