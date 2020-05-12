@@ -89,8 +89,8 @@ public class Appium implements MobileAutomation {
 	@Override
 	public void tapFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToTap) {
 		this.log.info("I tap a Mobile Element based on Text: \"" + textToCheck + "\".");
-		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<MobileElement> elementToTap = this.getElements((By)objectToTap);
+		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<MobileElement> elementToTap = this.getElements(objectToTap);
 		int size = elementToTap.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -118,8 +118,8 @@ public class Appium implements MobileAutomation {
 	@Override
 	public void longPressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToLongPress, long duration) {
 		this.log.info("I long press a Mobile Element based on Text: \"" + textToCheck + "\".");
-		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<MobileElement> elementToLongPress = this.getElements((By)objectToLongPress);
+		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<MobileElement> elementToLongPress = this.getElements(objectToLongPress);
 		int size = elementToLongPress.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -146,8 +146,8 @@ public class Appium implements MobileAutomation {
 	@Override
 	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
 		this.log.info("I type at Web Element based on Text: \"" + textToCheck + "\".");
-		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<MobileElement> elementToFill = this.getElements((By)objectToFill);
+		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<MobileElement> elementToFill = this.getElements(objectToFill);
 		int size = elementToFill.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -185,8 +185,8 @@ public class Appium implements MobileAutomation {
 	@Override
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
 		this.log.info("I get text from a Mobile Element based on Text: \"" + textToCheck + "\".");
-		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<MobileElement> elementToClick = this.getElements((By)objectToGetTextFrom);
+		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<MobileElement> elementToClick = this.getElements(objectToGetTextFrom);
 		int size = elementToClick.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;
