@@ -72,11 +72,11 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	final WebElement waitForObjectToBeVisible(Object locator) {
+	final WebElement waitForObjectToBeVisible(By locator) {
 		this.log.trace("Waiting for Web Element to be visible.");
 		WebElement element = null;
 		try {
-			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated((By)locator));
+			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
@@ -93,11 +93,11 @@ public class SeleniumWait {
 	 * @param locator Object used to locate elements to wait for.
 	 */
 	
-	final List<WebElement> waitForObjectsToBeVisible(Object locator) {
+	final List<WebElement> waitForObjectsToBeVisible(By locator) {
 		this.log.trace("Waiting for Web Element to be visible.");
 		List<WebElement> elements = null;
 		try {
-			elements = this.wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy((By)locator));
+			elements = this.wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
@@ -114,11 +114,11 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	WebElement waitForObjectToBeClickable(Object locator) {
+	WebElement waitForObjectToBeClickable(By locator) {
 		this.log.trace("Waiting for Web Element to be clickable.");
 		WebElement element = null;
 		try {
-			element = this.wait.until(ExpectedConditions.elementToBeClickable((By)locator));
+			element = this.wait.until(ExpectedConditions.elementToBeClickable(locator));
 			this.log.trace("Web Element had become clickable!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
@@ -134,11 +134,11 @@ public class SeleniumWait {
 	 * @param locator Object used to locate element to wait for.
 	 */
 
-	final boolean waitForObjectToBeInvisible(Object locator) {
+	final boolean waitForObjectToBeInvisible(By locator) {
 		this.log.trace("Waiting for Web Element to be invisible.");
 		boolean isVisible = true;
 		try {
-			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated((By)locator));
+			isVisible = this.wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
 			this.log.trace("Web Element had become invisible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
@@ -155,11 +155,11 @@ public class SeleniumWait {
 	 * @param selectionState expected selection state.
 	 */
 
-	final boolean waitForObjectSelectionStateToBe(Object locator, boolean selectionState) {
+	final boolean waitForObjectSelectionStateToBe(By locator, boolean selectionState) {
 		this.log.trace("Waiting for Web Element Selection State is " + selectionState + "!");
 		boolean status = false;
 		try {
-			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe((By)locator, selectionState));
+			status = this.wait.until(ExpectedConditions.elementSelectionStateToBe(locator, selectionState));
 			this.log.trace("Web Element Selection State is " + selectionState + "!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
