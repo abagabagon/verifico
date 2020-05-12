@@ -127,6 +127,27 @@ public class Appium implements MobileAutomation {
 		MobileElement element = this.driver.findElement((By)locator);
 		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release().perform();
 	}
+	
+	@Override
+	public void longPressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToLongPress, long duration) {
+		this.log.info("I long press a Mobile Element based on Text: \"" + textToCheck + "\".");
+		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
+		List<MobileElement> elementToLongPress = this.getElements((By)objectToLongPress);
+		int size = elementToLongPress.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				LongPressOptions longPressOptions = new LongPressOptions();
+				this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(elementToLongPress.get(i))).withDuration(Duration.ofSeconds(duration))).release().perform();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+	}
 
 	@Override
 	public void type(Object locator, String inputText) {

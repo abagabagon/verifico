@@ -42,6 +42,17 @@ public interface MobileAutomation {
 	public void longPress(Object locator, long duration);
 	
 	/**
+	 * Long presses the specified Mobile Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText	Object from which to check the specified text to check.
+	 * @param textToCheck		Text to check at the specified object.
+	 * @param objectToLongPress	Object from same row to tap if text is found on that row.
+	 * @param duration			Number of seconds to long press Mobile Element.
+	 */
+	
+	public void longPressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToLongPress, long duration);
+	
+	/**
 	 * Clears value of a text box/area Mobile Element.
 	 * 
 	 * @param locator Object used to locate Mobile Element to clear value of.
