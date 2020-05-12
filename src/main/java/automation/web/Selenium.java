@@ -377,8 +377,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
 		this.log.info("I click a Web Element based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<WebElement> elementToClick = this.getElements((By)objectToClick);
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToClick = this.getElements(objectToClick);
 		int size = elementToClick.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -439,8 +439,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
 		this.log.info("I type at Web Element based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<WebElement> elementToFill = this.getElements((By)objectToFill);
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToFill = this.getElements(objectToFill);
 		int size = elementToFill.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
@@ -572,8 +572,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
 		this.log.info("I get text from a Web Element based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<WebElement> elementToClick = this.getElements((By)objectToGetTextFrom);
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToClick = this.getElements(objectToGetTextFrom);
 		int size = elementToClick.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;
