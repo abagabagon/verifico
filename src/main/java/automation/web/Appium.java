@@ -1,6 +1,7 @@
 package automation.web;
 
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriverException;
@@ -58,7 +59,7 @@ public class Appium extends Selenium {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
+		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 		this.initializeImplicitWait(this.implicitWaitDuration);
 		this.initializeExplicitWait(this.explicitWaitDuration);
 		deleteAllCookies();
