@@ -5,7 +5,7 @@ import enums.TestStatus;
 public interface MobileAutomation {
 	
 	/*#######################################################*/
-	/*                    USER ACTIONS                       */
+	/*                   DEVICE ACTIONS                      */
 	/*#######################################################*/
 	
 	/**
@@ -13,6 +13,48 @@ public interface MobileAutomation {
 	 */
 
 	public void openApplication();
+	
+	/**
+	 * Closes Mobile Application.
+	 */
+	
+	public void closeApplication();
+	
+	/**
+	 * Get the current device orientation.
+	 * 
+	 * @return The current device orientation.
+	 */
+	
+	public Object getOrientation();
+	
+	/**
+	 * Sets the device's orientation
+	 * 
+	 * @param orientation Desired device orientation.
+	 */
+	
+	public void setOrientation(Object orientation);
+	
+	/**
+	 * Get the current device geo location.
+	 * 
+	 * @return The current device geo location.
+	 */
+	
+	public Object getGeolocation();
+	
+	/**
+	 * Sets the device's geo location
+	 * 
+	 * @param orientation Desired device geo location.
+	 */
+	
+	public void setGeolocation(Object location);
+	
+	/*#######################################################*/
+	/*                    USER ACTIONS                       */
+	/*#######################################################*/
 	
 	/**
 	 * Taps the specified Mobile Element. Used for Elements that are tappable.

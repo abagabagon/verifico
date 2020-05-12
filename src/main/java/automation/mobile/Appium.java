@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
 import enums.Mobile;
@@ -49,9 +51,13 @@ public class Appium implements MobileAutomation {
 		this.log.debug("Successfully initialized AppiumWebAutomation Class.");
 	}
 	
+	/*#######################################################*/
+	/*                   DEVICE ACTIONS                      */
+	/*#######################################################*/
+	
 	@Override
 	public void openApplication() {
-		this.log.info("I open application.");
+		this.log.info("I open Application.");
 		switch(this.mobile) {
 		case iOS:
 			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName);
@@ -65,8 +71,48 @@ public class Appium implements MobileAutomation {
 			this.log.fatal("Encountered unsupported Mobile Platform while initializing AppiumDriver. Check defined Mobile Platform.");
 			System.exit(1);
 		}
+		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 	}
+	
+	@Override
+	public void closeApplication() {
+		this.log.info("I close Application.");
+		this.driver.quit();
+	}
+	
+	@Override
+	public Object getOrientation() {
+		this.log.info("I get Screen Orientation.");
+		ScreenOrientation screenOrientation = this.driver.getOrientation();
+		Object orientation = screenOrientation;
+		return orientation;
+	}
+	
+	@Override
+	public void setOrientation(Object orientation) {
+		this.log.info("I set Screen Orientation.");
+		this.driver.rotate((ScreenOrientation)orientation);
+	}
+	
+	@Override
+	public Object getGeolocation() {
+		this.log.info("I get Geo Location.");
+		Location geoLocation = this.driver.location();
+		Object location = geoLocation;
+		return location;
+	}
+	
+	@Override
+	public void setGeolocation(Object location) {
+		this.log.info("I set Geo Location.");
+		Location geoLocation = (Location)location;
+		this.driver.setLocation(geoLocation);
+	}
+	
+	/*#######################################################*/
+	/*                    USER ACTIONS                       */
+	/*#######################################################*/
 	
 	MobileElement getElement(Object locator) {
 		MobileElement element = null;
