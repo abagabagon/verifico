@@ -81,33 +81,17 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		switch(this.mobile) {
 		case iOS:
 			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName, this.applicationFile);
+			this.touchAction = new TouchAction<IOSTouchAction>(this.driver);
 			break;
 		case Android:
 			this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
+			this.touchAction = new TouchAction<AndroidTouchAction>(this.driver);
 			break;
 		default:
 			this.log.fatal("Encountered unsupported Mobile Platform while initializing AppiumDriver. Check defined Mobile Platform.");
 			System.exit(1);
 		}
 		this.driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-	}
-	
-	private void setTouchAction() {
-		if (this.driver == null) {
-			this.log.fatal("AppiumDriver is null. Make sure AppiumDriver is initialized first.");
-		} else {
-			switch(this.mobile) {
-			case iOS:
-				this.touchAction = new TouchAction<IOSTouchAction>(this.driver);
-				break;
-			case Android:
-				this.touchAction = new TouchAction<AndroidTouchAction>(this.driver);
-				break;
-			default:
-				this.log.fatal("Encountered unsupported Mobile Platform while initializing TouchAction. Check defined Mobile Platform.");
-			}
-		}
-		
 	}
 	
 	MobileElement getElement(Object locator) {
@@ -125,7 +109,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	@Override
 	public void tap(Object locator) {
 		this.log.info("I tap on Mobile Element: \"" + locator.toString() + "\".");
-		this.setTouchAction();
 		TapOptions tapOptions = new TapOptions();
 		MobileElement element = this.driver.findElement((By)locator);
 		this.touchAction.tap(tapOptions.withElement(ElementOption.element(element))).perform();
@@ -135,13 +118,14 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public void tapFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToTap) {
 		this.log.info("I tap a Mobile Element based on Text: \"" + textToCheck + "\".");
 		List<MobileElement> elementToCheckText = this.getElements((By)objectToCheckText);
-		List<MobileElement> elementToClick = this.getElements((By)objectToTap);
-		int size = elementToClick.size();
+		List<MobileElement> elementToTap = this.getElements((By)objectToTap);
+		int size = elementToTap.size();
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
-				elementToClick.get(i).click();
+				TapOptions tapOptions = new TapOptions();
+				this.touchAction.tap(tapOptions.withElement(ElementOption.element(elementToTap.get(i)))).perform();
 				flgTextFound = true;
 				break;
 			}
@@ -154,7 +138,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	@Override
 	public void longPress(Object locator) {
 		this.log.info("I long press on Mobile Element: \"" + locator.toString() + "\".");
-		this.setTouchAction();
 		LongPressOptions longPressOptions = new LongPressOptions();
 		MobileElement element = this.driver.findElement((By)locator);
 		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element))).perform();
