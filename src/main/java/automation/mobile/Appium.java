@@ -2,6 +2,7 @@ package automation.mobile;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +16,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import enums.Mobile;
 import enums.TestStatus;
@@ -28,7 +28,7 @@ import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 
-public class AppiumMobileAutomation implements MobileAutomation {
+public class Appium implements MobileAutomation {
 	
 	AppiumDriver<MobileElement> driver;
 	TouchAction<?> touchAction;
@@ -42,32 +42,17 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	File applicationFile;
 	long implicitWaitDuration;
 	long explicitWaitDuration;
-	boolean testNgEnabled;
 	
 	private AppiumMobileDriver appiumMobileDriver;
 	private Mobile mobile;
 	private String platformVersion;
 	private String deviceName;
 	
-	public AppiumMobileAutomation(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName, File applicationFile) {
+	public Appium(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName, File applicationFile) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing AppiumWebAutomation Class.");
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
 		this.implicitWaitDuration = 20;
-		this.testNgEnabled = false;
-		this.mobile = mobile;
-		this.platformVersion = platformVersion;
-		this.deviceName = deviceName;
-		this.applicationFile = applicationFile;
-		this.log.debug("Successfully initialized AppiumWebAutomation Class.");
-	}
-	
-	public AppiumMobileAutomation(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName, File applicationFile, boolean testNgEnabled) {
-		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing AppiumWebAutomation Class.");
-		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
-		this.implicitWaitDuration = 20;
-		this.testNgEnabled = testNgEnabled;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
@@ -136,11 +121,11 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 	
 	@Override
-	public void longPress(Object locator) {
+	public void longPress(Object locator, long duration) {
 		this.log.info("I long press on Mobile Element: \"" + locator.toString() + "\".");
 		LongPressOptions longPressOptions = new LongPressOptions();
 		MobileElement element = this.driver.findElement((By)locator);
-		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element))).perform();
+		this.touchAction.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release();
 	}
 
 	@Override
@@ -269,7 +254,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-			this.fail();
 		}
 		return status;	
 	}
@@ -286,7 +270,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-			this.fail();
 		}
 		return status;	
 	}
@@ -303,7 +286,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see text: \"" + expectedValue + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-			this.fail();
 		}
 		return status;
 	}
@@ -319,7 +301,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not displayed.");
-			this.fail();
 		}
 		return status;
 	}
@@ -335,7 +316,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is displayed.");
-			this.fail();
 		}
 		return status;
 	}
@@ -352,7 +332,6 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not enabled.");
-			this.fail();
 		}
 		return status;
 	}
@@ -369,15 +348,8 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not disabled.");
-			this.fail();
 		}
 		return status;
-	}
-	
-	void fail() {
-		if (this.testNgEnabled) {
-			Assert.fail();
-		}
 	}
 
 }

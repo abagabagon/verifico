@@ -35,10 +35,11 @@ public interface MobileAutomation {
 	/**
 	 * Long presses the specified Mobile Element. Used for Elements that are tappable.
 	 * 
-	 * @param locator Object used to locate Mobile Element to be long pressed.
+	 * @param locator	Object used to locate Mobile Element to be long pressed.
+	 * @param duration	Number of seconds to long press Mobile Element.
 	 */
 
-	public void longPress(Object locator);
+	public void longPress(Object locator, long duration);
 	
 	/**
 	 * Clears value of a text box/area Mobile Element.
