@@ -8,35 +8,20 @@ import org.openqa.selenium.WebDriverException;
 import enums.Browser;
 import enums.Mobile;
 
-public class AppiumWebAutomation extends SeleniumWebAutomation {
+public class Appium extends Selenium {
 
 	private AppiumWebDriver appiumWebDriver;
 	private Mobile mobile;
 	private String platformVersion;
 	private String deviceName;
 	
-	public AppiumWebAutomation(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName) {
+	public Appium(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing AppiumWebAutomation Class.");
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
 		this.implicitWaitDuration = 20;
 		this.explicitWaitDuration = 20;
 		this.seleniumWait = new SeleniumWait(this.wait);
-		this.testNgEnabled = false;
-		this.mobile = mobile;
-		this.platformVersion = platformVersion;
-		this.deviceName = deviceName;
-		this.log.debug("Successfully initialized AppiumWebAutomation Class.");
-	}
-	
-	public AppiumWebAutomation(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName, boolean testNgEnabled) {
-		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing AppiumWebAutomation Class.");
-		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
-		this.implicitWaitDuration = 20;
-		this.explicitWaitDuration = 20;
-		this.seleniumWait = new SeleniumWait(this.wait);
-		this.testNgEnabled = testNgEnabled;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
