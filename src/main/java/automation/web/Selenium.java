@@ -203,6 +203,7 @@ public class Selenium implements WebAutomation {
 			this.log.error("Encountered NullPointerException while closing Tab.");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while closing Tab.");
+			e.printStackTrace();
 		}
 	}
 
@@ -217,6 +218,7 @@ public class Selenium implements WebAutomation {
 			this.log.error("Encountered NullPointerException while closing Web Browser.");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while closing Web Browser.");
+			e.printStackTrace();
 		}
 	}
 	
@@ -269,6 +271,7 @@ public class Selenium implements WebAutomation {
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 		}
 		return element;
@@ -289,6 +292,7 @@ public class Selenium implements WebAutomation {
 			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
+			e.printStackTrace();
 			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
 		}
 		return elements;
@@ -307,6 +311,7 @@ public class Selenium implements WebAutomation {
 			this.action.moveToElement(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while pointing at Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			this.action.moveToElement(element).perform();
 		}
@@ -325,6 +330,7 @@ public class Selenium implements WebAutomation {
 			element.click();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
 			element.click();
 		}
@@ -343,6 +349,7 @@ public class Selenium implements WebAutomation {
 			this.action.doubleClick(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while double clicking at Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
 			this.action.doubleClick(element).perform();
 		}
@@ -361,6 +368,7 @@ public class Selenium implements WebAutomation {
 			this.action.clickAndHold(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking and holding Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
 			this.action.clickAndHold(element).perform();
 		}
@@ -409,6 +417,7 @@ public class Selenium implements WebAutomation {
 			this.action.dragAndDrop(sourceElement, targetElement).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking and holding Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\".");
+			e.printStackTrace();
 			sourceElement = this.seleniumWait.waitForObjectToBeClickable((By)sourceObject);
 			targetElement = this.seleniumWait.waitForObjectToBeVisible((By)targetObject);
 			this.action.dragAndDrop(sourceElement, targetElement).perform();
@@ -430,6 +439,7 @@ public class Selenium implements WebAutomation {
 			this.log.warn("Encountered IllegalArgumentException while typing text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while typing text at Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(inputText);
 		}
@@ -472,6 +482,7 @@ public class Selenium implements WebAutomation {
 			this.log.warn("Encountered IllegalArgumentException while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Input Text is NULL");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(keys);
 		}
@@ -489,6 +500,7 @@ public class Selenium implements WebAutomation {
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clearing Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.clear();
 		}
@@ -504,6 +516,7 @@ public class Selenium implements WebAutomation {
 			this.log.error("Failed to select the option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\". Element is not a SELECT!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while selecting the option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\". Element is not a SELECT!");
+			e.printStackTrace();
 		}
 		int size = this.select.getOptions().size();
 		boolean flgOptionSelected = false;
@@ -530,6 +543,7 @@ public class Selenium implements WebAutomation {
 			this.log.error("Failed to deselect the option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\". Element is not a SELECT!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while selecting the option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\". Element is not a SELECT!");
+			e.printStackTrace();
 		}
 		int size = this.select.getOptions().size();
 		boolean flgOptionDeselected = false;
@@ -563,6 +577,7 @@ public class Selenium implements WebAutomation {
 			element.getText();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving text from Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.getText();
 		}
@@ -607,6 +622,7 @@ public class Selenium implements WebAutomation {
 			text = element.getAttribute("value");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute("value");
 		}
@@ -629,6 +645,7 @@ public class Selenium implements WebAutomation {
 			text = element.getAttribute(attribute);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			text = element.getAttribute(attribute);
 		}
@@ -653,6 +670,7 @@ public class Selenium implements WebAutomation {
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		} catch (Exception e) {
 			this.log.debug("Encountered Exception while retrieving Drop-down List Web Element: \"" + locator.toString() + "\" Value.");
+			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
@@ -669,6 +687,9 @@ public class Selenium implements WebAutomation {
 			this.log.error("Encountered IllegalArgumentException while waiting for " + duration + ".");
 		} catch (InterruptedException e) {
 			this.log.error("Encountered InterruptedException while waiting for " + duration + ".");
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for " + duration + ".");
+			e.printStackTrace();
 		}
 	}
 
@@ -679,14 +700,15 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyUrl(String expectedUrl) {
 		this.log.info("I verify Page URL: \"" + expectedUrl + "\".");
-		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.equals(expectedUrl);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
 			status = TestStatus.PASSED;
 			this.log.info("I see Page URL: \"" + expectedUrl + "\".");
 		} else {
 			status = TestStatus.FAILED;
-			this.log.error("I don't see Page URL: \"" + expectedUrl + "\".");
+			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;
 	}
@@ -694,7 +716,7 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyPartialUrl(String partialUrl) {
 		this.log.info("I verify partial Page URL: \"" + partialUrl + "\".");
-		String actualUrl = this.driver.getCurrentUrl();
+		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
@@ -702,7 +724,7 @@ public class Selenium implements WebAutomation {
 			this.log.info("I see partial Page URL: \"" + partialUrl + "\".");
 		} else {
 			status = TestStatus.FAILED;
-			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\".");
+			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;	
 	}
@@ -710,14 +732,15 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyTitle(String expectedTitle) {
 		this.log.info("I verify Page Title: \"" + expectedTitle + "\".");
-		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
+		String actualTitle = this.driver.getTitle().trim();
+		boolean isTitleEqual = actualTitle.equals(expectedTitle);
 		TestStatus status = TestStatus.FAILED;
 		if(isTitleEqual) {
 			status = TestStatus.PASSED;
 			this.log.info("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
 			status = TestStatus.FAILED;
-			this.log.error("I don't see Page Title: \"" + expectedTitle + "\".");
+			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
 	}
