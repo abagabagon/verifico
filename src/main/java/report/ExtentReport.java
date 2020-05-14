@@ -164,6 +164,7 @@ public class ExtentReport {
 		if(isExtentTestNull()) {
 			log.warn("\"INFO\" Status could not be logged at ExtentReports.");
 		} else {
+			log.info(details);
 			test.log(Status.INFO, details);
 		}
 	}
@@ -178,6 +179,7 @@ public class ExtentReport {
 		if(isExtentTestNull()) {
 			log.warn("\"ERROR\" Status could not be logged at ExtentReports.");
 		} else {
+			log.error(details);
 			test.log(Status.ERROR, details);
 		}
 	}
