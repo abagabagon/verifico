@@ -180,6 +180,16 @@ public interface WebAutomation {
 	public void type(Object locator, String inputText);
 	
 	/**
+	 * Simulates typing into a text box/area Web Element, which may set its value (utilizing Javascript). Text entry
+	 * Web Elements are INPUT and TEXTAREA Web Elements.
+	 * 
+	 * @param locator 	Object used to locate Web Element to type into.
+	 * @param inputText Text to enter.
+	 */
+
+	public void typeJS(Object locator, String inputText);
+	
+	/**
 	 * Type input text at the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.
