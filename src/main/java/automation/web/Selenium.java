@@ -35,8 +35,6 @@ public class Selenium implements WebAutomation {
 	Actions action;
 	JavascriptExecutor javascriptExecutor;
 	ArrayList<String> tabs;
-	long implicitWaitDuration;
-	long explicitWaitDuration;
 	SeleniumWait seleniumWait;
 
 	private SeleniumWebDriver seleniumWebDriver;
@@ -45,9 +43,6 @@ public class Selenium implements WebAutomation {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
-		this.implicitWaitDuration = 20;
-		this.explicitWaitDuration = 20;
-		this.seleniumWait = new SeleniumWait(this.wait);
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
@@ -66,13 +61,13 @@ public class Selenium implements WebAutomation {
 				this.driver = this.seleniumWebDriver.getPhantomJSDriver();
 				break;
 			case CHROME:
-				this.driver = this.seleniumWebDriver.getChromeDriver();
+				this.driver = this.seleniumWebDriver.getChromeDriver(false);
 				break;
 			case SAFARI:
 				this.driver = this.seleniumWebDriver.getSafariDriver();
 				break;
 			case FIREFOX:
-				this.driver = this.seleniumWebDriver.getFirefoxDriver();
+				this.driver = this.seleniumWebDriver.getFirefoxDriver(false);
 				break;
 			case OPERA:
 				this.driver = this.seleniumWebDriver.getOperaDriver();
@@ -97,8 +92,9 @@ public class Selenium implements WebAutomation {
 			System.exit(1);
 		}
 		
-		initializeImplicitWait(this.implicitWaitDuration);
-		initializeExplicitWait(this.explicitWaitDuration);
+		initializeImplicitWait(20);
+		initializeExplicitWait(20);
+		this.seleniumWait = new SeleniumWait(this.wait);
 		maximizeBrowserWindow();
 		deleteAllCookies();
 	}
@@ -429,7 +425,6 @@ public class Selenium implements WebAutomation {
 		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
-			element.clear();
 			element.sendKeys(inputText);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while typing text at Web Element: \"" + locator.toString() + "\"");
@@ -445,6 +440,13 @@ public class Selenium implements WebAutomation {
 		}
 	}
 	
+	@Override
+	public void typeJS(Object locator, String inputText) {
+		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
+		WebElement element =  this.getElement(locator);
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
+	}
 	
 	@Override
 	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
@@ -700,8 +702,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyUrl(String expectedUrl) {
 		this.log.info("I verify Page URL: \"" + expectedUrl + "\".");
+		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
 		String actualUrl = this.driver.getCurrentUrl().trim();
-		boolean isUrlEqual = actualUrl.equals(expectedUrl);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
 			status = TestStatus.PASSED;
@@ -732,8 +734,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyTitle(String expectedTitle) {
 		this.log.info("I verify Page Title: \"" + expectedTitle + "\".");
+		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
 		String actualTitle = this.driver.getTitle().trim();
-		boolean isTitleEqual = actualTitle.equals(expectedTitle);
 		TestStatus status = TestStatus.FAILED;
 		if(isTitleEqual) {
 			status = TestStatus.PASSED;
@@ -844,6 +846,8 @@ public class Selenium implements WebAutomation {
 	@Override
 	public TestStatus verifyNotDisplayed(Object locator) {
 		this.log.info("I verify Web Element: \"" + locator.toString() + "\" is not displayed.");
+		this.initializeImplicitWait(2);
+		this.initializeExplicitWait(2);
 		List<WebElement> elements = this.getElements(locator);
 		TestStatus status = TestStatus.FAILED;
 		if (elements.size() == 0) {
@@ -853,6 +857,8 @@ public class Selenium implements WebAutomation {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
 		}
+		this.initializeImplicitWait(20);
+		this.initializeExplicitWait(20);
 		return status;
 	}
 	
