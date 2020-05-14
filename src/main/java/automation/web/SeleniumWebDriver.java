@@ -49,13 +49,14 @@ public class SeleniumWebDriver {
 	/**
 	 * Initializes and returns Google Chrome WebDriver Object.
 	 * 
+	 * @param  isHeadless Set driver on headless mode.
 	 * @return Google Chrome WebDriver Object
 	 */
 	
-	WebDriver getChromeDriver() {
+	WebDriver getChromeDriver(boolean isHeadless) {
 		this.log.debug("Initializing Google Chrome Driver.");
 		WebDriverManager.chromedriver().setup();
-		ChromeOptions options = this.setChromeDriverOptions(); 
+		ChromeOptions options = this.setChromeDriverOptions(isHeadless); 
 		this.driver = new ChromeDriver(options);
 		this.log.debug("Successfully initialized Google Chrome Driver.");
 		return this.driver;
@@ -64,13 +65,14 @@ public class SeleniumWebDriver {
 	/**
 	 * Initializes and returns Mozilla Firefox WebDriver Object.
 	 * 
+	 * @param  isHeadless Set driver on headless mode.
 	 * @return Mozilla Firefox (Gecko) WebDriver Object
 	 */
 	
-	WebDriver getFirefoxDriver() {
+	WebDriver getFirefoxDriver(boolean isHeadless) {
 		this.log.debug("Initializing Mozilla Firefox Driver.");
 		WebDriverManager.firefoxdriver().setup();
-		FirefoxOptions options = this.setFirefoxDriverOptions();
+		FirefoxOptions options = this.setFirefoxDriverOptions(isHeadless);
 		this.driver = new FirefoxDriver(options);
 		this.log.debug("Successfully initialized Mozilla Firefox Driver.");
 		return this.driver;
@@ -163,24 +165,28 @@ public class SeleniumWebDriver {
 	/**
 	 * Sets ChromeOptions for ChromeDriver.
 	 * 
+	 * @param  isHeadless Set option on headless mode.
 	 * @return ChromeOptions
 	 */
 	
-	private ChromeOptions setChromeDriverOptions() {
+	private ChromeOptions setChromeDriverOptions(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("disable-infobars");
+		options.setHeadless(isHeadless);
 		return options;
     }
 	
 	/**
 	 * Sets FirefoxOptions for FirefoxDriver
 	 * 
+	 * @param  isHeadless Set option on headless mode.
 	 * @return FirefoxOptions
 	 */
 	
-	private FirefoxOptions setFirefoxDriverOptions() {
+	private FirefoxOptions setFirefoxDriverOptions(boolean isHeadless) {
 		FirefoxOptions options = new FirefoxOptions();
 		options.setCapability(CapabilityType.HAS_NATIVE_EVENTS, false);
+		options.setHeadless(isHeadless);
 		return options;
 	}
 	
