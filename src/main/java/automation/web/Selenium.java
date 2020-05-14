@@ -22,7 +22,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import enums.Browser;
 import enums.TestStatus;
 
 public class Selenium implements WebAutomation {
@@ -37,11 +36,11 @@ public class Selenium implements WebAutomation {
 	ArrayList<String> tabs;
 	SeleniumWait seleniumWait;
 	
-	private Browser browser;
+	private String browser;
 	private boolean isHeadless;
 	private SeleniumWebDriver seleniumWebDriver;
 	
-	public Selenium(Browser browser) {
+	public Selenium(String browser) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
@@ -50,7 +49,7 @@ public class Selenium implements WebAutomation {
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
-	public Selenium(Browser browser, boolean isHeadless) {
+	public Selenium(String browser, boolean isHeadless) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
@@ -71,10 +70,10 @@ public class Selenium implements WebAutomation {
 		try {
 			if(this.isHeadless) {
 				switch (this.browser) {
-				case CHROME:
+				case "CHROME":
 					this.driver = this.seleniumWebDriver.getChromeDriver(true);
 					break;
-				case FIREFOX:
+				case "FIREFOX":
 					this.driver = this.seleniumWebDriver.getFirefoxDriver(true);
 					break;
 				default:
@@ -83,25 +82,25 @@ public class Selenium implements WebAutomation {
 				}
 			} else {
 				switch (this.browser) {
-				case PHANTOMJS:
+				case "PHANTOMJS":
 					this.driver = this.seleniumWebDriver.getPhantomJSDriver();
 					break;
-				case CHROME:
+				case "CHROME":
 					this.driver = this.seleniumWebDriver.getChromeDriver(false);
 					break;
-				case SAFARI:
+				case "SAFARI":
 					this.driver = this.seleniumWebDriver.getSafariDriver();
 					break;
-				case FIREFOX:
+				case "FIREFOX":
 					this.driver = this.seleniumWebDriver.getFirefoxDriver(false);
 					break;
-				case OPERA:
+				case "OPERA":
 					this.driver = this.seleniumWebDriver.getOperaDriver();
 					break;
-				case EDGE:
+				case "EDGE":
 					this.driver = this.seleniumWebDriver.getEdgeDriver();
 					break;
-				case IE:
+				case "IE":
 					this.driver = this.seleniumWebDriver.getIEDriver();
 					break;
 				default:
