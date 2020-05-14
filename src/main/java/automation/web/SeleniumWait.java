@@ -34,7 +34,7 @@ public class SeleniumWait {
 		this.log.trace("Waiting for Page URL to match expected value.");
 		boolean isUrlEqual = false;
 		try {
-			isUrlEqual = this.wait.until(ExpectedConditions.urlMatches(expectedUrl));
+			isUrlEqual = this.wait.until(ExpectedConditions.urlToBe(expectedUrl));
 			this.log.trace("Page URL had matched the expected value!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Page URL to match the expected URL Value has expired!");
@@ -124,6 +124,7 @@ public class SeleniumWait {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
+			e.printStackTrace();
 		}
 		return element;
 	}
@@ -144,6 +145,7 @@ public class SeleniumWait {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
+			e.printStackTrace();
 		}
 		return isVisible;
 	}
@@ -165,6 +167,7 @@ public class SeleniumWait {
 			this.log.error("Wait time for Web Element Selection State to be " + selectionState + " has expired!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + selectionState + " has expired!");
+			e.printStackTrace();
 		}
 		return status;
 	}
@@ -180,6 +183,7 @@ public class SeleniumWait {
 			this.log.error("Wait time for Alert to be displayed has expired!");
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while getting Alert Message!");
+			e.printStackTrace();
 		}
 		return this.alert;
 	}
