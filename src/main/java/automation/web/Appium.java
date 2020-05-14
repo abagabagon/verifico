@@ -13,10 +13,12 @@ public class Appium extends Selenium {
 
 	private AppiumWebDriver appiumWebDriver;
 	private Mobile mobile;
+	private Browser browser;
 	private String platformVersion;
 	private String deviceName;
 	
-	public Appium(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName) {
+	public Appium(Mobile mobile, Browser browser, URL appiumServerUrl, String platformVersion, String deviceName) {
+		super(browser);
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing AppiumWebAutomation Class.");
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
@@ -32,12 +34,12 @@ public class Appium extends Selenium {
 	/* ####################################################### */
 
 	@Override
-	public void openBrowser(Browser browser) {
+	public void openBrowser() {
 		this.log.debug("Initializing Selenium Web Driver.");
 		this.log.info("I open Web Browser.");
 
 		try {
-			switch (browser) {
+			switch (this.browser) {
 			case CHROME:
 				this.driver = this.appiumWebDriver.getChromeDriver(this.mobile, this.platformVersion, this.deviceName);
 				break;

@@ -1,6 +1,5 @@
 package automation.web;
 
-import enums.Browser;
 import enums.TestStatus;
 
 public interface WebAutomation {
@@ -13,7 +12,7 @@ public interface WebAutomation {
 	 * Opens Web Browser.
 	 */
 
-	public void openBrowser(Browser browser);
+	public void openBrowser();
 	
 	/**
 	 * Opens Tab.

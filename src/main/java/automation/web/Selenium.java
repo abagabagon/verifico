@@ -36,13 +36,26 @@ public class Selenium implements WebAutomation {
 	JavascriptExecutor javascriptExecutor;
 	ArrayList<String> tabs;
 	SeleniumWait seleniumWait;
-
+	
+	private Browser browser;
+	private boolean isHeadless;
 	private SeleniumWebDriver seleniumWebDriver;
-
-	public Selenium() {
+	
+	public Selenium(Browser browser) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing SeleniumWebAutomation Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
+		this.browser = browser;
+		this.isHeadless = false;
+		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
+	}
+
+	public Selenium(Browser browser, boolean isHeadless) {
+		this.log = LogManager.getLogger(this.getClass());
+		this.log.debug("Initializing SeleniumWebAutomation Class.");
+		this.seleniumWebDriver = new SeleniumWebDriver();
+		this.browser = browser;
+		this.isHeadless = isHeadless;
 		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
 	}
 
@@ -51,37 +64,53 @@ public class Selenium implements WebAutomation {
 	/* ####################################################### */
 
 	@Override
-	public void openBrowser(Browser browser) {
+	public void openBrowser() {
 		this.log.debug("Initializing Selenium Web Driver.");
 		this.log.info("I open Web Browser.");
 
 		try {
-			switch (browser) {
-			case PHANTOMJS:
-				this.driver = this.seleniumWebDriver.getPhantomJSDriver();
-				break;
-			case CHROME:
-				this.driver = this.seleniumWebDriver.getChromeDriver(false);
-				break;
-			case SAFARI:
-				this.driver = this.seleniumWebDriver.getSafariDriver();
-				break;
-			case FIREFOX:
-				this.driver = this.seleniumWebDriver.getFirefoxDriver(false);
-				break;
-			case OPERA:
-				this.driver = this.seleniumWebDriver.getOperaDriver();
-				break;
-			case EDGE:
-				this.driver = this.seleniumWebDriver.getEdgeDriver();
-				break;
-			case IE:
-				this.driver = this.seleniumWebDriver.getIEDriver();
-				break;
-			default:
-				this.log.fatal("Unsupported Web Browser.");
-				System.exit(1);
+			if(this.isHeadless) {
+				switch (this.browser) {
+				case CHROME:
+					this.driver = this.seleniumWebDriver.getChromeDriver(true);
+					break;
+				case FIREFOX:
+					this.driver = this.seleniumWebDriver.getFirefoxDriver(true);
+					break;
+				default:
+					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
+					System.exit(1);
+				}
+			} else {
+				switch (this.browser) {
+				case PHANTOMJS:
+					this.driver = this.seleniumWebDriver.getPhantomJSDriver();
+					break;
+				case CHROME:
+					this.driver = this.seleniumWebDriver.getChromeDriver(false);
+					break;
+				case SAFARI:
+					this.driver = this.seleniumWebDriver.getSafariDriver();
+					break;
+				case FIREFOX:
+					this.driver = this.seleniumWebDriver.getFirefoxDriver(false);
+					break;
+				case OPERA:
+					this.driver = this.seleniumWebDriver.getOperaDriver();
+					break;
+				case EDGE:
+					this.driver = this.seleniumWebDriver.getEdgeDriver();
+					break;
+				case IE:
+					this.driver = this.seleniumWebDriver.getIEDriver();
+					break;
+				default:
+					this.log.fatal("Unsupported Web Browser.");
+					System.exit(1);
+				}
 			}
+			
+
 		} catch (WebDriverException e) {
 			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
 			e.printStackTrace();
