@@ -20,8 +20,6 @@ public class Appium extends Selenium {
 		this.log = LogManager.getLogger(this.getClass());
 		this.log.debug("Initializing AppiumWebAutomation Class.");
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
-		this.implicitWaitDuration = 20;
-		this.explicitWaitDuration = 20;
 		this.seleniumWait = new SeleniumWait(this.wait);
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
@@ -60,8 +58,8 @@ public class Appium extends Selenium {
 			System.exit(1);
 		}
 		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-		this.initializeImplicitWait(this.implicitWaitDuration);
-		this.initializeExplicitWait(this.explicitWaitDuration);
+		this.initializeImplicitWait(20);
+		this.initializeExplicitWait(20);
 		deleteAllCookies();
 	}
 
