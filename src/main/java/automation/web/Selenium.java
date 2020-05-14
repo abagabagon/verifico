@@ -42,20 +42,20 @@ public class Selenium implements WebAutomation {
 	
 	public Selenium(String browser) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing SeleniumWebAutomation Class.");
+		this.log.debug("Initializing Selenium Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
 		this.isHeadless = false;
-		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
+		this.log.debug("Successfully initialized Selenium Class.");
 	}
 
 	public Selenium(String browser, boolean isHeadless) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing SeleniumWebAutomation Class.");
+		this.log.debug("Initializing Selenium Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
 		this.isHeadless = isHeadless;
-		this.log.debug("Successfully initialized SeleniumWebAutomation Class.");
+		this.log.debug("Successfully initialized Selenium Class.");
 	}
 
 	/* ####################################################### */

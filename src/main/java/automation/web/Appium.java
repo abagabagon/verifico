@@ -19,13 +19,13 @@ public class Appium extends Selenium {
 	public Appium(Mobile mobile, String browser, URL appiumServerUrl, String platformVersion, String deviceName) {
 		super(browser);
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing AppiumWebAutomation Class.");
+		this.log.debug("Initializing Appium Class.");
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
 		this.seleniumWait = new SeleniumWait(this.wait);
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
-		this.log.debug("Successfully initialized AppiumWebAutomation Class.");
+		this.log.debug("Successfully initialized Appium Class.");
 	}
 
 	/* ####################################################### */
@@ -34,7 +34,7 @@ public class Appium extends Selenium {
 
 	@Override
 	public void openBrowser() {
-		this.log.debug("Initializing Selenium Web Driver.");
+		this.log.debug("Initializing Appium Web Driver.");
 		this.log.info("I open Web Browser.");
 
 		try {
@@ -50,11 +50,11 @@ public class Appium extends Selenium {
 				System.exit(1);
 			}
 		} catch (WebDriverException e) {
-			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
+			this.log.fatal("Encountered WebDriverException while initializing Appium Web Driver.");
 			e.printStackTrace();
 			System.exit(1);
 		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while initializing Selenium Web Driver.");
+			this.log.fatal("Encountered Exception while initializing Appium Web Driver.");
 			e.printStackTrace();
 			System.exit(1);
 		}
