@@ -23,9 +23,7 @@ public class AppiumMobileDriver {
 	
 	public AppiumMobileDriver(URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing AppiumWebDriver Class.");
 		this.appiumServerUrl = appiumServerUrl;
-		this.log.debug("Successfully initialized AppiumWebDriver Class.");
 	}
 	
 	/**
