@@ -6,28 +6,25 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriverException;
 
-import enums.Mobile;
 import enums.TestStatus;
 
-public class Appium extends Selenium {
+public class AppiumWebAutomation extends SeleniumWebAutomation {
 
 	private AppiumWebDriver appiumWebDriver;
-	private Mobile mobile;
+	private String mobile;
 	private String browser;
 	private String platformVersion;
 	private String deviceName;
 	
-	public Appium(Mobile mobile, String browser, String platformVersion, String deviceName, URL appiumServerUrl) {
+	public AppiumWebAutomation(String mobile, String browser, String platformVersion, String deviceName, URL appiumServerUrl) {
 		super(browser);
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing Appium Class.");
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
 		this.seleniumWait = new SeleniumWait(this.wait);
 		this.browser = browser;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
-		this.log.debug("Successfully initialized Appium Class.");
 	}
 
 	/* ####################################################### */
