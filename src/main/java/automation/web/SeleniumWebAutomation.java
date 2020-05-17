@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import enums.TestStatus;
 
-public class Selenium implements WebAutomation {
+public class SeleniumWebAutomation implements WebAutomation {
 
 	WebDriver driver;
 	Logger log;
@@ -40,22 +40,18 @@ public class Selenium implements WebAutomation {
 	private boolean isHeadless;
 	private SeleniumWebDriver seleniumWebDriver;
 	
-	public Selenium(String browser) {
+	public SeleniumWebAutomation(String browser) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing Selenium Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
 		this.isHeadless = false;
-		this.log.debug("Successfully initialized Selenium Class.");
 	}
 
-	public Selenium(String browser, boolean isHeadless) {
+	public SeleniumWebAutomation(String browser, boolean isHeadless) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing Selenium Class.");
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
 		this.isHeadless = isHeadless;
-		this.log.debug("Successfully initialized Selenium Class.");
 	}
 
 	/* ####################################################### */
@@ -108,8 +104,6 @@ public class Selenium implements WebAutomation {
 					System.exit(1);
 				}
 			}
-			
-
 		} catch (WebDriverException e) {
 			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
 			e.printStackTrace();
