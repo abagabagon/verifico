@@ -13,7 +13,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
-import enums.Mobile;
 import enums.TestStatus;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -24,7 +23,7 @@ import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 
-public class Appium implements MobileAutomation {
+public class AppiumMobileAutomation implements MobileAutomation {
 	
 	AppiumDriver<MobileElement> driver;
 	TouchAction<?> action;
@@ -35,20 +34,18 @@ public class Appium implements MobileAutomation {
 	long explicitWaitDuration;
 	
 	private AppiumMobileDriver appiumMobileDriver;
-	private Mobile mobile;
+	private String mobile;
 	private String platformVersion;
 	private String deviceName;
 	
-	public Appium(Mobile mobile, URL appiumServerUrl, String platformVersion, String deviceName, File applicationFile) {
+	public AppiumMobileAutomation(String mobile, String platformVersion, File applicationFile, String deviceName, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing AppiumWebAutomation Class.");
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
 		this.implicitWaitDuration = 20;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
 		this.applicationFile = applicationFile;
-		this.log.debug("Successfully initialized AppiumWebAutomation Class.");
 	}
 	
 	/*#######################################################*/
@@ -59,11 +56,11 @@ public class Appium implements MobileAutomation {
 	public void openApplication() {
 		this.log.info("I open Application.");
 		switch(this.mobile) {
-		case iOS:
+		case "iOS":
 			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName);
 			this.action = new TouchAction<IOSTouchAction>(this.driver);
 			break;
-		case Android:
+		case "Android":
 			this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
 			this.action = new TouchAction<AndroidTouchAction>(this.driver);
 			break;
