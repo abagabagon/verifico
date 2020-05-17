@@ -29,8 +29,6 @@ public class SeleniumWebDriver {
 	
 	public SeleniumWebDriver() {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing SeleniumWebDriver Class.");
-		this.log.debug("Successfully initialized SeleniumWebDriver Class.");
 	}
 	
 	/**

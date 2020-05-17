@@ -19,9 +19,7 @@ public class SeleniumWait {
 	
 	public SeleniumWait(WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.log.debug("Initializing SeleniumWaits Class.");
 		this.wait = wait;
-		this.log.debug("Successfully initialized SeleniumWaits Class.");
 	}
 	
 	/**
