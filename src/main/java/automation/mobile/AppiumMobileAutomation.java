@@ -68,8 +68,12 @@ public class AppiumMobileAutomation implements MobileAutomation {
 			this.log.fatal("Encountered unsupported Mobile Platform while initializing AppiumDriver. Check defined Mobile Platform.");
 			System.exit(1);
 		}
-		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		this.initializeImplicitWait(20);
+	}
+	
+	private void initializeImplicitWait(long duration) {
+		this.log.debug("I initialize Implicit Wait.");
+		this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 	}
 	
 	@Override
@@ -329,7 +333,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 
 	@Override
 	public TestStatus verifyText(Object locator, String expectedValue) {
-		this.log.info("Verifying \"" + expectedValue + "\" Text Value is displayed.");
+		this.log.info("I verify \"" + expectedValue + "\" Text Value is displayed.");
 		String actualText = this.getText((By)locator);
 		boolean isValueEqual = actualText.equals(expectedValue);
 		TestStatus status = TestStatus.FAILED;
@@ -361,6 +365,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	@Override
 	public TestStatus verifyNotDisplayed(Object locator) {
 		this.log.info("I verify Mobile Element: \"" + locator.toString() + "\" is not displayed.");
+		this.initializeImplicitWait(2);
 		List<MobileElement> elements = this.getElements(locator);
 		TestStatus status = TestStatus.FAILED;
 		if (elements.size() == 0) {
@@ -370,12 +375,13 @@ public class AppiumMobileAutomation implements MobileAutomation {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		}
+		this.initializeImplicitWait(20);
 		return status;
 	}
 
 	@Override
 	public TestStatus verifyEnabled(Object locator) {
-		this.log.info("Verifying Mobile Element \"" + locator.toString() + "\" is enabled.");
+		this.log.info("I verify Mobile Element \"" + locator.toString() + "\" is enabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		TestStatus status = TestStatus.FAILED;
@@ -391,7 +397,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 
 	@Override
 	public TestStatus verifyDisabled(Object locator) {
-		this.log.info("Verifying Mobile Element \"" + locator.toString() + "\" is disabled.");
+		this.log.info("I verify Mobile Element \"" + locator.toString() + "\" is disabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		TestStatus status = TestStatus.FAILED;

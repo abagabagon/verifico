@@ -57,6 +57,7 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 		this.initializeImplicitWait(20);
 		this.initializeExplicitWait(20);
