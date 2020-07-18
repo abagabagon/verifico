@@ -150,6 +150,15 @@ public interface WebAutomation {
 	public void clickJS(Object locator);
 	
 	/**
+	 * Clicks the specified Web Element from an Object List based on text value.
+	 * 
+	 * @param objectList	Object from which to check the specified text to check.
+	 * @param textToCheck	Text to check at the specified object.
+	 */
+	
+	public void clickFromObjectListBasedOnText(Object objectList, String textToCheck);
+	
+	/**
 	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.

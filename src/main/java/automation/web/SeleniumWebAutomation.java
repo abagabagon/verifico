@@ -401,6 +401,25 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void clickFromObjectListBasedOnText(Object objectList, String textToCheck) {
+		this.log.info("I click a Web Element based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elements = this.getElements(objectList);
+		int size = elements.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elements.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				elements.get(i).click();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+	}
+	
+	@Override
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
 		this.log.info("I click a Web Element based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
