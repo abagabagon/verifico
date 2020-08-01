@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -31,6 +32,62 @@ public class SeleniumWebDriver {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
+	WebDriver getWebDriver(boolean isHeadless, String browser) {
+		this.log.debug("Initializing Selenium Web Driver.");
+		try {
+			if(isHeadless) {
+				switch (browser) {
+				case "CHROME":
+					this.driver = this.getChromeDriver(true);
+					break;
+				case "FIREFOX":
+					this.driver = this.getFirefoxDriver(true);
+					break;
+				default:
+					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
+					System.exit(1);
+				}
+			} else {
+				switch (browser) {
+				case "PHANTOMJS":
+					this.driver = this.getPhantomJSDriver();
+					break;
+				case "CHROME":
+					this.driver = this.getChromeDriver(false);
+					break;
+				case "SAFARI":
+					this.driver = this.getSafariDriver();
+					break;
+				case "FIREFOX":
+					this.driver = this.getFirefoxDriver(false);
+					break;
+				case "OPERA":
+					this.driver = this.getOperaDriver();
+					break;
+				case "EDGE":
+					this.driver = this.getEdgeDriver();
+					break;
+				case "IE":
+					this.driver = this.getIEDriver();
+					break;
+				default:
+					this.log.fatal("Unsupported Web Browser.");
+					System.exit(1);
+				}
+			}
+		} catch (WebDriverException e) {
+			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
+			e.printStackTrace();
+			System.exit(1);
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while initializing Selenium Web Driver.");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		return this.driver;
+	}
+	
 	/**
 	 * Initializes and returns EventFiringWebDriver Object.
 	 * 
@@ -51,13 +108,14 @@ public class SeleniumWebDriver {
 	 * @return Google Chrome WebDriver Object
 	 */
 	
-	WebDriver getChromeDriver(boolean isHeadless) {
+	private WebDriver getChromeDriver(boolean isHeadless) {
 		this.log.debug("Initializing Google Chrome Driver.");
+		WebDriver driver;
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = this.setChromeDriverOptions(isHeadless); 
-		this.driver = new ChromeDriver(options);
+		driver = new ChromeDriver(options);
 		this.log.debug("Successfully initialized Google Chrome Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -67,13 +125,14 @@ public class SeleniumWebDriver {
 	 * @return Mozilla Firefox (Gecko) WebDriver Object
 	 */
 	
-	WebDriver getFirefoxDriver(boolean isHeadless) {
+	private WebDriver getFirefoxDriver(boolean isHeadless) {
 		this.log.debug("Initializing Mozilla Firefox Driver.");
+		WebDriver driver;
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions options = this.setFirefoxDriverOptions(isHeadless);
-		this.driver = new FirefoxDriver(options);
+		driver = new FirefoxDriver(options);
 		this.log.debug("Successfully initialized Mozilla Firefox Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -82,12 +141,13 @@ public class SeleniumWebDriver {
 	 * @return Opera WebDriver Object
 	 */
 	
-	WebDriver getOperaDriver() {
+	private WebDriver getOperaDriver() {
 		this.log.debug("Initializing Opera Driver.");
+		WebDriver driver;
 		WebDriverManager.operadriver().setup();
-		this.driver = new OperaDriver();
+		driver = new OperaDriver();
 		this.log.debug("Successfully initialized Opera Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -96,12 +156,13 @@ public class SeleniumWebDriver {
 	 * @return Microsoft Edge WebDriver Object
 	 */
 	
-	WebDriver getEdgeDriver() {
+	private WebDriver getEdgeDriver() {
 		this.log.debug("Initializing Microsoft Edge Driver.");
+		WebDriver driver;
 		WebDriverManager.edgedriver().setup();
-		this.driver = new EdgeDriver();
+		driver = new EdgeDriver();
 		this.log.debug("Successfully initialized Microsoft Edge Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -110,13 +171,14 @@ public class SeleniumWebDriver {
 	 * @return Internet Explorer WebDriver Object
 	 */
 	
-	WebDriver getIEDriver() {
+	private WebDriver getIEDriver() {
 		this.log.debug("Initializing Internet Explorer Driver.");
+		WebDriver driver;
 		WebDriverManager.iedriver().setup();
 		InternetExplorerOptions options = this.setInternetExplorerDriverOptions();
-		this.driver = new InternetExplorerDriver(options);
+		driver = new InternetExplorerDriver(options);
 		this.log.debug("Successfully initialized Internet Explorer Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -125,7 +187,7 @@ public class SeleniumWebDriver {
 	 * @return Safari WebDriver Object
 	 */
 
-	WebDriver getSafariDriver() {
+	private WebDriver getSafariDriver() {
 		this.log.debug("Setting Property of Safari Driver.");
 		Platform operatingSystem = OperatingSystem.getOS();
 		
@@ -137,9 +199,9 @@ public class SeleniumWebDriver {
 		}
 
 		this.log.debug("Initializing Safari Driver.");
-		this.driver = new SafariDriver();
+		WebDriver driver = new SafariDriver();
 		this.log.debug("Successfully initialized Safari Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
@@ -148,16 +210,15 @@ public class SeleniumWebDriver {
 	 * @return PhantomJS WebDriver Object
 	 */
 
-	WebDriver getPhantomJSDriver() {
+	private WebDriver getPhantomJSDriver() {
 		this.log.debug("Initializing PhantomJS Driver.");
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setJavascriptEnabled(true);                
 		caps.setCapability("takesScreenshot", true);  
 		WebDriverManager.phantomjs().setup();
-		this.driver = new PhantomJSDriver(caps);
-		this.log.debug("PhantomJSDriver: " + this.driver);
+		WebDriver driver = new PhantomJSDriver(caps);
 		this.log.debug("Successfully initialized PhantomJS Driver.");
-		return this.driver;
+		return driver;
 	}
 	
 	/**
