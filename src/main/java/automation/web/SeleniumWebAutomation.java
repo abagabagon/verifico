@@ -15,7 +15,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
@@ -60,65 +59,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public void openBrowser() {
-		this.log.debug("Initializing Selenium Web Driver.");
 		this.log.info("I open Web Browser.");
-
-		try {
-			if(this.isHeadless) {
-				switch (this.browser) {
-				case "CHROME":
-					this.driver = this.seleniumWebDriver.getChromeDriver(true);
-					break;
-				case "FIREFOX":
-					this.driver = this.seleniumWebDriver.getFirefoxDriver(true);
-					break;
-				default:
-					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
-					System.exit(1);
-				}
-			} else {
-				switch (this.browser) {
-				case "PHANTOMJS":
-					this.driver = this.seleniumWebDriver.getPhantomJSDriver();
-					break;
-				case "CHROME":
-					this.driver = this.seleniumWebDriver.getChromeDriver(false);
-					break;
-				case "SAFARI":
-					this.driver = this.seleniumWebDriver.getSafariDriver();
-					break;
-				case "FIREFOX":
-					this.driver = this.seleniumWebDriver.getFirefoxDriver(false);
-					break;
-				case "OPERA":
-					this.driver = this.seleniumWebDriver.getOperaDriver();
-					break;
-				case "EDGE":
-					this.driver = this.seleniumWebDriver.getEdgeDriver();
-					break;
-				case "IE":
-					this.driver = this.seleniumWebDriver.getIEDriver();
-					break;
-				default:
-					this.log.fatal("Unsupported Web Browser.");
-					System.exit(1);
-				}
-			}
-		} catch (WebDriverException e) {
-			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
-			e.printStackTrace();
-			System.exit(1);
-		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while initializing Selenium Web Driver.");
-			e.printStackTrace();
-			System.exit(1);
-		}
-		
+		this.driver = this.seleniumWebDriver.getWebDriver(this.isHeadless, this.browser);
+		maximizeBrowserWindow();
+		deleteAllCookies();
 		initializeImplicitWait(20);
 		initializeExplicitWait(20);
 		this.seleniumWait = new SeleniumWait(this.wait);
-		maximizeBrowserWindow();
-		deleteAllCookies();
 	}
 	
 	@Override
