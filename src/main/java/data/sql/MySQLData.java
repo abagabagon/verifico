@@ -38,6 +38,41 @@ public class MySQLData implements SQLData {
 		this.password = password;
 	}
 	
+	/* ####################################################### */
+	/*                     MAIN OPERATIONS                     */
+	/* ####################################################### */
+	
+	@Override
+	public Object[][] select(String sqlFilePath) {
+		this.createSQLInstance();
+		this.initializeConnection();
+		this.createSQLStatement();
+		String sqlQuery = this.readSQLScript(sqlFilePath);
+		Object[][] sqlData = null;
+		this.log.info("Executing SQL SELECT Statement.");
+		if (sqlQuery.toLowerCase().trim().startsWith("select")) {
+			try {
+				this.resultSet = this.statement.executeQuery(sqlQuery);
+				this.log.info("Successfully retrieved SQL Data.");
+			} catch(SQLException e) {
+				this.log.fatal("Encountered SQLException while retrieving SQL Data!");
+			} catch(Exception e) {
+				this.log.fatal("Encountered Exception while retrieving SQL Data!");
+			}
+		} else {
+			this.log.error("Invalid SQL Script! \"SELECT\" SQL Statements are expected.");
+		}
+		int columnCount = this.getColumnCount();
+		int rowCount = this.getRowCount();
+		sqlData = Parser.parseResultSetToObjectArray(this.resultSet, columnCount, rowCount);
+		this.closeConnection();
+		return sqlData;
+	}
+	
+	/* ####################################################### */
+	/*                  SUPPORTING OPERATIONS                  */
+	/* ####################################################### */
+	
 	/**
 	 * Initializes MySQL JDBC Driver.
 	 * 
@@ -124,33 +159,6 @@ public class MySQLData implements SQLData {
 			this.log.fatal("Encountered Exception while retrieving SQL Data!");
 		} 
 		return sqlQuery;
-	}
-	
-	@Override
-	public Object[][] select(String sqlFilePath) {
-		this.createSQLInstance();
-		this.initializeConnection();
-		this.createSQLStatement();
-		String sqlQuery = this.readSQLScript(sqlFilePath);
-		Object[][] sqlData = null;
-		this.log.info("Getting SQL Data.");
-		if (sqlQuery.toLowerCase().trim().startsWith("select")) {
-			try {
-				this.resultSet = this.statement.executeQuery(sqlQuery);
-				this.log.info("Successfully retrieved SQL Data.");
-			} catch(SQLException e) {
-				this.log.fatal("Encountered SQLException while retrieving SQL Data!");
-			} catch(Exception e) {
-				this.log.fatal("Encountered Exception while retrieving SQL Data!");
-			}
-		} else {
-			this.log.error("Invalid SQL Script! \"SELECT\" SQL Statements are expected.");
-		}
-		int columnCount = this.getColumnCount();
-		int rowCount = this.getRowCount();
-		sqlData = Parser.parseResultSetToObjectArray(this.resultSet, columnCount, rowCount);
-		this.closeConnection();
-		return sqlData;
 	}
 	
 	/**
