@@ -1,0 +1,116 @@
+package data.sql;
+
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class SQLDriver {
+	
+	private String sqlType;
+	private Logger log;
+	private String dbServer;
+	private String dbName;
+	private String user;
+	private String password;
+	private Connection connection;
+	private String url;
+	
+	public SQLDriver(String sqlType, String dbServer, String dbName, String user, String password) {
+		this.log = LogManager.getLogger(this.getClass());
+		this.sqlType = sqlType;
+		this.dbServer = dbServer;
+		this.dbName = dbName;
+		this.user = user;
+		this.password = password;
+	}
+	
+	/**
+	 * Initializes SQL Connection.
+	 * 
+	 * @throws ExceptionInInitializerError
+	 * @return SQL Connection
+	 */
+	
+	Connection getSQLConnection() throws ExceptionInInitializerError {
+		try {
+			this.log.debug("Initializing " + this.sqlType + " JDBC Driver.");
+			switch(this.sqlType) {
+			case("MySQL"):
+				Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+				this.connection = this.getMySQLConnection();
+			case("MSSQL"):
+				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").getDeclaredConstructor().newInstance();
+			this.connection = this.getMSSQLConnection();
+			default:
+				this.log.fatal(this.sqlType + " is an unsupported SQL Type.");
+			}
+		} catch (LinkageError e) {
+			this.log.fatal("Encountered LinkageError while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (ClassNotFoundException e) {
+			this.log.fatal("Encountered ClassNotFoundException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (NoSuchMethodException e) {
+			this.log.fatal("Encountered NoSuchMethodException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (SecurityException e) {
+			this.log.fatal("Encountered SecurityException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (IllegalAccessException e) {
+			this.log.fatal("Encountered IllegalAccessException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (IllegalArgumentException e) {
+			this.log.fatal("Encountered IllegalArgumentException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (InstantiationException e) {
+			this.log.fatal("Encountered InstantiationException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (InvocationTargetException e) {
+			this.log.fatal("Encountered InvocationTargetException while instantiating " + this.sqlType + " JDBC Driver!");
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while instantiating " + this.sqlType + " JDBC Driver!");
+		}
+		
+		return this.connection;
+	}
+	
+	/**
+	 * Initializes MySQL Connection.
+	 * 
+	 * @return MySQL Connection
+	 */
+	
+	private Connection getMySQLConnection() {
+		this.log.debug("Initializing MySQL Connection.");
+		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName;
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(this.url, this.user, this.password);
+			this.log.debug("Successfully initialized SQL Connection.");
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while initializing MySQL Connection!");
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while initializing MySQL Connection!");
+		}
+		return connection;
+	}
+	
+	/**
+	 * Initializes MSSQL Connection.
+	 * 
+	 * @return MSSQL Connection
+	 */
+	
+	private Connection getMSSQLConnection() {
+		this.log.debug("Initializing MSSQL Connection.");
+		this.url = "jdbc:sqlserver://" + this.dbServer + ":1433/" + this.dbName;
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(this.url, this.user, this.password);
+			this.log.debug("Successfully initialized SQL Connection.");
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while initializing MSSQL Connection!");
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while initializing MSSQL Connection!");
+		}
+		return connection;
+	}
+
+}
