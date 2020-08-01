@@ -126,12 +126,12 @@ public interface WebAutomation {
 	public void click(Object locator);
 	
 	/**
-	 * Double clicks the specified Web Element. Used for Elements that are clickable.
+	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
 	 * 
-	 * @param locator Object used to locate Web Element to be double-clicked.
+	 * @param locator Object used to locate Web Element to be clicked.
 	 */
-
-	public void doubleClick(Object locator);
+	
+	public void clickJS(Object locator);
 	
 	/**
 	 * Clicks and holds the specified Web Element. Used for Elements that are clickable.
@@ -140,14 +140,6 @@ public interface WebAutomation {
 	 */
 
 	public void clickAndHold(Object locator);
-	
-	/**
-	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
-	 * 
-	 * @param locator Object used to locate Web Element to be clicked.
-	 */
-	
-	public void clickJS(Object locator);
 	
 	/**
 	 * Clicks the specified Web Element from an Object List based on text value.
@@ -167,6 +159,33 @@ public interface WebAutomation {
 	 */
 	
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
+	
+	/**
+	 * Double clicks the specified Web Element. Used for Elements that are clickable.
+	 * 
+	 * @param locator Object used to locate Web Element to be double-clicked.
+	 */
+
+	public void doubleClick(Object locator);
+	
+	/**
+	 * Double clicks the specified Web Element from an Object List based on text value.
+	 * 
+	 * @param objectList	Object from which to check the specified text to check.
+	 * @param textToCheck	Text to check at the specified object.
+	 */
+	
+	public void doubleClickFromObjectListBasedOnText(Object objectList, String textToCheck);
+	
+	/**
+	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText		Object from which to check the specified text to check.
+	 * @param textToCheck			Text to check at the specified object.
+	 * @param objectToDoubleClick	Object from same row to double click if text is found on that row.
+	 */
+	
+	public void doubleClickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToDoubleClick);
 	
 	/**
 	 * Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.
@@ -218,6 +237,17 @@ public interface WebAutomation {
 	public void press(Object locator, Object keyButton);
 	
 	/**
+	 * Press specified keys at the specified Web Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText	Object from which to check the specified text to check.
+	 * @param textToCheck		Text to check at the specified object.
+	 * @param objectToFill		Object from same row to click if text is found on that row.
+	 * @param keyButton			Key Button to press.
+	 */
+	
+	public void pressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, Object keyButton);
+	
+	/**
 	 * Clears value of a text box/area Web Element. Text entry Web Elements are INPUT and
 	 * TEXTAREA Web Elements.
 	 * 
@@ -225,6 +255,16 @@ public interface WebAutomation {
 	 */
 
 	public void clear(Object locator);
+	
+	/**
+	 * Clears value of the specified Web Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param objectToCheckText	Object from which to check the specified text to check.
+	 * @param textToCheck		Text to check at the specified object.
+	 * @param objectToClear		Object from same row to clear if text is found on that row.
+	 */
+	
+	public void clearFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClear);
 
 	/**
 	 * Selects a Drop-down List Web Element Option.
@@ -257,21 +297,13 @@ public interface WebAutomation {
 	/**
 	 * Get text of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param objectToCheckText		Object from which to check the specified text to check.
-	 * @param textToCheck			Text to check at the specified object.
-	 * @param objectToGetTextFrom	Object from same row to get text from if text is found on that row.
+	 * @param 	objectToCheckText		Object from which to check the specified text to check.
+	 * @param 	textToCheck				Text to check at the specified object.
+	 * @param 	objectToGetTextFrom		Object from same row to get text from if text is found on that row.
+	 * @return	Retrieved Web Element Text.
 	 */
 	
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
-	
-	/**
-	 * Get the value of the specified attribute of the Web Element.
-	 * 
-	 * @param	locator Object used to locate Web Element to get attribute value from.
-	 * @return	Retrieved Web Element attribute value.
-	 */
-	
-	public String getAttributeValue(Object locator, String attribute);
 
 	/**
 	 * Gets the value of the INPUT and TEXTAREA Web Element.
@@ -281,6 +313,39 @@ public interface WebAutomation {
 	 */
 	
 	public String getValue(Object locator);
+	
+	/**
+	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param 	objectToCheckText		Object from which to check the specified text to check.
+	 * @param 	textToCheck				Text to check at the specified object.
+	 * @param 	objectToGetValueFrom	Object from same row to get value from if text is found on that row.
+	 * @return	Retrieved value of the INPUT/TEXTAREA Web Element.
+	 */
+	
+	public String getValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom);
+	
+	/**
+	 * Get the value of the specified attribute of the Web Element.
+	 * 
+	 * @param	locator 	Object used to locate Web Element to get attribute value from.
+	 * @param   attribute 	Attribute of Web Element to get the value from.
+	 * @return	Retrieved Web Element attribute value.
+	 */
+	
+	public String getAttributeValue(Object locator, String attribute);
+	
+	/**
+	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
+	 * 
+	 * @param	objectToCheckText		Object from which to check the specified text to check.
+	 * @param 	textToCheck				Text to check at the specified object.
+	 * @param 	objectToGetValueFrom	Object from same row to get attribute value from if text is found on that row.
+	 * @param 	attribute 				Attribute of Web Element to get the value from.
+	 * @return	Retrieved Web Element attribute value.
+	 */
+	
+	public String getAttributeValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom, String attribute);
 	
 	/**
 	 * Gets the selected option of the Drop-down List Web Element.

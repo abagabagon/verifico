@@ -355,22 +355,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void doubleClick(Object locator) {
-		this.log.info("I double click Web Element: \"" + locator.toString() + "\".");
-		WebElement element = this.getElement(locator);
-		try {
-			this.action = new Actions(this.driver);
-			this.action.doubleClick(element).perform();
-		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered StaleElementReferenceException while double clicking at Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
-			this.action.doubleClick(element).perform();
-		} catch (Exception e) {
-			this.log.warn("Encountered Exception while double clicking at Web Element: \"" + locator.toString() + "\".");
-			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
-			this.action.doubleClick(element).perform();
-		}
+	public void clickJS(Object locator) {
+		this.log.info("I click Web Element: \"" + locator.toString() + "\".");
+		WebElement element =  this.getElement(locator);
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.javascriptExecutor.executeScript("arguments[0].click();", element);
 	}
 	
 	@Override
@@ -391,18 +380,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action.clickAndHold(element).perform();
 		}
 	}
-
-	@Override
-	public void clickJS(Object locator) {
-		this.log.info("I click Web Element: \"" + locator.toString() + "\".");
-		WebElement element =  this.getElement(locator);
-		this.javascriptExecutor = (JavascriptExecutor) this.driver;
-		this.javascriptExecutor.executeScript("arguments[0].click();", element);
-	}
 	
 	@Override
 	public void clickFromObjectListBasedOnText(Object objectList, String textToCheck) {
-		this.log.info("I click a Web Element based on Text: \"" + textToCheck + "\".");
+		this.log.info("I click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
@@ -415,13 +396,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		}
 		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+			this.log.error("The text \"" + textToCheck + "\" is not found from Object List.");
 		}
 	}
 	
 	@Override
 	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
-		this.log.info("I click a Web Element based on Text: \"" + textToCheck + "\".");
+		this.log.info("I click a Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToClick = this.getElements(objectToClick);
 		int size = elementToClick.size();
@@ -430,6 +411,66 @@ public class SeleniumWebAutomation implements WebAutomation {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
 				elementToClick.get(i).click();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+	}
+	
+	@Override
+	public void doubleClick(Object locator) {
+		this.log.info("I double click Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.getElement(locator);
+		try {
+			this.action = new Actions(this.driver);
+			this.action.doubleClick(element).perform();
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Encountered StaleElementReferenceException while double clicking at Web Element: \"" + locator.toString() + "\".");
+			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			this.action.doubleClick(element).perform();
+		} catch (Exception e) {
+			this.log.warn("Encountered Exception while double clicking at Web Element: \"" + locator.toString() + "\".");
+			e.printStackTrace();
+			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			this.action.doubleClick(element).perform();
+		}
+	}
+	
+	@Override
+	public void doubleClickFromObjectListBasedOnText(Object objectList, String textToCheck) {
+		this.log.info("I double click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elements = this.getElements(objectList);
+		int size = elements.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elements.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				this.action = new Actions(this.driver);
+				this.action.doubleClick(elements.get(i)).perform();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Object List.");
+		}
+	}
+	
+	@Override
+	public void doubleClickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToDoubleClick) {
+		this.log.info("I double click a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToClick = this.getElements(objectToDoubleClick);
+		int size = elementToClick.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				this.action = new Actions(this.driver);
+				this.action.doubleClick(elementToClick.get(i)).perform();
 				flgTextFound = true;
 				break;
 			}
@@ -491,7 +532,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
-		this.log.info("I type at Web Element based on Text: \"" + textToCheck + "\".");
+		this.log.info("I type at Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToFill = this.getElements(objectToFill);
 		int size = elementToFill.size();
@@ -515,7 +556,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement element = this.getElement(locator);
 		Keys keys = (Keys) keyButton;
 		try {
-			element.clear();
 			element.sendKeys(keys);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\".");
@@ -528,6 +568,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.sendKeys(keys);
+		}
+	}
+	
+	@Override
+	public void pressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, Object keyButton) {
+		this.log.info("I press keys at Web Element from Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToFill = this.getElements(objectToFill);
+		int size = elementToFill.size();
+		Keys keys = (Keys) keyButton;
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				elementToFill.get(i).sendKeys(keys);
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 
@@ -546,6 +607,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
 			element.clear();
+		}
+	}
+	
+	@Override
+	public void clearFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClear) {
+		this.log.info("I clear a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToClear = this.getElements(objectToClear);
+		int size = elementToClear.size();
+		boolean flgTextFound = false;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				elementToClear.get(i).clear();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 
@@ -629,16 +710,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
-		this.log.info("I get text from a Web Element based on Text: \"" + textToCheck + "\".");
+		this.log.info("I get text from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToClick = this.getElements(objectToGetTextFrom);
-		int size = elementToClick.size();
+		List<WebElement> elementToGetText = this.getElements(objectToGetTextFrom);
+		int size = elementToGetText.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;
 		for(int i = 0; i < size; i++) {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
-				retrievedText = elementToClick.get(i).getText().trim();
+				retrievedText = elementToGetText.get(i).getText().trim();
 				flgTextFound = true;
 				break;
 			}
@@ -671,6 +752,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return text;
 	}
+	
+	@Override
+	public String getValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom) {
+		this.log.info("I get value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
+		int size = elementToGetValue.size();
+		boolean flgTextFound = false;
+		String retrievedValue = null;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+		return retrievedValue;
+	}
 
 	@Override
 	public String getAttributeValue(Object locator, String attribute) {
@@ -693,6 +796,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 			text = element.getAttribute(attribute);
 		}
 		return text;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom, String attribute) {
+		this.log.info("I get attribute value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
+		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
+		int size = elementToGetValue.size();
+		boolean flgTextFound = false;
+		String retrievedValue = null;
+		for(int i = 0; i < size; i++) {
+			String text = elementToCheckText.get(i).getText().trim();
+			if (text.equals(textToCheck)) {
+				retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+		}
+		return retrievedValue;
 	}
 
 	@Override
