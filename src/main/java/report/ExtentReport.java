@@ -170,21 +170,6 @@ public class ExtentReport {
 	}
 	
 	/**
-	 * Logs test event as having ERRORS
-	 * 
-	 * @param details Details of the Test Event.
-	 */
-	
-	public static final void logError(String details) {
-		if(isExtentTestNull()) {
-			log.warn("\"ERROR\" Status could not be logged at ExtentReports.");
-		} else {
-			log.error(details);
-			test.log(Status.ERROR, details);
-		}
-	}
-	
-	/**
 	 * Logs test event as PASSED
 	 * 
 	 * @param details Details of the Test Event.
