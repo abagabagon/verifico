@@ -103,7 +103,7 @@ public interface WebAutomation {
 	 * @param pixel
 	 */
 	
-	public void scrollPage(String pixelHorizontal, String pixelVertical);
+	public void scroll(String pixelHorizontal, String pixelVertical);
 	
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */

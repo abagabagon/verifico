@@ -253,7 +253,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void scrollPage(String pixelHorizontal, String pixelVertical) {
+	public void scroll(String pixelHorizontal, String pixelVertical) {
 		this.log.debug("I scroll page.");
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
 		this.javascriptExecutor = (JavascriptExecutor) this.driver;
