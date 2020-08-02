@@ -1,19 +1,32 @@
 # **VERIFICO**
-Verifico is a Test Automation Framework that aims to automate both Web and Mobile Applications.
+Verifico is a Test Automation Library built on top of Selenium and Appium that aims to automate both Web and Mobile Applications.
 
 ## **Background**
-The Verifico Project is the result of a need to attain knowledge in Test Automation and develop a working Test Automation Framework.
+One of the disadvantages of Selenium and Appium is the steep learning curve required for users to be able to implement it. One also have to go over issues such as automation test flakiness, unhandled exceptions, etc. so they could learn how to properly implement commands of Selenium and Appium. The project is built in order to eliminate this issue.
 
-## **Built With**
-The Test Automation Framework is built with the following:
-* [Java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - Programming Language (1.8)
-* [Selenium](https://www.seleniumhq.org/download/) - Web Test Automation Tool
-* [Appium](http://appium.io/downloads.html) - Mobile Test Automation Tool
-* [TestNG](http://testng.org/doc/download.html) - Testing Framework
-* [Log4J2](https://logging.apache.org/log4j/2.0/download.html) - Logging Tool
-* [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/) - Reporting Tool
-* [Apache POI](https://poi.apache.org/download.html) - Test Data Access (API for MS Office)
-* [Maven](https://maven.apache.org/download.cgi) - Build Management Tool / Dependency Management
+## **Components**
+Test Framework
+To eliminate the issue of Selenium/Appium not having its own Testing Framework, the automation tool will be integrated with [TestNG](http://testng.org/doc/download.html).
+
+### **Logging Tool**
+Tool to be used is [Log4J2](https://logging.apache.org/log4j/2.0/download.html) which is a Java-based logging utility.
+
+### **Reporting Tool**
+Tool to be used is [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/) which is also a Java Library that could produce interactive and detailed reports in HTML Format.
+
+### **Test Management Tool Integration**
+As an added reporting capability, it is also planned to integrate [TestRail](https://www.gurock.com/testrail/docs/api/getting-started/binding-java)’s Java API Binding so automated test results can be logged directly to the Test Management Tool in real time.
+
+### **DevOps** 
+For the Automation Scripts to be integrated in DevOps, automation project has been created as a [Maven](https://maven.apache.org/download.cgi) project so the tool can be utilized for Build / Dependency Management.
+
+### **Data**
+
+#### **Excel Data**
+For providing Test Data, [Apache POI](https://poi.apache.org/download.html) has been integrated so users would be able to retrieve data from external MS Office Files.
+
+#### **SQL Data**
+The [MySQL Java API Connector](https://dev.mysql.com/doc/connectors/en/) are being planned to be added as well for querying MySQL Databases. Can be used for verifying Lists and Reports.
 
 ## **Usage**
 ### **Web Automation**
@@ -48,8 +61,6 @@ Same with `Selenium`, available commands require Objects as `By` Objects.
 
 ### **Excel Data**
 
-Data retrieval from Excel Files is also included which can be used for providing test data to automated tests. `Apache POI` is utilized to be able to do just that. Supported file formats are as follows:
-
 1. **XLS Excel Files**
 
 ```java
@@ -79,26 +90,12 @@ public Object[][] getAccountsData() {
 
 ### **SQL Data**
 
-Data retrieval from SQL is also included. It can be used for back end data verification. Supported SQL Types are as follows:
-
-1. **MySQL Data**
-
 ```java
+String sqlType = "MySQL";
 String dbServer = "127.0.0.1";
 String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
 
-SQLData sqlData = new MySQLData(dbServer, dbName, user, password);
-```
-
-2. **MSSQL Data**
-
-```java
-String dbServer = "127.0.0.1";
-String dbName = "northwind";
-String user = "abagabagon";
-String password = "ABCabc123";
-
-SQLData sqlData = new MSSQLData(dbServer, dbName, user, password);
+SQLData sqlData = new SQLData(sqlType, dbServer, dbName, user, password);
 ```
