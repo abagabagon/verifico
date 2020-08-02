@@ -97,5 +97,5 @@ String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
 
-SQLData sqlData = new SQLData(dbServer, dbName, user, password);
+SQLData sqlData = new SQLData(sqlType, dbServer, dbName, user, password);
 ```
