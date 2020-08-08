@@ -47,7 +47,7 @@ public interface MobileAutomation {
 	/**
 	 * Sets the device's geo location
 	 * 
-	 * @param orientation Desired device geo location.
+	 * @param location Desired device geo location.
 	 */
 	
 	public void setGeolocation(Object location);
@@ -138,6 +138,7 @@ public interface MobileAutomation {
 	 * @param objectToCheckText		Object from which to check the specified text to check.
 	 * @param textToCheck			Text to check at the specified object.
 	 * @param objectToGetTextFrom	Object from same row to get text from if text is found on that row.
+	 * @return	Retrieved Mobile Element text value.
 	 */
 	
 	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
@@ -146,6 +147,7 @@ public interface MobileAutomation {
 	 * Get the value of the specified attribute of the Mobile Element.
 	 * 
 	 * @param	locator Object used to locate Mobile Element to get attribute value from.
+	 * @param	attribute Mobile Element attribute to get value from.
 	 * @return	Retrieved Mobile Element attribute value.
 	 */
 	
@@ -231,7 +233,7 @@ public interface MobileAutomation {
 	/**
 	 * Verifies Mobile Element is not displayed on the Web Page.
 	 * 
-	 * @param @param locator Object used to locate Mobile Element to assert.  
+	 * @param locator Object used to locate Mobile Element to assert.  
 	 * @return	<code>PASSED</code> if Mobile Element is not displayed on Web Page.
 	 * 			<code>FAILED</code> if Mobile Element is displayed on Web Page.
 	 */

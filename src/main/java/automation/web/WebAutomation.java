@@ -19,6 +19,8 @@ public interface WebAutomation {
 	
 	/**
 	 * Opens Tab.
+	 * 
+	 * @param url Url of the Web Page desired to navigate to.
 	 */
 	
 	public void openTab(String url);
@@ -103,7 +105,8 @@ public interface WebAutomation {
 	/**
 	 * Scrolls Page
 	 * 
-	 * @param pixel
+	 * @param pixelHorizontal	Horizontal Pixel Value to scroll to
+	 * @param pixelVertical 	Vertical Pixel Value to scroll to
 	 */
 	
 	public void scroll(String pixelHorizontal, String pixelVertical);
@@ -481,7 +484,7 @@ public interface WebAutomation {
 	/**
 	 * Verifies Web Element is not displayed on the Web Page.
 	 * 
-	 * @param @param locator Object used to locate Web Element to assert.  
+	 * @param locator Object used to locate Web Element to assert.  
 	 * @return	<code>PASSED</code> if Web Element is not displayed on Web Page.
 	 * 			<code>FAILED</code> if Web Element is displayed on Web Page.
 	 */
