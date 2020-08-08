@@ -17,7 +17,7 @@ public class OperatingSystem {
 	/**
 	 * Gets Operating System of Host System.
 	 * 
-	 * @return
+	 * @return Operating System Platform
 	 */
 	
 	public static final Platform getOS() {
