@@ -9,6 +9,20 @@
 	<name>Verifico</name>
 	<description></description>
 	<url>https://abagabagon.github.io/verifico/</url>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Arnel Bagabagon Jr.</name>
+			<email>abagabagon@gmail.com</email>
+			<organization>PouchNATION</organization>
+			<organizationUrl>https://pouchnation.com/</organizationUrl>
+		</developer>
+	</developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
