@@ -58,7 +58,7 @@ public class ExtentReport {
 	/**
 	 * Initializes ExtentSparkReporter instance.
 	 * 
-	 * @param testSuiteName Test Suite Name
+	 * @param fileName Output File Name
 	 */
 	
 	private static final void setExtentSparkReporter(String fileName) {
@@ -75,9 +75,7 @@ public class ExtentReport {
 	/**
 	 * Initializes ExtentTest instance.
 	 * 
-	 * @param testCaseName Name of Test Case being executed.
-	 * @param author       Name of the Tester executing current Test Case.
-	 * @param category     Name of the Category current Test Case is under.
+	 * @param testName Name of Test Case being executed.
 	 * @param description  Description of the current Test Case 
 	 */
 	
@@ -138,9 +136,8 @@ public class ExtentReport {
 	}
 	
 	/**
-	 * Sets the Author of the current Test being executed.
+	 * Sets the Device for the test.
 	 * 
-	 * @param author Name of the Tester executing current Test Case.
 	 */
 	
 	public static final void setDevice() {
@@ -150,7 +147,7 @@ public class ExtentReport {
 		} else {
 			String device = System.getProperty("os.version");
 			test.assignDevice(device);
-			log.debug("Successfully set Author for ExtentTest.");
+			log.debug("Successfully set Device for ExtentTest.");
 		}
 	}
 	
@@ -172,7 +169,7 @@ public class ExtentReport {
 	/**
 	 * Logs test event as PASSED
 	 * 
-	 * @param details Details of the Test Event.
+	 * @param testCaseName Name of the Test Case that PASSED
 	 */
 	
 	public static final void logPassed(String testCaseName) {
@@ -188,7 +185,7 @@ public class ExtentReport {
 	/**
 	 * Logs test event as FAILED
 	 * 
-	 * @param details Details of the Test Event.
+	 * @param testCaseName Name of the Test Case that FAILED
 	 */
 	
 	public static final void logFailed(String testCaseName) {
@@ -204,7 +201,7 @@ public class ExtentReport {
 	/**
 	 * Logs test event as SKIPPED
 	 * 
-	 * @param details Details of the Test Event.
+	 * @param testCaseName Name of the Test Case that was SKIPPED
 	 */
 	
 	public static final void logSkipped(String testCaseName) {
