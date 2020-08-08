@@ -221,50 +221,50 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/*                       USER ACTIONS                      */
 	/* ####################################################### */
 	
-	WebElement getElement(Object locator) {
+	WebElement getElement(By locator) {
 		WebElement element = null;
 		try {
-			element = this.driver.findElement((By)locator);
+			element = this.driver.findElement(locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while getting WebElement.");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 		} catch (NoSuchElementException e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 		}
 		return element;
 	}
 	
-	List<WebElement> getElements(Object locator) {
+	List<WebElement> getElements(By locator) {
 		List<WebElement> elements;
 		try {
-			elements = this.driver.findElements((By)locator);
+			elements = this.driver.findElements(locator);
 		} catch (NullPointerException e) {
 			this.log.warn("Encountered NullPointerException while getting WebElement.");
-			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
+			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while getting WebElement.");
-			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
+			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 		} catch (NoSuchElementException e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
-			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
+			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 		} catch (Exception e) {
 			this.log.warn("Encountered NoSuchElementException while getting WebElement.");
 			e.printStackTrace();
-			elements = this.seleniumWait.waitForObjectsToBeVisible((By)locator);
+			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 		}
 		return elements;
 	}
 	
 	@Override
-	public void point(Object locator) {
+	public void point(By locator) {
 		this.log.info("I point at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
@@ -272,37 +272,37 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action.moveToElement(element).perform();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while pointing at Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.action.moveToElement(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while pointing at Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.action.moveToElement(element).perform();
 		}
 	}
 
 	@Override
-	public void click(Object locator) {
+	public void click(By locator) {
 		this.log.info("I click Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		try {
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while clicking Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		}
 	}
 	
 	@Override
-	public void clickJS(Object locator) {
+	public void clickJS(By locator) {
 		this.log.info("I click Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		this.javascriptExecutor = (JavascriptExecutor) this.driver;
@@ -310,7 +310,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clickAndHold(Object locator) {
+	public void clickAndHold(By locator) {
 		this.log.info("I click and hold Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
@@ -318,18 +318,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action.clickAndHold(element).perform();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while clicking and holding Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking and holding Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		}
 	}
 	
 	@Override
-	public void clickFromObjectListBasedOnText(Object objectList, String textToCheck) {
+	public void clickFromObjectListBasedOnText(By objectList, String textToCheck) {
 		this.log.info("I click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
@@ -348,7 +348,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick) {
+	public void clickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClick) {
 		this.log.info("I click a Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToClick = this.getElements(objectToClick);
@@ -368,7 +368,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void doubleClick(Object locator) {
+	public void doubleClick(By locator) {
 		this.log.info("I double click Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
@@ -376,18 +376,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action.doubleClick(element).perform();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while double clicking at Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while double clicking at Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
 		}
 	}
 	
 	@Override
-	public void doubleClickFromObjectListBasedOnText(Object objectList, String textToCheck) {
+	public void doubleClickFromObjectListBasedOnText(By objectList, String textToCheck) {
 		this.log.info("I double click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
@@ -407,7 +407,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void doubleClickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToDoubleClick) {
+	public void doubleClickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToDoubleClick) {
 		this.log.info("I double click a Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToClick = this.getElements(objectToDoubleClick);
@@ -428,7 +428,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void dragAndDrop(Object sourceObject, Object targetObject) {
+	public void dragAndDrop(By sourceObject, By targetObject) {
 		this.log.info("I drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\".");
 		WebElement sourceElement = this.getElement(sourceObject);
 		WebElement targetElement = this.getElement(targetObject);
@@ -450,27 +450,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void type(Object locator, String inputText) {
+	public void type(By locator, String inputText) {
 		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
 			element.sendKeys(inputText);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while typing text at Web Element: \"" + locator.toString() + "\"");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Encountered IllegalArgumentException while typing text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while typing text at Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
 		}
 	}
 	
 	@Override
-	public void typeJS(Object locator, String inputText) {
+	public void typeJS(By locator, String inputText) {
 		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		this.javascriptExecutor = (JavascriptExecutor) this.driver;
@@ -478,7 +478,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
+	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText) {
 		this.log.info("I type at Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToFill = this.getElements(objectToFill);
@@ -498,33 +498,33 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void press(Object locator, Object keyButton) {
+	public void press(By locator, Keys keyButton) {
 		this.log.info("I press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\"."); 
 		WebElement element = this.getElement(locator);
-		Keys keys = (Keys) keyButton;
+		Keys keys = keyButton;
 		try {
 			element.sendKeys(keys);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(keys);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Encountered IllegalArgumentException while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Input Text is NULL");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while pressing \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(keys);
 		}
 	}
 	
 	@Override
-	public void pressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, Object keyButton) {
+	public void pressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, Keys keyButton) {
 		this.log.info("I press keys at Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToFill = this.getElements(objectToFill);
 		int size = elementToFill.size();
-		Keys keys = (Keys) keyButton;
+		Keys keys = keyButton;
 		boolean flgTextFound = false;
 		for(int i = 0; i < size; i++) {
 			String text = elementToCheckText.get(i).getText().trim();
@@ -540,25 +540,25 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void clear(Object locator) {
+	public void clear(By locator) {
 		this.log.info("I clear Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
 			element.clear();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while clearing Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clearing Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		}
 	}
 	
 	@Override
-	public void clearFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClear) {
+	public void clearFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClear) {
 		this.log.info("I clear a Web Element from Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToClear = this.getElements(objectToClear);
@@ -578,7 +578,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void select(Object locator, String option) {
+	public void select(By locator, String option) {
 		this.log.info("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		try {
@@ -605,7 +605,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public void deselect(Object locator, String option) {
+	public void deselect(By locator, String option) {
 		this.log.info("I deselect option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		try {
@@ -633,7 +633,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public String getText(Object locator) {
+	public String getText(By locator) {
 		this.log.info("I get text from Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		String text = null;
@@ -644,19 +644,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving text from Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.getText();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving text from Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.getText();
 		}
 		return text;
 	}
 	
 	@Override
-	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
+	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom) {
 		this.log.info("I get text from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToGetText = this.getElements(objectToGetTextFrom);
@@ -678,7 +678,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public String getValue(Object locator) {
+	public String getValue(By locator) {
 		this.log.info("I get value from Web Element: \"" + locator.toString() + "\".");
 		String text = null;
 		WebElement element = this.getElement(locator);
@@ -689,19 +689,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving Text Box Value from Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute("value");
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Text Box Value from Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute("value");
 		}
 		return text;
 	}
 	
 	@Override
-	public String getValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom) {
+	public String getValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom) {
 		this.log.info("I get value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
@@ -723,7 +723,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public String getAttributeValue(Object locator, String attribute) {
+	public String getAttributeValue(By locator, String attribute) {
 		this.log.info("I get attribute value from Web Element: \"" + locator.toString() + "\".");
 		String text = null;
 		WebElement element = this.getElement(locator);
@@ -734,19 +734,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving Attribute Value from Web Element: \"" + locator.toString() + "\".");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute(attribute);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while retrieving Attribute Value from Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute(attribute);
 		}
 		return text;
 	}
 	
 	@Override
-	public String getAttributeValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom, String attribute) {
+	public String getAttributeValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom, String attribute) {
 		this.log.info("I get attribute value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
@@ -768,7 +768,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public String getDropDownListValue(Object locator) {
+	public String getDropDownListValue(By locator) {
 		this.log.info("I get value from Drop-down List Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		this.select = new Select(element);
@@ -780,13 +780,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Encountered StaleElementReferenceException while retrieving Drop-down List Web Element: \"" + locator.toString() + "\" Value.");
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		} catch (Exception e) {
 			this.log.debug("Encountered Exception while retrieving Drop-down List Web Element: \"" + locator.toString() + "\" Value.");
 			e.printStackTrace();
-			element = this.seleniumWait.waitForObjectToBeVisible((By)locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		}
@@ -861,9 +861,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public TestStatus verifyClickable(Object locator) {
+	public TestStatus verifyClickable(By locator) {
 		this.log.info("I verify Web Element: \"" + locator.toString() + "\" is clickable.");
-		WebElement element = this.seleniumWait.waitForObjectToBeClickable((By)locator);
+		WebElement element = this.seleniumWait.waitForObjectToBeClickable(locator);
 		TestStatus status = TestStatus.FAILED;
 		if (element != null) {
 			status = TestStatus.PASSED;
@@ -876,9 +876,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyValue(Object locator, String expectedValue) {
+	public TestStatus verifyValue(By locator, String expectedValue) {
 		this.log.info("I verify \"" + expectedValue + "\" is displayed at Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getValue((By)locator);
+		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		TestStatus status = TestStatus.FAILED;
 		if(isValueEqual) {
@@ -892,9 +892,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue) {
+	public TestStatus verifyAttributeValue(By locator, String attribute, String expectedValue) {
 		this.log.info("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue((By)locator, attribute);
+		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		TestStatus status = TestStatus.FAILED;
 		if(isValueEqual) {
@@ -908,7 +908,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyDropDownListValue(Object locator, String expectedValue) {
+	public TestStatus verifyDropDownListValue(By locator, String expectedValue) {
 		this.log.info("I verify \"" + expectedValue + "\" Drop-down List Value is displayed at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		this.select = new Select(element);
@@ -926,9 +926,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyText(Object locator, String expectedValue) {
+	public TestStatus verifyText(By locator, String expectedValue) {
 		this.log.info("Verifying \"" + expectedValue + "\" Text Value is displayed.");
-		String actualText = this.getText((By)locator);
+		String actualText = this.getText(locator);
 		boolean isValueEqual = actualText.equals(expectedValue);
 		TestStatus status = TestStatus.FAILED;
 		if(isValueEqual) {
@@ -942,7 +942,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyDisplayed(Object locator) {
+	public TestStatus verifyDisplayed(By locator) {
 		this.log.info("I verify Web Element: \"" + locator.toString() + "\" is displayed.");
 		List<WebElement> elements = this.getElements(locator);
 		TestStatus status = TestStatus.FAILED;
@@ -957,7 +957,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyNotDisplayed(Object locator) {
+	public TestStatus verifyNotDisplayed(By locator) {
 		this.log.info("I verify Web Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		this.initializeExplicitWait(2);
@@ -976,7 +976,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public TestStatus verifyEnabled(Object locator) {
+	public TestStatus verifyEnabled(By locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is enabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
@@ -992,7 +992,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyDisabled(Object locator) {
+	public TestStatus verifyDisabled(By locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is disabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
@@ -1008,9 +1008,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifySelected(Object locator) {
+	public TestStatus verifySelected(By locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is selected.");
-		this.seleniumWait.waitForObjectSelectionStateToBe((By)locator, true);
+		this.seleniumWait.waitForObjectSelectionStateToBe(locator, true);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
 		TestStatus status = TestStatus.FAILED;
@@ -1025,9 +1025,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 
 	@Override
-	public TestStatus verifyNotSelected(Object locator) {
+	public TestStatus verifyNotSelected(By locator) {
 		this.log.info("Verifying element \"" + locator.toString() + "\" is not selected.");
-		this.seleniumWait.waitForObjectSelectionStateToBe((By)locator, false);
+		this.seleniumWait.waitForObjectSelectionStateToBe(locator, false);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
 		TestStatus status = TestStatus.FAILED;
