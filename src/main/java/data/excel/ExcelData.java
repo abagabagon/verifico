@@ -16,8 +16,8 @@ public interface ExcelData {
 	/**
 	 * Gets data from a specific Column of an Excel File Sheet.
 	 * 
-	 * @param  sheetName Sheet Name from the Excel File where data will be retrieved.
-	 * @param  columnNum Column of cell data to retrieve.
+	 * @param  sheetName	Sheet Name from the Excel File where data will be retrieved.
+	 * @param  columnName 	Column Name from the Excel File where data will be retrieved.
 	 * @return Data in a form of an Object.
 	 */
 	
