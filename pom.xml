@@ -7,7 +7,7 @@
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<name>Verifico</name>
-	<description></description>
+	<description>Web and Mobile Test Automation Library</description>
 	<url>https://abagabagon.github.io/verifico/</url>
 	<licenses>
 		<license>
