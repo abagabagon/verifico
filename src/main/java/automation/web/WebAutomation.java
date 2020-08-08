@@ -1,5 +1,8 @@
 package automation.web;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+
 import enums.TestStatus;
 
 public interface WebAutomation {
@@ -115,7 +118,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to point the mouse into.
 	 */
 	
-	public void point(Object locator);
+	public void point(By locator);
 	
 	/**
 	 * Clicks the specified Web Element. Used for Elements that are clickable.
@@ -123,7 +126,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to be clicked.
 	 */
 
-	public void click(Object locator);
+	public void click(By locator);
 	
 	/**
 	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
@@ -131,7 +134,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to be clicked.
 	 */
 	
-	public void clickJS(Object locator);
+	public void clickJS(By locator);
 	
 	/**
 	 * Clicks and holds the specified Web Element. Used for Elements that are clickable.
@@ -139,7 +142,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to be clicked and held.
 	 */
 
-	public void clickAndHold(Object locator);
+	public void clickAndHold(By locator);
 	
 	/**
 	 * Clicks the specified Web Element from an Object List based on text value.
@@ -148,7 +151,7 @@ public interface WebAutomation {
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void clickFromObjectListBasedOnText(Object objectList, String textToCheck);
+	public void clickFromObjectListBasedOnText(By objectList, String textToCheck);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
@@ -158,7 +161,7 @@ public interface WebAutomation {
 	 * @param objectToClick		Object from same row to click if text is found on that row.
 	 */
 	
-	public void clickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClick);
+	public void clickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClick);
 	
 	/**
 	 * Double clicks the specified Web Element. Used for Elements that are clickable.
@@ -166,7 +169,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to be double-clicked.
 	 */
 
-	public void doubleClick(Object locator);
+	public void doubleClick(By locator);
 	
 	/**
 	 * Double clicks the specified Web Element from an Object List based on text value.
@@ -175,7 +178,7 @@ public interface WebAutomation {
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void doubleClickFromObjectListBasedOnText(Object objectList, String textToCheck);
+	public void doubleClickFromObjectListBasedOnText(By objectList, String textToCheck);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
@@ -185,7 +188,7 @@ public interface WebAutomation {
 	 * @param objectToDoubleClick	Object from same row to double click if text is found on that row.
 	 */
 	
-	public void doubleClickFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToDoubleClick);
+	public void doubleClickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToDoubleClick);
 	
 	/**
 	 * Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.
@@ -194,7 +197,7 @@ public interface WebAutomation {
 	 * @param targetObject Object used to locate Web Element where the dragged Web Element will be dropped into.
 	 */
 
-	public void dragAndDrop(Object sourceObject, Object targetObject);
+	public void dragAndDrop(By sourceObject, By targetObject);
 	
 	/**
 	 * Simulates typing into a text box/area Web Element, which may set its value. Text entry
@@ -204,7 +207,7 @@ public interface WebAutomation {
 	 * @param inputText Text to enter.
 	 */
 
-	public void type(Object locator, String inputText);
+	public void type(By locator, String inputText);
 	
 	/**
 	 * Simulates typing into a text box/area Web Element, which may set its value (utilizing Javascript). Text entry
@@ -214,7 +217,7 @@ public interface WebAutomation {
 	 * @param inputText Text to enter.
 	 */
 
-	public void typeJS(Object locator, String inputText);
+	public void typeJS(By locator, String inputText);
 	
 	/**
 	 * Type input text at the specified Web Element from a row in a table based on text value from the same row.
@@ -225,7 +228,7 @@ public interface WebAutomation {
 	 * @param inputText			Text value to input
 	 */
 	
-	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
+	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText);
 	
 	/**
 	 * Simulates pressing of characters into a text box/area Web Element.
@@ -234,7 +237,7 @@ public interface WebAutomation {
 	 * @param keyButton	Key Button to press
 	 */
 	
-	public void press(Object locator, Object keyButton);
+	public void press(By locator, Keys keyButton);
 	
 	/**
 	 * Press specified keys at the specified Web Element from a row in a table based on text value from the same row.
@@ -245,7 +248,7 @@ public interface WebAutomation {
 	 * @param keyButton			Key Button to press.
 	 */
 	
-	public void pressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, Object keyButton);
+	public void pressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, Keys keyButton);
 	
 	/**
 	 * Clears value of a text box/area Web Element. Text entry Web Elements are INPUT and
@@ -254,7 +257,7 @@ public interface WebAutomation {
 	 * @param locator Object used to locate Web Element to clear value of.
 	 */
 
-	public void clear(Object locator);
+	public void clear(By locator);
 	
 	/**
 	 * Clears value of the specified Web Element from a row in a table based on text value from the same row.
@@ -264,7 +267,7 @@ public interface WebAutomation {
 	 * @param objectToClear		Object from same row to clear if text is found on that row.
 	 */
 	
-	public void clearFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToClear);
+	public void clearFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClear);
 
 	/**
 	 * Selects a Drop-down List Web Element Option.
@@ -273,7 +276,7 @@ public interface WebAutomation {
 	 * @param option	Option to be selected.
 	 */
 
-	public void select(Object locator, String option);
+	public void select(By locator, String option);
 	
 	/**
 	 * Deselects a Multi-select Web Element Option.
@@ -282,7 +285,7 @@ public interface WebAutomation {
 	 * @param option	Option to be selected.
 	 */
 
-	public void deselect(Object locator, String option);
+	public void deselect(By locator, String option);
 	
 	/**
 	 * Get the visible innerText of this Web Element, including sub-elements, without
@@ -292,7 +295,7 @@ public interface WebAutomation {
 	 * @return	Retrieved Web Element Text.
 	 */
 	
-	public String getText(Object locator);
+	public String getText(By locator);
 	
 	/**
 	 * Get text of the specified Web Element from a row in a table based on text value from the same row.
@@ -303,7 +306,7 @@ public interface WebAutomation {
 	 * @return	Retrieved Web Element Text.
 	 */
 	
-	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
+	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom);
 
 	/**
 	 * Gets the value of the INPUT and TEXTAREA Web Element.
@@ -312,7 +315,7 @@ public interface WebAutomation {
 	 * @return	Retrieved value of the INPUT/TEXTAREA Web Element.
 	 */
 	
-	public String getValue(Object locator);
+	public String getValue(By locator);
 	
 	/**
 	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
@@ -323,7 +326,7 @@ public interface WebAutomation {
 	 * @return	Retrieved value of the INPUT/TEXTAREA Web Element.
 	 */
 	
-	public String getValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom);
+	public String getValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom);
 	
 	/**
 	 * Get the value of the specified attribute of the Web Element.
@@ -333,7 +336,7 @@ public interface WebAutomation {
 	 * @return	Retrieved Web Element attribute value.
 	 */
 	
-	public String getAttributeValue(Object locator, String attribute);
+	public String getAttributeValue(By locator, String attribute);
 	
 	/**
 	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
@@ -345,7 +348,7 @@ public interface WebAutomation {
 	 * @return	Retrieved Web Element attribute value.
 	 */
 	
-	public String getAttributeValueFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetValueFrom, String attribute);
+	public String getAttributeValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom, String attribute);
 	
 	/**
 	 * Gets the selected option of the Drop-down List Web Element.
@@ -354,7 +357,7 @@ public interface WebAutomation {
 	 * @return	Retrieved value of the Drop-down List Web Element.
 	 */
 
-	public String getDropDownListValue(Object locator);
+	public String getDropDownListValue(By locator);
 	
 	/**
 	 * Waits for a specific time (Seconds).
@@ -406,7 +409,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is not clickable.
 	 */
 	
-	public TestStatus verifyClickable(Object locator);
+	public TestStatus verifyClickable(By locator);
 
 	/**
 	 * Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected
@@ -418,7 +421,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if value is not equal to expected value.
 	 */
 
-	public TestStatus verifyValue(Object locator, String expectedValue);
+	public TestStatus verifyValue(By locator, String expectedValue);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -431,7 +434,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if value is not equal to expected attribute value.
 	 */
 
-	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue);
+	public TestStatus verifyAttributeValue(By locator, String attribute, String expectedValue);
 
 	/**
 	 * Verifies Drop-down List Web Element Value if equal to expected text value.
@@ -442,7 +445,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if value is not equal to expected drop-down list value.
 	 */
 
-	public TestStatus verifyDropDownListValue(Object locator, String expectedValue);
+	public TestStatus verifyDropDownListValue(By locator, String expectedValue);
 
 	/**
 	 * Verifies Web Element with text if equal to expected text value.
@@ -453,7 +456,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if value is not equal to expected value.
 	 */
 
-	public TestStatus verifyText(Object locator, String expectedValue);
+	public TestStatus verifyText(By locator, String expectedValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
@@ -463,7 +466,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is not displayed on Web Page.
 	 */
 	
-	public TestStatus verifyDisplayed(Object locator);
+	public TestStatus verifyDisplayed(By locator);
 	
 	/**
 	 * Verifies Web Element is not displayed on the Web Page.
@@ -473,7 +476,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is displayed on Web Page.
 	 */
 
-	public TestStatus verifyNotDisplayed(Object locator);
+	public TestStatus verifyNotDisplayed(By locator);
 	
 	/**
 	 * Verifies Web Element is enabled on the Web Page.
@@ -483,7 +486,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is not enabled on Web Page.
 	 */
 
-	public TestStatus verifyEnabled(Object locator);
+	public TestStatus verifyEnabled(By locator);
 	
 	/**
 	 * Verifies Web Element is disabled on the Web Page.
@@ -493,7 +496,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is not disabled on Web Page.
 	 */
 
-	public TestStatus verifyDisabled(Object locator);
+	public TestStatus verifyDisabled(By locator);
 	
 	/**
 	 * Verifies Web Element is selected on the Web Page. Used for Check Boxes and Radio Buttons.
@@ -503,7 +506,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is not selected on Web Page.
 	 */
 
-	public TestStatus verifySelected(Object locator);
+	public TestStatus verifySelected(By locator);
 	
 	/**
 	 * Verifies Web Element is not selected on the Web Page. Used for Check Boxes and Radio Buttons.
@@ -513,7 +516,7 @@ public interface WebAutomation {
 	 * 			<code>FAILED</code> if Web Element is selected on Web Page.
 	 */
 
-	public TestStatus verifyNotSelected(Object locator);
+	public TestStatus verifyNotSelected(By locator);
 	
 	/**
 	 * Verifies Javascript Alert Message displayed if equal to
