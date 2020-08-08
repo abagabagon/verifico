@@ -603,6 +603,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
 		}
 	}
+	
+	@Override
+	public void select(By locator, By optionList, String option) {
+		this.log.info("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
+		this.click(locator);
+		this.clickFromObjectListBasedOnText(optionList, option);
+	}
 
 	@Override
 	public void deselect(By locator, String option) {

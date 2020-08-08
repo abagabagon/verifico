@@ -279,6 +279,16 @@ public interface WebAutomation {
 	public void select(By locator, String option);
 	
 	/**
+	 * Selects a Drop-down List Web Element Option.
+	 * 
+	 * @param locator		Object used to locate Web Element to select an option from.
+	 * @param optionList	Object used to locate Web Element List of options to select.
+	 * @param option		Option to be selected.
+	 */
+
+	public void select(By locator, By optionList, String option);
+	
+	/**
 	 * Deselects a Multi-select Web Element Option.
 	 * 
 	 * @param locator	Object used to locate Web Element to select an option from.
