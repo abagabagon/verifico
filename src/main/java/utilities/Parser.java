@@ -16,6 +16,13 @@ public class Parser {
 		log.debug("Successfully initialized Parser Class.");
 	}
 	
+	/**
+	 * Parses an Object Array to a String Array
+	 * 
+	 * @param object Object Array for parsing
+	 * @return parsed String Array
+	 */
+	
 	public static final String[] parseObjectArrayToStringArray(Object[] object) {
 		int objectCount = object.length;
 		String[] parsed = new String[objectCount];
@@ -25,6 +32,13 @@ public class Parser {
 		}
 		return parsed;
 	}
+	
+	/**
+	 * Parses an Object Array to an int Array
+	 * 
+	 * @param object Object Array for parsing
+	 * @return parsed int Array
+	 */
 	
 	public static final int[] parseObjectArrayToIntArray(Object[] object) {
 		int objectCount = object.length;
@@ -36,6 +50,13 @@ public class Parser {
 		return parsed;
 	}
 	
+	/**
+	 * Parses an Object Array to an double Array
+	 * 
+	 * @param object Object Array for parsing
+	 * @return parsed double Array
+	 */
+	
 	public static final double[] parseObjectArrayToDoubleArray(Object[] object) {
 		int objectCount = object.length;
 		double[] parsed = new double[objectCount];
@@ -45,6 +66,13 @@ public class Parser {
 		}
 		return parsed;
 	}
+	
+	/**
+	 * Parses an Object Array to an boolean Array
+	 * 
+	 * @param object Object Array for parsing
+	 * @return parsed boolean Array
+	 */
 	
 	public static final boolean[] parseObjectArrayToBooleanArray(Object[] object) {
 		int objectCount = object.length;
@@ -57,9 +85,11 @@ public class Parser {
 	}
 	
 	/**
-	 * Parses an input Result Set to an Object Array.
+	 * Parses an input ResultSet to an Object Array.
 	 * 
-	 * @param  resultSet Input ResultSet Object
+	 * @param resultSet 	Input ResultSet Object
+	 * @param columnCount	Column Count
+	 * @param rowCount		Row Count
 	 * @return Parsed Object Array
 	 */
 	
