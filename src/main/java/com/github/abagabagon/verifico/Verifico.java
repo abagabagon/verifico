@@ -122,17 +122,5 @@ public class Verifico {
 		
 		return this.excelData;
 	}
-	
-	/**
-	 * Get ExtentReport instance for Test Automation
-	 * 
-	 * @return ExtentReport instance
-	 */
-	
-	public final ExtentReport getReport() {
-		this.log.debug("Initializing Report instance.");
-		this.report = new ExtentReport();
-		return this.report;
-	}
 
 }
