@@ -38,7 +38,7 @@ public class Verifico {
 	 * Get WebAutomation instance for Web-based Application Test Automation
 	 * 
 	 * @param browser		Specific Web Browser to which tests will be executed.
-	 * @param isHeadless	If test execution for the browser is Headless. Note that implemented browsers with headless support are <code>CHROME</code>, <code>FIREFOX</code> & <code>PHANTOMJS</code>. 
+	 * @param isHeadless	If test execution for the browser is Headless. Note that implemented browsers with headless support are <code>CHROME</code>, <code>FIREFOX</code> and <code>PHANTOMJS</code>. 
 	 * 						<code>true</code> if browser is headless.
 	 * 						<code>false</code> if browser is not headless.
 	 * @return 				WebAutomation instance
