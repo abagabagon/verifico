@@ -19,7 +19,6 @@ import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Excel;
 import com.github.abagabagon.verifico.enums.Mobile;
 import com.github.abagabagon.verifico.enums.SQL;
-import com.github.abagabagon.verifico.report.ExtentReport;
 
 public class Verifico {
 	
@@ -28,7 +27,6 @@ public class Verifico {
 	private MobileAutomation mobileAutomation;
 	private SQLData sqlData;
 	private ExcelData excelData;
-	private ExtentReport report;
 	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
