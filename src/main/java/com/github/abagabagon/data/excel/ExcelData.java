@@ -1,4 +1,4 @@
-package data.excel;
+package com.github.abagabagon.data.excel;
 
 public interface ExcelData {
 	

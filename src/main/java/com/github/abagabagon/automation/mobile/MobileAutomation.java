@@ -1,6 +1,6 @@
-package automation.mobile;
+package com.github.abagabagon.automation.mobile;
 
-import enums.TestStatus;
+import com.github.abagabagon.enums.TestStatus;
 
 public interface MobileAutomation {
 	

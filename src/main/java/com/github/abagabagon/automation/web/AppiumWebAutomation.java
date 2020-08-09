@@ -1,4 +1,4 @@
-package automation.web;
+package com.github.abagabagon.automation.web;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriverException;
 
-import enums.TestStatus;
+import com.github.abagabagon.enums.TestStatus;
 
 public class AppiumWebAutomation extends SeleniumWebAutomation {
 

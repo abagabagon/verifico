@@ -1,4 +1,4 @@
-package utilities;
+package com.github.abagabagon.utilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

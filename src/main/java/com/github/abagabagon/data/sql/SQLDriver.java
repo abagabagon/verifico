@@ -1,4 +1,4 @@
-package data.sql;
+package com.github.abagabagon.data.sql;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;

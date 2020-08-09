@@ -1,4 +1,4 @@
-package automation.mobile;
+package com.github.abagabagon.automation.mobile;
 
 import java.io.File;
 import java.net.URL;
@@ -8,7 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import enums.Mobile;
+import com.github.abagabagon.enums.Mobile;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;

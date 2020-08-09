@@ -1,4 +1,4 @@
-package utilities;
+package com.github.abagabagon.utilities;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

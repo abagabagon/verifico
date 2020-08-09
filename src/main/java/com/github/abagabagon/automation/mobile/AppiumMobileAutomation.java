@@ -1,4 +1,4 @@
-package automation.mobile;
+package com.github.abagabagon.automation.mobile;
 
 import java.io.File;
 import java.net.URL;
@@ -13,7 +13,8 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
-import enums.TestStatus;
+import com.github.abagabagon.enums.TestStatus;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
