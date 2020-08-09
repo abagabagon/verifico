@@ -19,7 +19,6 @@ import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Excel;
 import com.github.abagabagon.verifico.enums.Mobile;
 import com.github.abagabagon.verifico.enums.SQL;
-import com.github.abagabagon.verifico.report.ExtentReport;
 
 public class Verifico {
 	
@@ -28,7 +27,6 @@ public class Verifico {
 	private MobileAutomation mobileAutomation;
 	private SQLData sqlData;
 	private ExcelData excelData;
-	private ExtentReport report;
 	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -38,7 +36,7 @@ public class Verifico {
 	 * Get WebAutomation instance for Web-based Application Test Automation
 	 * 
 	 * @param browser		Specific Web Browser to which tests will be executed.
-	 * @param isHeadless	If test execution for the browser is Headless. Note that implemented browsers with headless support are <code>CHROME</code>, <code>FIREFOX</code> & <code>PHANTOMJS</code>. 
+	 * @param isHeadless	If test execution for the browser is Headless. Note that implemented browsers with headless support are <code>CHROME</code>, <code>FIREFOX</code> and <code>PHANTOMJS</code>. 
 	 * 						<code>true</code> if browser is headless.
 	 * 						<code>false</code> if browser is not headless.
 	 * @return 				WebAutomation instance
@@ -121,18 +119,6 @@ public class Verifico {
 		}
 		
 		return this.excelData;
-	}
-	
-	/**
-	 * Get ExtentReport instance for Test Automation
-	 * 
-	 * @return ExtentReport instance
-	 */
-	
-	public final ExtentReport getReport() {
-		this.log.debug("Initializing Report instance.");
-		this.report = new ExtentReport();
-		return this.report;
 	}
 
 }
