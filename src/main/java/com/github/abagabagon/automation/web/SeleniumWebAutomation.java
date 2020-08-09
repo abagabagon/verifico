@@ -1,4 +1,4 @@
-package automation.web;
+package com.github.abagabagon.automation.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import enums.TestStatus;
+import com.github.abagabagon.enums.TestStatus;
 
 public class SeleniumWebAutomation implements WebAutomation {
 

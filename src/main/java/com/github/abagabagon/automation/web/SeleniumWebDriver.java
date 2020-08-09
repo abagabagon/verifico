@@ -1,4 +1,4 @@
-package automation.web;
+package com.github.abagabagon.automation.web;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +19,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
+import com.github.abagabagon.utilities.OperatingSystem;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-import utilities.OperatingSystem;
 
 public class SeleniumWebDriver {
 	

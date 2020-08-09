@@ -1,4 +1,4 @@
-package automation.web;
+package com.github.abagabagon.automation.web;
 
 import java.util.List;
 

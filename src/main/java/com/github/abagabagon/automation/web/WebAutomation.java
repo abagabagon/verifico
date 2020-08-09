@@ -1,9 +1,9 @@
-package automation.web;
+package com.github.abagabagon.automation.web;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
-import enums.TestStatus;
+import com.github.abagabagon.enums.TestStatus;
 
 public interface WebAutomation {
 	

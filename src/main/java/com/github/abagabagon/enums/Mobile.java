@@ -1,4 +1,4 @@
-package enums;
+package com.github.abagabagon.enums;
 
 public enum Mobile {
 	

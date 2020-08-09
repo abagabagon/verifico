@@ -1,4 +1,4 @@
-package data.excel;
+package com.github.abagabagon.data.excel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,25 +7,26 @@ import java.math.BigDecimal;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class XLSExcelData implements ExcelData {
+public class XLSXExcelData implements ExcelData {
 	
 	private Logger log;
 	private FileInputStream excelIn;
-	private HSSFWorkbook book;
-	private HSSFCell cell;
+	private XSSFWorkbook book;
+	private XSSFCell cell;
 	private String filePath;
 
-	public XLSExcelData(String filePath) {
+	public XLSXExcelData(String filePath) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.filePath = filePath;
 	}
 
 	/**
-	 * Initializes external input Excel File.
+	 * Initializes external input Excel File containing Test Data needed for
+	 * Testing.
 	 */
 
 	private void initializeInputFile() {
@@ -41,7 +42,7 @@ public class XLSExcelData implements ExcelData {
 		}
 
 		try {
-			this.book = new HSSFWorkbook(this.excelIn);
+			this.book = new XSSFWorkbook(this.excelIn);
 		} catch (IOException e) {
 			this.log.fatal("Encountered IOException while initializing Input Excel File for Apache POI!");
 		} catch (Exception e) {
@@ -149,11 +150,11 @@ public class XLSExcelData implements ExcelData {
 	/**
 	 * Get value of a Excel Cell.
 	 * 
-	 * @param cell HSSFCell Object
+	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
 	
-	private Object getCellValue(HSSFCell cell) {
+	private Object getCellValue(XSSFCell cell) {
 		Object excelData = null;
 		switch(this.cell.getCellType()) {
 		case STRING:
@@ -176,11 +177,11 @@ public class XLSExcelData implements ExcelData {
 	/**
 	 * Get value of a String Type Excel Cell.
 	 * 
-	 * @param cell HSSFCell Object
+	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
 	
-	private Object getStringCellTypeData(HSSFCell cell) {
+	private Object getStringCellTypeData(XSSFCell cell) {
 		Object excelData = cell.getStringCellValue();
 		this.log.trace("Successfully retrieved String Value \"" + excelData.toString() + "\"");
 		return excelData;
@@ -189,17 +190,17 @@ public class XLSExcelData implements ExcelData {
 	/**
 	 * Get value of a Numeric Type Excel Cell.
 	 * 
-	 * @param cell HSSFCell Object
+	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
 	
-	private Object getNumericCellTypeData(HSSFCell cell) {
+	private Object getNumericCellTypeData(XSSFCell cell) {
 		Object excelData = null;
 		if (DateUtil.isCellDateFormatted(cell) == true) {
 			excelData = this.cell.getDateCellValue();
 			this.log.trace("Successfully retrieved Date Value \"" + excelData.toString() + "\"");
 		} else {
-			BigDecimal bigdDecimal = new BigDecimal(this.cell.getNumericCellValue());
+			BigDecimal bigdDecimal = new BigDecimal(this.cell.getRawValue());
 			excelData = bigdDecimal;
 			this.log.trace("Successfully retrieved Numeric Value \"" + Double.parseDouble(excelData.toString()) + "\" from a Numeric Type Cell");
 		}
@@ -209,11 +210,11 @@ public class XLSExcelData implements ExcelData {
 	/**
 	 * Get value of a Boolean Type Excel Cell.
 	 * 
-	 * @param cell HSSFCell Object
+	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
 	
-	private Object getBooleanCellTypeData(HSSFCell cell) {
+	private Object getBooleanCellTypeData(XSSFCell cell) {
 		Object excelData = cell.getBooleanCellValue();
 		this.log.trace("Successfully retrieved Boolean Value \"" + Boolean.parseBoolean(excelData.toString()) + "\" from a Boolean Type Cell.");
 		return excelData;
@@ -222,12 +223,12 @@ public class XLSExcelData implements ExcelData {
 	/**
 	 * Get value of a Formula Type Excel Cell.
 	 * 
-	 * @param cell HSSFCell Object
+	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
 	
-	private Object getFormulaCellTypeData(HSSFCell cell) {
-		Object excelData = cell.getStringCellValue();
+	private Object getFormulaCellTypeData(XSSFCell cell) {
+		Object excelData = cell.getRawValue();
 		this.log.trace("Successfully retrieved Formula Value \"" + excelData.toString() + "\" from a Formula Type Cell.");
 		return excelData;
 	}
