@@ -53,7 +53,7 @@ public class SQLData {
 	 * 
 	 * @param sqlQuery SQL SELECT Query to be executed
 	 * @return	ResultSet based on the SQL SELECT Query
-	 * @throws SQLTimeoutException
+	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
 	public ResultSet select(String sqlQuery) throws SQLTimeoutException {
@@ -82,7 +82,7 @@ public class SQLData {
 	 * Executes a SQL UPDATE Statement.
 	 * 
 	 * @param sqlQuery SQL UPDATE Query to be executed
-	 * @throws SQLTimeoutException
+	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
 	public void update(String sqlQuery) throws SQLTimeoutException {
@@ -116,7 +116,7 @@ public class SQLData {
 	 * Executes a SQL INSERT Statement.
 	 * 
 	 * @param sqlQuery SQL INSERT Query to be executed
-	 * @throws SQLTimeoutException
+	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
 	public void insert(String sqlQuery) throws SQLTimeoutException {
@@ -150,7 +150,7 @@ public class SQLData {
 	 * Executes a SQL DELETE Statement.
 	 * 
 	 * @param sqlQuery SQL DELETE Query to be executed
-	 * @throws SQLTimeoutException
+	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
 	public void delete(String sqlQuery) throws SQLTimeoutException {
