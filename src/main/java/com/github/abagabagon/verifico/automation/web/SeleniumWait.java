@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.web;
+package com.github.abagabagon.verifico.automation.web;
 
 import java.util.List;
 

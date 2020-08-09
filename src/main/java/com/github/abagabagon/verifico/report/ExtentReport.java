@@ -1,4 +1,4 @@
-package com.github.abagabagon.report;
+package com.github.abagabagon.verifico.report;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

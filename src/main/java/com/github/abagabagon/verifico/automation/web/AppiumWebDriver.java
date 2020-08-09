@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.web;
+package com.github.abagabagon.verifico.automation.web;
 
 import java.net.URL;
 
@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import com.github.abagabagon.verifico.enums.Mobile;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -29,10 +31,10 @@ public class AppiumWebDriver {
 	 * @return WebDriver Object
 	 */
 	
-	WebDriver getChromeDriver(String platformName, String platformVersion, String deviceName) {
+	WebDriver getChromeDriver(Mobile mobile, String platformVersion, String deviceName) {
 		this.log.debug("Initializing Google Chrome Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName);
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, mobile.toString());
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
@@ -48,10 +50,10 @@ public class AppiumWebDriver {
 	 * @return WebDriver Object
 	 */
 
-	WebDriver getSafariDriver(String platformName, String platformVersion, String deviceName) {
+	WebDriver getSafariDriver(Mobile mobile, String platformVersion, String deviceName) {
 		this.log.debug("Setting Property of Safari Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName);
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, mobile.toString());
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");

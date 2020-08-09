@@ -1,4 +1,4 @@
-package com.github.abagabagon.data.excel;
+package com.github.abagabagon.verifico.data.excel;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

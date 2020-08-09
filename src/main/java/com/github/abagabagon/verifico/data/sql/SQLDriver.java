@@ -1,4 +1,4 @@
-package com.github.abagabagon.data.sql;
+package com.github.abagabagon.verifico.data.sql;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -8,10 +8,12 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.abagabagon.verifico.enums.SQL;
+
 public class SQLDriver {
 	
-	private String sqlType;
 	private Logger log;
+	private SQL sqlType;
 	private String dbServer;
 	private String dbName;
 	private String user;
@@ -19,7 +21,7 @@ public class SQLDriver {
 	private Connection connection;
 	private String url;
 	
-	public SQLDriver(String sqlType, String dbServer, String dbName, String user, String password) {
+	public SQLDriver(SQL sqlType, String dbServer, String dbName, String user, String password) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.sqlType = sqlType;
 		this.dbServer = dbServer;
@@ -39,12 +41,14 @@ public class SQLDriver {
 		try {
 			this.log.debug("Initializing " + this.sqlType + " JDBC Driver.");
 			switch(this.sqlType) {
-			case("MySQL"):
+			case MySQL:
 				Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 				this.connection = this.getMySQLConnection();
-			case("MSSQL"):
+				break;
+			case MSSQL:
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").getDeclaredConstructor().newInstance();
-			this.connection = this.getMSSQLConnection();
+				this.connection = this.getMSSQLConnection();
+				break;
 			default:
 				this.log.fatal(this.sqlType + " is an unsupported SQL Type.");
 			}

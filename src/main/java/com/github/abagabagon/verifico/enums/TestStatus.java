@@ -1,4 +1,4 @@
-package com.github.abagabagon.enums;
+package com.github.abagabagon.verifico.enums;
 
 public enum TestStatus {
 	

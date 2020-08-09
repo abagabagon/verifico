@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.mobile;
+package com.github.abagabagon.verifico.automation.mobile;
 
 import java.io.File;
 import java.net.URL;
@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.github.abagabagon.enums.Mobile;
+import com.github.abagabagon.verifico.enums.Mobile;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -30,10 +30,9 @@ public class AppiumMobileDriver {
 	/**
 	 * Initializes and returns IOSDriver Object.
 	 * 
-	 * @param platformVersion
-	 * @param deviceName
-	 * @param applicationFile
-	 * @return
+	 * @param platformVersion	Version of the Mobile Platform.
+	 * @param deviceName		Name of the Device to which tests will be executed.
+	 * @return					IOSDriver Object
 	 */
 
 	AppiumDriver<MobileElement> getIOSDriver(String platformVersion, String deviceName) {
@@ -51,10 +50,10 @@ public class AppiumMobileDriver {
 	/**
 	 * Initializes and returns AndroidDriver Object.
 	 * 
-	 * @param platformVersion
-	 * @param deviceName
-	 * @param applicationFile
-	 * @return
+	 * @param platformVersion	Version of the Mobile Platform.
+	 * @param deviceName		Name of the Device to which tests will be executed.
+	 * @param applicationFile	Application File of the Mobile Application to be tested.
+	 * @return AndroidDriver Object
 	 */
 	
 	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, File applicationFile) {

@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.mobile;
+package com.github.abagabagon.verifico.automation.mobile;
 
 import java.io.File;
 import java.net.URL;
@@ -13,7 +13,8 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
-import com.github.abagabagon.enums.TestStatus;
+import com.github.abagabagon.verifico.enums.Mobile;
+import com.github.abagabagon.verifico.enums.TestStatus;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -35,11 +36,11 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	long explicitWaitDuration;
 	
 	private AppiumMobileDriver appiumMobileDriver;
-	private String mobile;
+	private Mobile mobile;
 	private String platformVersion;
 	private String deviceName;
 	
-	public AppiumMobileAutomation(String mobile, String platformVersion, File applicationFile, String deviceName, URL appiumServerUrl) {
+	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
 		this.implicitWaitDuration = 20;
@@ -57,11 +58,11 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public void openApplication() {
 		this.log.info("I open Application.");
 		switch(this.mobile) {
-		case "iOS":
+		case iOS:
 			this.driver = this.appiumMobileDriver.getIOSDriver(this.platformVersion, this.deviceName);
 			this.action = new TouchAction<IOSTouchAction>(this.driver);
 			break;
-		case "Android":
+		case Android:
 			this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
 			this.action = new TouchAction<AndroidTouchAction>(this.driver);
 			break;

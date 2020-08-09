@@ -1,4 +1,4 @@
-package com.github.abagabagon.data.sql;
+package com.github.abagabagon.verifico.data.sql;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,20 +9,22 @@ import java.sql.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.github.abagabagon.verifico.enums.SQL;
+
 public class SQLData {
 	
 	private Logger log;
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;
-	private String sqlType;
+	private SQL sqlType;
 	private String dbServer;
 	private String dbName;
 	private String user;
 	private String password;
 	private SQLDriver sqlDriver;
 
-	public SQLData(String sqlType, String dbServer, String dbName, String user, String password) {
+	public SQLData(SQL sqlType, String dbServer, String dbName, String user, String password) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.sqlType = sqlType;
 		this.dbServer = dbServer;
@@ -35,12 +37,24 @@ public class SQLData {
 	/*                     MAIN OPERATIONS                     */
 	/* ####################################################### */
 	
+	/**
+	 * Opens SQL Connection.
+	 * 
+	 */
 	
 	public void openConnection() {
 		this.log.info("I open SQL Connection.");
 		this.sqlDriver = new SQLDriver(this.sqlType, this.dbServer, this.dbName, this.user, this.password);
 		this.connection = this.sqlDriver.getSQLConnection();
 	}
+	
+	/**
+	 * Executes a SQL SELECT Statement and returns the ResultSet.
+	 * 
+	 * @param sqlQuery SQL SELECT Query to be executed
+	 * @return	ResultSet based on the SQL SELECT Query
+	 * @throws SQLTimeoutException
+	 */
 	
 	public ResultSet select(String sqlQuery) throws SQLTimeoutException {
 		this.log.info("I execute SQL SELECT Statement.");
@@ -63,6 +77,13 @@ public class SQLData {
 
 		return this.resultSet;
 	}
+	
+	/**
+	 * Executes a SQL UPDATE Statement.
+	 * 
+	 * @param sqlQuery SQL UPDATE Query to be executed
+	 * @throws SQLTimeoutException
+	 */
 	
 	public void update(String sqlQuery) throws SQLTimeoutException {
 		this.log.info("I execute SQL UPDATE Statement.");
@@ -91,6 +112,13 @@ public class SQLData {
 		}
 	}
 	
+	/**
+	 * Executes a SQL INSERT Statement.
+	 * 
+	 * @param sqlQuery SQL INSERT Query to be executed
+	 * @throws SQLTimeoutException
+	 */
+	
 	public void insert(String sqlQuery) throws SQLTimeoutException {
 		this.log.info("I execute SQL INSERT Statement.");
 		int insertCount = 0;
@@ -117,6 +145,13 @@ public class SQLData {
 			this.log.error("Statement is not an INSERT Statement.");
 		}
 	}
+	
+	/**
+	 * Executes a SQL DELETE Statement.
+	 * 
+	 * @param sqlQuery SQL DELETE Query to be executed
+	 * @throws SQLTimeoutException
+	 */
 	
 	public void delete(String sqlQuery) throws SQLTimeoutException {
 		this.log.info("I execute SQL DELETE Statement.");
@@ -145,6 +180,11 @@ public class SQLData {
 		}
 	}
 	
+	/**
+	 * Closes and empties the ResultSet.
+	 * 
+	 */
+	
 	public void closeResultSet() {
 		this.log.debug("Closing and Emptying ResultSet.");
 		try {
@@ -164,6 +204,11 @@ public class SQLData {
 		this.log.debug("Successfully closed and emptied ResultSet.");
 	}
 	
+	/**
+	 * Closes statement.
+	 * 
+	 */
+	
 	public void closeStatement() {
 		this.log.debug("Closing Statement.");
 		try {
@@ -182,6 +227,11 @@ public class SQLData {
 		}
 		this.log.debug("Successfully closed Statement.");
 	}
+	
+	/**
+	 * Closes SQL Connection.
+	 * 
+	 */
 	
 	public void closeConnection() {
 		this.log.debug("I close SQL Connection.");

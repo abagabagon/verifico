@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.web;
+package com.github.abagabagon.verifico.automation.web;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -6,17 +6,19 @@ import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.WebDriverException;
 
-import com.github.abagabagon.enums.TestStatus;
+import com.github.abagabagon.verifico.enums.Browser;
+import com.github.abagabagon.verifico.enums.Mobile;
+import com.github.abagabagon.verifico.enums.TestStatus;
 
 public class AppiumWebAutomation extends SeleniumWebAutomation {
 
 	private AppiumWebDriver appiumWebDriver;
-	private String mobile;
-	private String browser;
+	private Mobile mobile;
+	private Browser browser;
 	private String platformVersion;
 	private String deviceName;
 	
-	public AppiumWebAutomation(String mobile, String browser, String platformVersion, String deviceName, URL appiumServerUrl) {
+	public AppiumWebAutomation(String deviceName, Mobile mobile, String platformVersion, Browser browser, URL appiumServerUrl) {
 		super(browser);
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumWebDriver = new AppiumWebDriver(appiumServerUrl);
@@ -38,10 +40,10 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 
 		try {
 			switch (this.browser) {
-			case "CHROME":
+			case CHROME:
 				this.driver = this.appiumWebDriver.getChromeDriver(this.mobile, this.platformVersion, this.deviceName);
 				break;
-			case "SAFARI":
+			case SAFARI:
 				this.driver = this.appiumWebDriver.getSafariDriver(this.mobile, this.platformVersion, this.deviceName);
 				break;
 			default:

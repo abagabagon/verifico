@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.web;
+package com.github.abagabagon.verifico.automation.web;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
-import com.github.abagabagon.utilities.OperatingSystem;
+import com.github.abagabagon.verifico.enums.Browser;
+import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -33,16 +34,19 @@ public class SeleniumWebDriver {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
-	WebDriver getWebDriver(boolean isHeadless, String browser) {
+	WebDriver getWebDriver(Browser browser, boolean isHeadless) {
 		this.log.debug("Initializing Selenium Web Driver.");
 		try {
 			if(isHeadless) {
 				switch (browser) {
-				case "CHROME":
+				case CHROME:
 					this.driver = this.getChromeDriver(true);
 					break;
-				case "FIREFOX":
+				case FIREFOX:
 					this.driver = this.getFirefoxDriver(true);
+					break;
+				case PHANTOMJS:
+					this.driver = this.getPhantomJSDriver();
 					break;
 				default:
 					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
@@ -50,25 +54,25 @@ public class SeleniumWebDriver {
 				}
 			} else {
 				switch (browser) {
-				case "PHANTOMJS":
+				case PHANTOMJS:
 					this.driver = this.getPhantomJSDriver();
 					break;
-				case "CHROME":
+				case CHROME:
 					this.driver = this.getChromeDriver(false);
 					break;
-				case "SAFARI":
+				case SAFARI:
 					this.driver = this.getSafariDriver();
 					break;
-				case "FIREFOX":
+				case FIREFOX:
 					this.driver = this.getFirefoxDriver(false);
 					break;
-				case "OPERA":
+				case OPERA:
 					this.driver = this.getOperaDriver();
 					break;
-				case "EDGE":
+				case EDGE:
 					this.driver = this.getEdgeDriver();
 					break;
-				case "IE":
+				case IE:
 					this.driver = this.getIEDriver();
 					break;
 				default:

@@ -1,4 +1,4 @@
-package com.github.abagabagon.utilities;
+package com.github.abagabagon.verifico.utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

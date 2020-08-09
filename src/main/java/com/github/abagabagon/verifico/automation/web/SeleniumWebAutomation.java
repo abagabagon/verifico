@@ -1,4 +1,4 @@
-package com.github.abagabagon.automation.web;
+package com.github.abagabagon.verifico.automation.web;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.github.abagabagon.enums.TestStatus;
+import com.github.abagabagon.verifico.enums.Browser;
+import com.github.abagabagon.verifico.enums.TestStatus;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
@@ -35,18 +36,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 	ArrayList<String> tabs;
 	SeleniumWait seleniumWait;
 	
-	private String browser;
+	private Browser browser;
 	private boolean isHeadless;
 	private SeleniumWebDriver seleniumWebDriver;
 	
-	public SeleniumWebAutomation(String browser) {
+	public SeleniumWebAutomation(Browser browser) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
 		this.isHeadless = false;
 	}
 
-	public SeleniumWebAutomation(String browser, boolean isHeadless) {
+	public SeleniumWebAutomation(Browser browser, boolean isHeadless) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.seleniumWebDriver = new SeleniumWebDriver();
 		this.browser = browser;
@@ -60,7 +61,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void openBrowser() {
 		this.log.info("I open Web Browser.");
-		this.driver = this.seleniumWebDriver.getWebDriver(this.isHeadless, this.browser);
+		this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
 		maximizeBrowserWindow();
 		deleteAllCookies();
 		initializeImplicitWait(20);
