@@ -57,7 +57,7 @@ WebAutomation I = verifico.getWebAutomation(deviceName, mobile, platformVersion,
 
 ```java
 I.openBrowser();
-I.goTo(http://www.somewebsite.com/);
+I.goTo("http://www.somewebsite.com/");
 I.type(PageLogin.EMAIL_ADDRESS_TEXTBOX, "abagabagon@yopmail.com");
 I.type(PageLogin.PASSWORD_TEXTBOX, "ABCabc123");
 I.click(PageLogin.LOGIN_BUTTON);
