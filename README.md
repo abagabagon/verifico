@@ -66,32 +66,22 @@ I.click(PageLogin.LOGIN_BUTTON);
 #### **Excel Data**
 
 ```java
-Excel excel = Excel.XLS;
+Excel excelType = Excel.XLS;
 String filePath = "./src/resources/data/excel/staff-accounts.XLS";
 
 Verifico verifico = new Verifico();
-ExcelData excelData = verifico.getExcelData(excel, filePath);
-```
-
-Originally intended for use in a TestNG Test Framework, it can be used for retrieving test data for tests in a `@DataProvider` Method.
-
-```java
-@DataProvider(name = "Accounts")
-public Object[][] getAccountsData() {
-	ExcelData excelData = new XLSXExcelData("./src/resources/data/excel/staff-accounts.XLSX");
-	Object[][] data = excelData.getSheetData("Manager", false);
-	return data;
-}
+ExcelData excelData = verifico.getExcelData(excelType, filePath);
 ```
 
 #### **SQL Data**
 
 ```java
-String sqlType = "MySQL";
+SQL sqlType = "MySQL";
 String dbServer = "127.0.0.1";
 String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
 
-SQLData sqlData = new SQLData(sqlType, dbServer, dbName, user, password);
+Verifico verifico = new Verifico();
+SQLData sqlData = verifico.getSQLData(sqlType, dbServer, dbName, user, password);
 ```
