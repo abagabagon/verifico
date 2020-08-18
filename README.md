@@ -5,15 +5,15 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 
 ### **Components**
 
-| Component         | Java API                                                                                                                       | Version     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                                               | 3.141.59    |
-| Mobile Automation | [Appium](http://appium.io/)                                                                                                    | 7.3.0       |
-| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                                   | 2.13.3      |
-| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                                          | 5.0.1       |
-| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                                             | 4.1.2       |
-| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                                    | 8.0.21      |
-| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/jdbc/microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15)| 8.2.2.jre8  |
+| Component         | Java API                                                                                                      | Version     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | ----------- |
+| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                              | 3.141.59    |
+| Mobile Automation | [Appium](http://appium.io/)                                                                                   | 7.3.0       |
+| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                  | 2.13.3      |
+| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                         | 5.0.1       |
+| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                            | 4.1.2       |
+| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                   | 8.0.21      |
+| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15)| 8.2.2.jre8  |
 
 ### **Java Dependency**
 
@@ -68,8 +68,9 @@ I.click(PageLogin.LOGIN_BUTTON);
 ##### **Web Automation Commands**
 
 ###### **Browser Actions**
+
 | Command               | Description                                          |
-| ---------------------------------------------------------------------------- |
+| --------------------- | ---------------------------------------------------- |
 | openBrowser           | Opens Web Browser                                    |
 | openTab               | Opens Tab                                            |
 | goTo                  | Navigate to the Url specified                        |
@@ -86,8 +87,9 @@ I.click(PageLogin.LOGIN_BUTTON);
 | closeBrowser          | Closes Web Browser                                   |
 
 ###### **User Actions**
+
 | Command                               | Description                                                                                                       |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | point                                 | Point mouse to the specified Web Element                                                                          |
 | click                                 | Clicks the specified Web Element. Used for Elements that are clickable                                            |
 | clickJS                               | Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable                     |
@@ -117,8 +119,9 @@ I.click(PageLogin.LOGIN_BUTTON);
 | wait                                  | Waits for a specific time (Seconds)                                                                               |
 
 ###### **Verifications**
+
 | Command                 | Description                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------- |
+| ----------------------- | -------------------------------------------------------------------------------------------- |
 | verifyUrl               | Verifies Page URL of Web Page if equal to the expected URL                                   |
 | verifyTitle             | Verifies Page Title of Web Page if equal to the expected Title                               |
 | verifyPartialUrl        | Verifies Page URL of Web Page if partially equal to the expected URL                         |
