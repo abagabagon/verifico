@@ -5,15 +5,15 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 
 ### **Components**
 
-| Component         | Java API                                                                                                                       |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                                               |
-| Mobile Automation | [Appium](http://appium.io/)                                                                                                    |
-| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                                   |
-| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                                          |
-| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                                             |
-| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                                    |
-| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/jdbc/microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15)|
+| Component         | Java API                                                                                                                       | Version     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                                               | 3.141.59    |
+| Mobile Automation | [Appium](http://appium.io/)                                                                                                    | 7.3.0       |
+| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                                   | 2.13.3      |
+| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                                          | 5.0.1       |
+| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                                             | 4.1.2       |
+| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                                    | 8.0.21      |
+| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/jdbc/microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15)| 8.2.2.jre8  |
 
 ### **Java Dependency**
 
