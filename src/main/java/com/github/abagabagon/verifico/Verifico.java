@@ -19,6 +19,8 @@ import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Excel;
 import com.github.abagabagon.verifico.enums.Mobile;
 import com.github.abagabagon.verifico.enums.SQL;
+import com.github.abagabagon.verifico.testmanagement.TestManagement;
+import com.github.abagabagon.verifico.testmanagement.TestRail;
 
 public class Verifico {
 	
@@ -27,6 +29,7 @@ public class Verifico {
 	private MobileAutomation mobileAutomation;
 	private SQLData sqlData;
 	private ExcelData excelData;
+	private TestManagement testManagement;
 	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -119,6 +122,22 @@ public class Verifico {
 		}
 		
 		return this.excelData;
+	}
+	
+	/**
+	 * Get Test Management Tool instance for Test Automation
+	 * 
+	 * @param testRailServer	TestRail Server (e. g. "companyname.testrail.io")
+	 * @param testRailUser		E-Mail of an Active TestRail User 
+	 * @param testRailPassword	Password of the Active TestRail User
+	 * @param testRunId			TestRail Test Run ID
+	 * @return					TestManagement Instance
+	 */
+	
+	public final TestManagement getTestManagement(String testRailServer, String testRailUser, String testRailPassword, int testRunId) {
+		this.log.debug("Initializing Test Management Tool instance.");
+		this.testManagement = new TestRail(testRailServer, testRailUser, testRailPassword, testRunId);
+		return this.testManagement;
 	}
 
 }
