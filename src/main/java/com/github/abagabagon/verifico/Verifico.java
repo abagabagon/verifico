@@ -19,6 +19,8 @@ import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Excel;
 import com.github.abagabagon.verifico.enums.Mobile;
 import com.github.abagabagon.verifico.enums.SQL;
+import com.github.abagabagon.verifico.report.ExtentReport;
+import com.github.abagabagon.verifico.report.Reporter;
 import com.github.abagabagon.verifico.testmanagement.TestManagement;
 import com.github.abagabagon.verifico.testmanagement.TestRail;
 
@@ -30,6 +32,7 @@ public class Verifico {
 	private SQLData sqlData;
 	private ExcelData excelData;
 	private TestManagement testManagement;
+	private Reporter report;
 	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -138,6 +141,18 @@ public class Verifico {
 		this.log.debug("Initializing Test Management Tool instance.");
 		this.testManagement = new TestRail(testRailServer, testRailUser, testRailPassword, testRunId);
 		return this.testManagement;
+	}
+	
+	/**
+	 * Get Reporter instance for Test Automation
+	 * 
+	 * @return Reporter Instance
+	 */
+	
+	public final Reporter getReporter() {
+		this.log.debug("Initializing Reporter instance.");
+		this.report = new ExtentReport();
+		return this.report;
 	}
 
 }
