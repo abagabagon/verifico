@@ -1,6 +1,5 @@
 package com.github.abagabagon.verifico.report;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.aventstack.extentreports.ExtentReports;
@@ -12,47 +11,21 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-public class ExtentReport {
+public class ExtentReport implements Reporter {
 	
-	private static ExtentReports report;
-	private static ExtentSparkReporter reporter;
-	private static ExtentTest test;
-	private static Logger log;
+	private ExtentReports report;
+	private ExtentSparkReporter reporter;
+	private ExtentTest test;
+	private Logger log;
 	
-	static {
-		log = LogManager.getLogger(ExtentReport.class);
-		log.debug("Initializing ExtentReport Class.");
-		log.debug("Successfully initialized ExtentReport Class.");
-	}
-	
-	/**
-	 * Initializes ExtentReports instance.
-	 * 
-	 * @param testSuiteName Test Suite Name
-	 * @param organization	Organization Name
-	 */
-	
-	public static final void setExtentReport(String testSuiteName, String organization) {
-		log.debug("Initializing ExtentReport Instance.");
-		setExtentSparkReporter(testSuiteName);
-		report = new ExtentReports();
-		report.setSystemInfo("Organization", organization);
-		report.attachReporter(reporter);
-		log.debug("Successfully initialized ExtentReport Instance.");
-	}
-	
-	/**
-	 * Gets an instance of ExtentReports
-	 * 
-	 * @return Instance of ExtentReports
-	 */
-	
-	public static final ExtentReports getReport() {
-		log.debug("Retrieving ExtentReports Instance.");
-		if (isExtentReportsNull()) {
-			log.warn("Unable to retrieve ExtentReports Instance. Make sure an instance of ExtentReports has been created.");
-		}
-		return report;
+	@Override
+	public void setReport(String testSuiteName, String organization) {
+		this.log.debug("Initializing ExtentReport Instance.");
+		this.setExtentSparkReporter(testSuiteName);
+		this.report = new ExtentReports();
+		this.report.setSystemInfo("Organization", organization);
+		this.report.attachReporter(this.reporter);
+		this.log.debug("Successfully initialized ExtentReport Instance.");
 	}
 	
 	/**
@@ -61,176 +34,118 @@ public class ExtentReport {
 	 * @param fileName Output File Name
 	 */
 	
-	private static final void setExtentSparkReporter(String fileName) {
-		log.debug("Initializing ExtentSparkReporter Instance.");
+	private void setExtentSparkReporter(String fileName) {
+		this.log.debug("Initializing ExtentSparkReporter Instance.");
 		String filePath = "./reports/";
-		reporter = new ExtentSparkReporter(filePath + fileName);
-		reporter.config().setTheme(Theme.DARK);
-		reporter.config().setDocumentTitle(fileName);
-		reporter.config().setEncoding("utf-8");
-		reporter.config().setReportName(fileName.toString());
-		log.debug("Successfully initialized ExtentSparkReporter Instance.");
+		this.reporter = new ExtentSparkReporter(filePath + fileName);
+		this.reporter.config().setTheme(Theme.DARK);
+		this.reporter.config().setDocumentTitle(fileName);
+		this.reporter.config().setEncoding("utf-8");
+		this.reporter.config().setReportName(fileName.toString());
+		this.log.debug("Successfully initialized ExtentSparkReporter Instance.");
 	}
 	
-	/**
-	 * Initializes ExtentTest instance.
-	 * 
-	 * @param testName Name of Test Case being executed.
-	 * @param description  Description of the current Test Case 
-	 */
-	
-	public static final void setTest(String testName, String description) {
-		log.debug("Initializing ExtentTest Instance.");
-		if(isExtentReportsNull()) {
-			log.warn("Unable to set test. Make sure an instance of ExtentReports has been created.");
+	@Override
+	public void setTest(String testName, String description) {
+		this.log.debug("Initializing ExtentTest Instance.");
+		if(this.isExtentReportsNull()) {
+			this.log.warn("Unable to set test. Make sure an instance of ExtentReports has been created.");
 		} else {
-			test = report.createTest(testName, description);
-			log.debug("Successfully initialized ExtentTest Instance.");
+			this.test = this.report.createTest(testName, description);
+			this.log.debug("Successfully initialized ExtentTest Instance.");
 		}
 	}
 	
-	/**
-	 * Gets an instance of ExtentTest
-	 * 
-	 * @return Instance of ExtentTest
-	 */
-	
-	public static final ExtentTest getTest() {
-		log.debug("Retrieving ExtentTest Instance.");
-		if (isExtentTestNull()) {
-			log.warn("Unable to retrieve ExtentTest Instance. Make sure an instance of ExtentTest has been created.");
-		}
-		return test;
-	}
-	
-	/**
-	 * Sets the Author of the current Test being executed.
-	 * 
-	 * @param author Name of the Tester executing current Test Case.
-	 */
-	
-	public static final void setAuthor(String author) {
-		log.debug("Setting Author for ExtentTest.");
-		if (isExtentTestNull()) {
-			log.warn("Unable to assign the Author for the Test. Make sure an instance of ExtentTest has been created.");
+	@Override
+	public void setAuthor(String author) {
+		this.log.debug("Setting Author for ExtentTest.");
+		if (this.isExtentTestNull()) {
+			this.log.warn("Unable to assign the Author for the Test. Make sure an instance of ExtentTest has been created.");
 		} else {
-			test.assignAuthor(author);
-			log.debug("Successfully set Author for ExtentTest.");
+			this.test.assignAuthor(author);
+			this.log.debug("Successfully set Author for ExtentTest.");
 		}
 	}
 	
-	/**
-	 * Sets the Category of the current Test being executed.
-	 * 
-	 * @param category Name of the Category of current Test Case.
-	 */
-	
-	public static final void setCategory(String category) {
-		log.debug("Setting Category for ExtentTest.");
-		if (isExtentTestNull()) {
-			log.warn("Unable to assign the Category for the Test. Make sure an instance of ExtentTest has been created.");
+	@Override
+	public void setCategory(String category) {
+		this.log.debug("Setting Category for ExtentTest.");
+		if (this.isExtentTestNull()) {
+			this.log.warn("Unable to assign the Category for the Test. Make sure an instance of ExtentTest has been created.");
 		} else {
-			test.assignCategory(category);
-			log.debug("Successfully set Category for ExtentTest.");
+			this.test.assignCategory(category);
+			this.log.debug("Successfully set Category for ExtentTest.");
 		}
 	}
 	
-	/**
-	 * Sets the Device for the test.
-	 * 
-	 */
-	
-	public static final void setDevice() {
-		log.debug("Setting Device for ExtentTest.");
-		if (isExtentTestNull()) {
-			log.warn("Unable to assign the Device for the Test. Make sure an instance of ExtentTest has been created.");
+	@Override
+	public void setDevice() {
+		this.log.debug("Setting Device for ExtentTest.");
+		if (this.isExtentTestNull()) {
+			this.log.warn("Unable to assign the Device for the Test. Make sure an instance of ExtentTest has been created.");
 		} else {
 			String device = System.getProperty("os.version");
-			test.assignDevice(device);
-			log.debug("Successfully set Device for ExtentTest.");
+			this.test.assignDevice(device);
+			this.log.debug("Successfully set Device for ExtentTest.");
 		}
 	}
 	
-	/**
-	 * Logs test event as INFO
-	 * 
-	 * @param details Details of the Test Event.
-	 */
-	
-	public static final void logInfo(String details) {
-		if(isExtentTestNull()) {
-			log.warn("\"INFO\" Status could not be logged at ExtentReports.");
+	@Override
+	public void info(String details) {
+		if(this.isExtentTestNull()) {
+			this.log.warn("\"INFO\" Status could not be logged at ExtentReports.");
 		} else {
-			log.info(details);
-			test.log(Status.INFO, details);
+			this.log.info(details);
+			this.test.log(Status.INFO, details);
 		}
 	}
 	
-	/**
-	 * Logs test event as PASSED
-	 * 
-	 * @param testCaseName Name of the Test Case that PASSED
-	 */
-	
-	public static final void logPassed(String testCaseName) {
-		if(isExtentTestNull()) {
-			log.warn("\"PASS\" Status could not be logged at ExtentReports.");
+	@Override
+	public void pass(String testCaseName) {
+		if(this.isExtentTestNull()) {
+			this.log.warn("\"PASS\" Status could not be logged at ExtentReports.");
 		} else {
 	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "PASSED" + "</b>";
 	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.GREEN);
-			test.log(Status.PASS, markUp);
+			this.test.log(Status.PASS, markUp);
 		}
 	}
 
-	/**
-	 * Logs test event as FAILED
-	 * 
-	 * @param testCaseName Name of the Test Case that FAILED
-	 */
-	
-	public static final void logFailed(String testCaseName) {
-		if(isExtentTestNull()) {
-			log.warn("\"FAIL\" Status could not be logged at ExtentReports.");
+	@Override
+	public void fail(String testCaseName) {
+		if(this.isExtentTestNull()) {
+			this.log.warn("\"FAIL\" Status could not be logged at ExtentReports.");
 		} else {
 	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "FAILED" + "</b>";
 	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.RED);
-			test.log(Status.FAIL, markUp);
+			this.test.log(Status.FAIL, markUp);
 		}
 	}
 
-	/**
-	 * Logs test event as SKIPPED
-	 * 
-	 * @param testCaseName Name of the Test Case that was SKIPPED
-	 */
-	
-	public static final void logSkipped(String testCaseName) {
-		if(isExtentTestNull()) {
-			log.warn("\"SKIP\" Status could not be logged at ExtentReports.");
+	@Override
+	public void skip(String testCaseName) {
+		if(this.isExtentTestNull()) {
+			this.log.warn("\"SKIP\" Status could not be logged at ExtentReports.");
 		} else {
 	        String details = "Test Case: \"" + testCaseName + "\" has " + "<b>" + "SKIPPED" + "</b>";
 	        Markup markUp = MarkupHelper.createLabel(details, ExtentColor.YELLOW);
-			test.log(Status.SKIP, markUp);
+			this.test.log(Status.SKIP, markUp);
 		}
 	}
 	
-	/**
-	 * Generates the ExtentReports Report File.
-	 * 
-	 */
-	
-	public static final void generateExtentReport() {
-		log.debug("Generating ExtentReports.");
-		if(isExtentReportsNull()) {
-			log.warn("Unable to generate ExtentReports. Make sure an instance of ExtentReports has been created.");
+	@Override
+	public void generateReport() {
+		this.log.debug("Generating ExtentReports.");
+		if(this.isExtentReportsNull()) {
+			this.log.warn("Unable to generate ExtentReports. Make sure an instance of ExtentReports has been created.");
 		} else {
 			try {
-				report.flush();
-				report = null;
+				this.report.flush();
+				this.report = null;
 			} catch(Exception e) {
-				System.out.println("An Exception occurred while closing ExtentReports.");
+				this.log.error("An Exception occurred while closing ExtentReports.");
 			}
-			log.debug("Successfully generated ExtentReports.");
+			this.log.debug("Successfully generated ExtentReports.");
 		}
 	}
 	
@@ -241,10 +156,10 @@ public class ExtentReport {
 	 * 			<code>false</code> if ExtentReports is not NULL.
 	 */
 	
-	private static boolean isExtentReportsNull() {
-		log.trace("Checking if ExtentReport is NULL");
-		if(report == null) {
-			log.debug("ExtentReport Instance is NULL.");
+	private boolean isExtentReportsNull() {
+		this.log.trace("Checking if ExtentReport is NULL");
+		if(this.report == null) {
+			this.log.debug("ExtentReport Instance is NULL.");
 			return true;
 		} else {
 			return false;
@@ -258,10 +173,10 @@ public class ExtentReport {
 	 * 			<code>false</code> if ExtentTest is not NULL.
 	 */
 	
-	private static boolean isExtentTestNull() {
-		log.trace("Checking if ExtentTest is NULL");
-		if(test == null) {
-			log.debug("ExtentTest Instance is NULL.");
+	private boolean isExtentTestNull() {
+		this.log.trace("Checking if ExtentTest is NULL");
+		if(this.test == null) {
+			this.log.debug("ExtentTest Instance is NULL.");
 			return true;
 		} else {
 			return false;
