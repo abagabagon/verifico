@@ -25,5 +25,29 @@ public interface TestManagement {
 	 */
 	
 	public void setTestAsSkipped(String testCaseId);
+	
+	/**
+	 * Sets the result of multiple Test Cases as PASSED.
+	 * 
+	 * @param testCaseIds IDs of the Test Cases that PASSED
+	 */
+	
+	public void setTestsAsPassed(String[] testCaseIds);
+	
+	/**
+	 * Sets the result of multiple Test Cases as FAILED.
+	 * 
+	 * @param testCaseIds IDs of the Test Cases that FAILED
+	 */
+	
+	public void setTestsAsFailed(String[] testCaseIds);
+	
+	/**
+	 * Sets the result of multiple Test Cases as SKIPPED.
+	 * 
+	 * @param testCaseIds IDs of the Test Cases that were SKIPPED
+	 */
+	
+	public void setTestsAsSkipped(String[] testCaseIds);
 
 }
