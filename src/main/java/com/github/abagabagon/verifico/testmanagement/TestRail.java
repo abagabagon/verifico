@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class TestRail implements TestManagement {
@@ -34,7 +35,7 @@ public class TestRail implements TestManagement {
 	@Override
 	public void setTestAsFailed(String testCaseId) {
 		this.log.debug("Setting status as \"FAILED\" at TestRail Test Management Tool.");
-		JSONObject response = this.addResultForCase(testCaseId, 2);
+		JSONObject response = this.addResultForCase(testCaseId, 5);
 		this.log.trace(response);
 	}
 
@@ -46,23 +47,23 @@ public class TestRail implements TestManagement {
 	}
 	
 	@Override
-	public void setTestsAsPassed(String[] testCaseIds) {
+	public void setTestsAsPassed(ArrayList<String> testCaseIds) {
 		this.log.debug("Setting status as \"PASSED\" at TestRail Test Management Tool.");
-		JSONObject response = this.addResultsForCases(testCaseIds, 1);
+		JSONArray response = this.addResultsForCases(testCaseIds, 1);
 		this.log.trace(response);
 	}
 
 	@Override
-	public void setTestsAsFailed(String[] testCaseIds) {
+	public void setTestsAsFailed(ArrayList<String> testCaseIds) {
 		this.log.debug("Setting status as \"FAILED\" at TestRail Test Management Tool.");
-		JSONObject response = this.addResultsForCases(testCaseIds, 2);
+		JSONArray response = this.addResultsForCases(testCaseIds, 5);
 		this.log.trace(response);
 	}
 
 	@Override
-	public void setTestsAsSkipped(String[] testCaseIds) {
+	public void setTestsAsSkipped(ArrayList<String> testCaseIds) {
 		this.log.debug("Setting status as \"SKIPPED\" at TestRail Test Management Tool.");
-		JSONObject response = this.addResultsForCases(testCaseIds, 4);
+		JSONArray response = this.addResultsForCases(testCaseIds, 4);
 		this.log.trace(response);
 	}
 	
@@ -102,23 +103,23 @@ public class TestRail implements TestManagement {
 	 * @return				JSONObject response
 	 */
 	
-	private JSONObject addResultsForCases(String[] testCaseIds, int statusId) {
-		JSONObject response = null;
+	private JSONArray addResultsForCases(ArrayList<String> testCaseIds, int statusId) {
+		JSONArray response = null;
 		Map<String, List<Map<String, Integer>>> data = new HashMap<String, List<Map<String, Integer>>>();
 		List<Map<String, Integer>> testCases = new ArrayList<Map<String, Integer>>();
-		int size = testCaseIds.length;
+		int size = testCaseIds.size();
 		data.put("results", testCases);
 		
 		for (int testCount = 0; testCount < size; testCount++) {
 			Map<String, Integer> testCase = new HashMap<String, Integer>();
-			String id = this.checkTestCaseId(testCaseIds[testCount]);
+			String id = this.checkTestCaseId(testCaseIds.get(testCount));
 			testCase.put("case_id", Integer.parseInt(id));
 			testCase.put("status_id", new Integer(statusId));
 			testCases.add(testCase);
 		}
 		
 		try {
-			response = (JSONObject) this.testRail.sendPost("add_results_for_cases/" + this.runId, data);
+			response = (JSONArray) this.testRail.sendPost("add_results_for_cases/" + this.runId, data);
 		} catch (IOException e) {
 			this.log.error("Encountered IOException while adding TestRail Test Result.");
 		} catch (APIException e) {
