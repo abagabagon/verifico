@@ -1,5 +1,6 @@
 package com.github.abagabagon.verifico.report;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.aventstack.extentreports.ExtentReports;
@@ -17,6 +18,10 @@ public class ExtentReport implements Reporter {
 	private ExtentSparkReporter reporter;
 	private ExtentTest test;
 	private Logger log;
+	
+	public ExtentReport() {
+		this.log = LogManager.getLogger(this.getClass());
+	}
 	
 	@Override
 	public void setReport(String testSuiteName, String organization) {
