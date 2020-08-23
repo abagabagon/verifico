@@ -1,5 +1,7 @@
 package com.github.abagabagon.verifico.testmanagement;
 
+import java.util.ArrayList;
+
 public interface TestManagement {
 	
 	/**
@@ -32,7 +34,7 @@ public interface TestManagement {
 	 * @param testCaseIds IDs of the Test Cases that PASSED
 	 */
 	
-	public void setTestsAsPassed(String[] testCaseIds);
+	public void setTestsAsPassed(ArrayList<String> testCaseIds);
 	
 	/**
 	 * Sets the result of multiple Test Cases as FAILED.
@@ -40,7 +42,7 @@ public interface TestManagement {
 	 * @param testCaseIds IDs of the Test Cases that FAILED
 	 */
 	
-	public void setTestsAsFailed(String[] testCaseIds);
+	public void setTestsAsFailed(ArrayList<String> testCaseIds);
 	
 	/**
 	 * Sets the result of multiple Test Cases as SKIPPED.
@@ -48,6 +50,6 @@ public interface TestManagement {
 	 * @param testCaseIds IDs of the Test Cases that were SKIPPED
 	 */
 	
-	public void setTestsAsSkipped(String[] testCaseIds);
+	public void setTestsAsSkipped(ArrayList<String> testCaseIds);
 
 }
