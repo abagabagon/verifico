@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -53,7 +56,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.browser = browser;
 		this.isHeadless = isHeadless;
 	}
-
+	
 	/* ####################################################### */
 	/*                     BROWSER ACTIONS                     */
 	/* ####################################################### */
@@ -72,9 +75,20 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void openTab(String url) {
 		this.log.info("I open New Tab.");
-		this.javascriptExecutor = (JavascriptExecutor)this.driver;
-		String link = "window.open('" + url + "', '_blank');";
-		this.javascriptExecutor.executeScript(link);
+		try {
+			this.javascriptExecutor = (JavascriptExecutor)this.driver;
+			String link = "window.open('" + url + "', '_blank');";
+			this.javascriptExecutor.executeScript(link);
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to open New Tab. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (TimeoutException e) {
+			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to navigate to Url \"" + url + "\" .");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
@@ -82,28 +96,50 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.info("I navigate to URL: \"" + url + "\".");
 		try {
 			this.driver.get(url);
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to navigate to Url \"" + url + ". Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while navigating to Url \"" + url + "\" .");
+			this.log.fatal("Something went wrong while trying to navigate to Url \"" + url + "\" .");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
 	@Override
 	public boolean switchTabByTitle(String title) {
 		this.log.info("I switch to Tab with Page Title: \"" + title + "\".");
-		String parentWindow = this.driver.getWindowHandle();
-		Set<String> windows = this.driver.getWindowHandles();
-		this.log.info("Total Tabs Open: " + windows.size());
+		String parentWindow = null;
+		Set<String> windows = null;
 		boolean isExisting = false;
-		for (String winID : windows) {
-			if (!winID.equals(parentWindow)) {
-				this.driver.switchTo().window(winID);
-				if (this.driver.getTitle().equals(title)) {
-					this.log.info("Successfully switched to Tab with Page Title: \"" + title + "\".");
-					isExisting = true;
+		try {
+			parentWindow = this.driver.getWindowHandle();
+			windows = this.driver.getWindowHandles();
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to current browser windows. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to current browser windows.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		for (String windowId : windows) {
+			if (!windowId.equals(parentWindow)) {
+				try {
+					this.driver.switchTo().window(windowId);
+					if (this.driver.getTitle().equals(title)) {
+						this.log.info("Successfully switched to Tab with Page Title: \"" + title + "\".");
+						isExisting = true;
+					}
+					this.driver.switchTo().window(parentWindow);
+				} catch (NoSuchWindowException e) {
+					this.log.error("The window with ID: \"" + windowId + "\" could not be found.");
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				} catch (Exception e) {
+					this.log.error("Something went wrong while switching tab by Page Title.");
+					this.log.debug(ExceptionUtils.getStackTrace(e));
 				}
-				this.driver.switchTo().window(parentWindow);
 			}
 		}
 		if (!isExisting) {
@@ -115,18 +151,35 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean switchTabByURL(String url) {
 		this.log.info("I switch to Tab with Page URL: \"" + url + "\".");
-		String parentWindow = this.driver.getWindowHandle();
-		Set<String> windows = this.driver.getWindowHandles();
-		this.log.info("Total Tabs Open " + windows.size());
+		String parentWindow = null;
+		Set<String> windows = null;
 		boolean isExisting = false;
-		for (String winID : windows) {
-			if (!winID.equals(parentWindow)) {
-				this.driver.switchTo().window(winID);
-				if (this.driver.getCurrentUrl().equals(url)) {
-					this.log.info("Successfully switched to Tab with Page URL: \"" + url + "\".");
-					isExisting = true;
+		try {
+			parentWindow = this.driver.getWindowHandle();
+			windows = this.driver.getWindowHandles();
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to current browser windows. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to current browser windows.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		for (String windowId : windows) {
+			if (!windowId.equals(parentWindow)) {
+				try {
+					this.driver.switchTo().window(windowId);
+					if (this.driver.getCurrentUrl().equals(url)) {
+						this.log.info("Successfully switched to Tab with Page URL: \"" + url + "\".");
+						isExisting = true;
+					}
+					this.driver.switchTo().window(parentWindow);
+				} catch (NoSuchWindowException e) {
+					this.log.error("The window with ID: \"" + windowId + "\" could not be found.");
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				} catch (Exception e) {
+					this.log.error("Something went wrong while switching tab by Page Title.");
+					this.log.debug(ExceptionUtils.getStackTrace(e));
 				}
-				this.driver.switchTo().window(parentWindow);
 			}
 		}
 		if (!isExisting) {
@@ -138,26 +191,66 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void switchTabToOriginal() {
 		this.log.info("I switch to Original Tab.");
-		this.tabs = new ArrayList<String>(this.driver.getWindowHandles());
-		this.driver.switchTo().window(this.tabs.get(0));
+		try {
+			this.tabs = new ArrayList<String>(this.driver.getWindowHandles());
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to current browser tabs. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to current browser tabs.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		try {
+			this.driver.switchTo().window(this.tabs.get(0));
+		} catch (NoSuchWindowException e) {
+			this.log.error("Encountered an error while trying to switch back to original tab.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to switch back to original tab.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
 	public void back() {
 		this.log.info("I click back.");
-		this.driver.navigate().back();
+		try {
+			this.driver.navigate().back();
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to click back. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to click back.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
 	public void forward() {
 		this.log.info("I click forward.");
-		this.driver.navigate().forward();
+		try {
+			this.driver.navigate().forward();
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to click forward. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to click forward.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
 	public void refresh() {
 		this.log.info("I click refresh.");
-		this.driver.navigate().refresh();
+		try {
+			this.driver.navigate().refresh();
+		} catch (NullPointerException e) {
+			this.log.fatal("Encountered error while trying to click refresh. Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to click refresh.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
@@ -166,10 +259,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.info("I close Tab.");
 			this.driver.close();
 		} catch (NullPointerException e) {
-			this.log.error("Encountered NullPointerException while closing Tab.");
+			this.log.error("Encountered error while trying to close Tab. Tab might have already been closed or browser was never opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
-			this.log.error("Encountered Exception while closing Tab.");
-			e.printStackTrace();
+			this.log.error("Something went wrong while trying to close Tab.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
 
@@ -178,44 +272,83 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.log.info("I close Browser.");
 			this.driver.quit();
-			this.driver = null;
-			this.log.info("I closed Browser.");
 		} catch (NullPointerException e) {
-			this.log.error("Encountered NullPointerException while closing Web Browser.");
+			this.log.error("Encountered error while trying to close Browser. Browser might have already been closed or was never opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
-			this.log.error("Encountered Exception while closing Web Browser.");
-			e.printStackTrace();
+			this.log.error("Something went wrong while trying to close Browser.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	
 	@Override
 	public void maximizeBrowserWindow() {
 		this.log.debug("I maximize Web Browser Window.");
-		this.driver.manage().window().maximize();
+		try {
+			this.driver.manage().window().maximize();
+		} catch (NullPointerException e) {
+			this.log.error("Encountered error while trying to maximize browser window. Browser might have already been closed or was never initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to maximize browser window.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	@Override
 	public void deleteAllCookies() {
 		this.log.debug("I delete all cookies.");
-		this.driver.manage().deleteAllCookies();
+		try {
+			this.driver.manage().deleteAllCookies();
+		} catch (NullPointerException e) {
+			this.log.error("Encountered error while trying to delete all cookies. Browser might have already been closed or was never initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to delete all cookies.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 	
 	@Override
 	public void scroll(String pixelHorizontal, String pixelVertical) {
 		this.log.debug("I scroll page.");
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
-		this.javascriptExecutor = (JavascriptExecutor) this.driver;
-		this.javascriptExecutor.executeScript(script);
+		try {
+			this.javascriptExecutor = (JavascriptExecutor) this.driver;
+			this.javascriptExecutor.executeScript(script);
+		} catch (NullPointerException e) {
+			this.log.error("Encountered error while trying to scroll page. Browser might have already been closed or was never initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to scroll page.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	void initializeImplicitWait(long duration) {
 		this.log.debug("I initialize Implicit Wait.");
-		this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
+		try {
+			this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
+		} catch (NullPointerException e) {
+			this.log.error("Encountered error while trying to initialize Implicit Wait. Browser might have already been closed or was never initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to scroll page.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 	
 	void initializeExplicitWait(long duration) {
 		this.log.debug("I initialize Explicit Wait.");
-		this.wait = new WebDriverWait(this.driver, duration);
+		try {
+			this.wait = new WebDriverWait(this.driver, duration);
+		} catch (NullPointerException e) {
+			this.log.error("Encountered error while trying to initialize Explicit Wait. Browser might have already been closed or was never initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to scroll page.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 	
 	/* ####################################################### */
@@ -294,7 +427,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.warn("Encountered StaleElementReferenceException while clicking Web Element: \"" + locator.toString() + "\".");
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
-		} catch (Exception e) {
+		} catch (InvalidElementStateException e) {
+			this.log.warn("Encountered InvalidElementStateException while clicking Web Element: \"" + locator.toString() + "\".");
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
+			element.click();
+		}catch (Exception e) {
 			this.log.warn("Encountered Exception while clicking Web Element: \"" + locator.toString() + "\".");
 			e.printStackTrace();
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
@@ -552,7 +689,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while clearing Web Element: \"" + locator.toString() + "\".");
-			e.printStackTrace();
+			this.log.info(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		}
