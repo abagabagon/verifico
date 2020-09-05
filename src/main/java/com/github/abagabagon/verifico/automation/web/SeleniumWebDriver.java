@@ -1,5 +1,6 @@
 package com.github.abagabagon.verifico.automation.web;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Platform;
@@ -17,7 +18,6 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.utilities.OperatingSystem;
@@ -28,7 +28,6 @@ public class SeleniumWebDriver {
 	
 	private Logger log;
 	private WebDriver driver;
-	private EventFiringWebDriver eDriver;
 	
 	public SeleniumWebDriver() {
 		this.log = LogManager.getLogger(this.getClass());
@@ -81,29 +80,16 @@ public class SeleniumWebDriver {
 				}
 			}
 		} catch (WebDriverException e) {
-			this.log.fatal("Encountered WebDriverException while initializing Selenium Web Driver.");
-			e.printStackTrace();
+			this.log.fatal("Encountered an error while trying to initialize Selenium Web Driver.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while initializing Selenium Web Driver.");
-			e.printStackTrace();
+			this.log.fatal("Something went wrong while trying to initialize Selenium Web Driver.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		}
 		
 		return this.driver;
-	}
-	
-	/**
-	 * Initializes and returns EventFiringWebDriver Object.
-	 * 
-	 * @return EventFiringWebDriver Object
-	 */
-	
-	EventFiringWebDriver getEventFiringWebDriver() {
-		this.log.debug("Initializing EventFiringWebDriver.");
-		this.eDriver = new EventFiringWebDriver(this.driver);
-		this.log.debug("Successfully initialized EventFiringWebDriver.");
-		return this.eDriver;
 	}
 	
 	/**
