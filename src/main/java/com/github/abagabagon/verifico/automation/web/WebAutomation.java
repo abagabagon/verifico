@@ -124,6 +124,14 @@ public interface WebAutomation {
 	public void point(By locator);
 	
 	/**
+	 * Scroll to the specified Web Element Location in the Web Page.
+	 * 
+	 * @param locator Object used to locate Web Element to scroll into.
+	 */
+	
+	public void scrollToElement(By locator);
+	
+	/**
 	 * Clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be clicked.
