@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
-import org.openqa.selenium.WebDriverException;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Mobile;
@@ -37,28 +36,7 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 	public void openBrowser() {
 		this.log.debug("Initializing Appium Web Driver.");
 		this.log.info("I open Web Browser.");
-
-		try {
-			switch (this.browser) {
-			case CHROME:
-				this.driver = this.appiumWebDriver.getChromeDriver(this.mobile, this.platformVersion, this.deviceName);
-				break;
-			case SAFARI:
-				this.driver = this.appiumWebDriver.getSafariDriver(this.mobile, this.platformVersion, this.deviceName);
-				break;
-			default:
-				this.log.fatal("Unsupported Web Browser.");
-				System.exit(1);
-			}
-		} catch (WebDriverException e) {
-			this.log.fatal("Encountered WebDriverException while initializing Appium Web Driver.");
-			e.printStackTrace();
-			System.exit(1);
-		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while initializing Appium Web Driver.");
-			e.printStackTrace();
-			System.exit(1);
-		}
+		this.driver = this.appiumWebDriver.getWebDriver(this.mobile, this.browser, this.platformVersion, this.deviceName);
 		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 		this.initializeImplicitWait(20);
