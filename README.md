@@ -91,13 +91,14 @@ I.click(PageLogin.LOGIN_BUTTON);
 | Command                               | Description                                                                                                       |
 | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | point                                 | Point mouse to the specified Web Element                                                                          |
+| pointJS                               | Point mouse to the specified Web Element (utilizing Javascript)                                                   |
 | click                                 | Clicks the specified Web Element. Used for Elements that are clickable                                            |
 | clickJS                               | Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable                     |
 | clickAndHold                          | Clicks and holds the specified Web Element. Used for Elements that are clickable                                  |
-| clickFromObjectListBasedOnText        | Clicks the specified Web Element from an Object List based on text value                                          |
+| clickFromListBasedOnText              | Clicks the specified Web Element from an Object List based on text value                                          |
 | clickFromTableBasedOnText             | Clicks the specified Web Element from a row in a table based on text value from the same row                      |
 | doubleClick                           | Double clicks the specified Web Element. Used for Elements that are clickable                                     |
-| doubleClickFromObjectListBasedOnText  | Double clicks the specified Web Element from an Object List based on text value                                   |
+| doubleClickFromListBasedOnText        | Double clicks the specified Web Element from an Object List based on text value                                   |
 | doubleClickFromTableBasedOnText       | Clicks the specified Web Element from a row in a table based on text value from the same row                      |
 | dragAndDrop                           | Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged               |
 | type                                  | Simulates typing into a text box/area Web Element                                                                 |
