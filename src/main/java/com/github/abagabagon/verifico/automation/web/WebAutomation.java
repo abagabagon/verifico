@@ -124,12 +124,12 @@ public interface WebAutomation {
 	public void point(By locator);
 	
 	/**
-	 * Scroll to the specified Web Element Location in the Web Page.
+	 * Point mouse to the specified Web Element Location in the Web Page.
 	 * 
-	 * @param locator Object used to locate Web Element to scroll into.
+	 * @param locator Object used to locate Web Element to point mouse into.
 	 */
 	
-	public void scrollToElement(By locator);
+	public void pointJS(By locator);
 	
 	/**
 	 * Clicks the specified Web Element. Used for Elements that are clickable.
@@ -162,7 +162,7 @@ public interface WebAutomation {
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void clickFromObjectListBasedOnText(By objectList, String textToCheck);
+	public void clickFromListBasedOnText(By objectList, String textToCheck);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
@@ -189,7 +189,7 @@ public interface WebAutomation {
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void doubleClickFromObjectListBasedOnText(By objectList, String textToCheck);
+	public void doubleClickFromListBasedOnText(By objectList, String textToCheck);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
