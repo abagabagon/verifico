@@ -1,11 +1,13 @@
 package com.github.abagabagon.verifico.data.sql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,13 +41,15 @@ public class SQLData {
 	
 	/**
 	 * Opens SQL Connection.
+	 * @throws SQLException 
 	 * 
 	 */
 	
-	public void openConnection() {
-		this.log.info("I open SQL Connection.");
+	public Connection openConnection() {
+		this.log.debug("I open SQL Connection.");
 		this.sqlDriver = new SQLDriver(this.sqlType, this.dbServer, this.dbName, this.user, this.password);
 		this.connection = this.sqlDriver.getSQLConnection();
+		return this.connection;
 	}
 	
 	/**
@@ -53,21 +57,25 @@ public class SQLData {
 	 * 
 	 * @param sqlQuery SQL SELECT Query to be executed
 	 * @return	ResultSet based on the SQL SELECT Query
-	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
-	public ResultSet select(String sqlQuery) throws SQLTimeoutException {
-		this.log.info("I execute SQL SELECT Statement.");
+	public ResultSet select(String sqlQuery) {
+		this.log.debug("I execute SQL SELECT Statement:\n" + sqlQuery);
 		if (sqlQuery.toLowerCase().contains("select")) {
 			try {
 				this.statement = this.connection.createStatement();
 				this.resultSet = this.statement.executeQuery(sqlQuery);
-			} catch(SQLException e) {
-				this.log.fatal("Encountered SQLException while executing SQL SELECT Statement!");
-				this.log.fatal("SQL Exception: " + e.getMessage());
+			} catch (SQLTimeoutException e) {
+				this.log.fatal("Encountered SQLTimeoutException while executing SQL UPDATE Statement!");
 				this.log.fatal("SQL State: " + e.getSQLState());
 				this.log.fatal("Error Code: " + e.getErrorCode());
-			} catch(Exception e) {
+				this.log.fatal(ExceptionUtils.getStackTrace(e));
+			} catch (SQLException e) {
+				this.log.fatal("Encountered SQLException while executing SQL UPDATE Statement!");
+				this.log.fatal("SQL State: " + e.getSQLState());
+				this.log.fatal("Error Code: " + e.getErrorCode());
+				this.log.fatal(ExceptionUtils.getStackTrace(e));
+			} catch (Exception e) {
 				this.log.fatal("Encountered Exception while executing SQL SELECT Statement!");
 				e.printStackTrace();
 			}
@@ -82,33 +90,32 @@ public class SQLData {
 	 * Executes a SQL UPDATE Statement.
 	 * 
 	 * @param sqlQuery SQL UPDATE Query to be executed
-	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
-	public void update(String sqlQuery) throws SQLTimeoutException {
-		this.log.info("I execute SQL UPDATE Statement.");
+	public void update(PreparedStatement preparedStatement) {
+		this.log.debug("I execute SQL UPDATE Statement.");
 		int updateCount = 0;
-		if (sqlQuery.toLowerCase().contains("update")) {
-			try {
-				this.statement = this.connection.createStatement();
-				updateCount = this.statement.executeUpdate(sqlQuery);
-			} catch(SQLException e) {
-				this.log.fatal("Encountered SQLException while executing SQL UPDATE Statement!");
-				this.log.fatal("SQL Exception: " + e.getMessage());
-				this.log.fatal("SQL State: " + e.getSQLState());
-				this.log.fatal("Error Code: " + e.getErrorCode());
-			} catch(Exception e) {
-				this.log.fatal("Encountered Exception while executing SQL UPDATE Statement!");
-				e.printStackTrace();
-			}
-			
-			if (updateCount > 0) {
-				this.log.info(updateCount + " SQL Records updated.");
-			} else {
-				this.log.error("No SQL Records were updated.");
-			}
+		try {
+			updateCount = preparedStatement.executeUpdate();
+		} catch (SQLTimeoutException e) {
+			this.log.fatal("Encountered SQLTimeoutException while executing SQL UPDATE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while executing SQL UPDATE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while executing SQL UPDATE Statement!");
+			e.printStackTrace();
+		}
+
+		if (updateCount > 0) {
+			this.log.debug(updateCount + " SQL Record(s) updated.");
 		} else {
-			this.log.error("Statement is not an UPDATE Statement.");
+			this.log.error("No SQL Records were updated.");
 		}
 	}
 	
@@ -116,33 +123,32 @@ public class SQLData {
 	 * Executes a SQL INSERT Statement.
 	 * 
 	 * @param sqlQuery SQL INSERT Query to be executed
-	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
-	public void insert(String sqlQuery) throws SQLTimeoutException {
-		this.log.info("I execute SQL INSERT Statement.");
+	public void insert(PreparedStatement preparedStatement) {
+		this.log.debug("I execute SQL INSERT Statement.");
 		int insertCount = 0;
-		if (sqlQuery.toLowerCase().contains("insert")) {
-			try {
-				this.statement = this.connection.createStatement();
-				insertCount = this.statement.executeUpdate(sqlQuery);
-			} catch(SQLException e) {
-				this.log.fatal("Encountered SQLException while executing SQL INSERT Statement!");
-				this.log.fatal("SQL Exception: " + e.getMessage());
-				this.log.fatal("SQL State: " + e.getSQLState());
-				this.log.fatal("Error Code: " + e.getErrorCode());
-			} catch(Exception e) {
-				this.log.fatal("Encountered Exception while executing SQL INSERT Statement!");
-				e.printStackTrace();
-			}
-			
-			if (insertCount > 0) {
-				this.log.info(insertCount + " SQL Records inserted.");
-			} else {
-				this.log.error("No SQL Records were inserted.");
-			}
+		try {
+			insertCount = preparedStatement.executeUpdate();
+		} catch (SQLTimeoutException e) {
+			this.log.fatal("Encountered SQLTimeoutException while executing SQL INSERT Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while executing SQL INSERT Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while executing SQL INSERT Statement!");
+			e.printStackTrace();
+		}
+
+		if (insertCount > 0) {
+			this.log.debug(insertCount + " SQL Record(s) inserted.");
 		} else {
-			this.log.error("Statement is not an INSERT Statement.");
+			this.log.error("No SQL Records were inserted.");
 		}
 	}
 	
@@ -150,33 +156,32 @@ public class SQLData {
 	 * Executes a SQL DELETE Statement.
 	 * 
 	 * @param sqlQuery SQL DELETE Query to be executed
-	 * @throws SQLTimeoutException SQL processing timed out.
 	 */
 	
-	public void delete(String sqlQuery) throws SQLTimeoutException {
-		this.log.info("I execute SQL DELETE Statement.");
-		int insertCount = 0;
-		if (sqlQuery.toLowerCase().contains("delete") || sqlQuery.toLowerCase().contains("where")) {
-			try {
-				this.statement = this.connection.createStatement();
-				insertCount = this.statement.executeUpdate(sqlQuery);
-			} catch(SQLException e) {
-				this.log.fatal("Encountered SQLException while executing SQL DELETE Statement!");
-				this.log.fatal("SQL Exception: " + e.getMessage());
-				this.log.fatal("SQL State: " + e.getSQLState());
-				this.log.fatal("Error Code: " + e.getErrorCode());
-			} catch(Exception e) {
-				this.log.fatal("Encountered Exception while executing SQL DELETE Statement!");
-				e.printStackTrace();
-			}
-			
-			if (insertCount > 0) {
-				this.log.info(insertCount + " SQL Records deleted.");
-			} else {
-				this.log.error("No SQL Records were deleted.");
-			}
+	public void delete(PreparedStatement preparedStatement) {
+		this.log.debug("I execute SQL DELETE Statement.");
+		int deleteCount = 0;
+		try {
+			deleteCount = preparedStatement.executeUpdate();
+		} catch (SQLTimeoutException e) {
+			this.log.fatal("Encountered SQLTimeoutException while executing SQL DELETE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while executing SQL DELETE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while executing SQL DELETE Statement!");
+			e.printStackTrace();
+		}
+
+		if (deleteCount > 0) {
+			this.log.debug(deleteCount + " SQL Record(s) deleted.");
 		} else {
-			this.log.error("Statement is not a DELETE Statement or no WHERE conditions were provided.");
+			this.log.error("No SQL Records were deleted.");
 		}
 	}
 	
@@ -185,7 +190,8 @@ public class SQLData {
 	 * 
 	 */
 	
-	public void closeResultSet() {
+	@SuppressWarnings("unused")
+	private void closeResultSet() {
 		this.log.debug("Closing and Emptying ResultSet.");
 		try {
 			if (this.resultSet != null) {
@@ -209,7 +215,8 @@ public class SQLData {
 	 * 
 	 */
 	
-	public void closeStatement() {
+	@SuppressWarnings("unused")
+	private void closeStatement() {
 		this.log.debug("Closing Statement.");
 		try {
 			if (this.statement != null) {
@@ -235,12 +242,10 @@ public class SQLData {
 	
 	public void closeConnection() {
 		this.log.debug("I close SQL Connection.");
-		this.closeResultSet();
-		this.closeStatement();
 		try {
 			if (this.connection != null) {
-				this.resultSet.close();
-				this.resultSet = null;
+				this.connection.close();
+				this.connection = null;
 			}
 		} catch (SQLException e) {
 			this.log.fatal("Encountered SQLException while closing SQL Connection!");
