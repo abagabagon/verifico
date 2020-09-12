@@ -39,8 +39,8 @@ public class SQLData {
 	
 	/**
 	 * Opens SQL Connection.
-	 * @throws SQLException 
 	 * 
+	 * @return SQL Connection Object.
 	 */
 	
 	public Connection openConnection() {
