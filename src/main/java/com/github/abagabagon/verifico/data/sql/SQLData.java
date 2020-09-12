@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLTimeoutException;
-import java.sql.Statement;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +16,6 @@ public class SQLData {
 	
 	private Logger log;
 	private Connection connection;
-	private Statement statement;
 	private ResultSet resultSet;
 	private SQL sqlType;
 	private String dbServer;
@@ -55,32 +53,27 @@ public class SQLData {
 	/**
 	 * Executes a SQL SELECT Statement and returns the ResultSet.
 	 * 
-	 * @param sqlQuery SQL SELECT Query to be executed
+	 * @param preparedStatement SQL SELECT Query in PreparedStatement Object
 	 * @return	ResultSet based on the SQL SELECT Query
 	 */
 	
-	public ResultSet select(String sqlQuery) {
-		this.log.debug("I execute SQL SELECT Statement:\n" + sqlQuery);
-		if (sqlQuery.toLowerCase().contains("select")) {
-			try {
-				this.statement = this.connection.createStatement();
-				this.resultSet = this.statement.executeQuery(sqlQuery);
-			} catch (SQLTimeoutException e) {
-				this.log.fatal("Encountered SQLTimeoutException while executing SQL UPDATE Statement!");
-				this.log.fatal("SQL State: " + e.getSQLState());
-				this.log.fatal("Error Code: " + e.getErrorCode());
-				this.log.fatal(ExceptionUtils.getStackTrace(e));
-			} catch (SQLException e) {
-				this.log.fatal("Encountered SQLException while executing SQL UPDATE Statement!");
-				this.log.fatal("SQL State: " + e.getSQLState());
-				this.log.fatal("Error Code: " + e.getErrorCode());
-				this.log.fatal(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.fatal("Encountered Exception while executing SQL SELECT Statement!");
-				e.printStackTrace();
-			}
-		} else {
-			this.log.error("Statement is not a SELECT Statement.");
+	public ResultSet select(PreparedStatement preparedStatement) {
+		this.log.debug("I execute SQL SELECT Statement.");
+		try {
+			this.resultSet = preparedStatement.executeQuery();
+		} catch (SQLTimeoutException e) {
+			this.log.fatal("Encountered SQLTimeoutException while executing SQL UPDATE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while executing SQL UPDATE Statement!");
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while executing SQL UPDATE Statement!");
+			e.printStackTrace();
 		}
 
 		return this.resultSet;
@@ -89,7 +82,7 @@ public class SQLData {
 	/**
 	 * Executes a SQL UPDATE Statement.
 	 * 
-	 * @param sqlQuery SQL UPDATE Query to be executed
+	 * @param preparedStatement SQL UPDATE Query in PreparedStatement Object
 	 */
 	
 	public void update(PreparedStatement preparedStatement) {
@@ -122,7 +115,7 @@ public class SQLData {
 	/**
 	 * Executes a SQL INSERT Statement.
 	 * 
-	 * @param sqlQuery SQL INSERT Query to be executed
+	 * @param preparedStatement SQL INSERT Query in PreparedStatement Object
 	 */
 	
 	public void insert(PreparedStatement preparedStatement) {
@@ -155,7 +148,7 @@ public class SQLData {
 	/**
 	 * Executes a SQL DELETE Statement.
 	 * 
-	 * @param sqlQuery SQL DELETE Query to be executed
+	 * @param preparedStatement SQL DELETE Query in PreparedStatement Object
 	 */
 	
 	public void delete(PreparedStatement preparedStatement) {
@@ -190,7 +183,6 @@ public class SQLData {
 	 * 
 	 */
 	
-	@SuppressWarnings("unused")
 	private void closeResultSet() {
 		this.log.debug("Closing and Emptying ResultSet.");
 		try {
@@ -211,37 +203,13 @@ public class SQLData {
 	}
 	
 	/**
-	 * Closes statement.
-	 * 
-	 */
-	
-	@SuppressWarnings("unused")
-	private void closeStatement() {
-		this.log.debug("Closing Statement.");
-		try {
-			if (this.statement != null) {
-				this.statement.close();
-				this.statement = null;
-			}
-		} catch (SQLException e) {
-			this.log.fatal("Encountered SQLException while closing Statement!");
-			this.log.fatal("SQL Exception: " + e.getMessage());
-			this.log.fatal("SQL State: " + e.getSQLState());
-			this.log.fatal("Error Code: " + e.getErrorCode());
-		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while closing Statement!");
-			e.printStackTrace();
-		}
-		this.log.debug("Successfully closed Statement.");
-	}
-	
-	/**
 	 * Closes SQL Connection.
 	 * 
 	 */
 	
 	public void closeConnection() {
 		this.log.debug("I close SQL Connection.");
+		this.closeResultSet();
 		try {
 			if (this.connection != null) {
 				this.connection.close();
