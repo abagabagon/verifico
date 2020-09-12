@@ -80,11 +80,11 @@ public class SeleniumWebDriver {
 				}
 			}
 		} catch (WebDriverException e) {
-			this.log.fatal("Encountered an error while trying to initialize Selenium Web Driver.");
+			this.log.fatal("Unable to initialize Selenium Web Driver for " + browser + ".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to initialize Selenium Web Driver.");
+			this.log.fatal("Something went wrong while trying to initialize Selenium Web Driver for " + browser + ".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		}

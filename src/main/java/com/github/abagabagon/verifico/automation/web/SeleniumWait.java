@@ -78,6 +78,58 @@ public class SeleniumWait {
 	}
 	
 	/**
+	 * Waits for WebElement to be present at the Web Page.
+	 * 
+	 * @param	locator Object used to locate element to wait for.
+	 * @return	Created Web Element
+	 */
+
+	final WebElement waitForObjectToBePresent(By locator) {
+		this.log.trace("Waiting for Web Element to be present.");
+		WebElement element = null;
+		try {
+			element = this.wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			this.log.trace("Web Element had become present!");
+		} catch (NullPointerException e) {
+			this.log.fatal("WebDriverWait is not initialized!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Web Element to be present has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for element to be present!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return element;
+	}
+	
+	/**
+	 * Waits for WebElements to be present at the Web Page.
+	 * 
+	 * @param	locator Object used to locate elements to wait for.
+	 * @return	Created List of Web Elements
+	 */
+
+	final List<WebElement> waitForObjectsToBePresent(By locator) {
+		this.log.trace("Waiting for Web Elements to be present.");
+		List<WebElement> elements = null;
+		try {
+			elements = this.wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
+			this.log.trace("Web Element had become present!");
+		} catch (NullPointerException e) {
+			this.log.fatal("WebDriverWait is not initialized!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Web Elements to be present has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for elements to be present!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return elements;
+	}
+	
+	/**
 	 * Waits for WebElement to be visible at the Web Page.
 	 * 
 	 * @param	locator Object used to locate element to wait for.
@@ -195,13 +247,13 @@ public class SeleniumWait {
 		this.log.trace("Waiting for Text Box/Area Value to match expected value.");
 		boolean isValueEqual = false;
 		try {
-			isValueEqual = this.wait.until(ExpectedConditions.attributeToBe(locator, "value", expectedValue));
+			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(locator, "value", expectedValue));
 			this.log.trace("Text Box/Area Value had matched the expected value!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
-			this.log.error("Wait time for Text Box/Area Value to match the expected URL Value has expired!");
+			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");

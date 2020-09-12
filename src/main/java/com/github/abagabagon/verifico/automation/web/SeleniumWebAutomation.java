@@ -16,6 +16,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -27,18 +28,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.TestStatus;
+import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
-	protected WebDriver driver;
-	protected Logger log;
-	protected WebDriverWait wait;
-	protected Select select;
-	protected Alert alert;
-	protected Actions action;
-	protected JavascriptExecutor javascriptExecutor;
-	protected ArrayList<String> tabs;
-	protected SeleniumWait seleniumWait;
+	WebDriver driver;
+	Logger log;
+	WebDriverWait wait;
+	Select select;
+	Alert alert;
+	Actions action;
+	JavascriptExecutor javascriptExecutor;
+	ArrayList<String> tabs;
+	SeleniumWait seleniumWait;
 	
 	private Browser browser;
 	private boolean isHeadless;
@@ -81,8 +83,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			String link = "window.open('" + url + "', '_blank');";
 			this.javascriptExecutor.executeScript(link);
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to open New Tab. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to open New Tab. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (TimeoutException e) {
 			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -98,8 +103,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.get(url);
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to navigate to Url \"" + url + ". Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to navigate to Url \"" + url + ". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (TimeoutException e) {
 			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -119,10 +127,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			parentWindow = this.driver.getWindowHandle();
 			windows = this.driver.getWindowHandles();
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to current browser windows. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to get current browser windows. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to current browser windows.");
+			this.log.fatal("Something went wrong while trying to get current browser windows.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 		for (String windowId : windows) {
@@ -135,10 +146,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 					}
 					this.driver.switchTo().window(parentWindow);
 				} catch (NoSuchWindowException e) {
-					this.log.error("The window with ID: \"" + windowId + "\" could not be found.");
+					this.log.error("Tab with Page Title: \"" + title + "\" could not be found. Please check if provided Page Title is correct.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				} catch (Exception e) {
-					this.log.error("Something went wrong while switching tab by Page Title.");
+					this.log.error("Something went wrong while trying to switch tab by Page Title: \"" + title + "\".");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				}
 			}
@@ -159,10 +170,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			parentWindow = this.driver.getWindowHandle();
 			windows = this.driver.getWindowHandles();
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to current browser windows. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to get current browser windows. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to current browser windows.");
+			this.log.fatal("Something went wrong while trying to get current browser windows.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 		for (String windowId : windows) {
@@ -175,10 +189,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 					}
 					this.driver.switchTo().window(parentWindow);
 				} catch (NoSuchWindowException e) {
-					this.log.error("The window with ID: \"" + windowId + "\" could not be found.");
+					this.log.error("Tab with Page URL: \"" + url + "\" could not be found. Please check if provided Page URL is correct.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				} catch (Exception e) {
-					this.log.error("Something went wrong while switching tab by Page Title.");
+					this.log.error("Something went wrong while trying to switch tab by Page URL: \"" + url + "\".");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				}
 			}
@@ -195,10 +209,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.tabs = new ArrayList<String>(this.driver.getWindowHandles());
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to current browser tabs. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to get current browser tabs. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to current browser tabs.");
+			this.log.fatal("Something went wrong while trying to get current browser tabs.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 		try {
@@ -218,8 +235,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.navigate().back();
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to click back. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to click back. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.fatal("Something went wrong while trying to click back.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -232,8 +252,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.navigate().forward();
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to click forward. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to click forward. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.fatal("Something went wrong while trying to click forward.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -246,8 +269,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.navigate().refresh();
 		} catch (NullPointerException e) {
-			this.log.fatal("Encountered error while trying to click refresh. Browser might not have been opened or initialized.");
+			this.log.fatal("Unable to click refresh. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.fatal("Something went wrong while trying to click refresh.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -260,8 +286,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.info("I close Tab.");
 			this.driver.close();
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to close Tab. Tab might have already been closed or browser was never opened or initialized.");
+			this.log.error("Unable to close Tab. Tab might have already been closed or browser was never opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to close Tab.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -274,8 +303,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.info("I close Browser.");
 			this.driver.quit();
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to close Browser. Browser might have already been closed or was never opened or initialized.");
+			this.log.error("Unable to close Browser. Browser might have already been closed or was never opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to close Browser.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -288,8 +320,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.manage().window().maximize();
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to maximize browser window. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to maximize browser window. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to maximize browser window.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -302,7 +337,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.manage().deleteAllCookies();
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to delete all cookies. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to delete all cookies. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to delete all cookies.");
@@ -318,7 +353,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript(script);
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to scroll page. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to scroll page. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to scroll page.");
@@ -331,7 +366,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to initialize Implicit Wait. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to initialize Implicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to scroll page.");
@@ -344,7 +379,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.wait = new WebDriverWait(this.driver, duration);
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to initialize Explicit Wait. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to initialize Explicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to scroll page.");
@@ -361,45 +396,49 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			element = this.driver.findElement(locator);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to get Web Element. Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to get Web Element. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to get Web Element. Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to get Web Element. Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element = this.seleniumWait.waitForObjectToBePresent(locator);
 		} catch (NoSuchElementException e) {
-			this.log.warn("Encountered error while trying to get Web Element. Unable to find the Web Element.");
+			this.log.warn("Unable to get Web Element. Unable to find the Web Element.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element = this.seleniumWait.waitForObjectToBePresent(locator);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to get Web Element.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element = this.seleniumWait.waitForObjectToBePresent(locator);
 		}
 		return element;
 	}
 	
 	List<WebElement> getElements(By locator) {
-		List<WebElement> elements;
+		List<WebElement> elements = null;
 		try {
 			elements = this.driver.findElements(locator);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to get Web Elements. Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to get Web Elements. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+			if (this.driver == null) {
+				System.exit(1);
+			}
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to get Web Elements. The Web Elements are no longer present in the Web Page.");
+			this.log.warn("Unable to get Web Elements. The Web Elements are no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+			elements = this.seleniumWait.waitForObjectsToBePresent(locator);
 		} catch (NoSuchElementException e) {
-			this.log.warn("Encountered error while trying to get Web Elements. Unable to find the Web Elements.");
+			this.log.warn("Unable to get Web Elements. Unable to find the Web Elements.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+			elements = this.seleniumWait.waitForObjectsToBePresent(locator);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to get Web Element.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+			elements = this.seleniumWait.waitForObjectsToBePresent(locator);
 		}
 		return elements;
 	}
@@ -412,12 +451,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action = new Actions(this.driver);
 			this.action.moveToElement(element).perform();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to point at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to point at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.action.moveToElement(element).perform();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to point at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to point at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.action.moveToElement(element).perform();
@@ -430,7 +469,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void scrollToElement(By locator) {
+	public void pointJS(By locator) {
 		this.log.debug("I scroll to Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		String script = "window.scrollTo(0,"+ element.getLocation().y + ")";
@@ -438,7 +477,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript(script);
 		} catch (NullPointerException e) {
-			this.log.error("Encountered error while trying to scroll to Web Element. Browser might have already been closed or was never initialized.");
+			this.log.error("Unable to scroll to Web Element. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to scroll to Web Element.");
@@ -449,28 +488,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void click(By locator) {
 		this.log.info("I click Web Element: \"" + locator.toString() + "\".");
-		WebElement element =  this.getElement(locator);
+		WebElement element = this.getElement(locator);
 		try {
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
 		} catch (ElementClickInterceptedException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			this.scrollToElement(locator);
-			element = this.seleniumWait.waitForObjectToBeClickable(locator);
-			element.click();
+			this.point(locator);
+			this.clickJS(locator);
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.click();
@@ -490,7 +528,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript("arguments[0].click();", element);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.javascriptExecutor.executeScript("arguments[0].click();", element);
@@ -510,28 +548,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action = new Actions(this.driver);
 			this.action.clickAndHold(element).perform();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to click and hold Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to click and hold Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to click and hold Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to click and hold Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		} catch (ElementClickInterceptedException e) {
-			this.log.warn("Encountered error while trying to click and hold Web Element: \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
+			this.log.warn("Unable to click and hold Web Element: \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			this.scrollToElement(locator);
+			this.point(locator);
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to click and hold Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to click and hold Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
 		} catch (Exception e) {
-			this.log.warn("Encountered error while trying click and hold Web Element: \"" + locator.toString() + "\".");
+			this.log.warn("Unable click and hold Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.clickAndHold(element).perform();
@@ -539,7 +577,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clickFromObjectListBasedOnText(By objectList, String textToCheck) {
+	public void clickFromListBasedOnText(By objectList, String textToCheck) {
 		this.log.info("I click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
@@ -550,23 +588,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					elements.get(i).click();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to click a Web Element based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to click a Web Element based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					elements.get(i).click();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to click a Web Element based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to click a Web Element based on Text. The Web Element is no longer present in the Web Page.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					elements.get(i).click();
 				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Encountered error while trying to click a Web Element based on Text. The Web Element is unclickable because it's not on view.");
+					this.log.warn("Unable to click a Web Element based on Text. The Web Element is unclickable because it's not on view.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.scrollToElement(objectList);
+					this.point(objectList);
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					elements.get(i).click();
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to click a Web Element based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to click a Web Element based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					elements.get(i).click();
@@ -598,23 +636,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					elementToClick.get(i).click();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to click a Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
 					elementToClick.get(i).click();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
 					elementToClick.get(i).click();
 				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
+					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.scrollToElement(objectToClick);
+					this.point(objectToClick);
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
 					elementToClick.get(i).click();
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
 					elementToClick.get(i).click();
@@ -641,22 +679,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action = new Actions(this.driver);
 			this.action.doubleClick(element).perform();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to double click Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to double click Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to double click at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to double click at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
 		} catch (ElementClickInterceptedException e) {
-			this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
+			this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			this.scrollToElement(locator);
+			this.point(locator);
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			this.action.doubleClick(element).perform();
@@ -669,7 +707,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void doubleClickFromObjectListBasedOnText(By objectList, String textToCheck) {
+	public void doubleClickFromListBasedOnText(By objectList, String textToCheck) {
 		this.log.info("I double click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
@@ -681,27 +719,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.action = new Actions(this.driver);
 					this.action.doubleClick(elements.get(i)).perform();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					this.action.doubleClick(elements.get(i)).perform();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					this.action.doubleClick(elements.get(i)).perform();
 				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.scrollToElement(objectList);
+					this.point(objectList);
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					this.action.doubleClick(elements.get(i)).perform();
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					this.action.doubleClick(elements.get(i)).perform();
 				} catch (Exception e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					this.action.doubleClick(elements.get(i)).perform();
@@ -729,27 +767,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.action = new Actions(this.driver);
 					this.action.doubleClick(elementToClick.get(i)).perform();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
 					this.action.doubleClick(elementToClick.get(i)).perform();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
 					this.action.doubleClick(elementToClick.get(i)).perform();
 				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.scrollToElement(objectToDoubleClick);
+					this.point(objectToDoubleClick);
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
 					this.action.doubleClick(elementToClick.get(i)).perform();
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
 					this.action.doubleClick(elementToClick.get(i)).perform();
 				} catch (Exception e) {
-					this.log.warn("Encountered error while trying to double click a Web Element from a List based on Text.");
+					this.log.warn("Unable to double click a Web Element from a List based on Text.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
 					this.action.doubleClick(elementToClick.get(i)).perform();
@@ -772,13 +810,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.action = new Actions(this.driver);
 			this.action.dragAndDrop(sourceElement, targetElement).perform();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceObject);
 			targetElement = this.seleniumWait.waitForObjectToBeClickable(targetObject);
 			this.action.dragAndDrop(sourceElement, targetElement).perform();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\". One or both of the Web Elements are no longer present in the Web Page.");
+			this.log.warn("Unable to drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\". One or both of the Web Elements are no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceObject);
 			targetElement = this.seleniumWait.waitForObjectToBeClickable(targetObject);
@@ -798,29 +836,35 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement element = this.getElement(locator);
 		try {
 			element.sendKeys(inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to type text at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to type text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (IllegalArgumentException e) {
-			this.log.warn("Encountered error while trying to type text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
+			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to type text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			this.click(locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to type text at Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		}
 	}
 	
@@ -831,16 +875,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to click at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to click Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
+			this.seleniumWait.waitForValueToBe(locator, inputText);
 		}
 	}
 	
@@ -857,12 +904,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					elementToFill.get(i).sendKeys(inputText);
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to type text at Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to type text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).sendKeys(inputText);
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to type text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).sendKeys(inputText);
@@ -870,7 +917,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.warn("Encountered error while typing text at Web Element from a Table based on Text. Input Text is NULL.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to type text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).click();
@@ -898,22 +945,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			element.sendKeys(keys);
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(keys);
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(keys);
 		} catch (IllegalArgumentException e) {
-			this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
+			this.log.warn("Unable to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			this.click(locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.sendKeys(keys);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while typing text at Web Element: \"" + locator.toString() + "\".");
@@ -937,25 +985,25 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					elementToFill.get(i).sendKeys(keys);
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).sendKeys(keys);
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).sendKeys(keys);
 				} catch (IllegalArgumentException e) {
-					this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element from a Table based on Text. Input Text is NULL.");
+					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Input Text is NULL.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill.get(i).click();
 					elementToFill.get(i).sendKeys(keys);
 				} catch (Exception e) {
-					this.log.warn("Encountered error while trying to press \"" + keyButton + "\" at Web Element from a Table based on Text.");
+					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
 					elementToFill.get(i).sendKeys(keys);
@@ -974,31 +1022,53 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.info("I clear Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
+			this.click(locator);
 			element.clear();
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to clear text at Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to clear text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (IllegalArgumentException e) {
-			this.log.warn("Encountered error while trying to clear text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
+			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (InvalidElementStateException e) {
-			this.log.warn("Encountered error while trying to clear text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
+			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			this.click(locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to clear at Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		}
+		
+		String value = element.getAttribute("value");
+		this.action = new Actions(this.driver);
+		
+		if (value != "") {
+			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". Retrying another method.");
+			Platform operatingSystem = OperatingSystem.getOS();
+			
+			if (operatingSystem == Platform.MAC) {
+				this.action.moveToElement(element).click(element).keyDown(element, Keys.COMMAND).release().sendKeys(element, Keys.DELETE).perform();
+			} else if (operatingSystem == Platform.WINDOWS) {
+				this.action.moveToElement(element).click(element).keyDown(element, Keys.CONTROL).release().sendKeys(element, Keys.DELETE).perform();
+			} else {
+				this.log.info("");
+			}
+		}
+
 	}
 	
 	@Override
@@ -1014,20 +1084,20 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					elementToClear.get(i).clear();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to clear text at Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
 					elementToClear.get(i).clear();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to clear text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
 					elementToClear.get(i).clear();
 				} catch (IllegalArgumentException e) {
-					this.log.warn("Encountered error while trying to clear text at Web Element from a Table based on Text. Input Text is NULL.");
+					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Input Text is NULL.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 				} catch (InvalidElementStateException e) {
-					this.log.warn("Encountered error while trying to clear text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+					this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToClear.get(i).click();
 					elementToClear.get(i).clear();
@@ -1037,6 +1107,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
 					elementToClear.get(i).clear();
 				}
+				
+				String value = elementToClear.get(i).getAttribute("value");
+				this.action = new Actions(this.driver);
+				
+				if (value != "") {
+					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Retrying another method.");
+					Platform operatingSystem = OperatingSystem.getOS();
+					
+					if (operatingSystem == Platform.MAC) {
+						this.action.moveToElement(elementToClear.get(i)).click(elementToClear.get(i)).keyDown(Keys.chord(Keys.COMMAND, "a")).release().sendKeys(Keys.DELETE).perform();
+					} else if (operatingSystem == Platform.WINDOWS) {
+						this.action.moveToElement(elementToClear.get(i)).click(elementToClear.get(i)).keyDown(Keys.chord(Keys.CONTROL, "a")).release().sendKeys(Keys.DELETE).perform();
+					} else {
+						this.log.info("");
+					}
+				}
+				
 				flgTextFound = true;
 				break;
 			}
@@ -1079,7 +1166,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void select(By locator, By optionList, String option) {
 		this.log.info("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		this.clickJS(locator);
-		this.clickFromObjectListBasedOnText(optionList, option);
+		this.clickFromListBasedOnText(optionList, option);
 	}
 
 	@Override
@@ -1123,16 +1210,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.debug("Web Element: \"" + locator.toString() + "\" has no text.");
 			}
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to retrieve text from Web Element. Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to retrieve text from Web Element. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getText().trim();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to retrieve text from Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to retrieve text from Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getText().trim();
 		} catch (Exception e) {
-			this.log.warn("Encountered error while trying to retrieve text from Web Element: \"" + locator.toString() + "\".");
+			this.log.warn("Unable to retrieve text from Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getText().trim();
@@ -1157,12 +1244,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 						this.log.debug("Web Element: \"" + objectToGetTextFrom.toString() + "\" has no text.");
 					}
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to retrieve text from Web Element. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to retrieve text from Web Element. Browser might not have been opened or initialized.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToGetText = this.seleniumWait.waitForObjectsToBeVisible(objectToGetTextFrom);
 					retrievedText = elementToGetText.get(i).getText().trim();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to retrieve text from Web Element: \"" + objectToGetTextFrom.toString() + "\". The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to retrieve text from Web Element: \"" + objectToGetTextFrom.toString() + "\". The Web Element is no longer present in the Web Page.");
 					elementToGetText = this.seleniumWait.waitForObjectsToBeVisible(objectToGetTextFrom);
 					retrievedText = elementToGetText.get(i).getText().trim();
 				} catch (Exception e) {
@@ -1192,11 +1279,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.debug("The Text Box/Area Web Element: \"" + locator.toString() + "\" has no value.");
 			}
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to retrieve Text Box Value from Web Element: \"" + locator.toString() + "\". Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to retrieve Text Box Value from Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute("value");
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to retrieve Text Box Value from Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to retrieve Text Box Value from Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute("value");
 		} catch (Exception e) {
@@ -1222,11 +1309,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to retrieve Text Box Value from Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
 					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to retrieve Text Box Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
 					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
 				} catch (Exception e) {
@@ -1256,15 +1343,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.debug("The Attribute: " + attribute + " of Web Element: \"" + locator.toString() + "\".");
 			}
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute(attribute);
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute(attribute);
 		} catch (Exception e) {
-			this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text.");
+			this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			text = element.getAttribute(attribute);
@@ -1286,18 +1373,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 				try {
 					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
 				} catch (NullPointerException e) {
-					this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text. Browser might have already been closed or was never initialized.");
+					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
 					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					text = elementToCheckText.get(i).getText().trim();
+					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
 				} catch (StaleElementReferenceException e) {
-					this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
 					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					text = elementToCheckText.get(i).getText().trim();
+					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
 				} catch (Exception e) {
-					this.log.warn("Encountered error while trying to retrieve Attribute Value from Web Element from a Table based on Text.");
+					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text.");
 					this.log.debug(ExceptionUtils.getStackTrace(e));
 					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					text = elementToCheckText.get(i).getText().trim();
+					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
 				}
 				flgTextFound = true;
 				break;
@@ -1321,12 +1408,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.warn("The Drop-down List Web Element: \"" + locator.toString() + "\" has no value.");
 			}
 		} catch (NullPointerException e) {
-			this.log.warn("Encountered error while trying to retrieve Drop-down List Web Element: \"" + locator.toString() + "\" Value. Browser might have already been closed or was never initialized.");
+			this.log.warn("Unable to retrieve Drop-down List Web Element: \"" + locator.toString() + "\" Value. Browser might not have been opened or initialized.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
 		} catch (StaleElementReferenceException e) {
-			this.log.warn("Encountered error while trying to retrieve Drop-down List Web Element: \"" + locator.toString() + "\" Value. The Web Element is no longer present in the Web Page.");
+			this.log.warn("Unable to retrieve Drop-down List Web Element: \"" + locator.toString() + "\" Value. The Web Element is no longer present in the Web Page.");
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.select = new Select(element);
 			text = this.select.getFirstSelectedOption().getText().toLowerCase();
