@@ -221,8 +221,10 @@ public class SeleniumWebDriver {
 	
 	private ChromeOptions setChromeDriverOptions(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
-		options.addArguments("disable-infobars");
-		options.setHeadless(isHeadless);
+		options.addArguments("--ignore-certificate-errors");
+		if (isHeadless) {
+			options.addArguments("--headless");
+		}
 		return options;
     }
 	
