@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
+import org.testng.Assert;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Mobile;
@@ -56,6 +57,7 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -72,6 +74,7 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
