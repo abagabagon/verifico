@@ -180,7 +180,6 @@ public class SQLData {
 	
 	/**
 	 * Closes and empties the ResultSet.
-	 * 
 	 */
 	
 	private void closeResultSet() {
@@ -204,7 +203,6 @@ public class SQLData {
 	
 	/**
 	 * Closes SQL Connection.
-	 * 
 	 */
 	
 	public void closeConnection() {
