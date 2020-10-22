@@ -25,6 +25,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.TestStatus;
@@ -374,7 +375,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 	
-	void initializeExplicitWait(long duration) {
+	void initializeExplicitWait(int duration) {
 		this.log.debug("I initialize Explicit Wait.");
 		try {
 			this.wait = new WebDriverWait(this.driver, duration);
@@ -835,20 +836,20 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.info("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
+			element.click();
 			element.sendKeys(inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element.click();
 			element.sendKeys(inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element.click();
 			element.sendKeys(inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -857,14 +858,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element.click();
 			element.sendKeys(inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to type text at Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element.click();
 			element.sendKeys(inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		}
 	}
 	
@@ -875,19 +876,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 		try {
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to click Web Element: \"" + locator.toString() + "\".");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
-			this.seleniumWait.waitForValueToBe(locator, inputText);
 		}
 	}
 	
@@ -1458,6 +1456,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1474,6 +1473,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			Assert.fail();
 		}
 		return status;	
 	}
@@ -1490,6 +1490,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1505,6 +1506,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not clickable.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1521,6 +1523,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			Assert.fail();
 		}
 		return status;	
 	}
@@ -1537,6 +1540,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			Assert.fail();
 		}
 		return status;	
 	}
@@ -1555,6 +1559,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see value: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1571,6 +1576,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1586,6 +1592,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1603,6 +1610,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
+			Assert.fail();
 		}
 		this.initializeImplicitWait(20);
 		this.initializeExplicitWait(20);
@@ -1621,6 +1629,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not enabled.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1637,6 +1646,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not disabled.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1654,6 +1664,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1671,6 +1682,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is selected.");
+			Assert.fail();
 		}
 		return status;
 	}
@@ -1688,6 +1700,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see alert message: \"" + expectedMessage + "\".");
+			Assert.fail();
 		}
 		return status;
 	}
