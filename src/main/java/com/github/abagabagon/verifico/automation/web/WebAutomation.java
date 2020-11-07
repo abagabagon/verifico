@@ -271,6 +271,15 @@ public interface WebAutomation {
 	public void clear(By locator);
 	
 	/**
+	 * Clears value of a text box/area Web Element (utilizing Javascript). Text entry Web Elements are INPUT and
+	 * TEXTAREA Web Elements.
+	 * 
+	 * @param locator Object used to locate Web Element to clear value of.
+	 */
+
+	public void clearJS(By locator);
+	
+	/**
 	 * Clears value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param objectToCheckText	Object from which to check the specified text to check.
