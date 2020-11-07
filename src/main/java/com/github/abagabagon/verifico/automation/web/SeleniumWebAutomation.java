@@ -1041,7 +1041,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			this.click(locator);
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to clear at Web Element: \"" + locator.toString() + "\".");
@@ -1052,21 +1052,49 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		
 		String value = element.getAttribute("value");
+		if (value != "") {
+			this.clearJS(locator);
+		}
+		
+		value = element.getAttribute("value");
 		this.action = new Actions(this.driver);
+		Platform operatingSystem = OperatingSystem.getOS();
 		
 		if (value != "") {
-			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". Retrying another method.");
-			Platform operatingSystem = OperatingSystem.getOS();
-			
 			if (operatingSystem == Platform.MAC) {
-				this.action.moveToElement(element).click(element).keyDown(element, Keys.COMMAND).release().sendKeys(element, Keys.DELETE).perform();
+				this.action.click(element)
+				.pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
+				.pause(200).sendKeys(Keys.BACK_SPACE).perform();
 			} else if (operatingSystem == Platform.WINDOWS) {
-				this.action.moveToElement(element).click(element).keyDown(element, Keys.CONTROL).release().sendKeys(element, Keys.DELETE).perform();
+				this.action.click(element)
+				.pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
+				.pause(200).sendKeys(Keys.BACK_SPACE).perform();
 			} else {
-				this.log.info("");
+				this.log.info("Unsupported Operating System.");
 			}
 		}
 
+	}
+	
+	@Override
+	public void clearJS(By locator) {
+		this.log.info("I clear Web Element: \"" + locator.toString() + "\".");
+		WebElement element =  this.getElement(locator);
+		try {
+			this.click(locator);
+			this.javascriptExecutor = (JavascriptExecutor) this.driver;
+			this.javascriptExecutor.executeScript("arguments[0].setAttribute('value', '');", element);
+		} catch (NullPointerException e) {
+			this.log.warn("Unable to click at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
+			this.javascriptExecutor.executeScript("arguments[0].setAttribute('value', '');", element);
+		} catch (Exception e) {
+			this.log.warn("Something went wrong while trying to click Web Element: \"" + locator.toString() + "\".");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			element = this.seleniumWait.waitForObjectToBeClickable(locator);
+			this.javascriptExecutor.executeScript("arguments[0].setAttribute('value', '');", element);
+		}
 	}
 	
 	@Override
