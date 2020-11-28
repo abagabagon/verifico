@@ -28,7 +28,7 @@ public class AppiumWebDriver {
 	}
 	
 	WebDriver getWebDriver(Mobile mobile, Browser browser, String platformVersion, String deviceName) {
-		this.log.debug("Initializing Appium Web Driver.");
+		this.log.trace("Initializing Appium Web Driver.");
 		try {
 			switch (browser) {
 			case CHROME:
@@ -60,7 +60,7 @@ public class AppiumWebDriver {
 	 */
 	
 	private WebDriver getChromeDriver(Mobile mobile, String platformVersion, String deviceName) {
-		this.log.debug("Initializing Google Chrome Driver.");
+		this.log.trace("Initializing Google Chrome Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, mobile.toString());
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
@@ -68,7 +68,7 @@ public class AppiumWebDriver {
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "Chrome");
 		this.driver = new AppiumDriver<WebElement>(this.appiumServerUrl, capabilities);
-		this.log.debug("Successfully initialized Google Chrome Driver.");
+		this.log.trace("Successfully initialized Google Chrome Driver.");
 		return this.driver;
 	}
 	
@@ -79,7 +79,7 @@ public class AppiumWebDriver {
 	 */
 
 	private WebDriver getSafariDriver(Mobile mobile, String platformVersion, String deviceName) {
-		this.log.debug("Setting Property of Safari Driver.");
+		this.log.trace("Setting Property of Safari Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, mobile.toString());
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
@@ -87,7 +87,7 @@ public class AppiumWebDriver {
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "Safari");
 		this.driver = new AppiumDriver<WebElement>(this.appiumServerUrl, capabilities);
-		this.log.debug("Successfully initialized Safari Driver.");
+		this.log.trace("Successfully initialized Safari Driver.");
 		return this.driver;
 	}
 

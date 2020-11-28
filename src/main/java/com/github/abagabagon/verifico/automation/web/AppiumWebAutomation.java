@@ -35,8 +35,8 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 
 	@Override
 	public void openBrowser() {
-		this.log.debug("Initializing Appium Web Driver.");
-		this.log.info("I open Web Browser.");
+		this.log.trace("Initializing Appium Web Driver.");
+		this.log.debug("I open Web Browser.");
 		this.driver = this.appiumWebDriver.getWebDriver(this.mobile, this.browser, this.platformVersion, this.deviceName);
 		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
@@ -47,13 +47,13 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 	
 	@Override
 	public TestStatus verifyUrl(String expectedUrl) {
-		this.log.info("I verify Page URL: \"" + expectedUrl + "\".");
+		this.log.debug("I verify Page URL: \"" + expectedUrl + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(expectedUrl);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
 			status = TestStatus.PASSED;
-			this.log.info("I see Page URL: \"" + expectedUrl + "\".");
+			this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
@@ -64,13 +64,13 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 	
 	@Override
 	public TestStatus verifyTitle(String expectedTitle) {
-		this.log.info("I verify Page Title: \"" + expectedTitle + "\".");
+		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
 		String actualTitle = this.driver.getTitle().trim();
 		boolean isUrlEqual = actualTitle.contains(expectedTitle);
 		TestStatus status = TestStatus.FAILED;
 		if(isUrlEqual) {
 			status = TestStatus.PASSED;
-			this.log.info("I saw Page Title: \"" + expectedTitle + "\".");
+			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
 			status = TestStatus.FAILED;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
