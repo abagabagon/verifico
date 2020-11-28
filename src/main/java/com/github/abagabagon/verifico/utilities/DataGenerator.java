@@ -23,6 +23,10 @@ public class DataGenerator {
 		return dateTime.format(formatter);
 	}
 	
+	public static String getRandomAlphanumericStrings(int length) {
+		String generatedString = RandomStringUtils.random(length, true, true);
+		return generatedString;
+	}
 	
 	public static String getRandomAlphabeticStrings(int length) {
 		String generatedString = RandomStringUtils.random(length, true, false);
