@@ -29,11 +29,18 @@ public class DataGenerator {
 		return generatedString;
 	}
 	
+	public static String getRandomNumericStrings(int length) {
+		String generatedString = RandomStringUtils.random(length, false, true);
+		return generatedString;
+	}
+	
+	public static String getRandomSpecialCharacterStrings(int length) {
+		String generatedString = RandomStringUtils.random(length, false, false);
+		return generatedString;
+	}
+	
 	public static int getRandomNumber(int min, int max) {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(getRandomNumber(1, 10));
-	}
+
 }
