@@ -34,7 +34,7 @@ public class SeleniumWebDriver {
 	}
 	
 	WebDriver getWebDriver(Browser browser, boolean isHeadless) {
-		this.log.debug("Initializing Selenium Web Driver.");
+		this.log.trace("Initializing Selenium Web Driver.");
 		try {
 			if(isHeadless) {
 				switch (browser) {
@@ -81,11 +81,11 @@ public class SeleniumWebDriver {
 			}
 		} catch (WebDriverException e) {
 			this.log.fatal("Unable to initialize Selenium Web Driver for " + browser + ".");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		} catch (Exception e) {
 			this.log.fatal("Something went wrong while trying to initialize Selenium Web Driver for " + browser + ".");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		}
 		
@@ -100,12 +100,12 @@ public class SeleniumWebDriver {
 	 */
 	
 	private WebDriver getChromeDriver(boolean isHeadless) {
-		this.log.debug("Initializing Google Chrome Driver.");
+		this.log.trace("Initializing Google Chrome Driver.");
 		WebDriver driver;
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = this.setChromeDriverOptions(isHeadless); 
 		driver = new ChromeDriver(options);
-		this.log.debug("Successfully initialized Google Chrome Driver.");
+		this.log.trace("Successfully initialized Google Chrome Driver.");
 		return driver;
 	}
 	
@@ -117,12 +117,12 @@ public class SeleniumWebDriver {
 	 */
 	
 	private WebDriver getFirefoxDriver(boolean isHeadless) {
-		this.log.debug("Initializing Mozilla Firefox Driver.");
+		this.log.trace("Initializing Mozilla Firefox Driver.");
 		WebDriver driver;
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions options = this.setFirefoxDriverOptions(isHeadless);
 		driver = new FirefoxDriver(options);
-		this.log.debug("Successfully initialized Mozilla Firefox Driver.");
+		this.log.trace("Successfully initialized Mozilla Firefox Driver.");
 		return driver;
 	}
 	
@@ -133,11 +133,11 @@ public class SeleniumWebDriver {
 	 */
 	
 	private WebDriver getOperaDriver() {
-		this.log.debug("Initializing Opera Driver.");
+		this.log.trace("Initializing Opera Driver.");
 		WebDriver driver;
 		WebDriverManager.operadriver().setup();
 		driver = new OperaDriver();
-		this.log.debug("Successfully initialized Opera Driver.");
+		this.log.trace("Successfully initialized Opera Driver.");
 		return driver;
 	}
 	
@@ -148,11 +148,11 @@ public class SeleniumWebDriver {
 	 */
 	
 	private WebDriver getEdgeDriver() {
-		this.log.debug("Initializing Microsoft Edge Driver.");
+		this.log.trace("Initializing Microsoft Edge Driver.");
 		WebDriver driver;
 		WebDriverManager.edgedriver().setup();
 		driver = new EdgeDriver();
-		this.log.debug("Successfully initialized Microsoft Edge Driver.");
+		this.log.trace("Successfully initialized Microsoft Edge Driver.");
 		return driver;
 	}
 	
@@ -163,12 +163,12 @@ public class SeleniumWebDriver {
 	 */
 	
 	private WebDriver getIEDriver() {
-		this.log.debug("Initializing Internet Explorer Driver.");
+		this.log.trace("Initializing Internet Explorer Driver.");
 		WebDriver driver;
 		WebDriverManager.iedriver().setup();
 		InternetExplorerOptions options = this.setInternetExplorerDriverOptions();
 		driver = new InternetExplorerDriver(options);
-		this.log.debug("Successfully initialized Internet Explorer Driver.");
+		this.log.trace("Successfully initialized Internet Explorer Driver.");
 		return driver;
 	}
 	
@@ -179,7 +179,7 @@ public class SeleniumWebDriver {
 	 */
 
 	private WebDriver getSafariDriver() {
-		this.log.debug("Setting Property of Safari Driver.");
+		this.log.trace("Setting Property of Safari Driver.");
 		Platform operatingSystem = OperatingSystem.getOS();
 		
 		switch(operatingSystem) {
@@ -189,9 +189,9 @@ public class SeleniumWebDriver {
 			this.log.fatal("Unsupported Operating System. Please report issue to QA Team.");
 		}
 
-		this.log.debug("Initializing Safari Driver.");
+		this.log.trace("Initializing Safari Driver.");
 		WebDriver driver = new SafariDriver();
-		this.log.debug("Successfully initialized Safari Driver.");
+		this.log.trace("Successfully initialized Safari Driver.");
 		return driver;
 	}
 	
@@ -202,13 +202,13 @@ public class SeleniumWebDriver {
 	 */
 
 	private WebDriver getPhantomJSDriver() {
-		this.log.debug("Initializing PhantomJS Driver.");
+		this.log.trace("Initializing PhantomJS Driver.");
 		DesiredCapabilities caps = new DesiredCapabilities();
 		caps.setJavascriptEnabled(true);                
 		caps.setCapability("takesScreenshot", true);  
 		WebDriverManager.phantomjs().setup();
 		WebDriver driver = new PhantomJSDriver(caps);
-		this.log.debug("Successfully initialized PhantomJS Driver.");
+		this.log.trace("Successfully initialized PhantomJS Driver.");
 		return driver;
 	}
 	

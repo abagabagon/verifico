@@ -36,14 +36,14 @@ public class AppiumMobileDriver {
 	 */
 
 	AppiumDriver<MobileElement> getIOSDriver(String platformVersion, String deviceName) {
-		this.log.debug("Initializing IOSDriver.");
+		this.log.trace("Initializing IOSDriver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.iOS);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		this.driver = new IOSDriver<MobileElement>(this.appiumServerUrl, capabilities);
-		this.log.debug("Successfully initialized IOSDriver.");
+		this.log.trace("Successfully initialized IOSDriver.");
 		return this.driver;
 	}
 	
@@ -57,7 +57,7 @@ public class AppiumMobileDriver {
 	 */
 	
 	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, File applicationFile) {
-		this.log.debug("Initializing AndroidDriver.");
+		this.log.trace("Initializing AndroidDriver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.Android);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
@@ -65,7 +65,7 @@ public class AppiumMobileDriver {
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
 		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
-		this.log.debug("Successfully initialized AndroidDriver.");
+		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
 	}
 	

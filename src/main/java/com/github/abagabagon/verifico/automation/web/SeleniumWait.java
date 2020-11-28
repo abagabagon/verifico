@@ -39,13 +39,13 @@ public class SeleniumWait {
 			this.log.trace("Page URL had matched the expected value!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Page URL to match the expected URL Value has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Page URL to match expected value!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isUrlEqual;
 	}
@@ -66,13 +66,13 @@ public class SeleniumWait {
 			this.log.trace("Page Title had matched the expected value!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Page Title to match the expected Title Value has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Page Title to match expected value!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isTitleEqual;
 	}
@@ -92,13 +92,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become present!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be present has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for element to be present!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
 	}
@@ -118,13 +118,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become present!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Elements to be present has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for elements to be present!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return elements;
 	}
@@ -144,13 +144,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
 	}
@@ -170,13 +170,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return elements;
 	}
@@ -196,13 +196,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become clickable!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
 	}
@@ -223,13 +223,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become invisible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isVisible;
 	}
@@ -251,13 +251,13 @@ public class SeleniumWait {
 			this.log.trace("Text Box/Area Value had matched the expected value!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isValueEqual;
 	}
@@ -279,13 +279,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element Selection State is " + expectedSelectionState + "!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + expectedSelectionState + " has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + expectedSelectionState + " has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return status;
 	}
@@ -304,13 +304,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
 	}
@@ -329,13 +329,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become visible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return elements;
 	}
@@ -354,13 +354,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become clickable!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
 	}
@@ -381,13 +381,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element had become invisible!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isVisible;
 	}
@@ -409,13 +409,13 @@ public class SeleniumWait {
 			this.log.trace("Text Box/Area Value had matched the expected value!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Text Box/Area Value to match the expected URL Value has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return isValueEqual;
 	}
@@ -437,13 +437,13 @@ public class SeleniumWait {
 			this.log.trace("Web Element Selection State is " + expectedSelectionState + "!");
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element Selection State to be " + expectedSelectionState + " has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for Web Element Selection State to be " + expectedSelectionState + " has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return status;
 	}
@@ -459,13 +459,13 @@ public class SeleniumWait {
 			this.alert = this.wait.until(ExpectedConditions.alertIsPresent());
 		} catch (NullPointerException e) {
 			this.log.fatal("WebDriverWait is not initialized!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Alert to be displayed has expired!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while getting Alert Message!");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
+			this.log.trace(ExceptionUtils.getStackTrace(e));
 		}
 		return this.alert;
 	}
