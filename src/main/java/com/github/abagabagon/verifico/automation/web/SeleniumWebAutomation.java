@@ -1559,6 +1559,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return status;
 	}
+	
+	@Override
+	public TestStatus verifyTextFromList(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on List.");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean flgTextFound = false;
+		TestStatus status = TestStatus.FAILED;
+		for(int i = 0; i < size; i++) {
+			String text = element.get(i).getText().trim();
+			if (text.equals(textValue)) {
+				status = TestStatus.PASSED;
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The text \"" + textValue + "\" is not found from List.");
+		}
+		return status;
+	}
 
 	@Override
 	public TestStatus verifyDisplayed(By locator) {
