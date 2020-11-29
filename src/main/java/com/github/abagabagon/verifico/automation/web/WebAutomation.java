@@ -489,6 +489,17 @@ public interface WebAutomation {
 	public TestStatus verifyText(By locator, String expectedValue);
 	
 	/**
+	 * Verifies if text value exists from texts on Web Element List.
+	 * 
+	 * @param locator		Object used to locate Web Element List to assert the text value from.
+	 * @param expectedValue	Text value to verify
+	 * @return	<code>PASSED</code> if text value exists from texts of Web Element List.
+	 * 			<code>FAILED</code> if text value does not exist from texts of Web Element List.
+	 */
+
+	public TestStatus verifyTextFromList(By locator, String textValue);
+	
+	/**
 	 * Verifies if Web Element is displayed on Web Page.
 	 * 
 	 * @param	locator Object used to locate Web Element to check.
