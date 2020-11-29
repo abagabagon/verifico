@@ -16,7 +16,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -29,7 +28,6 @@ import org.testng.Assert;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.TestStatus;
-import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
@@ -1043,29 +1041,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		}
-		
-		String value = element.getAttribute("value");
-		if (value != "") {
-			this.clearJS(locator);
-		}
-		
-		value = element.getAttribute("value");
-		this.action = new Actions(this.driver);
-		Platform operatingSystem = OperatingSystem.getOS();
-		
-		if (value != "") {
-			if (operatingSystem == Platform.MAC) {
-				this.action.click(element)
-				.pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
-				.pause(200).sendKeys(Keys.BACK_SPACE).perform();
-			} else if (operatingSystem == Platform.WINDOWS) {
-				this.action.click(element)
-				.pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
-				.pause(200).sendKeys(Keys.BACK_SPACE).perform();
-			} else {
-				this.log.debug("Unsupported Operating System.");
-			}
-		}
 
 	}
 	
@@ -1074,7 +1049,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
 		WebElement element =  this.getElement(locator);
 		try {
-			this.click(locator);
 			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript("arguments[0].setAttribute('value', '');", element);
 		} catch (NullPointerException e) {
@@ -1125,22 +1099,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.trace(ExceptionUtils.getStackTrace(e));
 					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
 					elementToClear.get(i).clear();
-				}
-				
-				String value = elementToClear.get(i).getAttribute("value");
-				this.action = new Actions(this.driver);
-				
-				if (value != "") {
-					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Retrying another method.");
-					Platform operatingSystem = OperatingSystem.getOS();
-					
-					if (operatingSystem == Platform.MAC) {
-						this.action.moveToElement(elementToClear.get(i)).click(elementToClear.get(i)).keyDown(Keys.chord(Keys.COMMAND, "a")).release().sendKeys(Keys.DELETE).perform();
-					} else if (operatingSystem == Platform.WINDOWS) {
-						this.action.moveToElement(elementToClear.get(i)).click(elementToClear.get(i)).keyDown(Keys.chord(Keys.CONTROL, "a")).release().sendKeys(Keys.DELETE).perform();
-					} else {
-						this.log.debug("Unsupported Operating System.");
-					}
 				}
 				
 				flgTextFound = true;
