@@ -587,6 +587,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			String text = elements.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
 				try {
+					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
 					elements.get(i).click();
 				} catch (NullPointerException e) {
 					this.log.warn("Unable to click a Web Element based on Text. Browser might not have been opened or initialized.");
@@ -635,6 +636,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			String text = elementToCheckText.get(i).getText().trim();
 			if (text.equals(textToCheck)) {
 				try {
+					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
 					elementToClick.get(i).click();
 				} catch (NullPointerException e) {
 					this.log.warn("Unable to click a Web Element from a Table based on Text. Browser might not have been opened or initialized.");
@@ -836,19 +838,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.debug("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
-			element.click();
 			element.sendKeys(inputText);
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
-			element.click();
 			element.sendKeys(inputText);
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
-			element.click();
 			element.sendKeys(inputText);
 		} catch (IllegalArgumentException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". Input Text is NULL.");
@@ -856,7 +855,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (InvalidElementStateException e) {
 			this.log.warn("Unable to type text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.click();
 			element.sendKeys(inputText);
@@ -864,7 +862,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.warn("Something went wrong while trying to type text at Web Element: \"" + locator.toString() + "\".");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
-			element.click();
 			element.sendKeys(inputText);
 		}
 	}
@@ -958,8 +955,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (InvalidElementStateException e) {
 			this.log.warn("Unable to press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element.click();
 			element.sendKeys(keys);
 		} catch (Exception e) {
 			this.log.warn("Encountered Exception while typing text at Web Element: \"" + locator.toString() + "\".");
@@ -1020,18 +1017,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		try {
-			this.click(locator);
 			element.clear();
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". Browser might not have been opened or initialized.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (StaleElementReferenceException e) {
 			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		} catch (IllegalArgumentException e) {
@@ -1040,13 +1034,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} catch (InvalidElementStateException e) {
 			this.log.warn("Unable to clear text at Web Element: \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeClickable(locator);
+			element.click();
 			element.clear();
 		} catch (Exception e) {
 			this.log.warn("Something went wrong while trying to clear at Web Element: \"" + locator.toString() + "\".");
 			this.log.trace(ExceptionUtils.getStackTrace(e));
-			this.click(locator);
 			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			element.clear();
 		}
@@ -1146,7 +1139,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					} else if (operatingSystem == Platform.WINDOWS) {
 						this.action.moveToElement(elementToClear.get(i)).click(elementToClear.get(i)).keyDown(Keys.chord(Keys.CONTROL, "a")).release().sendKeys(Keys.DELETE).perform();
 					} else {
-						this.log.debug("");
+						this.log.debug("Unsupported Operating System.");
 					}
 				}
 				
