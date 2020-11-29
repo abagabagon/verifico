@@ -491,8 +491,8 @@ public interface WebAutomation {
 	/**
 	 * Verifies if text value exists from texts on Web Element List.
 	 * 
-	 * @param locator		Object used to locate Web Element List to assert the text value from.
-	 * @param expectedValue	Text value to verify
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
 	 * @return	<code>PASSED</code> if text value exists from texts of Web Element List.
 	 * 			<code>FAILED</code> if text value does not exist from texts of Web Element List.
 	 */
