@@ -400,6 +400,16 @@ public interface WebAutomation {
 	public boolean see(By locator);
 	
 	/**
+	 * Sees if a Web Element is not displayed on Web Page.
+	 * 
+	 * @param	locator Object used to locate Web Element to check.
+	 * @return	<code>true</code> if Web Element is not seen on Web Page.
+	 * 			<code>false</code> if Web Element is seen on Web Page.
+	 */
+	
+	public boolean dontSee(By locator);
+	
+	/**
 	 * Waits for a specific time (Seconds).
 	 * 
 	 * @param duration Duration of time to wait (Seconds).
