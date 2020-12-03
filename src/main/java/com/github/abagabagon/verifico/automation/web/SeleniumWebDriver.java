@@ -103,7 +103,7 @@ public class SeleniumWebDriver {
 		this.log.trace("Initializing Google Chrome Driver.");
 		WebDriver driver;
 		WebDriverManager.chromedriver().setup();
-		ChromeOptions options = this.setChromeDriverOptions(isHeadless); 
+		ChromeOptions options = setChromeDriverOptions(isHeadless); 
 		driver = new ChromeDriver(options);
 		this.log.trace("Successfully initialized Google Chrome Driver.");
 		return driver;
@@ -120,7 +120,7 @@ public class SeleniumWebDriver {
 		this.log.trace("Initializing Mozilla Firefox Driver.");
 		WebDriver driver;
 		WebDriverManager.firefoxdriver().setup();
-		FirefoxOptions options = this.setFirefoxDriverOptions(isHeadless);
+		FirefoxOptions options = setFirefoxDriverOptions(isHeadless);
 		driver = new FirefoxDriver(options);
 		this.log.trace("Successfully initialized Mozilla Firefox Driver.");
 		return driver;
@@ -166,7 +166,7 @@ public class SeleniumWebDriver {
 		this.log.trace("Initializing Internet Explorer Driver.");
 		WebDriver driver;
 		WebDriverManager.iedriver().setup();
-		InternetExplorerOptions options = this.setInternetExplorerDriverOptions();
+		InternetExplorerOptions options = setInternetExplorerDriverOptions();
 		driver = new InternetExplorerDriver(options);
 		this.log.trace("Successfully initialized Internet Explorer Driver.");
 		return driver;
@@ -219,7 +219,7 @@ public class SeleniumWebDriver {
 	 * @return ChromeOptions
 	 */
 	
-	private ChromeOptions setChromeDriverOptions(boolean isHeadless) {
+	private static ChromeOptions setChromeDriverOptions(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--ignore-certificate-errors");
 		if (isHeadless) {
@@ -235,7 +235,7 @@ public class SeleniumWebDriver {
 	 * @return FirefoxOptions
 	 */
 	
-	private FirefoxOptions setFirefoxDriverOptions(boolean isHeadless) {
+	private static FirefoxOptions setFirefoxDriverOptions(boolean isHeadless) {
 		FirefoxOptions options = new FirefoxOptions();
 		options.setCapability(CapabilityType.HAS_NATIVE_EVENTS, false);
 		options.setHeadless(isHeadless);
@@ -248,7 +248,7 @@ public class SeleniumWebDriver {
 	 * @return InternetExplorerOptions
 	 */
 
-	private InternetExplorerOptions setInternetExplorerDriverOptions() {
+	private static InternetExplorerOptions setInternetExplorerDriverOptions() {
 		InternetExplorerOptions options = new InternetExplorerOptions();
 		options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
 		options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
