@@ -390,6 +390,16 @@ public interface WebAutomation {
 	public String getDropDownListValue(By locator);
 	
 	/**
+	 * Sees if a Web Element is displayed on Web Page.
+	 * 
+	 * @param	locator Object used to locate Web Element to check.
+	 * @return	<code>true</code> if Web Element is seen on Web Page.
+	 * 			<code>false</code> if Web Element is not seen on Web Page.
+	 */
+	
+	public boolean see(By locator);
+	
+	/**
 	 * Waits for a specific time (Seconds).
 	 * 
 	 * @param duration Duration of time to wait (Seconds).
