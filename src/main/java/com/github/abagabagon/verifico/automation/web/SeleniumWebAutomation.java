@@ -1430,10 +1430,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean status = false;
 		if (elements.size() > 0) {
 			status = true;
-			this.log.debug("I don't see Web Element: \"" + locator.toString() + "\".");
+			this.log.error("I can see Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I can see Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I don't see Web Element: \"" + locator.toString() + "\".");
 		}
 		return status;
 	}
