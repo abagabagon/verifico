@@ -390,6 +390,16 @@ public interface WebAutomation {
 	public String getDropDownListValue(By locator);
 	
 	/**
+	 * Sees if a Web Element is displayed on Web Page.
+	 * 
+	 * @param	locator Object used to locate Web Element to check.
+	 * @return	<code>true</code> if Web Element is seen on Web Page.
+	 * 			<code>false</code> if Web Element is not seen on Web Page.
+	 */
+	
+	public boolean see(By locator);
+	
+	/**
 	 * Waits for a specific time (Seconds).
 	 * 
 	 * @param duration Duration of time to wait (Seconds).
@@ -491,8 +501,8 @@ public interface WebAutomation {
 	/**
 	 * Verifies if text value exists from texts on Web Element List.
 	 * 
-	 * @param locator		Object used to locate Web Element List to assert the text value from.
-	 * @param expectedValue	Text value to verify
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
 	 * @return	<code>PASSED</code> if text value exists from texts of Web Element List.
 	 * 			<code>FAILED</code> if text value does not exist from texts of Web Element List.
 	 */

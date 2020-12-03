@@ -25,6 +25,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.TestStatus;
@@ -40,6 +41,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	JavascriptExecutor javascriptExecutor;
 	ArrayList<String> tabs;
 	SeleniumWait seleniumWait;
+	SoftAssert softAssert;
 	
 	private Browser browser;
 	private boolean isHeadless;
@@ -1403,7 +1405,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return text;
 	}
-
+	
+	@Override
+	public boolean see(By locator) {
+		this.log.debug("I check to see Web Element: \"" + locator.toString() + "\".");
+		List<WebElement> elements = this.getElements(locator);
+		boolean status = false;
+		if (elements.size() > 0) {
+			status = true;
+			this.log.debug("I can see Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I don't see Web Element: \"" + locator.toString() + "\".");
+		}
+		return status;
+	}
+	
 	@Override
 	public void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Seconds.");

@@ -79,7 +79,7 @@ public class TestRail implements TestManagement {
 		JSONObject response = null;
 		Map<String, Integer> data = new HashMap<String, Integer>();
 		data.put("status_id", new Integer(statusId));
-		String id = this.checkTestCaseId(testCaseId);
+		String id = checkTestCaseId(testCaseId);
 
 		try {
 			response = (JSONObject) this.testRail.sendPost("add_result_for_case/" + this.runId + "/" + id, data);
@@ -112,7 +112,7 @@ public class TestRail implements TestManagement {
 		
 		for (int testCount = 0; testCount < size; testCount++) {
 			Map<String, Integer> testCase = new HashMap<String, Integer>();
-			String id = this.checkTestCaseId(testCaseIds.get(testCount));
+			String id = checkTestCaseId(testCaseIds.get(testCount));
 			testCase.put("case_id", Integer.parseInt(id));
 			testCase.put("status_id", new Integer(statusId));
 			testCases.add(testCase);
@@ -139,7 +139,7 @@ public class TestRail implements TestManagement {
 	 * @return				Test Case ID Value that only contains numeric value
 	 */
 	
-	private String checkTestCaseId(String testCaseId) {
+	private static String checkTestCaseId(String testCaseId) {
 		String id = null;
 		
 		if(testCaseId.startsWith("C")) {
