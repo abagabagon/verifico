@@ -1422,6 +1422,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean dontSee(By locator) {
+		this.log.debug("I check to not see Web Element: \"" + locator.toString() + "\".");
+		this.initializeImplicitWait(2);
+		this.initializeExplicitWait(2);
+		List<WebElement> elements = this.getElements(locator);
+		boolean status = false;
+		if (elements.size() > 0) {
+			status = true;
+			this.log.debug("I don't see Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I can see Web Element: \"" + locator.toString() + "\".");
+		}
+		return status;
+	}
+	
+	@Override
 	public void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Seconds.");
 		try {
