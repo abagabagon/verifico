@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +75,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	
 	private void initializeImplicitWait(long duration) {
 		this.log.trace("I initialize Implicit Wait.");
-		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(duration));
+		this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
 	}
 	
 	@Override
