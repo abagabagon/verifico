@@ -1403,6 +1403,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void acceptAlert() {
+		this.log.debug("I accept Javascript Alert.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.accept();
+	}
+	
+	@Override
+	public void cancelAlert() {
+		this.log.debug("I cancel Javascript Alert.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.dismiss();
+	}
+	
+	@Override
+	public void typeAlert(String inputText) {
+		this.log.debug("I type: \"" + inputText + "\" at Javascript Alert Text Box.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.sendKeys(inputText);
+	}
+	
+	@Override
 	public void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Seconds.");
 		try {

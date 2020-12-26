@@ -388,6 +388,26 @@ public interface WebAutomation {
 	public String getDropDownListValue(By locator);
 	
 	/**
+	 * Accepts Javascript Alert
+	 */
+
+	public void acceptAlert();
+	
+	/**
+	 * Cancel Javascript Alert
+	 */
+
+	public void cancelAlert();
+	
+	/**
+	 * Simulates typing at Javascript Alert Text Box
+	 * 
+	 * @param inputText Text to enter.
+	 */
+
+	public void typeAlert(String inputText);
+	
+	/**
 	 * Waits for a specific time (Seconds).
 	 * 
 	 * @param duration Duration of time to wait (Seconds).
