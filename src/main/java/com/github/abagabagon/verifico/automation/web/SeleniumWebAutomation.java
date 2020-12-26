@@ -1438,6 +1438,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean dontSeeUrl(String url) {
+		this.log.debug("I verify Page URL is not \"" + url + "\".");
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.equals(url);
+		boolean status = false;
+		if(isUrlEqual) {
+			status = true;
+			this.log.error("I see Page URL: \"" + url + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
+		}
+		return status;
+	}
+	
+	@Override
 	public boolean seeTitle(String expectedTitle) {
 		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
 		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
@@ -1454,23 +1470,24 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean canClick(By locator) {
-		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is clickable.");
-		WebElement element = this.seleniumWait.waitForObjectToBeClickable(locator);
+	public boolean dontSeeTitle(String title) {
+		this.log.debug("I verify Page Title is not \"" + title + "\".");
+		String actualTitle = this.driver.getTitle().trim();
+		boolean isTitleEqual = actualTitle.equals(title);
 		boolean status = false;
-		if (element != null) {
+		if(isTitleEqual) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is clickable.");
+			this.log.error("I saw Page Title: \"" + title + "\".");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not clickable.");
+			this.log.debug("I don't see Page Title: \"" + title + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
 	}
-
+	
 	@Override
 	public boolean typed(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" is displayed at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I verify \"" + expectedValue + "\" is typed at Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		boolean status = false;
@@ -1480,6 +1497,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean didntType(By locator, String value) {
+		this.log.debug("I verify \"" + value + "\" is not typed at Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getValue(locator);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1496,6 +1529,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 		} else {
 			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValue(By locator, String attribute, String value) {
+		this.log.debug("I verify \"" + value + "\" is not displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getAttributeValue(locator, attribute);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1535,6 +1584,22 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean dontSeeText(By locator, String value) {
+		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed.");
+		String actualText = this.getText(locator);
+		boolean isValueEqual = actualText.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
 	public boolean seeTextFromList(By locator, String textValue) {
 		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on List.");
 		List<WebElement> element = this.getElements(locator);
@@ -1551,6 +1616,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		if (!flgTextFound) {
 			this.log.error("The text \"" + textValue + "\" is not found from List.");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextFromList(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on List.");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean status = true;
+		for(int i = 0; i < size; i++) {
+			String text = element.get(i).getText().trim();
+			if (text.equals(textValue)) {
+				status = false;
+				this.log.error("The text \"" + textValue + "\" is found from List.");
+				break;
+			}
 		}
 		return status;
 	}

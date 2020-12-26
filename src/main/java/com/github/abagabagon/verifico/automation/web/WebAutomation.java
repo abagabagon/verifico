@@ -410,6 +410,16 @@ public interface WebAutomation {
 	public boolean seeUrl(String expectedUrl);
 	
 	/**
+	 * Verifies Page URL of Web Page if not equal to the specified URL.
+	 * 
+	 * @param	url Expected Page URL to compare into
+	 * @return	<code>true</code> if Page URL is not equal to specified URL.
+	 * 			<code>false</code> if Page URL is equal to specified URL.
+	 */
+
+	public boolean dontSeeUrl(String url);
+	
+	/**
 	 * Verifies Page Title of Web Page if equal to the expected Title.
 	 * 
 	 * @param	expectedTitle Expected Page Title to compare into
@@ -420,14 +430,14 @@ public interface WebAutomation {
 	public boolean seeTitle(String expectedTitle);
 	
 	/**
-	 * Verifies if the Web Element is clickable or not.
+	 * Verifies Page Title of Web Page if not equal to the expected Title.
 	 * 
-	 * @param locator Object used to locate Web Element to check.
-	 * @return	<code>true</code> if Web Element is clickable.
-	 * 			<code>false</code> if Web Element is not clickable.
+	 * @param	title Expected Page Title to compare into
+	 * @return	<code>true</code> if Page Title is not equal to expected Title.
+	 * 			<code>false</code> if Page Title is equal to expected Title.
 	 */
 	
-	public boolean canClick(By locator);
+	public boolean dontSeeTitle(String title);
 
 	/**
 	 * Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected
@@ -442,6 +452,18 @@ public interface WebAutomation {
 	public boolean typed(By locator, String expectedValue);
 	
 	/**
+	 * Verifies the value of INPUT or TEXTAREA Web Elements if not equal to the specified
+	 * value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param value		Value of the Web Element Text Box.
+	 * @return	<code>true</code> if value is not equal to specified value.
+	 * 			<code>false</code> if value is equal to specified value.
+	 */
+
+	public boolean didntType(By locator, String value);
+	
+	/**
 	 * Verifies the value of the specified attribute if equal to the expected
 	 * value.
 	 * 
@@ -453,14 +475,27 @@ public interface WebAutomation {
 	 */
 
 	public boolean seeAttributeValue(By locator, String attribute, String expectedValue);
+	
+	/**
+	 * Verifies the value of the specified attribute if not equal to the specified
+	 * value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param attribute	Name of attribute to assert the value from.
+	 * @param value		Value of the Web Element Attribute.
+	 * @return	<code>true</code> if value is not equal to expected attribute value.
+	 * 			<code>false</code> if value is equal to expected attribute value.
+	 */
+
+	public boolean dontSeeAttributeValue(By locator, String attribute, String value);
 
 	/**
-	 * Verifies Drop-down List Web Element Value if equal to expected text value.
+	 * Verifies Drop-down List Web Element Selected Value if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate Web Element to assert the value from.
 	 * @param expectedValue	Expected drop-down list value
-	 * @return	<code>true</code> if value is equal to expected drop-down list value.
-	 * 			<code>false</code> if value is not equal to expected drop-down list value.
+	 * @return	<code>true</code> if selected value is equal to expected drop-down list value.
+	 * 			<code>false</code> if selected value is not equal to expected drop-down list value.
 	 */
 
 	public boolean selectedDropDown(By locator, String expectedValue);
@@ -477,6 +512,17 @@ public interface WebAutomation {
 	public boolean seeText(By locator, String expectedValue);
 	
 	/**
+	 * Verifies Web Element with text if not equal to specified text value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param value		Text value to check
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean dontSeeText(By locator, String value);
+	
+	/**
 	 * Verifies if text value exists from texts on Web Element List.
 	 * 
 	 * @param locator	Object used to locate Web Element List to assert the text value from.
@@ -486,6 +532,17 @@ public interface WebAutomation {
 	 */
 
 	public boolean seeTextFromList(By locator, String textValue);
+	
+	/**
+	 * Verifies if text value does not exist from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if text value does not exist from texts of Web Element List.
+	 * 			<code>false</code> if text value exists from texts of Web Element List.
+	 */
+
+	public boolean dontSeeTextFromList(By locator, String textValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
