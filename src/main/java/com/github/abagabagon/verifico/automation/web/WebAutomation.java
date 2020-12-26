@@ -394,7 +394,7 @@ public interface WebAutomation {
 	public void acceptAlert();
 	
 	/**
-	 * Cancel Javascript Alert
+	 * Cancels Javascript Alert
 	 */
 
 	public void cancelAlert();
