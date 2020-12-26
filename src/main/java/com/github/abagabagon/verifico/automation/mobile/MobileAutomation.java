@@ -1,7 +1,5 @@
 package com.github.abagabagon.verifico.automation.mobile;
 
-import com.github.abagabagon.verifico.enums.TestStatus;
-
 public interface MobileAutomation {
 	
 	/*#######################################################*/
@@ -178,11 +176,11 @@ public interface MobileAutomation {
 	 * Verifies if the Mobile Element is tappable or not.
 	 * 
 	 * @param locator Object used to locate Mobile Element to check.
-	 * @return	<code>PASSED</code> if Mobile Element is tappable.
-	 * 			<code>FAILED</code> if Mobile Element is not tappable.
+	 * @return	<code>true</code> if Mobile Element is tappable.
+	 * 			<code>false</code> if Mobile Element is not tappable.
 	 */
 	
-	public TestStatus verifyTappable(Object locator);
+	public boolean verifyTappable(Object locator);
 
 	/**
 	 * Verifies the value of INPUT or TEXTAREA Mobile Elements if equal to the expected
@@ -190,11 +188,11 @@ public interface MobileAutomation {
 	 * 
 	 * @param locator		Object used to locate Mobile Element to assert the value from.
 	 * @param expectedValue	Expected value of the Mobile Element Text Box.
-	 * @return	<code>PASSED</code> if value is equal to expected value.
-	 * 			<code>FAILED</code> if value is not equal to expected value.
+	 * @return	<code>true</code> if value is equal to expected value.
+	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public TestStatus verifyValue(Object locator, String expectedValue);
+	public boolean verifyValue(Object locator, String expectedValue);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -203,61 +201,61 @@ public interface MobileAutomation {
 	 * @param locator		Object used to locate Mobile Element to assert the value from.
 	 * @param attribute		Name of attribute to assert the value from.
 	 * @param expectedValue	Expected value of the Mobile Element Attribute.
-	 * @return	<code>PASSED</code> if value is equal to expected attribute value.
-	 * 			<code>FAILED</code> if value is not equal to expected attribute value.
+	 * @return	<code>true</code> if value is equal to expected attribute value.
+	 * 			<code>false</code> if value is not equal to expected attribute value.
 	 */
 
-	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue);
+	public boolean verifyAttributeValue(Object locator, String attribute, String expectedValue);
 
 	/**
 	 * Verifies Mobile Element with text if equal to expected text value.
 	 * 
 	 * @param locator		Object used to locate Mobile Element to assert the value from.
 	 * @param expectedValue	Expected text value
-	 * @return	<code>PASSED</code> if value is equal to expected value.
-	 * 			<code>FAILED</code> if value is not equal to expected value.
+	 * @return	<code>true</code> if value is equal to expected value.
+	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public TestStatus verifyText(Object locator, String expectedValue);
+	public boolean verifyText(Object locator, String expectedValue);
 	
 	/**
 	 * Verifies if Mobile Element is displayed on Web Page.
 	 * 
 	 * @param	locator Object used to locate Mobile Element to check.
-	 * @return	<code>PASSED</code> if Mobile Element is displayed on Web Page.
-	 * 			<code>FAILED</code> if Mobile Element is not displayed on Web Page.
+	 * @return	<code>true</code> if Mobile Element is displayed on Web Page.
+	 * 			<code>false</code> if Mobile Element is not displayed on Web Page.
 	 */
 	
-	public TestStatus verifyDisplayed(Object locator);
+	public boolean verifyDisplayed(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is not displayed on the Web Page.
 	 * 
 	 * @param locator Object used to locate Mobile Element to assert.  
-	 * @return	<code>PASSED</code> if Mobile Element is not displayed on Web Page.
-	 * 			<code>FAILED</code> if Mobile Element is displayed on Web Page.
+	 * @return	<code>true</code> if Mobile Element is not displayed on Web Page.
+	 * 			<code>false</code> if Mobile Element is displayed on Web Page.
 	 */
 
-	public TestStatus verifyNotDisplayed(Object locator);
+	public boolean verifyNotDisplayed(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is enabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate Mobile Element to assert.
-	 * @return	<code>PASSED</code> if Mobile Element is enabled on Web Page.
-	 * 			<code>FAILED</code> if Mobile Element is not enabled on Web Page.
+	 * @return	<code>true</code> if Mobile Element is enabled on Web Page.
+	 * 			<code>false</code> if Mobile Element is not enabled on Web Page.
 	 */
 
-	public TestStatus verifyEnabled(Object locator);
+	public boolean verifyEnabled(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is disabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate Mobile Element to assert.
-	 * @return	<code>PASSED</code> if Mobile Element is disabled on Web Page.
-	 * 			<code>FAILED</code> if Mobile Element is not disabled on Web Page.
+	 * @return	<code>true</code> if Mobile Element is disabled on Web Page.
+	 * 			<code>false</code> if Mobile Element is not disabled on Web Page.
 	 */
 
-	public TestStatus verifyDisabled(Object locator);
+	public boolean verifyDisabled(Object locator);
 
 }
