@@ -117,6 +117,9 @@ I.click(PageLogin.LOGIN_BUTTON);
 | getAttributeValue                     | Get the value of the specified attribute of the Web Element                                                       |
 | getAttributeValueFromTableBasedOnText | Get value of the specified Web Element from a row in a table based on text value from the same row                |
 | getDropDownListValue                  | Gets the selected option of the Drop-down List Web Element                                                        |
+| acceptAlert                           | Accepts Javascript Alert                                                                                          |
+| cancelAlert                           | Cancels Javascript Alert                                                                                          |
+| typeAlert                             | Simulates typing at Javascript Alert Text Box                                                                     |
 | wait                                  | Waits for a specific time (Seconds)                                                                               |
 
 ###### **Verifications**
