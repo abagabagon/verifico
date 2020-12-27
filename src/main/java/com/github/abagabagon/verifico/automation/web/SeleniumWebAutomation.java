@@ -1475,6 +1475,38 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean seePartialUrl(String partialUrl) {
+		this.log.debug("I verify partial Page URL: \"" + partialUrl + "\".");
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.contains(partialUrl);
+		boolean status = false;
+		if(isUrlEqual) {
+			status = true;
+			this.log.debug("I see partial Page URL: \"" + partialUrl + "\".");
+		} else {
+			status = false;
+			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean dontSeePartialUrl(String partialUrl) {
+		this.log.debug("I verify partial Page URL is not \"" + partialUrl + "\".");
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.contains(partialUrl);
+		boolean status = false;
+		if(isUrlEqual) {
+			status = true;
+			this.log.error("I see partial Page URL: \"" + partialUrl + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
 	public boolean seeTitle(String expectedTitle) {
 		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
 		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);

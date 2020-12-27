@@ -440,6 +440,26 @@ public interface WebAutomation {
 	public boolean dontSeeUrl(String url);
 	
 	/**
+	 * Verifies Page URL of Web Page if partially equal to the expected URL.
+	 * 
+	 * @param	expectedUrl Expected Page URL to compare into
+	 * @return	<code>true</code> if Page URL is partially equal to expected URL.
+	 * 			<code>false</code> if Page URL is not partially equal to expected URL.
+	 */
+
+	public boolean seePartialUrl(String expectedUrl);
+	
+	/**
+	 * Verifies Page URL of Web Page if not partially equal to the expected URL.
+	 * 
+	 * @param	expectedUrl Expected Page URL to compare into
+	 * @return	<code>true</code> if Page URL is not partially equal to expected URL.
+	 * 			<code>false</code> if Page URL is partially equal to expected URL.
+	 */
+
+	public boolean dontSeePartialUrl(String expectedUrl);
+	
+	/**
 	 * Verifies Page Title of Web Page if equal to the expected Title.
 	 * 
 	 * @param	expectedTitle Expected Page Title to compare into
