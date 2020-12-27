@@ -1623,7 +1623,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeText(By locator, String expectedValue) {
 		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed.");
-		String actualText = this.getText(locator);
+		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
@@ -1639,7 +1639,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeeText(By locator, String value) {
 		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed.");
-		String actualText = this.getText(locator);
+		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
