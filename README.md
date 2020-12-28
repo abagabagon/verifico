@@ -137,6 +137,8 @@ I.click(PageLogin.LOGIN_BUTTON);
 | selectedDropDown      | Verifies Drop-down List Web Element Value if equal to expected text value                    |
 | seeText               | Verifies Web Element with text if equal to expected text value                               |
 | dontSeeText           | Verifies Web Element with text if not equal to specified text value                          |
+| seePartialText        | Verifies Web Element with text if equal to expected partial text value                       |
+| dontSeePartialText    | Verifies Web Element with text if not equal to specified partial text value                  |
 | seeTextFromList       | Verifies if text value exists from texts on Web Element List.                                |
 | dontSeeTextFromList   | Verifies if text value does not exist from texts on Web Element List.                        |
 | see                   | Verifies if Web Element is displayed on Web Page                                             |
