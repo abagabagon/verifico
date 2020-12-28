@@ -1653,6 +1653,38 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean seePartialText(By locator, String expectedPartialValue) {
+		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
+		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.contains(expectedPartialValue);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.debug("I see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I don't see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialText(By locator, String partialValue) {
+		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed.");
+		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.contains(partialValue);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
 	public boolean seeTextFromList(By locator, String textValue) {
 		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on List.");
 		List<WebElement> element = this.getElements(locator);

@@ -563,6 +563,28 @@ public interface WebAutomation {
 	public boolean dontSeeText(By locator, String value);
 	
 	/**
+	 * Verifies Web Element with text if equal to expected partial text value.
+	 * 
+	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param expectedValue	Expected partial text value
+	 * @return	<code>true</code> if value is equal to expected value.
+	 * 			<code>false</code> if value is not equal to expected value.
+	 */
+
+	public boolean seePartialText(By locator, String expectedValue);
+	
+	/**
+	 * Verifies Web Element with text if not equal to specified partial text value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param value		Partial text value to check
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean dontSeePartialText(By locator, String value);
+	
+	/**
 	 * Verifies if text value exists from texts on Web Element List.
 	 * 
 	 * @param locator	Object used to locate Web Element List to assert the text value from.
