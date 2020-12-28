@@ -24,11 +24,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
 
 import com.github.abagabagon.verifico.enums.Browser;
-import com.github.abagabagon.verifico.enums.TestStatus;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
@@ -41,7 +38,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	JavascriptExecutor javascriptExecutor;
 	ArrayList<String> tabs;
 	SeleniumWait seleniumWait;
-	SoftAssert softAssert;
 	
 	private Browser browser;
 	private boolean isHeadless;
@@ -375,7 +371,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 	
-	void initializeExplicitWait(int duration) {
+	void initializeExplicitWait(long duration) {
 		this.log.trace("I initialize Explicit Wait.");
 		try {
 			this.wait = new WebDriverWait(this.driver, duration);
@@ -1407,35 +1403,24 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean see(By locator) {
-		this.log.debug("I check to see Web Element: \"" + locator.toString() + "\".");
-		List<WebElement> elements = this.getElements(locator);
-		boolean status = false;
-		if (elements.size() > 0) {
-			status = true;
-			this.log.debug("I can see Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = false;
-			this.log.error("I don't see Web Element: \"" + locator.toString() + "\".");
-		}
-		return status;
+	public void acceptAlert() {
+		this.log.debug("I accept Javascript Alert.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.accept();
 	}
 	
 	@Override
-	public boolean dontSee(By locator) {
-		this.log.debug("I check to not see Web Element: \"" + locator.toString() + "\".");
-		this.initializeImplicitWait(2);
-		this.initializeExplicitWait(2);
-		List<WebElement> elements = this.getElements(locator);
-		boolean status = false;
-		if (elements.size() > 0) {
-			status = true;
-			this.log.error("I can see Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = false;
-			this.log.debug("I don't see Web Element: \"" + locator.toString() + "\".");
-		}
-		return status;
+	public void cancelAlert() {
+		this.log.debug("I cancel Javascript Alert.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.dismiss();
+	}
+	
+	@Override
+	public void typeAlert(String inputText) {
+		this.log.debug("I type: \"" + inputText + "\" at Javascript Alert Text Box.");
+		this.alert = this.seleniumWait.waitForAlertToBePresent();
+		this.alert.sendKeys(inputText);
 	}
 	
 	@Override
@@ -1458,153 +1443,226 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/* ####################################################### */
 	
 	@Override
-	public TestStatus verifyUrl(String expectedUrl) {
+	public boolean seeUrl(String expectedUrl) {
 		this.log.debug("I verify Page URL: \"" + expectedUrl + "\".");
 		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
 		String actualUrl = this.driver.getCurrentUrl().trim();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isUrlEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
-			Assert.fail();
 		}
 		return status;
 	}
 	
 	@Override
-	public TestStatus verifyPartialUrl(String partialUrl) {
+	public boolean dontSeeUrl(String url) {
+		this.log.debug("I verify Page URL is not \"" + url + "\".");
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.equals(url);
+		boolean status = false;
+		if(isUrlEqual) {
+			status = true;
+			this.log.error("I see Page URL: \"" + url + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialUrl(String partialUrl) {
 		this.log.debug("I verify partial Page URL: \"" + partialUrl + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isUrlEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see partial Page URL: \"" + partialUrl + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
-			Assert.fail();
 		}
 		return status;	
 	}
 	
 	@Override
-	public TestStatus verifyTitle(String expectedTitle) {
+	public boolean dontSeePartialUrl(String partialUrl) {
+		this.log.debug("I verify partial Page URL is not \"" + partialUrl + "\".");
+		String actualUrl = this.driver.getCurrentUrl().trim();
+		boolean isUrlEqual = actualUrl.contains(partialUrl);
+		boolean status = false;
+		if(isUrlEqual) {
+			status = true;
+			this.log.error("I see partial Page URL: \"" + partialUrl + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean seeTitle(String expectedTitle) {
 		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
 		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
 		String actualTitle = this.driver.getTitle().trim();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isTitleEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
-			Assert.fail();
 		}
 		return status;
 	}
 	
 	@Override
-	public TestStatus verifyClickable(By locator) {
-		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is clickable.");
-		WebElement element = this.seleniumWait.waitForObjectToBeClickable(locator);
-		TestStatus status = TestStatus.FAILED;
-		if (element != null) {
-			status = TestStatus.PASSED;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is clickable.");
+	public boolean dontSeeTitle(String title) {
+		this.log.debug("I verify Page Title is not \"" + title + "\".");
+		String actualTitle = this.driver.getTitle().trim();
+		boolean isTitleEqual = actualTitle.equals(title);
+		boolean status = false;
+		if(isTitleEqual) {
+			status = true;
+			this.log.error("I saw Page Title: \"" + title + "\".");
 		} else {
-			status = TestStatus.FAILED;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not clickable.");
-			Assert.fail();
+			status = false;
+			this.log.debug("I don't see Page Title: \"" + title + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
 	}
-
+	
 	@Override
-	public TestStatus verifyValue(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" is displayed at Web Element: \"" + locator.toString() + "\".");
+	public boolean typed(By locator, String expectedValue) {
+		this.log.debug("I verify \"" + expectedValue + "\" is typed at Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-			Assert.fail();
 		}
 		return status;	
 	}
 	
 	@Override
-	public TestStatus verifyAttributeValue(By locator, String attribute, String expectedValue) {
+	public boolean didntType(By locator, String value) {
+		this.log.debug("I verify \"" + value + "\" is not typed at Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getValue(locator);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean seeAttributeValue(By locator, String attribute, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-			Assert.fail();
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValue(By locator, String attribute, String value) {
+		this.log.debug("I verify \"" + value + "\" is not displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getAttributeValue(locator, attribute);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 
 	@Override
-	public TestStatus verifyDropDownListValue(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Drop-down List Value is displayed at Web Element: \"" + locator.toString() + "\".");
+	public boolean selectedDropDown(By locator, String expectedValue) {
+		this.log.debug("I verify \"" + expectedValue + "\" Drop-down List Value is selected at Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		this.select = new Select(element);
 		String actualValue = this.select.getFirstSelectedOption().getText().toLowerCase();
 		boolean isValueEqual = actualValue.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
-			this.log.debug("I see value: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\".");
+			status = true;
+			this.log.debug("I selected: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
-			this.log.error("I don't see value: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-			Assert.fail();
+			status = false;
+			this.log.error("I didn't select: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyText(By locator, String expectedValue) {
+	public boolean seeText(By locator, String expectedValue) {
 		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed.");
-		String actualText = this.getText(locator);
+		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-			Assert.fail();
 		}
 		return status;
 	}
 	
 	@Override
-	public TestStatus verifyTextFromList(By locator, String textValue) {
+	public boolean dontSeeText(By locator, String value) {
+		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed.");
+		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.equals(value);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextFromList(By locator, String textValue) {
 		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		for(int i = 0; i < size; i++) {
 			String text = element.get(i).getText().trim();
 			if (text.equals(textValue)) {
-				status = TestStatus.PASSED;
+				status = true;
 				flgTextFound = true;
 				break;
 			}
@@ -1614,37 +1672,52 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return status;
 	}
-
+	
 	@Override
-	public TestStatus verifyDisplayed(By locator) {
-		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is displayed.");
-		List<WebElement> elements = this.getElements(locator);
-		TestStatus status = TestStatus.FAILED;
-		if (elements.size() > 0) {
-			status = TestStatus.PASSED;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
-		} else {
-			status = TestStatus.FAILED;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
-			Assert.fail();
+	public boolean dontSeeTextFromList(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on List.");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean status = true;
+		for(int i = 0; i < size; i++) {
+			String text = element.get(i).getText().trim();
+			if (text.equals(textValue)) {
+				status = false;
+				this.log.error("The text \"" + textValue + "\" is found from List.");
+				break;
+			}
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyNotDisplayed(By locator) {
+	public boolean see(By locator) {
+		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is displayed.");
+		List<WebElement> elements = this.getElements(locator);
+		boolean status = false;
+		if (elements.size() > 0) {
+			status = true;
+			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
+		} else {
+			status = false;
+			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
+		}
+		return status;
+	}
+
+	@Override
+	public boolean dontSee(By locator) {
 		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		this.initializeExplicitWait(2);
 		List<WebElement> elements = this.getElements(locator);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (elements.size() == 0) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
-			Assert.fail();
 		}
 		this.initializeImplicitWait(20);
 		this.initializeExplicitWait(20);
@@ -1652,89 +1725,84 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public TestStatus verifyEnabled(By locator) {
+	public boolean seeEnabled(By locator) {
 		this.log.debug("Verifying element \"" + locator.toString() + "\" is enabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (isEnabled) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is enabled.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not enabled.");
-			Assert.fail();
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyDisabled(By locator) {
+	public boolean seeDisabled(By locator) {
 		this.log.debug("Verifying element \"" + locator.toString() + "\" is disabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (!isEnabled) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is disabled.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not disabled.");
-			Assert.fail();
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifySelected(By locator) {
+	public boolean selected(By locator) {
 		this.log.debug("Verifying element \"" + locator.toString() + "\" is selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, true);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (isSelected) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is selected.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
-			Assert.fail();
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyNotSelected(By locator) {
+	public boolean deselected(By locator) {
 		this.log.debug("Verifying element \"" + locator.toString() + "\" is not selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, false);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (!isSelected) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is selected.");
-			Assert.fail();
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyAlertMessage(String expectedMessage) {
+	public boolean seeAlertMessage(String expectedMessage) {
 		this.log.debug("Verifying \"" + expectedMessage + "\" Alert Message is displayed.");
 		this.alert = this.seleniumWait.waitForAlertToBePresent();
 		String actualMessage = this.alert.getText();
 		boolean isValueEqual = actualMessage.equals(expectedMessage);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see alert message: \"" + expectedMessage + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see alert message: \"" + expectedMessage + "\".");
-			Assert.fail();
 		}
 		return status;
 	}

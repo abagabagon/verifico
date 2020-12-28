@@ -14,7 +14,6 @@ import org.openqa.selenium.html5.Location;
 import org.openqa.selenium.interactions.touch.TouchActions;
 
 import com.github.abagabagon.verifico.enums.Mobile;
-import com.github.abagabagon.verifico.enums.TestStatus;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -296,85 +295,85 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	/*#######################################################*/
 
 	@Override
-	public TestStatus verifyTappable(Object locator) {
+	public boolean verifyTappable(Object locator) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
-	public TestStatus verifyValue(Object locator, String expectedValue) {
+	public boolean verifyValue(Object locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed at Mobile Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue((By)locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see value: \"" + expectedValue + "\" from Mobile Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" from Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 
 	@Override
-	public TestStatus verifyAttributeValue(Object locator, String attribute, String expectedValue) {
+	public boolean verifyAttributeValue(Object locator, String attribute, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getAttributeValue((By)locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 
 	@Override
-	public TestStatus verifyText(Object locator, String expectedValue) {
+	public boolean verifyText(Object locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed.");
 		String actualText = this.getText((By)locator);
 		boolean isValueEqual = actualText.equals(expectedValue);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isValueEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see text: \"" + expectedValue + "\" at Mobile Element: \"" + locator.toString() + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see text: \"" + expectedValue + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyDisplayed(Object locator) {
+	public boolean verifyDisplayed(Object locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		List<MobileElement> elements = this.getElements(locator);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (elements.size() > 0) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not displayed.");
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyNotDisplayed(Object locator) {
+	public boolean verifyNotDisplayed(Object locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		List<MobileElement> elements = this.getElements(locator);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (elements.size() == 0) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Mobile Element: \"" + locator.toString() + "\" is not displayed.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		}
 		this.initializeImplicitWait(20);
@@ -382,32 +381,32 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public TestStatus verifyEnabled(Object locator) {
+	public boolean verifyEnabled(Object locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is enabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (isEnabled) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Mobile Element: \"" + locator.toString() + "\" is enabled.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not enabled.");
 		}
 		return status;
 	}
 
 	@Override
-	public TestStatus verifyDisabled(Object locator) {
+	public boolean verifyDisabled(Object locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is disabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if (!isEnabled) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I verified Mobile Element: \"" + locator.toString() + "\" is disabled.");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I verified Mobile Element: \"" + locator.toString() + "\" is not disabled.");
 		}
 		return status;

@@ -4,11 +4,9 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
-import org.testng.Assert;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Mobile;
-import com.github.abagabagon.verifico.enums.TestStatus;
 
 public class AppiumWebAutomation extends SeleniumWebAutomation {
 
@@ -46,35 +44,33 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 	}
 	
 	@Override
-	public TestStatus verifyUrl(String expectedUrl) {
+	public boolean seeUrl(String expectedUrl) {
 		this.log.debug("I verify Page URL: \"" + expectedUrl + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(expectedUrl);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isUrlEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
-			Assert.fail();
 		}
 		return status;
 	}
 	
 	@Override
-	public TestStatus verifyTitle(String expectedTitle) {
+	public boolean seeTitle(String expectedTitle) {
 		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
 		String actualTitle = this.driver.getTitle().trim();
 		boolean isUrlEqual = actualTitle.contains(expectedTitle);
-		TestStatus status = TestStatus.FAILED;
+		boolean status = false;
 		if(isUrlEqual) {
-			status = TestStatus.PASSED;
+			status = true;
 			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
-			status = TestStatus.FAILED;
+			status = false;
 			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
-			Assert.fail();
 		}
 		return status;
 	}
