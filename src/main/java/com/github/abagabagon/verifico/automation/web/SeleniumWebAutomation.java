@@ -1721,6 +1721,44 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return status;
 	}
+	
+	@Override
+	public boolean seePartialTextFromList(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is displayed on List.");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 0; i < size; i++) {
+			String text = element.get(i).getText().trim();
+			if (text.contains(textValue)) {
+				status = true;
+				flgTextFound = true;
+				break;
+			}
+		}
+		if (!flgTextFound) {
+			this.log.error("The partial text \"" + textValue + "\" is not found from List.");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTextFromList(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is not displayed on List.");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean status = true;
+		for(int i = 0; i < size; i++) {
+			String text = element.get(i).getText().trim();
+			if (text.contains(textValue)) {
+				status = false;
+				this.log.error("The partial text \"" + textValue + "\" is found from List.");
+				break;
+			}
+		}
+		return status;
+	}
 
 	@Override
 	public boolean see(By locator) {

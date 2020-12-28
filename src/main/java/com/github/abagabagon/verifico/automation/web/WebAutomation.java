@@ -607,6 +607,28 @@ public interface WebAutomation {
 	public boolean dontSeeTextFromList(By locator, String textValue);
 	
 	/**
+	 * Verifies if partial text value exists from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if partial text value exists from texts of Web Element List.
+	 * 			<code>false</code> if partial text value does not exist from texts of Web Element List.
+	 */
+
+	public boolean seePartialTextFromList(By locator, String partialTextValue);
+	
+	/**
+	 * Verifies if partial text value does not exist from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if partial text value does not exist from texts of Web Element List.
+	 * 			<code>false</code> if partial text value exists from texts of Web Element List.
+	 */
+
+	public boolean dontSeePartialTextFromList(By locator, String partialTextValue);
+	
+	/**
 	 * Verifies if Web Element is displayed on Web Page.
 	 * 
 	 * @param	locator Object used to locate Web Element to check.
