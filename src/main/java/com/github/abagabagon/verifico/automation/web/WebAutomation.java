@@ -563,6 +563,28 @@ public interface WebAutomation {
 	public boolean dontSeeText(By locator, String value);
 	
 	/**
+	 * Verifies Web Element with text if equal to expected partial text value.
+	 * 
+	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param expectedValue	Expected partial text value
+	 * @return	<code>true</code> if value is equal to expected value.
+	 * 			<code>false</code> if value is not equal to expected value.
+	 */
+
+	public boolean seePartialText(By locator, String expectedValue);
+	
+	/**
+	 * Verifies Web Element with text if not equal to specified partial text value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param value		Partial text value to check
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean dontSeePartialText(By locator, String value);
+	
+	/**
 	 * Verifies if text value exists from texts on Web Element List.
 	 * 
 	 * @param locator	Object used to locate Web Element List to assert the text value from.
@@ -583,6 +605,28 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeeTextFromList(By locator, String textValue);
+	
+	/**
+	 * Verifies if partial text value exists from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if partial text value exists from texts of Web Element List.
+	 * 			<code>false</code> if partial text value does not exist from texts of Web Element List.
+	 */
+
+	public boolean seePartialTextFromList(By locator, String partialTextValue);
+	
+	/**
+	 * Verifies if partial text value does not exist from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if partial text value does not exist from texts of Web Element List.
+	 * 			<code>false</code> if partial text value exists from texts of Web Element List.
+	 */
+
+	public boolean dontSeePartialTextFromList(By locator, String partialTextValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
