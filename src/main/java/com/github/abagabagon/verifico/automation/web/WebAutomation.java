@@ -609,8 +609,8 @@ public interface WebAutomation {
 	/**
 	 * Verifies if partial text value exists from texts on Web Element List.
 	 * 
-	 * @param locator	Object used to locate Web Element List to assert the text value from.
-	 * @param textValue	Text value to verify
+	 * @param locator			Object used to locate Web Element List to assert the text value from.
+	 * @param partialTextValue	Text value to verify
 	 * @return	<code>true</code> if partial text value exists from texts of Web Element List.
 	 * 			<code>false</code> if partial text value does not exist from texts of Web Element List.
 	 */
@@ -620,8 +620,8 @@ public interface WebAutomation {
 	/**
 	 * Verifies if partial text value does not exist from texts on Web Element List.
 	 * 
-	 * @param locator	Object used to locate Web Element List to assert the text value from.
-	 * @param textValue	Text value to verify
+	 * @param locator			Object used to locate Web Element List to assert the text value from.
+	 * @param partialTextValue	Text value to verify
 	 * @return	<code>true</code> if partial text value does not exist from texts of Web Element List.
 	 * 			<code>false</code> if partial text value exists from texts of Web Element List.
 	 */
