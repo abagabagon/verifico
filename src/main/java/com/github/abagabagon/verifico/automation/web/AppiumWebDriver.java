@@ -2,6 +2,7 @@ package com.github.abagabagon.verifico.automation.web;
 
 import java.net.URL;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -43,11 +44,11 @@ public class AppiumWebDriver {
 			}
 		} catch (WebDriverException e) {
 			this.log.fatal("Encountered WebDriverException while initializing Appium Web Driver.");
-			e.printStackTrace();
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing Appium Web Driver.");
-			e.printStackTrace();
+			this.log.debug(ExceptionUtils.getStackTrace(e));
 			System.exit(1);
 		}
 		return this.driver;
