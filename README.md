@@ -15,19 +15,6 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 | MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                   | 8.0.22      |
 | MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15)| 8.2.2.jre8  |
 
-### **Java Dependency**
-
-#### **Maven**
-
-```xml
-<!-- https://mvnrepository.com/artifact/com.github.abagabagon/verifico -->
-<dependency>
-    <groupId>com.github.abagabagon</groupId>
-    <artifactId>verifico</artifactId>
-    <version>1.2.1</version>
-</dependency>
-```
-
 ### **Usage**
 
 #### **Web Automation**
