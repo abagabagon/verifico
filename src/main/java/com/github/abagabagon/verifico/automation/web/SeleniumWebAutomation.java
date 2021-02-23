@@ -1678,19 +1678,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 0; i < size; i++) {
-			String text = element.get(i).getText().trim();
-			if (text.equals(textValue)) {
-				status = true;
-				flgTextFound = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = element.get(j).getText().trim();
+				if (text.equals(textValue)) {
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textValue + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textValue + "\" is not found from List.");
+				}
+			} else {
 				break;
 			}
 		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textValue + "\" is not found from List.");
-		}
-		return status;
+		return flgTextFound;
 	}
 	
 	@Override
@@ -1698,16 +1705,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
-		boolean status = true;
-		for(int i = 0; i < size; i++) {
-			String text = element.get(i).getText().trim();
-			if (text.equals(textValue)) {
-				status = false;
-				this.log.error("The text \"" + textValue + "\" is found from List.");
+		boolean flgTextNotFound = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = element.get(j).getText().trim();
+				if (text.equals(textValue)) {
+					flgTextNotFound = false;
+					this.log.error("The text \"" + textValue + "\" is found from List.");
+					break;
+				}
+			}
+			if (flgTextNotFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textValue + "\" is not found from List. Rechecking.");
+					wait(1);
+				} else {
+					this.log.debug("The text \"" + textValue + "\" is not found from List.");
+				}
+			} else {
 				break;
 			}
 		}
-		return status;
+		return flgTextNotFound;
 	}
 	
 	@Override
@@ -1716,19 +1735,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 0; i < size; i++) {
-			String text = element.get(i).getText().trim();
-			if (text.contains(textValue)) {
-				status = true;
-				flgTextFound = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = element.get(i).getText().trim();
+				if (text.contains(textValue)) {
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The partial text \"" + textValue + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The partial text \"" + textValue + "\" is not found from List.");
+				}
+			} else {
 				break;
 			}
 		}
-		if (!flgTextFound) {
-			this.log.error("The partial text \"" + textValue + "\" is not found from List.");
-		}
-		return status;
+		return flgTextFound;
 	}
 	
 	@Override
@@ -1736,16 +1762,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is not displayed on List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
-		boolean status = true;
-		for(int i = 0; i < size; i++) {
-			String text = element.get(i).getText().trim();
-			if (text.contains(textValue)) {
-				status = false;
-				this.log.error("The partial text \"" + textValue + "\" is found from List.");
+		boolean flgTextNotFound = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = element.get(i).getText().trim();
+				if (text.contains(textValue)) {
+					flgTextNotFound = false;
+					this.log.error("The partial text \"" + textValue + "\" is found from List.");
+					break;
+				}
+			}
+			if (flgTextNotFound) {
+				if(i < 3) {
+					this.log.debug("The partial text \"" + textValue + "\" is not found from List. Rechecking.");
+					wait(1);
+				} else {
+					this.log.debug("The partial text \"" + textValue + "\" is not found from List.");
+				}
+			} else {
 				break;
 			}
 		}
-		return status;
+		return flgTextNotFound;
 	}
 
 	@Override
