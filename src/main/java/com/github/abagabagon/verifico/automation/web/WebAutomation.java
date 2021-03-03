@@ -24,7 +24,7 @@ public interface WebAutomation {
 	public void openTab(String url);
 	
 	/**
-	 * Navigate to the Url specified.
+	 * Navigates to the Url specified.
 	 * 
 	 * @param url Url of the Web Page desired to navigate to.
 	 */
@@ -32,7 +32,7 @@ public interface WebAutomation {
 	public void goTo(String url);
 	
 	/**
-	 * Switch to a Tab based on Page Title.
+	 * Switches to a Tab based on Page Title.
 	 * 
 	 * @param 	expectedTitle Expected Page Title to switch into.
 	 * @return	<code>true</code> if switch is successful.
@@ -42,7 +42,7 @@ public interface WebAutomation {
 	public boolean switchTabByTitle(String expectedTitle);
 	
 	/**
-	 * Switch to a Tab based on Page URL.
+	 * Switches to a Tab based on Page URL.
 	 * 
 	 * @param 	url Expected Page URL to switch into.
 	 * @return	<code>true</code> if switch is successful.
@@ -52,26 +52,25 @@ public interface WebAutomation {
 	public boolean switchTabByURL(String url);
 	
 	/**
-	 * Function for switching back to Original Tab
-	 * 
+	 * Switches back to Original Tab
 	 */
 	
 	public void switchTabToOriginal();
 	
 	/**
-	 * Navigate one item back from the browser's history.
+	 * Navigates one item back from the browser's history.
 	 */
 
 	public void back();
 	
 	/**
-	 * Navigate one item forward from the browser's history.
+	 * Navigates one item forward from the browser's history.
 	 */
 
 	public void forward();
 	
 	/**
-	 * Refresh current page.
+	 * Refreshes current page.
 	 */
 
 	public void refresh();
@@ -114,7 +113,7 @@ public interface WebAutomation {
 	/*#######################################################*/
 	
 	/**
-	 * Point mouse to the specified Web Element.
+	 * Points mouse to the specified Web Element.
 	 * 
 	 * @param locator Object used to locate Web Element to point the mouse into.
 	 */
@@ -122,7 +121,7 @@ public interface WebAutomation {
 	public void point(By locator);
 	
 	/**
-	 * Point mouse to the specified Web Element Location in the Web Page.
+	 * Points mouse to the specified Web Element Location (utilizing Javascript).
 	 * 
 	 * @param locator Object used to locate Web Element to point mouse into.
 	 */
@@ -154,23 +153,24 @@ public interface WebAutomation {
 	public void clickAndHold(By locator);
 	
 	/**
-	 * Clicks the specified Web Element from an Object List based on text value.
+	 * Clicks the specified Web Element from an Element List based on text value. Used for Elements that are clickable.
 	 * 
-	 * @param objectList	Object from which to check the specified text to check.
+	 * @param objectList	List Object Locator used to search text from and click whichever element equals the specified text.
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void clickFromListBasedOnText(By objectList, String textToCheck);
+	public void clickOnListElementBasedOnText(By objectList, String textToCheck);
 	
 	/**
-	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
+	 * Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.
 	 * 
-	 * @param objectToCheckText	Object from which to check the specified text to check.
-	 * @param textToCheck		Text to check at the specified object.
-	 * @param objectToClick		Object from same row to click if text is found on that row.
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to click if specified text is found on that row.
 	 */
 	
-	public void clickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClick);
+	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
 	
 	/**
 	 * Double clicks the specified Web Element. Used for Elements that are clickable.
@@ -181,23 +181,24 @@ public interface WebAutomation {
 	public void doubleClick(By locator);
 	
 	/**
-	 * Double clicks the specified Web Element from an Object List based on text value.
+	 * Double clicks the specified Web Element from an Object List based on text value. Used for Elements that are clickable.
 	 * 
-	 * @param objectList	Object from which to check the specified text to check.
+	 * @param objectList	List Object Locator used to search text from and double-click whichever element equals the specified text.
 	 * @param textToCheck	Text to check at the specified object.
 	 */
 	
-	public void doubleClickFromListBasedOnText(By objectList, String textToCheck);
+	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck);
 	
 	/**
-	 * Clicks the specified Web Element from a row in a table based on text value from the same row.
+	 * Double-clicks the specified Web Element from a row in a table based on text value from the same row. Used for Elements that are clickable.
 	 * 
-	 * @param objectToCheckText		Object from which to check the specified text to check.
-	 * @param textToCheck			Text to check at the specified object.
-	 * @param objectToDoubleClick	Object from same row to double click if text is found on that row.
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToDoubleClick	Object Locator relative to the Row Object to double-click if specified text is found on that row.
 	 */
 	
-	public void doubleClickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToDoubleClick);
+	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick);
 	
 	/**
 	 * Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.
@@ -213,7 +214,7 @@ public interface WebAutomation {
 	 * Web Elements are INPUT and TEXTAREA Web Elements.
 	 * 
 	 * @param locator 	Object used to locate Web Element to type into.
-	 * @param inputText Text to enter.
+	 * @param inputText Text value to input.
 	 */
 
 	public void type(By locator, String inputText);
@@ -223,21 +224,22 @@ public interface WebAutomation {
 	 * Web Elements are INPUT and TEXTAREA Web Elements.
 	 * 
 	 * @param locator 	Object used to locate Web Element to type into.
-	 * @param inputText Text to enter.
+	 * @param inputText Text value to input.
 	 */
 
 	public void typeJS(By locator, String inputText);
 	
 	/**
 	 * Type input text at the specified Web Element from a row in a table based on text value from the same row.
-	 * 
-	 * @param objectToCheckText	Object from which to check the specified text to check.
-	 * @param textToCheck		Text to check at the specified object.
-	 * @param objectToFill		Object from same row to click if text is found on that row.
-	 * @param inputText			Text value to input
+	 *
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToTypeOn		Object Locator relative to the Row Object to type on if specified text is found on that row.
+	 * @param inputText				Text value to input
 	 */
 	
-	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText);
+	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText);
 	
 	/**
 	 * Simulates pressing of characters into a text box/area Web Element.
@@ -251,13 +253,14 @@ public interface WebAutomation {
 	/**
 	 * Press specified keys at the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param objectToCheckText	Object from which to check the specified text to check.
-	 * @param textToCheck		Text to check at the specified object.
-	 * @param objectToFill		Object from same row to click if text is found on that row.
-	 * @param keyButton			Key Button to press.
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToTypeOn		Object Locator relative to the Row Object to type on if specified text is found on that row.
+	 * @param keyButton				Key Button to press.
 	 */
 	
-	public void pressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, Keys keyButton);
+	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton);
 	
 	/**
 	 * Clears value of a text box/area Web Element. Text entry Web Elements are INPUT and
@@ -280,12 +283,13 @@ public interface WebAutomation {
 	/**
 	 * Clears value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param objectToCheckText	Object from which to check the specified text to check.
-	 * @param textToCheck		Text to check at the specified object.
-	 * @param objectToClear		Object from same row to clear if text is found on that row.
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToClear		Object Locator relative to the Row Object to clear value if specified text is found on that row.
 	 */
 	
-	public void clearFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClear);
+	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear);
 
 	/**
 	 * Selects a Drop-down List Web Element Option.
@@ -328,13 +332,14 @@ public interface WebAutomation {
 	/**
 	 * Get text of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param 	objectToCheckText		Object from which to check the specified text to check.
-	 * @param 	textToCheck				Text to check at the specified object.
-	 * @param 	objectToGetTextFrom		Object from same row to get text from if text is found on that row.
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToGetTextFrom	Object Locator relative to the Row Object to get text from if specified text is found on that row.
 	 * @return	Retrieved Web Element Text.
 	 */
 	
-	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom);
+	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom);
 
 	/**
 	 * Gets the value of the INPUT and TEXTAREA Web Element.
@@ -348,13 +353,14 @@ public interface WebAutomation {
 	/**
 	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param 	objectToCheckText		Object from which to check the specified text to check.
-	 * @param 	textToCheck				Text to check at the specified object.
-	 * @param 	objectToGetValueFrom	Object from same row to get value from if text is found on that row.
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToGetValueFrom	Object Locator relative to the Row Object to get value from if specified text is found on that row.
 	 * @return	Retrieved value of the INPUT/TEXTAREA Web Element.
 	 */
 	
-	public String getValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom);
+	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom);
 	
 	/**
 	 * Get the value of the specified attribute of the Web Element.
@@ -367,16 +373,17 @@ public interface WebAutomation {
 	public String getAttributeValue(By locator, String attribute);
 	
 	/**
-	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
+	 * Get attribute value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
-	 * @param	objectToCheckText		Object from which to check the specified text to check.
-	 * @param 	textToCheck				Text to check at the specified object.
-	 * @param 	objectToGetValueFrom	Object from same row to get attribute value from if text is found on that row.
-	 * @param 	attribute 				Attribute of Web Element to get the value from.
+	 * @param rowObjectList						Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText				Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck						Text to check at the specified object to check Text.
+	 * @param rowObjectToGetAttributeValueFrom	Object Locator relative to the Row Object to get attribute value from if specified text is found on that row.
+	 * @param attribute 						Attribute of Web Element to get the value from.
 	 * @return	Retrieved Web Element attribute value.
 	 */
 	
-	public String getAttributeValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom, String attribute);
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute);
 	
 	/**
 	 * Gets the selected option of the Drop-down List Web Element.
@@ -543,10 +550,10 @@ public interface WebAutomation {
 	/**
 	 * Verifies Web Element with text if equal to expected text value.
 	 * 
-	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param locator		Object used to locate Web Element to assert the text value from.
 	 * @param expectedValue	Expected text value
-	 * @return	<code>true</code> if value is equal to expected value.
-	 * 			<code>false</code> if value is not equal to expected value.
+	 * @return	<code>true</code> if value is equal to expected text value.
+	 * 			<code>false</code> if value is not equal to expected text value.
 	 */
 
 	public boolean seeText(By locator, String expectedValue);
@@ -561,6 +568,56 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeeText(By locator, String value);
+	
+	/**
+	 * Verifies if text value exists from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if text value exists from texts of Web Element List.
+	 * 			<code>false</code> if text value does not exist from texts of Web Element List.
+	 */
+
+	public boolean seeTextFromListElement(By locator, String textValue);
+	
+	/**
+	 * Verifies if text value does not exist from texts on Web Element List.
+	 * 
+	 * @param locator	Object used to locate Web Element List to assert the text value from.
+	 * @param textValue	Text value to verify
+	 * @return	<code>true</code> if text value does not exist from texts of Web Element List.
+	 * 			<code>false</code> if text value exists from texts of Web Element List.
+	 */
+
+	public boolean dontSeeTextFromListElement(By locator, String textValue);
+	
+	/**
+	 * Verifies Web Element with text if equal to expected text value from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue			Expected text value
+	 * @return	<code>true</code> if value is equal to expected text value.
+	 * 			<code>false</code> if value is not equal to expected text value.
+	 */
+
+	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies Web Element with text if not equal to specified text value from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param value						Text value to check
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value);
 	
 	/**
 	 * Verifies Web Element with text if equal to expected partial text value.
@@ -578,33 +635,11 @@ public interface WebAutomation {
 	 * 
 	 * @param locator	Object used to locate Web Element to assert the value from.
 	 * @param value		Partial text value to check
-	 * @return	<code>true</code> if value is not equal to expected value.
-	 * 			<code>false</code> if value is equal to expected value.
+	 * @return	<code>true</code> if value is not equal to specified partial text value.
+	 * 			<code>false</code> if value is equal to specified partial text value.
 	 */
 
 	public boolean dontSeePartialText(By locator, String value);
-	
-	/**
-	 * Verifies if text value exists from texts on Web Element List.
-	 * 
-	 * @param locator	Object used to locate Web Element List to assert the text value from.
-	 * @param textValue	Text value to verify
-	 * @return	<code>true</code> if text value exists from texts of Web Element List.
-	 * 			<code>false</code> if text value does not exist from texts of Web Element List.
-	 */
-
-	public boolean seeTextFromList(By locator, String textValue);
-	
-	/**
-	 * Verifies if text value does not exist from texts on Web Element List.
-	 * 
-	 * @param locator	Object used to locate Web Element List to assert the text value from.
-	 * @param textValue	Text value to verify
-	 * @return	<code>true</code> if text value does not exist from texts of Web Element List.
-	 * 			<code>false</code> if text value exists from texts of Web Element List.
-	 */
-
-	public boolean dontSeeTextFromList(By locator, String textValue);
 	
 	/**
 	 * Verifies if partial text value exists from texts on Web Element List.
@@ -615,7 +650,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if partial text value does not exist from texts of Web Element List.
 	 */
 
-	public boolean seePartialTextFromList(By locator, String partialTextValue);
+	public boolean seePartialTextFromListElement(By locator, String partialTextValue);
 	
 	/**
 	 * Verifies if partial text value does not exist from texts on Web Element List.
@@ -626,7 +661,35 @@ public interface WebAutomation {
 	 * 			<code>false</code> if partial text value exists from texts of Web Element List.
 	 */
 
-	public boolean dontSeePartialTextFromList(By locator, String partialTextValue);
+	public boolean dontSeePartialTextFromListElement(By locator, String partialTextValue);
+	
+	/**
+	 * Verifies Web Element with text if equal to expected partial text value from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert partial text value from if specified text is found on that row.
+	 * @param expectedValue				Expected partial text value
+	 * @return	<code>true</code> if value is equal to expected partial text value.
+	 * 			<code>false</code> if value is not equal to expected partial text value.
+	 */
+
+	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies Web Element with text if not equal to specified partial text value from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck				Text to check at the specified object to check Text.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert partial text value from if specified text is found on that row.
+	 * @param expectedValue		Partial text value to check
+	 * @return	<code>true</code> if value is not equal to specified partial text value.
+	 * 			<code>false</code> if value is equal to specified partial text value.
+	 */
+
+	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
