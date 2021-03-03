@@ -173,7 +173,7 @@ public interface WebAutomation {
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
 	
 	/**
-	 * Double clicks the specified Web Element. Used for Elements that are clickable.
+	 * Double-clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be double-clicked.
 	 */
@@ -181,7 +181,7 @@ public interface WebAutomation {
 	public void doubleClick(By locator);
 	
 	/**
-	 * Double clicks the specified Web Element from an Object List based on text value. Used for Elements that are clickable.
+	 * Double-clicks the specified Web Element from an Object List based on text value. Used for Elements that are clickable.
 	 * 
 	 * @param objectList	List Object Locator used to search text from and double-click whichever element equals the specified text.
 	 * @param textToCheck	Text to check at the specified object.
@@ -320,7 +320,7 @@ public interface WebAutomation {
 	public void deselect(By locator, String option);
 	
 	/**
-	 * Get the visible innerText of this Web Element, including sub-elements, without
+	 * Gets the visible innerText of this Web Element, including sub-elements, without
 	 * any leading or trailing whitespace.
 	 * 
 	 * @param	locator Object used to locate Web Element to get text from.
@@ -330,7 +330,7 @@ public interface WebAutomation {
 	public String getText(By locator);
 	
 	/**
-	 * Get text of the specified Web Element from a row in a table based on text value from the same row.
+	 * Gets the text of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
 	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
@@ -351,7 +351,7 @@ public interface WebAutomation {
 	public String getValue(By locator);
 	
 	/**
-	 * Get value of the specified Web Element from a row in a table based on text value from the same row.
+	 * Gets the value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
 	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
@@ -363,7 +363,7 @@ public interface WebAutomation {
 	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom);
 	
 	/**
-	 * Get the value of the specified attribute of the Web Element.
+	 * Gets the value of the specified attribute of the Web Element.
 	 * 
 	 * @param	locator 	Object used to locate Web Element to get attribute value from.
 	 * @param   attribute 	Attribute of Web Element to get the value from.
@@ -373,7 +373,7 @@ public interface WebAutomation {
 	public String getAttributeValue(By locator, String attribute);
 	
 	/**
-	 * Get attribute value of the specified Web Element from a row in a table based on text value from the same row.
+	 * Gets the attribute value of the specified Web Element from a row in a table based on text value from the same row.
 	 * 
 	 * @param rowObjectList						Object Locator that corresponds to the Rows from the Table.
 	 * @param rowObjectToCheckText				Object Locator relative to the Row Object from which to check the specified text.
