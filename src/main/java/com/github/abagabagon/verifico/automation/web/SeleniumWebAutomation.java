@@ -562,99 +562,118 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clickFromListBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
+	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from a List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elements.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to click a Web Element based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to click a Web Element based on Text. The Web Element is no longer present in the Web Page.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
-				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Unable to click a Web Element based on Text. The Web Element is unclickable because it's not on view.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.point(objectList);
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to click a Web Element based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
-				} catch (Exception e) {
-					this.log.warn("Something went wrong while trying to click Web Element.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					elements.get(i).click();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = elements.get(j).getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to click a Web Element based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to click a Web Element based on Text. The Web Element is no longer present in the Web Page.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					} catch (ElementClickInterceptedException e) {
+						this.log.warn("Unable to click a Web Element based on Text. The Web Element is unclickable because it's not on view.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						this.point(objectList);
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to click a Web Element based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					} catch (Exception e) {
+						this.log.warn("Something went wrong while trying to click Web Element.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						elements.get(j).click();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Object List.");
 		}
 	}
 	
 	@Override
-	public void clickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClick) {
+	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click a Web Element from Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToClick = this.getElements(objectToClick);
-		int size = elementToClick.size();
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to click a Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
-				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.point(objectToClick);
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
-				} catch (Exception e) {
-					this.log.warn("Something went wrong while trying to click Web Element from a Table based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToClick);
-					elementToClick.get(i).click();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToClick = row.findElement(rowObjectToClick);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						elementToClick.click();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to click a Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClick = this.seleniumWait.waitForObjectToBeVisible(elementToClick);
+						elementToClick.click();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClick = this.seleniumWait.waitForObjectToBeVisible(elementToClick);
+						elementToClick.click();
+					} catch (ElementClickInterceptedException e) {
+						this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element is unclickable because it's not on view.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						this.point(rowObjectToClick);
+						elementToClick = this.seleniumWait.waitForObjectToBeVisible(elementToClick);
+						elementToClick.click();
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to click a Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClick = this.seleniumWait.waitForObjectToBeVisible(elementToClick);
+						elementToClick.click();
+					} catch (Exception e) {
+						this.log.warn("Something went wrong while trying to click Web Element from a Table based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClick = this.seleniumWait.waitForObjectToBeVisible(elementToClick);
+						elementToClick.click();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 	
@@ -694,97 +713,117 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void doubleClickFromListBasedOnText(By objectList, String textToCheck) {
+	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I double click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elements.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					this.action = new Actions(this.driver);
-					this.action.doubleClick(elements.get(i)).perform();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					this.action.doubleClick(elements.get(i)).perform();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					this.action.doubleClick(elements.get(i)).perform();
-				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.point(objectList);
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					this.action.doubleClick(elements.get(i)).perform();
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					this.action.doubleClick(elements.get(i)).perform();
-				} catch (Exception e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-					this.action.doubleClick(elements.get(i)).perform();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = elements.get(j).getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						this.action = new Actions(this.driver);
+						this.action.doubleClick(elements.get(j)).perform();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						this.action.doubleClick(elements.get(j)).perform();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						this.action.doubleClick(elements.get(j)).perform();
+					} catch (ElementClickInterceptedException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						this.point(objectList);
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						this.action.doubleClick(elements.get(j)).perform();
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						this.action.doubleClick(elements.get(j)).perform();
+					} catch (Exception e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+						this.action.doubleClick(elements.get(j)).perform();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Object List.");
 		}
 	}
 	
 	@Override
-	public void doubleClickFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToDoubleClick) {
-		this.log.debug("I double click a Web Element from Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToClick = this.getElements(objectToDoubleClick);
-		int size = elementToClick.size();
+	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					this.action = new Actions(this.driver);
-					this.action.doubleClick(elementToClick.get(i)).perform();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
-					this.action.doubleClick(elementToClick.get(i)).perform();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
-					this.action.doubleClick(elementToClick.get(i)).perform();
-				} catch (ElementClickInterceptedException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					this.point(objectToDoubleClick);
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
-					this.action.doubleClick(elementToClick.get(i)).perform();
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
-					this.action.doubleClick(elementToClick.get(i)).perform();
-				} catch (Exception e) {
-					this.log.warn("Unable to double click a Web Element from a List based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClick = this.seleniumWait.waitForObjectsToBeVisible(objectToDoubleClick);
-					this.action.doubleClick(elementToClick.get(i)).perform();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToDoubleClick = row.findElement(rowObjectToDoubleClick);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						this.action = new Actions(this.driver);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToDoubleClick = this.seleniumWait.waitForObjectToBeVisible(elementToDoubleClick);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is no longer present in the Web Page.");
+						elementToDoubleClick = this.seleniumWait.waitForObjectToBeVisible(elementToDoubleClick);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					} catch (ElementClickInterceptedException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element is unclickable because it's not on view.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						this.point(rowObjectToDoubleClick);
+						elementToDoubleClick = this.seleniumWait.waitForObjectToBeVisible(elementToDoubleClick);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToDoubleClick = this.seleniumWait.waitForObjectToBeVisible(elementToDoubleClick);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					} catch (Exception e) {
+						this.log.warn("Unable to double click a Web Element from a List based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToDoubleClick = this.seleniumWait.waitForObjectToBeVisible(elementToDoubleClick);
+						this.action.doubleClick(elementToDoubleClick).perform();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 	
@@ -871,48 +910,59 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText) {
-		this.log.debug("I type at Web Element from Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToFill = this.getElements(objectToFill);
-		int size = elementToFill.size();
+	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" from Table Row: \"" + rowObjectList.toString() + "\" based on Text: \"" + textToCheck + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					elementToFill.get(i).sendKeys(inputText);
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to type text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(inputText);
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(inputText);
-				} catch (IllegalArgumentException e) {
-					this.log.warn("Encountered error while typing text at Web Element from a Table based on Text. Input Text is NULL.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).click();
-					elementToFill.get(i).sendKeys(inputText);;
-				} catch (Exception e) {
-					this.log.warn("Encountered Exception while typing text at Web Element.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(inputText);
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToTypeOn = row.findElement(rowObjectToTypeOn);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						elementToTypeOn.sendKeys(inputText);
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to type text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(inputText);
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(inputText);
+					} catch (IllegalArgumentException e) {
+						this.log.warn("Encountered error while typing text at Web Element from a Table based on Text. Input Text is NULL.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to type text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.click();
+						elementToTypeOn.sendKeys(inputText);;
+					} catch (Exception e) {
+						this.log.warn("Encountered Exception while typing text at Web Element.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(inputText);
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 	
@@ -951,48 +1001,58 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void pressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, Keys keyButton) {
-		this.log.debug("I press keys at Web Element from Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToFill = this.getElements(objectToFill);
-		int size = elementToFill.size();
-		Keys keys = keyButton;
+	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press key on a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					elementToFill.get(i).sendKeys(keys);
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(keys);
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(keys);
-				} catch (IllegalArgumentException e) {
-					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Input Text is NULL.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill.get(i).click();
-					elementToFill.get(i).sendKeys(keys);
-				} catch (Exception e) {
-					this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToFill = this.seleniumWait.waitForObjectsToBeVisible(objectToFill);
-					elementToFill.get(i).sendKeys(keys);
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToTypeOn = row.findElement(rowObjectToTypeOn);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						elementToTypeOn.sendKeys(keyButton);
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(keyButton);
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(keyButton);
+					} catch (IllegalArgumentException e) {
+						this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. Input Text is NULL.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn.click();
+						elementToTypeOn.sendKeys(keyButton);
+					} catch (Exception e) {
+						this.log.warn("Unable to press \"" + keyButton + "\" at Web Element from a Table based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToTypeOn = this.seleniumWait.waitForObjectToBeVisible(elementToTypeOn);
+						elementToTypeOn.sendKeys(keyButton);
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 
@@ -1051,48 +1111,58 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clearFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToClear) {
+	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
 		this.log.debug("I clear a Web Element from Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToClear = this.getElements(objectToClear);
-		int size = elementToClear.size();
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					elementToClear.get(i).clear();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
-					elementToClear.get(i).clear();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
-					elementToClear.get(i).clear();
-				} catch (IllegalArgumentException e) {
-					this.log.warn("Unable to clear text at Web Element from a Table based on Text. Input Text is NULL.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-				} catch (InvalidElementStateException e) {
-					this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClear.get(i).click();
-					elementToClear.get(i).clear();
-				} catch (Exception e) {
-					this.log.warn("Something went wrong while trying to clear at Web Element from a Table based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToClear = this.seleniumWait.waitForObjectsToBeVisible(objectToClear);
-					elementToClear.get(i).clear();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToClear = row.findElement(rowObjectToClear);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						elementToClear.clear();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to clear text at Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClear = this.seleniumWait.waitForObjectToBeVisible(elementToClear);
+						elementToClear.clear();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClear = this.seleniumWait.waitForObjectToBeVisible(elementToClear);
+						elementToClear.clear();
+					} catch (IllegalArgumentException e) {
+						this.log.warn("Unable to clear text at Web Element from a Table based on Text. Input Text is NULL.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+					} catch (InvalidElementStateException e) {
+						this.log.warn("Unable to clear text at Web Element from a Table based on Text. The Web Element might be disabled and unclickable.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClear.click();
+						elementToClear.clear();
+					} catch (Exception e) {
+						this.log.warn("Something went wrong while trying to clear at Web Element from a Table based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToClear = this.seleniumWait.waitForObjectToBeVisible(elementToClear);
+						elementToClear.clear();
+					}
+					flgTextFound = true;
+					break;
 				}
-				
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 	}
 
@@ -1129,7 +1199,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void select(By locator, By optionList, String option) {
 		this.log.debug("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		this.clickJS(locator);
-		this.clickFromListBasedOnText(optionList, option);
+		this.clickOnListElementBasedOnText(optionList, option);
 	}
 
 	@Override
@@ -1191,42 +1261,53 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom) {
-		this.log.debug("I get text from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToGetText = this.getElements(objectToGetTextFrom);
-		int size = elementToGetText.size();
+	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get Text from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					retrievedText = elementToGetText.get(i).getText().trim();
-					if (text.length() == 0) {
-						this.log.trace("Web Element: \"" + objectToGetTextFrom.toString() + "\" has no text.");
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToGetText = row.findElement(rowObjectToGetTextFrom);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						retrievedText = elementToGetText.getText().trim();
+						if (text.length() == 0) {
+							this.log.trace("Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" has no text.");
+						}
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to retrieve text from Web Element. Browser might not have been opened or initialized.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToGetText = this.seleniumWait.waitForObjectToBeVisible(elementToGetText);
+						retrievedText = elementToGetText.getText().trim();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to retrieve text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\". The Web Element is no longer present in the Web Page.");
+						elementToGetText = this.seleniumWait.waitForObjectToBeVisible(elementToGetText);
+						retrievedText = elementToGetText.getText().trim();
+					} catch (Exception e) {
+						this.log.warn("Something went wrong while trying to retrieve text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\".");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToGetText = this.seleniumWait.waitForObjectToBeVisible(elementToGetText);
+						retrievedText = elementToGetText.getText().trim();
 					}
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to retrieve text from Web Element. Browser might not have been opened or initialized.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToGetText = this.seleniumWait.waitForObjectsToBeVisible(objectToGetTextFrom);
-					retrievedText = elementToGetText.get(i).getText().trim();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to retrieve text from Web Element: \"" + objectToGetTextFrom.toString() + "\". The Web Element is no longer present in the Web Page.");
-					elementToGetText = this.seleniumWait.waitForObjectsToBeVisible(objectToGetTextFrom);
-					retrievedText = elementToGetText.get(i).getText().trim();
-				} catch (Exception e) {
-					this.log.warn("Something went wrong while trying to retrieve text from Web Element: \"" + objectToGetTextFrom.toString() + "\".");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToGetText = this.seleniumWait.waitForObjectsToBeVisible(objectToGetTextFrom);
-					retrievedText = elementToGetText.get(i).getText().trim();
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 		return retrievedText;
 	}
@@ -1259,38 +1340,49 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public String getValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom) {
+	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
-		int size = elementToGetValue.size();
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedValue = null;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
-				} catch (Exception e) {
-					this.log.warn("Something went wrong while trying to retrieve Text Box Value from Web Element from a Table based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute("value").trim();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToGetValue = row.findElement(rowObjectToGetValueFrom);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						retrievedValue = elementToGetValue.getAttribute("value").trim();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						elementToGetValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetValue);
+						retrievedValue = elementToGetValue.getAttribute("value").trim();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to retrieve Text Box Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						elementToGetValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetValue);
+						retrievedValue = elementToGetValue.getAttribute("value").trim();
+					} catch (Exception e) {
+						this.log.warn("Something went wrong while trying to retrieve Text Box Value from Web Element from a Table based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToGetValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetValue);
+						retrievedValue = elementToGetValue.getAttribute("value").trim();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 		return retrievedValue;
 	}
@@ -1323,38 +1415,49 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public String getAttributeValueFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetValueFrom, String attribute) {
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
-		List<WebElement> elementToCheckText = this.getElements(objectToCheckText);
-		List<WebElement> elementToGetValue = this.getElements(objectToGetValueFrom);
-		int size = elementToGetValue.size();
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedValue = null;
-		for(int i = 0; i < size; i++) {
-			String text = elementToCheckText.get(i).getText().trim();
-			if (text.equals(textToCheck)) {
-				try {
-					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
-				} catch (NullPointerException e) {
-					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
-				} catch (StaleElementReferenceException e) {
-					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
-				} catch (Exception e) {
-					this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-					elementToGetValue = this.seleniumWait.waitForObjectsToBeVisible(objectToGetValueFrom);
-					retrievedValue = elementToGetValue.get(i).getAttribute(attribute).trim();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				WebElement elementToGetAttributeValue = row.findElement(rowObjectToGetAttributeValueFrom);
+				String text = elementToCheckText.getText().trim();
+				if (text.equals(textToCheck)) {
+					try {
+						retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
+					} catch (NullPointerException e) {
+						this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. Browser might not have been opened or initialized.");
+						elementToGetAttributeValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetAttributeValue);
+						retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
+					} catch (StaleElementReferenceException e) {
+						this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text. The Web Element is no longer present in the Web Page.");
+						elementToGetAttributeValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetAttributeValue);
+						retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
+					} catch (Exception e) {
+						this.log.warn("Unable to retrieve Attribute Value from Web Element from a Table based on Text.");
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+						elementToGetAttributeValue = this.seleniumWait.waitForObjectToBeVisible(elementToGetAttributeValue);
+						retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
+					}
+					flgTextFound = true;
+					break;
 				}
-				flgTextFound = true;
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+				}
+			} else {
 				break;
 			}
-		}
-		if (!flgTextFound) {
-			this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
 		}
 		return retrievedValue;
 	}
@@ -1641,40 +1744,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean seePartialText(By locator, String expectedPartialValue) {
-		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
-		String actualText = this.getText(locator).trim();
-		boolean isValueEqual = actualText.contains(expectedPartialValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = false;
-			this.log.error("I don't see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean dontSeePartialText(By locator, String partialValue) {
-		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed.");
-		String actualText = this.getText(locator).trim();
-		boolean isValueEqual = actualText.contains(partialValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.error("I see text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = false;
-			this.log.debug("I don't see text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean seeTextFromList(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on List.");
+	public boolean seeTextFromListElement(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -1701,8 +1772,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean dontSeeTextFromList(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on List.");
+	public boolean dontSeeTextFromListElement(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextNotFound = true;
@@ -1730,8 +1801,122 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean seePartialTextFromList(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is displayed on List.");
+	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table.");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				String checkText = elementToCheckText.getText().trim();
+				if (checkText.equals(textToCheck)) {
+					WebElement elementToSeeTextFrom = row.findElement(rowObjectToSeeTextFrom);
+					String seeText = elementToSeeTextFrom.getText().trim();
+					boolean isValueEqual = seeText.equals(expectedValue);
+					if(isValueEqual) {
+						status = true;
+						this.log.debug("I see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+					} else {
+						status = false;
+						this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from List.");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed on Table.");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				String checkText = elementToCheckText.getText().trim();
+				if (checkText.equals(textToCheck)) {
+					WebElement elementToSeeTextFrom = row.findElement(rowObjectToSeeTextFrom);
+					String seeText = elementToSeeTextFrom.getText().trim();
+					boolean isValueEqual = seeText.equals(value);
+					if(isValueEqual) {
+						status = true;
+						this.log.error("I see text: \"" + value + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+					} else {
+						status = false;
+						this.log.debug("I don't see text: \"" + value + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from List.");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialText(By locator, String expectedPartialValue) {
+		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
+		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.contains(expectedPartialValue);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.debug("I see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I don't see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialText(By locator, String partialValue) {
+		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed.");
+		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.contains(partialValue);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.error("I see partial text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.debug("I don't see partial text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialTextFromListElement(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -1758,8 +1943,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean dontSeePartialTextFromList(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is not displayed on List.");
+	public boolean dontSeePartialTextFromListElement(By locator, String textValue) {
+		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextNotFound = true;
@@ -1774,16 +1959,98 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (flgTextNotFound) {
 				if(i < 3) {
-					this.log.debug("The partial text \"" + textValue + "\" is not found from List. Rechecking.");
+					this.log.debug("The text \"" + textValue + "\" is not found from List. Rechecking.");
 					wait(1);
 				} else {
-					this.log.debug("The partial text \"" + textValue + "\" is not found from List.");
+					this.log.debug("The text \"" + textValue + "\" is not found from List.");
 				}
 			} else {
 				break;
 			}
 		}
 		return flgTextNotFound;
+	}
+	
+	@Override
+	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("Verifying \"" + expectedValue + "\" Partial Text Value is displayed on List.");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				String checkText = elementToCheckText.getText().trim();
+				if (checkText.contains(textToCheck)) {
+					WebElement elementToSeeTextFrom = row.findElement(rowObjectToSeeTextFrom);
+					String seeText = elementToSeeTextFrom.getText().trim();
+					boolean isValueEqual = seeText.equals(expectedValue);
+					if(isValueEqual) {
+						status = true;
+						this.log.debug("I see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+					} else {
+						status = false;
+						this.log.error("I don't see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from List.");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("Verifying \"" + expectedValue + "\" Partial Text Value is not displayed on List.");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement row = rows.get(j);
+				WebElement elementToCheckText = row.findElement(rowObjectToCheckText);
+				String checkText = elementToCheckText.getText().trim();
+				if (checkText.contains(textToCheck)) {
+					WebElement elementToSeeTextFrom = row.findElement(rowObjectToSeeTextFrom);
+					String seeText = elementToSeeTextFrom.getText().trim();
+					boolean isValueEqual = seeText.equals(expectedValue);
+					if(isValueEqual) {
+						status = true;
+						this.log.error("I see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+					} else {
+						status = false;
+						this.log.debug("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from List. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from List.");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
 	}
 
 	@Override
