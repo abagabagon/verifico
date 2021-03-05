@@ -113,7 +113,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 ###### **Verifications**
 
 | Command                                                           | Description                                                                                                                              |
-| ----------------------------------------------------------=------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | seeUrl                                                            | Verifies Page URL of Web Page if equal to the expected URL.                                                                              |
 | dontSeeUrl                                                        | Verifies Page URL of Web Page if not equal to the specified URL.                                                                         |
 | seePartialUrl                                                     | Verifies Page URL of Web Page if partially equal to the expected URL.                                                                    |
