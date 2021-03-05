@@ -620,6 +620,34 @@ public interface WebAutomation {
 	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value);
 	
 	/**
+	 * Verifies text value if it exists in a Web Element List from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList					Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText			Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck					Text to check at the specified object to check Text.
+	 * @param rowObjectListToSeeTextFrom	Object List Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue			Expected text value
+	 * @return	<code>true</code> if value is equal to expected text value.
+	 * 			<code>false</code> if value is not equal to expected text value.
+	 */
+
+	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies text value if it does not exist in a Web Element List from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList					Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText			Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck					Text to check at the specified object to check Text.
+	 * @param rowObjectListToSeeTextFrom	Object List Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue			Expected text value
+	 * @return	<code>true</code> if value is not equal to expected text value.
+	 * 			<code>false</code> if value is equal to expected text value.
+	 */
+
+	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	/**
 	 * Verifies Web Element with text if equal to expected partial text value.
 	 * 
 	 * @param locator		Object used to locate Web Element to assert the value from.
@@ -690,6 +718,34 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies partial text value if it exists in a Web Element List from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList					Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText			Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck					Text to check at the specified object to check Text.
+	 * @param rowObjectListToSeeTextFrom	Object List Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue			Expected text value
+	 * @return	<code>true</code> if value is equal to expected text value.
+	 * 			<code>false</code> if value is not equal to expected text value.
+	 */
+
+	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies partial text value if it does not exist in a Web Element List from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList					Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText			Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck					Text to check at the specified object to check Text.
+	 * @param rowObjectListToSeeTextFrom	Object List Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue			Expected text value
+	 * @return	<code>true</code> if value is not equal to expected text value.
+	 * 			<code>false</code> if value is equal to expected text value.
+	 */
+
+	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
