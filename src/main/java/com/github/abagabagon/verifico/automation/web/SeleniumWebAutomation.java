@@ -2306,6 +2306,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		}
 		return status;
+
 	}
 	
 	@Override
@@ -2418,6 +2419,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 		}
 		return status;
+
 	}
 
 	@Override
