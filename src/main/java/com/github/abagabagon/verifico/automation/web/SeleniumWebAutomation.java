@@ -700,7 +700,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToClick = this.getElementFromARowElement(rowObjectList, j, rowObjectToClick);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -709,6 +708,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToClick = this.getElementFromARowElement(rowObjectList, j, rowObjectToClick);
 					if (elementToClick != null) {
 						try {
 							elementToClick.click();
@@ -859,7 +859,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToDoubleClick = this.getElementFromARowElement(rowObjectList, j, rowObjectToDoubleClick);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -868,6 +867,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToDoubleClick = this.getElementFromARowElement(rowObjectList, j, rowObjectToDoubleClick);
 					if (elementToDoubleClick != null) {
 						try {
 							this.action = new Actions(this.driver);
@@ -1009,7 +1009,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToTypeOn = this.getElementFromARowElement(rowObjectList, j, rowObjectToTypeOn);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1018,6 +1017,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToTypeOn = this.getElementFromARowElement(rowObjectList, j, rowObjectToTypeOn);
 					if (elementToTypeOn != null) {
 						try {
 							elementToTypeOn.sendKeys(inputText);
@@ -1109,7 +1109,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToTypeOn = this.getElementFromARowElement(rowObjectList, j, rowObjectToTypeOn);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1118,6 +1117,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToTypeOn = this.getElementFromARowElement(rowObjectList, j, rowObjectToTypeOn);
 					if (elementToTypeOn != null) {
 						try {
 							elementToTypeOn.sendKeys(keyButton);
@@ -1228,7 +1228,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToClear = this.getElementFromARowElement(rowObjectList, j, rowObjectToClear);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1237,6 +1236,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToClear = this.getElementFromARowElement(rowObjectList, j, rowObjectToClear);
 					if (elementToClear != null) {
 						try {
 							elementToClear.clear();
@@ -1388,7 +1388,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToGetText = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetTextFrom);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1397,6 +1396,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToGetText = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetTextFrom);
 					if (elementToGetText != null) {
 						try {
 							retrievedText = elementToGetText.getText().trim();
@@ -1476,7 +1476,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToGetValue = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetValueFrom);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1485,6 +1484,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToGetValue = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetValueFrom);
 					if (elementToGetValue != null) {
 						try {
 							retrievedValue = elementToGetValue.getAttribute("value").trim();
@@ -1560,7 +1560,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
-				WebElement elementToGetAttributeValue = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetAttributeValueFrom);
 				String text = null;
 				if (elementToCheckText == null) {
 					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
@@ -1569,6 +1568,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					text = elementToCheckText.getText().trim();
 				}
 				if (text.equals(textToCheck)) {
+					WebElement elementToGetAttributeValue = this.getElementFromARowElement(rowObjectList, j, rowObjectToGetAttributeValueFrom);
 					if (elementToGetAttributeValue != null) {
 						try {
 							retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
