@@ -118,7 +118,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean switchTabByTitle(String title) {
 		this.log.debug("I switch to Tab with Page Title: \"" + title + "\".");
 		boolean isExisting = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			Set<String> windows = this.driver.getWindowHandles();
 			for (String windowId: windows) {
 				try {
@@ -138,8 +138,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!isExisting) {
-				if(i < 3) {
-					this.log.debug("Tab with the Page Title: \"" + title + "\" was not found. Retrying.");
+				if(i < 4) {
+					this.log.debug("Tab with the Page Title: \"" + title + "\" was not found. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.debug("Tab with the Page Title: \"" + title + "\" was not found.");
@@ -155,7 +155,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean switchTabByURL(String url) {
 		this.log.debug("I switch to Tab with Page URL: \"" + url + "\".");
 		boolean isExisting = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			Set<String> windows = this.driver.getWindowHandles();
 			for (String windowId: windows) {
 				try {
@@ -175,8 +175,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!isExisting) {
-				if(i < 3) {
-					this.log.debug("Tab with the Page URL: \"" + url + "\" was not found. Retrying.");
+				if(i < 4) {
+					this.log.debug("Tab with the Page URL: \"" + url + "\" was not found. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.debug("Tab with the Page URL: \"" + url + "\" was not found.");
@@ -713,7 +713,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				String text = elements.get(j).getText().trim();
 				if (text.equals(textToCheck)) {
@@ -752,8 +752,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
@@ -770,7 +770,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -820,8 +820,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -873,7 +873,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				String text = elements.get(j).getText().trim();
 				if (text.equals(textToCheck)) {
@@ -911,8 +911,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
@@ -929,7 +929,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -979,8 +979,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1079,7 +1079,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1127,8 +1127,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1179,7 +1179,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1226,8 +1226,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1298,7 +1298,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1345,8 +1345,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1458,7 +1458,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedText = null;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1499,8 +1499,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1546,7 +1546,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedValue = null;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1583,8 +1583,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1630,7 +1630,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		String retrievedValue = null;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
@@ -1667,8 +1667,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
@@ -1962,60 +1962,65 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean seeTextFromListElement(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Text Value is displayed on Element List.");
+	public boolean seeTextFromListElement(By locator, String expectedValue) {
+		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				String text = element.get(j).getText().trim();
-				if (text.equals(textValue)) {
+				if (text.equals(expectedValue)) {
 					flgTextFound = true;
+					status = true;
+					this.log.debug("The text \"" + expectedValue + "\" is found from List.");
 					break;
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textValue + "\" is not found from List. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + expectedValue + "\" is not found from List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textValue + "\" is not found from List.");
+					this.log.error("The text \"" + expectedValue + "\" is not found from List.");
 				}
 			} else {
 				break;
 			}
 		}
-		return flgTextFound;
+		return status;
 	}
 	
 	@Override
-	public boolean dontSeeTextFromListElement(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Text Value is not displayed on Element List.");
+	public boolean dontSeeTextFromListElement(By locator, String value) {
+		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
-		boolean flgTextNotFound = true;
-		for(int i = 0; i < 3; i++) {
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				String text = element.get(j).getText().trim();
-				if (text.equals(textValue)) {
-					flgTextNotFound = false;
-					this.log.error("The text \"" + textValue + "\" is found from List.");
+				if (text.equals(value)) {
+					flgTextFound = true;
+					this.log.error("The text \"" + value + "\" is found from List.");
 					break;
 				}
 			}
-			if (flgTextNotFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textValue + "\" is not found from List. Rechecking.");
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("The text \"" + value + "\" is not found from List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("The text \"" + textValue + "\" is not found from List.");
+					this.log.debug("The text \"" + value + "\" is not found from List.");
+					status = true;
 				}
 			} else {
 				break;
 			}
 		}
-		return flgTextNotFound;
+		return status;
 	}
 	
 	@Override
@@ -2025,7 +2030,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2055,8 +2060,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2075,7 +2080,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = true;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2105,8 +2110,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2125,7 +2130,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2161,8 +2166,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2181,7 +2186,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = true;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2214,8 +2219,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2260,60 +2265,65 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean seePartialTextFromListElement(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is displayed on Element List.");
+	public boolean seePartialTextFromListElement(By locator, String expectedPartialValue) {
+		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
-		for(int i = 0; i < 3; i++) {
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(i).getText().trim();
-				if (text.contains(textValue)) {
+				String text = element.get(j).getText().trim();
+				if (text.contains(expectedPartialValue)) {
 					flgTextFound = true;
+					status = true;
+					this.log.debug("The text \"" + expectedPartialValue + "\" is found from List.");
 					break;
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The partial text \"" + textValue + "\" is not found from List. Retrying.");
+				if(i < 4) {
+					this.log.debug("The partial text \"" + expectedPartialValue + "\" is not found from List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The partial text \"" + textValue + "\" is not found from List.");
+					this.log.error("The partial text \"" + expectedPartialValue + "\" is not found from List.");
 				}
 			} else {
 				break;
 			}
 		}
-		return flgTextFound;
+		return status;
 	}
 	
 	@Override
-	public boolean dontSeePartialTextFromListElement(By locator, String textValue) {
-		this.log.debug("Verifying \"" + textValue + "\" Partial Text Value is not displayed on Element List.");
+	public boolean dontSeePartialTextFromListElement(By locator, String partialValue) {
+		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
-		boolean flgTextNotFound = true;
-		for(int i = 0; i < 3; i++) {
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(i).getText().trim();
-				if (text.contains(textValue)) {
-					flgTextNotFound = false;
-					this.log.error("The partial text \"" + textValue + "\" is found from List.");
+				String text = element.get(j).getText().trim();
+				if (text.contains(partialValue)) {
+					flgTextFound = true;
+					this.log.error("The partial text \"" + partialValue + "\" is found from List.");
 					break;
 				}
 			}
-			if (flgTextNotFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textValue + "\" is not found from List. Rechecking.");
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("The partial text \"" + partialValue + "\" is not found from List. Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("The text \"" + textValue + "\" is not found from List.");
+					this.log.debug("The partial text \"" + partialValue + "\" is not found from List.");
+					status = true;
 				}
 			} else {
 				break;
 			}
 		}
-		return flgTextNotFound;
+		return status;
 	}
 	
 	@Override
@@ -2323,7 +2333,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2337,6 +2347,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
+						this.log.info("Text found: " + seeText);
 						boolean isValueEqual = seeText.equals(expectedValue);
 						if(isValueEqual) {
 							status = true;
@@ -2353,8 +2364,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2373,7 +2384,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = true;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2387,6 +2398,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
+						this.log.info("Text found: " + seeText);
 						boolean isValueEqual = seeText.equals(expectedValue);
 						if(isValueEqual) {
 							status = true;
@@ -2403,8 +2415,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2424,7 +2436,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2460,8 +2472,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2480,7 +2492,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2514,8 +2526,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2569,7 +2581,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2593,8 +2605,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
@@ -2615,7 +2627,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = true;
-		for(int i = 0; i < 3; i++) {
+		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
@@ -2639,8 +2651,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 			}
 			if (!flgTextFound) {
-				if(i < 3) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+				if(i < 4) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
 					wait(1);
 				} else {
 					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
