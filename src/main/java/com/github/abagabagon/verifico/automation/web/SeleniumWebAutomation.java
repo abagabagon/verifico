@@ -65,10 +65,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void openBrowser() {
 		this.log.debug("I open Web Browser.");
 		this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
-		maximizeBrowserWindow();
-		deleteAllCookies();
-		initializeImplicitWait(20);
-		initializeExplicitWait(20);
+		this.maximizeBrowserWindow();
+		this.deleteAllCookies();
+		this.initializeImplicitWait(10);
+		this.initializeExplicitWait(5);
 		this.seleniumWait = new SeleniumWait(this.wait);
 	}
 	
@@ -432,7 +432,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement elementToCreate = null;
 		try {
 			List<WebElement> rowElement = this.getElements(rowObject);
-			elementToCreate = rowElement.get(index).findElement(rowObjectToCreate);
+			this.initializeImplicitWait(2);
+			List<WebElement> elementToCreateCheck = rowElement.get(index).findElements(rowObjectToCreate);
+			if (elementToCreateCheck.size() > 0) {
+				elementToCreate = rowElement.get(index).findElement(rowObjectToCreate);
+			}
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to get Web Elements. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -458,6 +462,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			List<WebElement> rowElement = this.getElements(rowObject);
 			elementToCreate = rowElement.get(index).findElement(rowObjectToCreate);
 		}
+		this.initializeImplicitWait(10);
 		return elementToCreate;
 	}
 	
@@ -465,6 +470,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> elementToCreate = null;
 		try {
 			List<WebElement> rowElement = this.getElements(rowObject);
+			this.initializeImplicitWait(2);
 			elementToCreate = rowElement.get(index).findElements(rowObjectToCreate);
 		} catch (NullPointerException e) {
 			this.log.warn("Unable to get Web Elements. Browser might not have been opened or initialized.");
@@ -491,6 +497,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			List<WebElement> rowElement = this.getElements(rowObject);
 			elementToCreate = rowElement.get(index).findElements(rowObjectToCreate);
 		}
+		this.initializeImplicitWait(10);
 		return elementToCreate;
 	}
 	
@@ -2477,8 +2484,100 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = false;
 			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
 		}
-		this.initializeImplicitWait(20);
-		this.initializeExplicitWait(20);
+		this.initializeImplicitWait(10);
+		this.initializeExplicitWait(5);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("Verifying Web Element:\"" + rowObjectToSee.toString() + "\" is displayed on Table.");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
+				String checkText = null;
+				if (elementToCheckText == null) {
+					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					continue;
+				} else {
+					checkText = elementToCheckText.getText().trim();
+				}
+				if (checkText.equals(textToCheck)) {
+					List<WebElement> elementToSee = this.getElementsFromARowElement(rowObjectList, j, rowObjectToSee);
+					if (elementToSee.size() > 0) {
+						status = true;
+						this.log.debug("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is displayed.");
+					} else {
+						status = false;
+						this.log.error("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is not displayed.");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("Verifying Web Element:\"" + rowObjectToSee.toString() + "\" is not displayed on Table.");
+		this.initializeImplicitWait(2);
+		this.initializeExplicitWait(2);
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = true;
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToCheckText = this.getElementFromARowElement(rowObjectList, j, rowObjectToCheckText);
+				String checkText = null;
+				if (elementToCheckText == null) {
+					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					continue;
+				} else {
+					checkText = elementToCheckText.getText().trim();
+				}
+				if (checkText.equals(textToCheck)) {
+					List<WebElement> elementToSee = this.getElementsFromARowElement(rowObjectList, j, rowObjectToSee);
+					if (elementToSee.size() == 0) {
+						status = true;
+						this.log.debug("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is not displayed.");
+					} else {
+						status = false;
+						this.log.error("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is displayed.");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 3) {
+					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying.");
+					wait(1);
+				} else {
+					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+				}
+			} else {
+				break;
+			}
+		}
+		this.initializeImplicitWait(10);
+		this.initializeExplicitWait(5);
 		return status;
 	}
 	

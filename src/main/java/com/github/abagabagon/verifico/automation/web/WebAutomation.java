@@ -768,6 +768,32 @@ public interface WebAutomation {
 	public boolean dontSee(By locator);
 	
 	/**
+	 * Verifies Web Element is displayed from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToSee		Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @return	<code>true</code> if Web Element is displayed on Web Page Table.
+	 * 			<code>false</code> if Web Element is not displayed on Web Page Table
+	 */
+
+	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
+	
+	/**
+	 * Verifies Web Element is not displayed from a row in a table based on text value from the same row.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToSee		Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @return	<code>true</code> if Web Element is not displayed on Web Page Table.
+	 * 			<code>false</code> if Web Element is displayed on Web Page Table.
+	 */
+
+	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
+	
+	/**
 	 * Verifies Web Element is enabled on the Web Page.
 	 * 
 	 * @param locator Object used to locate Web Element to assert.
