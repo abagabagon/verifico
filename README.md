@@ -127,16 +127,20 @@ I.click(PageLogin.LOGIN_BUTTON);
 | selectedDropDown                                                  | Verifies Drop-down List Web Element Value if equal to expected text value.                                                               |
 | seeText                                                           | Verifies Web Element with text if equal to expected text value.                                                                          |
 | dontSeeText                                                       | Verifies Web Element with text if not equal to specified text value.                                                                     |
-| seeTextFromListElement                                            | Verifies if text value exists from texts on Web Element List.                                                                            |
-| dontSeeTextFromListElement                                        | Verifies if text value does not exist from texts on Web Element List.                                                                    |
+| seeTextOfListElement                                              | Verifies if text value exists from texts on Web Element List.                                                                            |
+| dontSeeTextOfListElement                                          | Verifies if text value does not exist from texts on Web Element List.                                                                    |
+| seeTextOfTableRowElement                                          | Verifies if text value exists from text of a Web Element in a Table Row.                                                                 |
+| dontSeeTextOfTableRowElement                                      | Verifies if text value does not exist from text of a Web Element in a Table Row.                                                         |
 | seeTextOfTableRowElementBasedOnTableRowElementText                | Verifies Web Element with text if equal to expected text value from a row in a table based on text value from the same row.              |
 | dontSeeTextOfTableRowElementBasedOnTableRowElementText            | Verifies Web Element with text if not equal to specified text value from a row in a table based on text value from the same row.         |
 | seeTextOfTableRowListElementBasedOnTableRowElementText            | Verifies text value if it exists in a Web Element List from a row in a table based on text value from the same row.                      |
 | dontSeeTextOfTableRowListElementBasedOnTableRowElementText        | Verifies text value if it does not exist in a Web Element List from a row in a table based on text value from the same row.              |
 | seePartialText                                                    | Verifies Web Element with text if equal to expected partial text value.                                                                  |
 | dontSeePartialText                                                | Verifies Web Element with text if not equal to specified partial text value.                                                             |
-| seePartialTextFromListElement                                     | Verifies if text value exists from texts on Web Element List.                                                                            |
-| dontSeePartialTextFromListElement                                 | Verifies if text value does not exist from texts on Web Element List.                                                                    |
+| seePartialTextOfListElement                                       | Verifies if text value exists from texts on Web Element List.                                                                            |
+| dontSeePartialTextOfListElement                                   | Verifies if text value does not exist from texts on Web Element List.                                                                    |
+| seePartialTextOfTableRowElement                                   | Verifies if partial text value exists from text of a Web Element in a Table Row.                                                         |
+| dontSeePartialTextOfTableRowElement                               | Verifies if partial text value does not exist from text of a Web Element in a Table Row.                                                 |
 | seePartialTextOfTableRowElementBasedOnTableRowElementText         | Verifies Web Element with text if equal to expected partial text value from a row in a table based on text value from the same row.      |
 | dontSeePartialTextOfTableRowElementBasedOnTableRowElementText     | Verifies Web Element with text if not equal to specified partial text value from a row in a table based on text value from the same row. |
 | seePartialTextOfTableRowListElementBasedOnTableRowElementText     | Verifies partial text value if it exists in a Web Element List from a row in a table based on text value from the same row.              |
@@ -149,6 +153,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | seeDisabled                                                       | Verifies Web Element is disabled on the Web Page                                                                                         |
 | selected                                                          | Verifies Web Element is selected on the Web Page. Used for Check Boxes and Radio Buttons                                                 |
 | deselected                                                        | Verifies Web Element is not selected on the Web Page. Used for Check Boxes and Radio Buttons                                             |
+| counted                                                           | Verifies Web Element Instance count is equal to expected count.                                                                          |
 | seeAlertMessage                                                   | Verifies Javascript Alert Message displayed if equal to expected message                                                                 |
 
 #### **Excel Data**

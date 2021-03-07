@@ -709,7 +709,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from a List based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
@@ -753,10 +753,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -766,7 +766,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
-		this.log.debug("I click a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -775,7 +775,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -813,7 +813,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToClick.click();
 						}
 					} else {
-						this.log.error("Web Element to click is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -821,10 +821,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -869,7 +869,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I double click a Web Element from Object List based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
 		List<WebElement> elements = this.getElements(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
@@ -912,10 +912,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the List.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -925,7 +925,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -934,7 +934,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -972,7 +972,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.action.doubleClick(elementToDoubleClick).perform();
 						}
 					} else {
-						this.log.error("Web Element to double-click is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to double-click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -980,10 +980,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1075,7 +1075,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" from Table Row: \"" + rowObjectList.toString() + "\" based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1084,7 +1084,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1120,7 +1120,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToTypeOn.sendKeys(inputText);
 						}
 					} else {
-						this.log.error("Web Element to type on is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1128,10 +1128,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1175,7 +1175,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
-		this.log.debug("I press key on a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1184,7 +1184,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1219,7 +1219,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToTypeOn.sendKeys(keyButton);
 						}
 					} else {
-						this.log.error("Web Element to press \"" + keyButton + "\" on is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1227,10 +1227,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1294,7 +1294,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
-		this.log.debug("I clear a Web Element from Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1303,7 +1303,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1338,7 +1338,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToClear.clear();
 						}
 					} else {
-						this.log.error("Web Element to click is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to clear at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1346,10 +1346,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1453,7 +1453,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
-		this.log.debug("I get Text from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1463,7 +1463,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1492,7 +1492,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.log.trace("Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" has no text.");
 						}
 					} else {
-						this.log.error("Web Element to get text from is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get text from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1500,10 +1500,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1541,7 +1541,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
-		this.log.debug("I get value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1551,7 +1551,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1576,7 +1576,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							retrievedValue = elementToGetValue.getAttribute("value").trim();
 						}
 					} else {
-						this.log.error("Web Element to get value from is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1584,10 +1584,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1625,7 +1625,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
-		this.log.debug("I get attribute value from a Web Element from a Table based on Text: \"" + textToCheck + "\".");
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -1635,7 +1635,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getText().trim();
@@ -1660,7 +1660,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
 						}
 					} else {
-						this.log.error("Web Element to get attribute value from is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get attribute value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1668,10 +1668,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from the Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from the Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1734,7 +1734,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void wait(int duration) {
-		this.log.debug("I wait for " + duration + " Seconds.");
+		this.log.debug("I wait for " + duration + " Second(s).");
 		try {
 			Thread.sleep(duration * 1000);
 		} catch (IllegalArgumentException e) {
@@ -1753,71 +1753,71 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeUrl(String expectedUrl) {
-		this.log.debug("I verify Page URL: \"" + expectedUrl + "\".");
+		this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
 		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean status = false;
 		if(isUrlEqual) {
 			status = true;
-			this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
+			this.log.debug("I saw Page URL: \"" + expectedUrl + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			this.log.error("I didn't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeeUrl(String url) {
-		this.log.debug("I verify Page URL is not \"" + url + "\".");
+		this.log.debug("I see Page URL is not \"" + url + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.equals(url);
 		boolean status = false;
 		if(isUrlEqual) {
 			status = true;
-			this.log.error("I see Page URL: \"" + url + "\".");
+			this.log.error("I saw Page URL: \"" + url + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
+			this.log.debug("I didn't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialUrl(String partialUrl) {
-		this.log.debug("I verify partial Page URL: \"" + partialUrl + "\".");
+		this.log.debug("I see partial Page URL: \"" + partialUrl + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
 		boolean status = false;
 		if(isUrlEqual) {
 			status = true;
-			this.log.debug("I see partial Page URL: \"" + partialUrl + "\".");
+			this.log.debug("I saw partial Page URL: \"" + partialUrl + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			this.log.error("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;	
 	}
 	
 	@Override
 	public boolean dontSeePartialUrl(String partialUrl) {
-		this.log.debug("I verify partial Page URL is not \"" + partialUrl + "\".");
+		this.log.debug("I see partial Page URL is not \"" + partialUrl + "\".");
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
 		boolean status = false;
 		if(isUrlEqual) {
 			status = true;
-			this.log.error("I see partial Page URL: \"" + partialUrl + "\".");
+			this.log.error("I saw partial Page URL: \"" + partialUrl + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
+			this.log.debug("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;	
 	}
 	
 	@Override
 	public boolean seeTitle(String expectedTitle) {
-		this.log.debug("I verify Page Title: \"" + expectedTitle + "\".");
+		this.log.debug("I see Page Title: \"" + expectedTitle + "\".");
 		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
 		String actualTitle = this.driver.getTitle().trim();
 		boolean status = false;
@@ -1826,14 +1826,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
+			this.log.error("I didn't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeeTitle(String title) {
-		this.log.debug("I verify Page Title is not \"" + title + "\".");
+		this.log.debug("I see Page Title is not \"" + title + "\".");
 		String actualTitle = this.driver.getTitle().trim();
 		boolean isTitleEqual = actualTitle.equals(title);
 		boolean status = false;
@@ -1849,71 +1849,71 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean typed(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" is typed at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I see \"" + expectedValue + "\" is typed on Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I typed \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see value: \"" + expectedValue + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.error("I didn't type \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\". Actual value typed is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 	
 	@Override
 	public boolean didntType(By locator, String value) {
-		this.log.debug("I verify \"" + value + "\" is not typed at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I see \"" + value + "\" is not typed on Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.error("I see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\".");
+			this.log.error("I typed \"" + value + "\" on Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see value: \"" + value + "\" from Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.debug("I didn't type \"" + value + "\" on Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 	
 	@Override
 	public boolean seeAttributeValue(By locator, String attribute, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see value: \"" + expectedValue + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 	
 	@Override
 	public boolean dontSeeAttributeValue(By locator, String attribute, String value) {
-		this.log.debug("I verify \"" + value + "\" is not displayed for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.error("I see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.debug("I didn't see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
 
 	@Override
 	public boolean selectedDropDown(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Drop-down List Value is selected at Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I see \"" + expectedValue + "\" is selected at Drop-down List Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.getElement(locator);
 		this.select = new Select(element);
 		String actualValue = this.select.getFirstSelectedOption().getText().toLowerCase();
@@ -1921,49 +1921,49 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I selected: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I selected: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I didn't select: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.error("I didn't select: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;
 	}
 
 	@Override
 	public boolean seeText(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed.");
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of Web Element: \"" + locator.toString() + "\".");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I saw \"" + expectedValue + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeeText(By locator, String value) {
-		this.log.debug("I verify \"" + value + "\" Text Value is not displayed.");
+		this.log.debug("I see \"" + value + "\" as not the text value of Web Element: \"" + locator.toString() + "\".");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.error("I see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.error("I saw \"" + value + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see text: \"" + value + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.debug("I didn't see \"" + value + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
 	
 	@Override
-	public boolean seeTextFromListElement(By locator, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Element List.");
+	public boolean seeTextOfListElement(By locator, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -1974,16 +1974,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 				if (text.equals(expectedValue)) {
 					flgTextFound = true;
 					status = true;
-					this.log.debug("The text \"" + expectedValue + "\" is found from List.");
+					this.log.debug("I saw \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					break;
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + expectedValue + "\" is not found from List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + expectedValue + "\" is not found from List.");
+					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1993,8 +1993,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean dontSeeTextFromListElement(By locator, String value) {
-		this.log.debug("I verify \"" + value + "\" Text Value is not displayed on Element List.");
+	public boolean dontSeeTextOfListElement(By locator, String value) {
+		this.log.debug("I see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2004,16 +2004,80 @@ public class SeleniumWebAutomation implements WebAutomation {
 				String text = element.get(j).getText().trim();
 				if (text.equals(value)) {
 					flgTextFound = true;
-					this.log.error("The text \"" + value + "\" is found from List.");
+					this.log.error("I saw \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					break;
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + value + "\" is not found from List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("The text \"" + value + "\" is not found from List.");
+					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+					status = true;
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
+				String text = elementToSeeTextFrom.getText().trim();
+				if (text.equals(expectedValue)) {
+					flgTextFound = true;
+					status = true;
+					this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
+				String text = elementToSeeTextFrom.getText().trim();
+				if (text.equals(value)) {
+					flgTextFound = true;
+					this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					status = true;
 				}
 			} else {
@@ -2025,7 +2089,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table.");
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2035,7 +2099,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2047,13 +2111,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 						boolean isValueEqual = seeText.equals(expectedValue);
 						if(isValueEqual) {
 							status = true;
-							this.log.debug("I see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
 							status = false;
-							this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("Web Element to see text value of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2061,10 +2125,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2075,7 +2139,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
-		this.log.debug("I verify \"" + value + "\" Text Value is not displayed on Table.");
+		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2085,7 +2149,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2097,13 +2161,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 						boolean isValueEqual = seeText.equals(value);
 						if(isValueEqual) {
 							status = true;
-							this.log.error("I see text: \"" + value + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
 							status = false;
-							this.log.debug("I don't see text: \"" + value + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("Web Element to click is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2111,10 +2175,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2125,7 +2189,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2135,7 +2199,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2149,17 +2213,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 							boolean isValueEqual = seeText.equals(expectedValue);
 							if(isValueEqual) {
 								status = true;
-								this.log.debug("I see text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\".");
+								this.log.debug("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
-								this.log.debug("I don't see text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\". Value found is \"" + seeText + "\".");
+								this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 							}
 						}
 						if(!status) {
-							this.log.error("I don't see text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						}
 					} else {
-						this.log.error("Web Element List to see text value of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2167,10 +2231,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2181,7 +2245,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I see \"" + expectedValue + "\" as not the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2191,7 +2255,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2205,14 +2269,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 							boolean isValueEqual = seeText.equals(expectedValue);
 							if(isValueEqual) {
 								status = true;
-								this.log.error("I see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+								this.log.error("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
-								this.log.debug("I don't see text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\". Value found is \"" + seeText + "\".");
+								this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 							}
 						}
 					} else {
-						this.log.error("Web Element List to see text value of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2220,10 +2284,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2234,39 +2298,39 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialText(By locator, String expectedPartialValue) {
-		this.log.debug("I verify \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of Web Element: \"" + locator.toString() + "\".");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.contains(expectedPartialValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.error("I don't see text: \"" + expectedPartialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.error("I didn't see \"" + expectedPartialValue + "\" as not the partial text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialText(By locator, String partialValue) {
-		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed.");
+		this.log.debug("I see \"" + partialValue + "\" as not the partial text value of Web Element: \"" + locator.toString() + "\".");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.contains(partialValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.error("I see partial text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\".");
+			this.log.error("I saw \"" + partialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = false;
-			this.log.debug("I don't see partial text: \"" + partialValue + "\" at Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.debug("I didn't see \"" + partialValue + "\" as not the partial the text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
 	
 	@Override
-	public boolean seePartialTextFromListElement(By locator, String expectedPartialValue) {
-		this.log.debug("I verify \"" + expectedPartialValue + "\" Partial Text Value is displayed on Element List.");
+	public boolean seePartialTextOfListElement(By locator, String expectedPartialValue) {
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2277,16 +2341,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 				if (text.contains(expectedPartialValue)) {
 					flgTextFound = true;
 					status = true;
-					this.log.debug("The text \"" + expectedPartialValue + "\" is found from List.");
+					this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					break;
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The partial text \"" + expectedPartialValue + "\" is not found from List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The partial text \"" + expectedPartialValue + "\" is not found from List.");
+					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2296,8 +2360,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean dontSeePartialTextFromListElement(By locator, String partialValue) {
-		this.log.debug("I verify \"" + partialValue + "\" Partial Text Value is not displayed on Element List.");
+	public boolean dontSeePartialTextOfListElement(By locator, String partialValue) {
+		this.log.debug("I see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2307,16 +2371,80 @@ public class SeleniumWebAutomation implements WebAutomation {
 				String text = element.get(j).getText().trim();
 				if (text.contains(partialValue)) {
 					flgTextFound = true;
-					this.log.error("The partial text \"" + partialValue + "\" is found from List.");
+					this.log.error("I saw \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					break;
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The partial text \"" + partialValue + "\" is not found from List. Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("The partial text \"" + partialValue + "\" is not found from List.");
+					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+					status = true;
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String expectedPartialValue) {
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeePartialTextFrom);
+				String text = elementToSeeTextFrom.getText().trim();
+				if (text.contains(expectedPartialValue)) {
+					flgTextFound = true;
+					status = true;
+					this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		List<WebElement> rows = this.getElements(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		boolean status = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeePartialTextFrom);
+				String text = elementToSeeTextFrom.getText().trim();
+				if (text.contains(value)) {
+					flgTextFound = true;
+					this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					status = true;
 				}
 			} else {
@@ -2328,7 +2456,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Partial Text Value is displayed on List.");
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2338,7 +2466,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2351,13 +2479,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 						boolean isValueEqual = seeText.equals(expectedValue);
 						if(isValueEqual) {
 							status = true;
-							this.log.debug("I see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
 							status = false;
-							this.log.error("I don't see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("Web Element to see partial text of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2365,10 +2493,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2378,8 +2506,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Partial Text Value is not displayed on List.");
+	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as not the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2389,7 +2517,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2399,16 +2527,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
 						this.log.info("Text found: " + seeText);
-						boolean isValueEqual = seeText.equals(expectedValue);
+						boolean isValueEqual = seeText.equals(value);
 						if(isValueEqual) {
 							status = true;
-							this.log.error("I see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
 							status = false;
-							this.log.debug("I don't see text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("Web Element to see partial text of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2416,10 +2544,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2431,7 +2559,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2441,7 +2569,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2455,17 +2583,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 							boolean isValueEqual = seeText.contains(expectedValue);
 							if(isValueEqual) {
 								status = true;
-								this.log.debug("I see partial text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\".");
+								this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
-								this.log.debug("I don't see partial text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\". Value found is \"" + seeText + "\".");
+								this.log.debug("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 							}
 						}
 						if (!status) {
-							this.log.error("I don't see partial text: \"" + expectedValue + "\" at Web Element List: \"" + rowObjectToCheckText.toString() + "\".");
+							this.log.error("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						}
 					} else {
-						this.log.error("Web Element List to see partial text value of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2473,10 +2601,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2487,7 +2615,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I see \"" + expectedValue + "\" as not the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2497,7 +2625,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2511,15 +2639,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 							boolean isValueEqual = seeText.contains(expectedValue);
 							if(isValueEqual) {
 								status = true;
-								this.log.error("I see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\".");
+								this.log.error("I saw \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
 								status = false;
-								this.log.debug("I don't see partial text: \"" + expectedValue + "\" at Web Element: \"" + rowObjectToCheckText.toString() + "\". Value found is \"" + seeText + "\".");
+								this.log.debug("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 							}
 						}
 					} else {
-						this.log.error("Web Element List to see partial text value of is not found from Row.");
+						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2527,10 +2655,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2542,32 +2670,32 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean see(By locator) {
-		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is displayed.");
+		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
 		List<WebElement> elements = this.getElements(locator);
 		boolean status = false;
 		if (elements.size() > 0) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" displayed.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" displayed.");
 		}
 		return status;
 	}
 
 	@Override
 	public boolean dontSee(By locator) {
-		this.log.debug("I verify Web Element: \"" + locator.toString() + "\" is not displayed.");
+		this.log.debug("I see Web Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		this.initializeExplicitWait(2);
 		List<WebElement> elements = this.getElements(locator);
 		boolean status = false;
 		if (elements.size() == 0) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is not displayed.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" not displayed.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is displayed.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" not displayed.");
 		}
 		this.initializeImplicitWait(10);
 		this.initializeExplicitWait(5);
@@ -2576,7 +2704,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I verify Web Element:\"" + rowObjectToSee.toString() + "\" is displayed on Table.");
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2586,7 +2714,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2595,10 +2723,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 					List<WebElement> elementToSee = this.getElementsFromAListElement(rowObjectList, j, rowObjectToSee);
 					if (elementToSee.size() > 0) {
 						status = true;
-						this.log.debug("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is displayed.");
+						this.log.debug("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					} else {
 						status = false;
-						this.log.error("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is not displayed.");
+						this.log.error("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2606,10 +2734,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2620,7 +2748,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I verify Web Element:\"" + rowObjectToSee.toString() + "\" is not displayed on Table.");
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.initializeImplicitWait(2);
 		this.initializeExplicitWait(2);
 		List<WebElement> rows = this.getElements(rowObjectList);
@@ -2632,7 +2760,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
 				String checkText = null;
 				if (elementToCheckText == null) {
-					this.log.debug("Web Element for checking text is not found from Row. Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					checkText = elementToCheckText.getText().trim();
@@ -2641,10 +2769,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 					List<WebElement> elementToSee = this.getElementsFromAListElement(rowObjectList, j, rowObjectToSee);
 					if (elementToSee.size() == 0) {
 						status = true;
-						this.log.debug("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is not displayed.");
+						this.log.error("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					} else {
 						status = false;
-						this.log.error("I verified Web Element: \"" + rowObjectToSee.toString() + "\" is displayed.");
+						this.log.debug("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2652,10 +2780,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("The text \"" + textToCheck + "\" is not found from Table. Retrying " + i + "/3.");
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("The text \"" + textToCheck + "\" is not found from Table.");
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2668,73 +2796,73 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeEnabled(By locator) {
-		this.log.debug("I verify element \"" + locator.toString() + "\" is enabled.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" enabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
 		if (isEnabled) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is enabled.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" enabled.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not enabled.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" enabled.");
 		}
 		return status;
 	}
 
 	@Override
 	public boolean seeDisabled(By locator) {
-		this.log.debug("I verify element \"" + locator.toString() + "\" is disabled.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" disabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
 		if (!isEnabled) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is disabled.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" disabled.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not disabled.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" disabled.");
 		}
 		return status;
 	}
 
 	@Override
 	public boolean selected(By locator) {
-		this.log.debug("I verify element \"" + locator.toString() + "\" is selected.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, true);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
 		boolean status = false;
 		if (isSelected) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is selected.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" selected.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" selected.");
 		}
 		return status;
 	}
 
 	@Override
 	public boolean deselected(By locator) {
-		this.log.debug("I verify element \"" + locator.toString() + "\" is not selected.");
+		this.log.debug("I see element \"" + locator.toString() + "\" not selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, false);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
 		boolean status = false;
 		if (!isSelected) {
 			status = true;
-			this.log.debug("I verified Web Element: \"" + locator.toString() + "\" is not selected.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" not selected.");
 		} else {
 			status = false;
-			this.log.error("I verified Web Element: \"" + locator.toString() + "\" is selected.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" not selected.");
 		}
 		return status;
 	}
 	
 	@Override
 	public boolean counted(By locator, int count) {
-		this.log.debug("I verify instance count of the Web Element: \"" + locator.toString() + "\".");
+		this.log.debug("I count Web Element: \"" + locator.toString() + "\".");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean status = false;
@@ -2750,17 +2878,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean seeAlertMessage(String expectedMessage) {
-		this.log.debug("I verify \"" + expectedMessage + "\" Alert Message is displayed.");
+		this.log.debug("I see \"" + expectedMessage + "\" Alert Message displayed.");
 		this.alert = this.seleniumWait.waitForAlertToBePresent();
 		String actualMessage = this.alert.getText();
 		boolean isValueEqual = actualMessage.equals(expectedMessage);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
-			this.log.debug("I see alert message: \"" + expectedMessage + "\".");
+			this.log.debug("I saw alert message: \"" + expectedMessage + "\" displayed.");
 		} else {
 			status = false;
-			this.log.error("I don't see alert message: \"" + expectedMessage + "\".");
+			this.log.error("I didn't see alert message: \"" + expectedMessage + "\" displayed.");
 		}
 		return status;
 	}

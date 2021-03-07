@@ -578,7 +578,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if text value does not exist from texts of Web Element List.
 	 */
 
-	public boolean seeTextFromListElement(By locator, String textValue);
+	public boolean seeTextOfListElement(By locator, String textValue);
 	
 	/**
 	 * Verifies if text value does not exist from texts on Web Element List.
@@ -589,7 +589,31 @@ public interface WebAutomation {
 	 * 			<code>false</code> if text value exists from texts of Web Element List.
 	 */
 
-	public boolean dontSeeTextFromListElement(By locator, String textValue);
+	public boolean dontSeeTextOfListElement(By locator, String textValue);
+	
+	/**
+	 * Verifies if text value exists from text of a Web Element in a Table Row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedValue				Expected text value
+	 * @return	<code>true</code> if value is equal to expected text value.
+	 * 			<code>false</code> if value is not equal to expected text value.
+	 */
+
+	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue);
+	
+	/**
+	 * Verifies if text value does not exist from text of a Web Element in a Table Row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param value						Text value to verify
+	 * @return	<code>true</code> if value is not equal to expected text value.
+	 * 			<code>false</code> if value is equal to expected text value.
+	 */
+
+	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value);
 	
 	/**
 	 * Verifies Web Element with text if equal to expected text value from a row in a table based on text value from the same row.
@@ -598,7 +622,7 @@ public interface WebAutomation {
 	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified text.
 	 * @param textToCheck				Text to check at the specified object to check Text.
 	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
-	 * @param expectedValue			Expected text value
+	 * @param expectedValue				Expected text value
 	 * @return	<code>true</code> if value is equal to expected text value.
 	 * 			<code>false</code> if value is not equal to expected text value.
 	 */
@@ -678,7 +702,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if partial text value does not exist from texts of Web Element List.
 	 */
 
-	public boolean seePartialTextFromListElement(By locator, String partialTextValue);
+	public boolean seePartialTextOfListElement(By locator, String partialTextValue);
 	
 	/**
 	 * Verifies if partial text value does not exist from texts on Web Element List.
@@ -689,7 +713,31 @@ public interface WebAutomation {
 	 * 			<code>false</code> if partial text value exists from texts of Web Element List.
 	 */
 
-	public boolean dontSeePartialTextFromListElement(By locator, String partialTextValue);
+	public boolean dontSeePartialTextOfListElement(By locator, String partialTextValue);
+	
+	/**
+	 * Verifies if partial text value exists from text of a Web Element in a Table Row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param expectedPartialValue		Expected partial text value
+	 * @return	<code>true</code> if value is equal to expected partial text value.
+	 * 			<code>false</code> if value is not equal to expected partial text value.
+	 */
+
+	public boolean seePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedPartialValue);
+	
+	/**
+	 * Verifies if partial text value does not exist from text of a Web Element in a Table Row.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToSeeTextFrom	Object Locator relative to the Row Object to assert text value from if specified text is found on that row.
+	 * @param value						Text value to verify
+	 * @return	<code>true</code> if value is not equal to expected partial text value.
+	 * 			<code>false</code> if value is equal to expected partial text value.
+	 */
+
+	public boolean dontSeePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value);
 	
 	/**
 	 * Verifies Web Element with text if equal to expected partial text value from a row in a table based on text value from the same row.
