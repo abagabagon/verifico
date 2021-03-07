@@ -1931,7 +1931,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean seeText(By locator, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed.");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(expectedValue);
 		boolean status = false;
@@ -1947,7 +1947,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeText(By locator, String value) {
-		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed.");
+		this.log.debug("I verify \"" + value + "\" Text Value is not displayed.");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.equals(value);
 		boolean status = false;
@@ -1963,7 +1963,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextFromListElement(By locator, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Element List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -1994,7 +1994,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextFromListElement(By locator, String value) {
-		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed on Element List.");
+		this.log.debug("I verify \"" + value + "\" Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2025,7 +2025,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2075,7 +2075,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
-		this.log.debug("Verifying \"" + value + "\" Text Value is not displayed on Table.");
+		this.log.debug("I verify \"" + value + "\" Text Value is not displayed on Table.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2125,7 +2125,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2181,7 +2181,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2234,7 +2234,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialText(By locator, String expectedPartialValue) {
-		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
+		this.log.debug("I verify \"" + expectedPartialValue + "\" Partial Text Value is displayed.");
 		String actualText = this.getText(locator).trim();
 		boolean isValueEqual = actualText.contains(expectedPartialValue);
 		boolean status = false;
@@ -2266,7 +2266,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextFromListElement(By locator, String expectedPartialValue) {
-		this.log.debug("Verifying \"" + expectedPartialValue + "\" Partial Text Value is displayed on Element List.");
+		this.log.debug("I verify \"" + expectedPartialValue + "\" Partial Text Value is displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2297,7 +2297,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeePartialTextFromListElement(By locator, String partialValue) {
-		this.log.debug("Verifying \"" + partialValue + "\" Partial Text Value is not displayed on Element List.");
+		this.log.debug("I verify \"" + partialValue + "\" Partial Text Value is not displayed on Element List.");
 		List<WebElement> element = this.getElements(locator);
 		int size = element.size();
 		boolean flgTextFound = false;
@@ -2328,7 +2328,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Partial Text Value is displayed on List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Partial Text Value is displayed on List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2379,7 +2379,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Partial Text Value is not displayed on List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Partial Text Value is not displayed on List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2431,7 +2431,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2487,7 +2487,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("Verifying \"" + expectedValue + "\" Text Value is displayed on Table List.");
+		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed on Table List.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2576,7 +2576,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("Verifying Web Element:\"" + rowObjectToSee.toString() + "\" is displayed on Table.");
+		this.log.debug("I verify Web Element:\"" + rowObjectToSee.toString() + "\" is displayed on Table.");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2620,7 +2620,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("Verifying Web Element:\"" + rowObjectToSee.toString() + "\" is not displayed on Table.");
+		this.log.debug("I verify Web Element:\"" + rowObjectToSee.toString() + "\" is not displayed on Table.");
 		this.initializeImplicitWait(2);
 		this.initializeExplicitWait(2);
 		List<WebElement> rows = this.getElements(rowObjectList);
@@ -2668,7 +2668,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeEnabled(By locator) {
-		this.log.debug("Verifying element \"" + locator.toString() + "\" is enabled.");
+		this.log.debug("I verify element \"" + locator.toString() + "\" is enabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
@@ -2684,7 +2684,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean seeDisabled(By locator) {
-		this.log.debug("Verifying element \"" + locator.toString() + "\" is disabled.");
+		this.log.debug("I verify element \"" + locator.toString() + "\" is disabled.");
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
@@ -2700,7 +2700,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean selected(By locator) {
-		this.log.debug("Verifying element \"" + locator.toString() + "\" is selected.");
+		this.log.debug("I verify element \"" + locator.toString() + "\" is selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, true);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
@@ -2717,7 +2717,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 
 	@Override
 	public boolean deselected(By locator) {
-		this.log.debug("Verifying element \"" + locator.toString() + "\" is not selected.");
+		this.log.debug("I verify element \"" + locator.toString() + "\" is not selected.");
 		this.seleniumWait.waitForObjectSelectionStateToBe(locator, false);
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
@@ -2731,10 +2731,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return status;
 	}
+	
+	@Override
+	public boolean counted(By locator, int count) {
+		this.log.debug("I verify instance count of the Web Element: \"" + locator.toString() + "\".");
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		boolean status = false;
+		if (size == count) {
+			status = true;
+			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is \"" + count + "\".");
+		} else {
+			status = false;
+			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is not \"" + count + "\". Actual count is \"" + size + "\".");
+		}
+		return status;
+	}
 
 	@Override
 	public boolean seeAlertMessage(String expectedMessage) {
-		this.log.debug("Verifying \"" + expectedMessage + "\" Alert Message is displayed.");
+		this.log.debug("I verify \"" + expectedMessage + "\" Alert Message is displayed.");
 		this.alert = this.seleniumWait.waitForAlertToBePresent();
 		String actualMessage = this.alert.getText();
 		boolean isValueEqual = actualMessage.equals(expectedMessage);

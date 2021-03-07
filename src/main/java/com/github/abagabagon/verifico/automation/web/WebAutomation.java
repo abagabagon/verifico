@@ -834,6 +834,17 @@ public interface WebAutomation {
 	public boolean deselected(By locator);
 	
 	/**
+	 * Verifies Web Element Instance count is equal to expected count.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert.
+	 * @param count		Expected Web Element instance count.
+	 * @return	<code>true</code> if count is equal to expected count.
+	 * 			<code>false</code> if count is not equal to expected count.
+	 */
+	
+	public boolean counted(By locator, int count);
+	
+	/**
 	 * Verifies Javascript Alert Message displayed if equal to
 	 * expected message.
 	 * 
