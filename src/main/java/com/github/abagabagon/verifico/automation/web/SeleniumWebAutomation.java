@@ -1733,6 +1733,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public int count(By locator) {
+		this.log.debug("I count Web Element: \"" + locator.toString() + "\".");
+		this.initializeImplicitWait(2);
+		List<WebElement> element = this.getElements(locator);
+		int size = element.size();
+		this.log.debug("I counted " + size + " instances of Web Element: \"" + locator.toString() + "\".");
+		this.initializeImplicitWait(10);
+		return size;
+	}
+	
+	@Override
 	public void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Second(s).");
 		try {
