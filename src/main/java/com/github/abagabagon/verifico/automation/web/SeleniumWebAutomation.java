@@ -813,7 +813,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToClick.click();
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -972,7 +972,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.action.doubleClick(elementToDoubleClick).perform();
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to double-click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to double-click on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1120,7 +1120,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToTypeOn.sendKeys(inputText);
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1219,7 +1219,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToTypeOn.sendKeys(keyButton);
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to type on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1338,7 +1338,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							elementToClear.clear();
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to clear at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to clear at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1492,7 +1492,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.log.trace("Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" has no text.");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get text from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get text from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1576,7 +1576,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							retrievedValue = elementToGetValue.getAttribute("value").trim();
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1660,7 +1660,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							retrievedValue = elementToGetAttributeValue.getAttribute(attribute).trim();
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get attribute value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to get attribute value from at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -1761,7 +1761,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw Page URL: \"" + expectedUrl + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;
@@ -1774,10 +1773,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isUrlEqual = actualUrl.equals(url);
 		boolean status = false;
 		if(isUrlEqual) {
-			status = true;
 			this.log.error("I saw Page URL: \"" + url + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;
@@ -1793,7 +1791,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw partial Page URL: \"" + partialUrl + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;	
@@ -1806,10 +1803,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
 		boolean status = false;
 		if(isUrlEqual) {
-			status = true;
 			this.log.error("I saw partial Page URL: \"" + partialUrl + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
 		}
 		return status;	
@@ -1825,7 +1821,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
@@ -1838,10 +1833,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isTitleEqual = actualTitle.equals(title);
 		boolean status = false;
 		if(isTitleEqual) {
-			status = true;
 			this.log.error("I saw Page Title: \"" + title + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I don't see Page Title: \"" + title + "\". Actual Title is \"" + actualTitle + "\".");
 		}
 		return status;
@@ -1857,7 +1851,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I typed \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't type \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\". Actual value typed is \"" + actualValue + "\".");
 		}
 		return status;	
@@ -1870,10 +1863,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
-			status = true;
 			this.log.error("I typed \"" + value + "\" on Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't type \"" + value + "\" on Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
@@ -1889,7 +1881,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see \"" + expectedValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
@@ -1902,10 +1893,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
-			status = true;
 			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
@@ -1923,7 +1913,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I selected: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't select: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;
@@ -1939,7 +1928,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedValue + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see \"" + expectedValue + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
@@ -1952,10 +1940,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isValueEqual = actualText.equals(value);
 		boolean status = false;
 		if(isValueEqual) {
-			status = true;
 			this.log.error("I saw \"" + value + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't see \"" + value + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
@@ -2013,8 +2000,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					status = true;
+					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2025,7 +2012,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2033,20 +2020,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
-				String text = elementToSeeTextFrom.getText().trim();
-				if (text.equals(expectedValue)) {
-					flgTextFound = true;
-					status = true;
-					this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					break;
+				if (elementToSeeTextFrom != null) {
+					String seeText = elementToSeeTextFrom.getText().trim();
+					if(seeText.equals(expectedValue)) {
+						status = true;
+						flgTextFound = true;
+						this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+						break;
+					} else {
+						flgTextFound = false;
+						this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+				} else {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeeTextFrom.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2057,7 +2051,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value) {
-		this.log.debug("I see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		this.log.debug("I see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2065,11 +2059,18 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
-				String text = elementToSeeTextFrom.getText().trim();
-				if (text.equals(value)) {
-					flgTextFound = true;
-					this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					break;
+				if (elementToSeeTextFrom != null) {
+					String seeText = elementToSeeTextFrom.getText().trim();
+					if(seeText.equals(value)) {
+						flgTextFound = true;
+						this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+						break;
+					} else {
+						flgTextFound = false;
+						this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+				} else {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeeTextFrom.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			}
 			if (!flgTextFound) {
@@ -2077,8 +2078,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					status = true;
+					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2113,11 +2114,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 							status = true;
 							this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
-							status = false;
-							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2143,7 +2143,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		boolean status = true;
+		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
@@ -2160,14 +2160,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 						String seeText = elementToSeeTextFrom.getText().trim();
 						boolean isValueEqual = seeText.equals(value);
 						if(isValueEqual) {
-							status = true;
 							this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
-							status = false;
 							this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2178,7 +2176,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					status = true;
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2223,7 +2222,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2249,7 +2248,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		boolean status = true;
+		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
@@ -2268,7 +2267,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 							String seeText = elementToSeeTextFrom.get(k).getText().trim();
 							boolean isValueEqual = seeText.equals(expectedValue);
 							if(isValueEqual) {
-								status = true;
 								this.log.error("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
@@ -2276,7 +2274,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							}
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2287,7 +2285,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					status = true;
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2306,7 +2305,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
 			this.log.error("I didn't see \"" + expectedPartialValue + "\" as not the partial text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
@@ -2319,10 +2317,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isValueEqual = actualText.contains(partialValue);
 		boolean status = false;
 		if(isValueEqual) {
-			status = true;
 			this.log.error("I saw \"" + partialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			status = false;
+			status = true;
 			this.log.debug("I didn't see \"" + partialValue + "\" as not the partial the text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
@@ -2380,8 +2377,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 					status = true;
+					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2392,7 +2389,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean seePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String expectedPartialValue) {
-		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2400,20 +2397,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeePartialTextFrom);
-				String text = elementToSeeTextFrom.getText().trim();
-				if (text.contains(expectedPartialValue)) {
-					flgTextFound = true;
-					status = true;
-					this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					break;
+				if (elementToSeeTextFrom != null) {
+					String seeText = elementToSeeTextFrom.getText().trim();
+					if(seeText.equals(expectedPartialValue)) {
+						status = true;
+						flgTextFound = true;
+						this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+						break;
+					} else {
+						this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+				} else {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeePartialTextFrom.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2424,7 +2427,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String value) {
-		this.log.debug("I see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		this.log.debug("I see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -2432,11 +2435,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeePartialTextFrom);
-				String text = elementToSeeTextFrom.getText().trim();
-				if (text.contains(value)) {
-					flgTextFound = true;
-					this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					break;
+				if (elementToSeeTextFrom != null) {
+					String seeText = elementToSeeTextFrom.getText().trim();
+					if(seeText.equals(value)) {
+						flgTextFound = true;
+						this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+						break;
+					} else {
+						this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+					}
+				} else {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeePartialTextFrom.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			}
 			if (!flgTextFound) {
@@ -2444,8 +2453,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					status = true;
+					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2481,11 +2490,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 							status = true;
 							this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
-							status = false;
-							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+							this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2511,7 +2519,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		boolean status = true;
+		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
@@ -2529,14 +2537,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 						this.log.info("Text found: " + seeText);
 						boolean isValueEqual = seeText.equals(value);
 						if(isValueEqual) {
-							status = true;
 							this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
-							status = false;
 							this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2547,14 +2553,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					status = true;
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
 			}
 		}
 		return status;
-
 	}
 	
 	@Override
@@ -2593,7 +2599,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 							this.log.error("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2638,16 +2644,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 							String seeText = elementToSeeTextFrom.get(k).getText().trim();
 							boolean isValueEqual = seeText.contains(expectedValue);
 							if(isValueEqual) {
-								status = true;
 								this.log.error("I saw \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 								break;
 							} else {
-								status = false;
 								this.log.debug("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
 							}
 						}
 					} else {
-						this.log.error("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2658,14 +2662,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					status = true;
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
 			}
 		}
 		return status;
-
 	}
 
 	@Override
@@ -2677,7 +2681,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" displayed.");
 		} else {
-			status = false;
 			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" displayed.");
 		}
 		return status;
@@ -2691,11 +2694,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> elements = this.getElements(locator);
 		boolean status = false;
 		if (elements.size() == 0) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" not displayed.");
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\" not displayed.");
 		} else {
-			status = false;
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" not displayed.");
+			status = true;
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" not displayed.");
 		}
 		this.initializeImplicitWait(10);
 		this.initializeExplicitWait(5);
@@ -2725,8 +2727,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 						status = true;
 						this.log.debug("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					} else {
-						status = false;
-						this.log.error("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+						this.log.debug("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
 					break;
@@ -2754,7 +2755,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		List<WebElement> rows = this.getElements(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
-		boolean status = true;
+		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				WebElement elementToCheckText = this.getElementFromAListElement(rowObjectList, j, rowObjectToCheckText);
@@ -2768,7 +2769,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 				if (checkText.equals(textToCheck)) {
 					List<WebElement> elementToSee = this.getElementsFromAListElement(rowObjectList, j, rowObjectToSee);
 					if (elementToSee.size() == 0) {
-						status = true;
 						this.log.error("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					} else {
 						status = false;
@@ -2783,7 +2783,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					status = true;
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -2804,7 +2805,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" enabled.");
 		} else {
-			status = false;
 			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" enabled.");
 		}
 		return status;
@@ -2817,11 +2817,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
 		if (!isEnabled) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" disabled.");
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\" disabled.");
 		} else {
-			status = false;
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" disabled.");
+			status = true;
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" disabled.");
 		}
 		return status;
 	}
@@ -2837,7 +2836,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" selected.");
 		} else {
-			status = false;
 			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" selected.");
 		}
 		return status;
@@ -2851,11 +2849,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean isSelected = element.isSelected();
 		boolean status = false;
 		if (!isSelected) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" not selected.");
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\" not selected.");
 		} else {
-			status = false;
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" not selected.");
+			status = true;
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" not selected.");
 		}
 		return status;
 	}
@@ -2870,8 +2867,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is \"" + count + "\".");
 		} else {
-			status = false;
-			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is not \"" + count + "\". Actual count is \"" + size + "\".");
+			this.log.error("I verified count of Web Element: \"" + locator.toString() + "\" is not \"" + count + "\". Actual count is \"" + size + "\".");
 		}
 		return status;
 	}
@@ -2887,7 +2883,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw alert message: \"" + expectedMessage + "\" displayed.");
 		} else {
-			status = false;
 			this.log.error("I didn't see alert message: \"" + expectedMessage + "\" displayed.");
 		}
 		return status;
