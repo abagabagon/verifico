@@ -2690,9 +2690,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean status = false;
 		if (elements.size() > 0) {
 			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" displayed.");
+			this.log.debug("I saw Web Element: \"" + locator.toString() + "\".");
 		} else {
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" displayed.");
+			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\".");
 		}
 		return status;
 	}
@@ -2704,11 +2704,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.initializeExplicitWait(2);
 		List<WebElement> elements = this.getElements(locator);
 		boolean status = false;
-		if (elements.size() == 0) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\" not displayed.");
+		if (elements.size() > 0) {
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" not displayed.");
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\".");
 		}
 		this.initializeImplicitWait(10);
 		this.initializeExplicitWait(5);
@@ -2779,10 +2779,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 				}
 				if (checkText.equals(textToCheck)) {
 					List<WebElement> elementToSee = this.getElementsFromAListElement(rowObjectList, j, rowObjectToSee);
-					if (elementToSee.size() == 0) {
+					if (elementToSee.size() > 0) {
 						this.log.error("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					} else {
-						status = false;
+						status = true;
 						this.log.debug("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 					}
 					flgTextFound = true;
@@ -2827,12 +2827,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
 		boolean status = false;
-		if (!isEnabled) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\" disabled.");
+		if (isEnabled) {
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\" enabled.");
 		} else {
 			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" disabled.");
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" enabled.");
 		}
+		this.log.info("Status Enabled? " + isEnabled);
 		return status;
 	}
 
@@ -2859,11 +2860,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebElement element = this.getElement(locator);
 		boolean isSelected = element.isSelected();
 		boolean status = false;
-		if (!isSelected) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\" not selected.");
+		if (isSelected) {
+			this.log.error("I saw Web Element: \"" + locator.toString() + "\" selected.");
 		} else {
 			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" not selected.");
+			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" selected.");
 		}
 		return status;
 	}
