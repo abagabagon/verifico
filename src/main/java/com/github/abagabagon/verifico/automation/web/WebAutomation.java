@@ -415,6 +415,15 @@ public interface WebAutomation {
 	public void typeAlert(String inputText);
 	
 	/**
+	 * Counts instances of a Web Element in a Page.
+	 * 
+	 * @param locator Object used to locate Web Element to count.
+	 * @return Instance Count of the Web Element in the Page.
+	 */
+	
+	public int count(By locator);
+	
+	/**
 	 * Waits for a specific time (Seconds).
 	 * 
 	 * @param duration Duration of time to wait (Seconds).
