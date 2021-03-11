@@ -108,6 +108,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | acceptAlert                                                    | Accepts Javascript Alert                                                                                                                   |
 | cancelAlert                                                    | Cancels Javascript Alert                                                                                                                   |
 | typeAlert                                                      | Simulates typing at Javascript Alert Text Box                                                                                              |
+| count                                                          | Counts instances of a Web Element in a Page.                                                                                               |
 | wait                                                           | Waits for a specific time (Seconds)                                                                                                        |
 
 ###### **Verifications**
