@@ -78,7 +78,7 @@ public class TestRail implements TestManagement {
 	private JSONObject addResultForCase(String testCaseId, int statusId) {
 		JSONObject response = null;
 		Map<String, Integer> data = new HashMap<String, Integer>();
-		data.put("status_id", new Integer(statusId));
+		data.put("status_id", statusId);
 		String id = checkTestCaseId(testCaseId);
 
 		try {
@@ -114,7 +114,7 @@ public class TestRail implements TestManagement {
 			Map<String, Integer> testCase = new HashMap<String, Integer>();
 			String id = checkTestCaseId(testCaseIds.get(testCount));
 			testCase.put("case_id", Integer.parseInt(id));
-			testCase.put("status_id", new Integer(statusId));
+			testCase.put("status_id", statusId);
 			testCases.add(testCase);
 		}
 		

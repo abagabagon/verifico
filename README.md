@@ -121,6 +121,8 @@ I.click(PageLogin.LOGIN_BUTTON);
 | dontSeePartialUrl                                                 | Verifies Page URL of Web Page if not partially equal to the expected URL.                                                                |
 | seeTitle                                                          | Verifies Page Title of Web Page if equal to the expected Title.                                                                          |
 | dontSeeTitle                                                      | Verifies Page Title of Web Page if not equal to the specified Title.                                                                     |
+| seePartialTitle                                                   | Verifies Page Title of Web Page if partially equal to the expected Title.                                                                |
+| dontSeePartialTitle                                               | Verifies Page Title of Web Page if not partially equal to the specified Title.                                                           |
 | typed                                                             | Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected value.                                                     |
 | didntType                                                         | Verifies the value of INPUT or TEXTAREA Web Elements if not equal to the specified value.                                                |
 | seeAttributeValue                                                 | Verifies the value of the specified attribute if equal to the expected value.                                                            |

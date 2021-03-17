@@ -1853,6 +1853,36 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public boolean seePartialTitle(String expectedPartialTitle) {
+		this.log.debug("I see partial Page Title: \"" + expectedPartialTitle + "\".");
+		String actualTitle = this.driver.getTitle().trim();
+		boolean isTitleEqual = actualTitle.contains(expectedPartialTitle);
+		boolean status = false;
+		if(isTitleEqual) {
+			status = true;
+			this.log.debug("I saw Page Title: \"" + expectedPartialTitle + "\".");
+		} else {
+			this.log.error("I didn't see Page Title: \"" + expectedPartialTitle + "\". Actual Title is \"" + actualTitle + "\".");
+		}
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTitle(String partialTitle) {
+		this.log.debug("I see partial Page Title is not \"" + partialTitle + "\".");
+		String actualTitle = this.driver.getTitle().trim();
+		boolean isTitleEqual = actualTitle.contains(partialTitle);
+		boolean status = false;
+		if(isTitleEqual) {
+			this.log.error("I saw Page Title: \"" + partialTitle + "\".");
+		} else {
+			status = true;
+			this.log.debug("I don't see Page Title: \"" + partialTitle + "\". Actual Title is \"" + actualTitle + "\".");
+		}
+		return status;
+	}
+	
+	@Override
 	public boolean typed(By locator, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" is typed on Web Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue(locator);
@@ -2024,11 +2054,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-		List<WebElement> rows = this.getElements(rowObjectList);
-		int size = rows.size();
 		boolean flgTextFound = false;
 		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
+			List<WebElement> rows = this.getElements(rowObjectList);
+			int size = rows.size();
 			for(int j = 0; j < size; j++) {
 				WebElement elementToSeeTextFrom = this.getElementFromAListElement(rowObjectList, j, rowObjectToSeeTextFrom);
 				if (elementToSeeTextFrom != null) {

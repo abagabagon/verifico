@@ -494,6 +494,26 @@ public interface WebAutomation {
 	 */
 	
 	public boolean dontSeeTitle(String title);
+	
+	/**
+	 * Verifies partial Page Title of Web Page if equal to the expected Title.
+	 * 
+	 * @param	expectedPartialTitle Expected Partial Page Title to compare into
+	 * @return	<code>true</code> if Page Title is equal to expected Title.
+	 * 			<code>false</code> if Page Title is not equal to expected Title.
+	 */
+	
+	public boolean seePartialTitle(String expectedPartialTitle);
+	
+	/**
+	 * Verifies partial Page Title of Web Page if not equal to the expected Title.
+	 * 
+	 * @param	partialTitle Expected Partial Page Title to compare into
+	 * @return	<code>true</code> if Page Title is not equal to expected Title.
+	 * 			<code>false</code> if Page Title is equal to expected Title.
+	 */
+	
+	public boolean dontSeePartialTitle(String partialTitle);
 
 	/**
 	 * Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected
