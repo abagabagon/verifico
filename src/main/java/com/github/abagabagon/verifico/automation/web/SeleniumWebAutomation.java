@@ -2309,9 +2309,11 @@ public class SeleniumWebAutomation implements WebAutomation {
 							boolean isValueEqual = seeText.equals(expectedValue);
 							if(isValueEqual) {
 								this.log.error("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+								status = false;
 								break;
 							} else {
 								this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
+								status = true;
 							}
 						}
 					} else {
