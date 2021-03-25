@@ -564,6 +564,32 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeeAttributeValue(By locator, String attribute, String value);
+	
+	/**
+	 * Verifies the value of the specified attribute if partially equal to the expected
+	 * value.
+	 * 
+	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param attribute		Name of attribute to assert the value from.
+	 * @param expectedValue	Expected value of the Web Element Attribute.
+	 * @return	<code>true</code> if value is partially equal to expected attribute value.
+	 * 			<code>false</code> if value is partially not equal to expected attribute value.
+	 */
+
+	public boolean seePartialAttributeValue(By locator, String attribute, String expectedValue);
+	
+	/**
+	 * Verifies the value of the specified attribute if not partially equal to the specified
+	 * value.
+	 * 
+	 * @param locator	Object used to locate Web Element to assert the value from.
+	 * @param attribute	Name of attribute to assert the value from.
+	 * @param value		Value of the Web Element Attribute.
+	 * @return	<code>true</code> if value is partially not equal to expected attribute value.
+	 * 			<code>false</code> if value is partially equal to expected attribute value.
+	 */
+
+	public boolean dontSeePartialAttributeValue(By locator, String attribute, String value);
 
 	/**
 	 * Verifies Drop-down List Web Element Selected Value if equal to expected text value.

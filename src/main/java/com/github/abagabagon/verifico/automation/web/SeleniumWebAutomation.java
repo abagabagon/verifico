@@ -1941,6 +1941,36 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 		return status;	
 	}
+	
+	@Override
+	public boolean seePartialAttributeValue(By locator, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getAttributeValue(locator, attribute);
+		boolean isValueEqual = actualValue.contains(expectedValue);
+		boolean status = false;
+		if(isValueEqual) {
+			status = true;
+			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		} else {
+			this.log.error("I didn't see \"" + expectedValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValue(By locator, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getAttributeValue(locator, attribute);
+		boolean isValueEqual = actualValue.contains(value);
+		boolean status = false;
+		if(isValueEqual) {
+			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		} else {
+			status = true;
+			this.log.debug("I didn't see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
 
 	@Override
 	public boolean selectedDropDown(By locator, String expectedValue) {
