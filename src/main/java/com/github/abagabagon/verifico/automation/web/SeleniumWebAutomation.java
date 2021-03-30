@@ -15,6 +15,7 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +26,7 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.github.abagabagon.verifico.enums.Browser;
+import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 public class SeleniumWebAutomation implements WebAutomation {
 
@@ -506,12 +508,20 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLEAR:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					element.clear();
+					element.sendKeys(Keys.SPACE);
+					Platform platform = OperatingSystem.getOS();
+					if (platform == Platform.MAC) {
+						element.sendKeys(Keys.COMMAND + "a");
+						element.sendKeys(Keys.DELETE);
+					} else {
+						element.sendKeys(Keys.CONTROL + "a");
+						element.sendKeys(Keys.DELETE);
+					}
 					break;
 				case CLEARJS:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
 					this.javascriptExecutor = (JavascriptExecutor) this.driver;
-					this.javascriptExecutor.executeScript("arguments[0].setAttribute('value', '');", element);
+					this.javascriptExecutor.executeScript("arguments[0].value = '';", element);
 					break;
 				case PRESS:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
@@ -569,7 +579,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void clearJS(By locator) {
 		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.CLEAR, locator, null, null);
+		this.executeKeyboardCommands(UserAction.CLEARJS, locator, null, null);
 	}
 	
 	@Override
@@ -822,7 +832,15 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLEAR:
 					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.clear();
+					childElement.sendKeys(Keys.SPACE);
+					Platform platform = OperatingSystem.getOS();
+					if (platform == Platform.MAC) {
+						childElement.sendKeys(Keys.COMMAND + "a");
+						childElement.sendKeys(Keys.DELETE);
+					} else {
+						childElement.sendKeys(Keys.CONTROL + "a");
+						childElement.sendKeys(Keys.DELETE);
+					}
 					break;
 				case PRESS:
 					this.seleniumWait.waitForObjectToBeVisible(childElement);
