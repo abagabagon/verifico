@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,15 +19,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class SeleniumWait {
 
 	private Logger log;
+	private WebDriver driver;
 	private WebDriverWait wait;
 	private Alert alert;
 
 	public SeleniumWait(WebDriver driver, WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
-		if (wait == null) {
-			this.log.fatal("WebDriverWait is NULL.");
+		if (driver == null || wait == null) {
+			this.log.fatal("WebDriver or WebDriverWait is NULL.");
 			System.exit(1);
 		} else {
+			this.driver = driver;
 			this.wait = wait;
 		}
 	}
@@ -34,31 +37,195 @@ public class SeleniumWait {
 	/**
 	 * Waits for Page to be fully loaded.
 	 * 
-	 * @return <code>true</code> if URL is same as expected value.
-	 *         <code>false</code> if URL is different from expected value.
 	 */
 
-	final boolean waitForPage() {
+	final void waitForPage() {
 		this.log.trace("Waiting for Page to fully load.");
-		boolean isCountEqual = false;
+		this.waitForJS();
+		this.waitForAjax();
+		this.waitForJQuery();
+		this.waitForAngular();
+	}
+	
+	/**
+	 * Waits for JS to be fully loaded.
+	 * 
+	 * @return <code>true</code> if JS is fully loaded.
+	 *         <code>false</code> if JS is not fully loaded.
+	 */
+
+	final boolean waitForJS() {
+		this.log.trace("Waiting for JS to fully load.");
+		boolean isLoaded = false;
 		try {
-			this.wait.until(new ExpectedCondition<Boolean>() {
-				@Override
-				public Boolean apply(WebDriver driver) {
-					JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-					String script = "return document.readyState";  
-					return javascriptExecutor.executeScript(script).equals("complete");
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
+			try {
+				Thread.sleep(20);
+				String script = "return document.readyState";  
+				ExpectedCondition<Boolean> jsLoad = drivera -> javascriptExecutor.executeScript(script).toString().equals("complete");
+				boolean jsReady = javascriptExecutor.executeScript(script).toString().equals("complete");
+				if (!jsReady) {
+					this.wait.until(jsLoad);
 				}
-			});
-			this.log.trace("Page successfully loaded!");
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (WebDriverException e) {
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			this.log.trace("JS successfully loaded!");
 		} catch (TimeoutException e) {
-			this.log.error("Wait time for Object Count to match the expected Value has expired!");
+			this.log.error("Wait time for JS to fully load has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for Object Count to match expected value!");
+			this.log.error("Encountered Exception while waiting for JS to fully load!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
-		return isCountEqual;
+		return isLoaded;
+	}
+	
+	/**
+	 * Waits for Ajax to be fully loaded.
+	 * 
+	 * @return <code>true</code> if Ajax is fully loaded.
+	 *         <code>false</code> if Ajax is not fully loaded.
+	 */
+
+	final void waitForAjax() {
+		this.log.trace("Waiting for Ajax to fully load.");
+		try {
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
+			String script = "var callback = arguments[arguments.length - 1];" + "var xhr = new XMLHttpRequest();"
+					+ "xhr.open('GET', '/Ajax_call', true);" + "xhr.onreadystatechange = function() {"
+					+ "  if (xhr.readyState == 4) {" + "    callback(xhr.responseText);" + "  }" + "};" + "xhr.send();";  
+			javascriptExecutor.executeScript(script);
+			this.log.trace("Ajax successfully loaded!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Ajax to fully load has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Ajax to fully load!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+	}
+	
+	/**
+	 * Waits for JQuery to be fully loaded.
+	 * 
+	 * @return <code>true</code> if JQuery is fully loaded.
+	 *         <code>false</code> if JQuery is not fully loaded.
+	 */
+
+	final void waitForJQuery() {
+		this.log.trace("Waiting for JQuery to fully load.");
+		try {
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
+			Boolean jQueryUndefined = (Boolean) javascriptExecutor.executeScript("return typeof jQuery === 'undefined'");
+			if(!jQueryUndefined) {
+				try {
+					Thread.sleep(20);
+					String script = "return jQuery.active"; 
+					ExpectedCondition<Boolean> jQueryLoad = drivera -> ((Long) (javascriptExecutor.executeScript(script)) == 0);
+					boolean jqueryReady = (Boolean) javascriptExecutor.executeScript("return jQuery.active==0");
+					if (!jqueryReady) {
+						this.wait.until(jQueryLoad);
+					}
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				} catch (WebDriverException e) {
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				}
+			}
+			this.log.trace("JQuery successfully loaded!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for JQuery to fully load has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for JQuery to fully load!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+	}
+	
+	/**
+	 * Waits for Angular to be fully loaded.
+	 * 
+	 * @return <code>true</code> if Angular is fully loaded.
+	 *         <code>false</code> if Angular is not fully loaded.
+	 */
+
+	final boolean waitForAngular() {
+		this.log.trace("Waiting for Angular to fully load.");
+		boolean isLoaded = false;
+		try {
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
+			Boolean angularUnDefined = (Boolean) javascriptExecutor.executeScript("return window.angular === undefined");
+			if(!angularUnDefined) {
+				try {
+					Thread.sleep(20);
+					String script = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";  
+					ExpectedCondition<Boolean> angularLoad = drivera -> Boolean.valueOf(((JavascriptExecutor) this.driver).executeScript(script).toString());
+					boolean angularReady = Boolean.valueOf(javascriptExecutor.executeScript(script).toString());
+					if (!angularReady) {
+						this.wait.until(angularLoad);
+					}
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				} catch (WebDriverException e) {
+					this.log.debug(ExceptionUtils.getStackTrace(e));
+				}
+			}
+			this.log.trace("Angular successfully loaded!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Angular to fully load has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Angular to fully load!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isLoaded;
+	}
+	
+	/**
+	 * Waits for Angular 5 to be fully loaded.
+	 * 
+	 * @return <code>true</code> if Angular 5 is fully loaded.
+	 *         <code>false</code> if Angular 5 is not fully loaded.
+	 */
+
+	final void waitForAngular5() {
+		this.log.trace("Waiting for Angular to fully load.");
+		try {
+			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
+			Object angular5Check = javascriptExecutor.executeScript("return getAllAngularRootElements()[0].attributes['ng-version']");
+			if(angular5Check != null) {
+				Boolean angularPageLoaded = (Boolean) javascriptExecutor.executeScript("return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1");
+				if(!angularPageLoaded) {
+					try {
+						Thread.sleep(20);
+						String script = "return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1";  
+						ExpectedCondition<Boolean> angularLoad = drivera -> Boolean.valueOf(((JavascriptExecutor) this.driver).executeScript(script).toString());
+						boolean angularReady = Boolean.valueOf(javascriptExecutor.executeScript(script).toString());
+						if (!angularReady) {
+							this.wait.until(angularLoad);
+						}
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+					} catch (WebDriverException e) {
+						this.log.debug(ExceptionUtils.getStackTrace(e));
+					}
+				}
+			}
+			this.log.trace("Angular 5 successfully loaded!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Angular 5 to fully load has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Angular 5 to fully load!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
 	}
 
 	/**
@@ -198,6 +365,38 @@ public class SeleniumWait {
 		WebElement element = null;
 		try {
 			element = this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			this.log.trace("Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return element;
+	}
+	
+	/**
+	 * Waits for WebElement to be visible at the Web Page.
+	 * 
+	 * @param locator Object used to locate element to wait for.
+	 * @param index Object from a Web Element List.
+	 * @return Created Web Element
+	 */
+
+	final WebElement waitForObjectToBeVisible(By locator, int index) {
+		this.log.trace("Waiting for Web Element to be visible.");
+		this.waitForPage();
+		WebElement element = null;
+		try {
+			element = this.wait.until(new ExpectedCondition<WebElement>() {
+				@Override
+				public WebElement apply(WebDriver driver) {
+					List<WebElement> elements = driver.findElements(locator);
+					WebElement element = elements.get(index);
+					return element;
+				}
+			});
 			this.log.trace("Web Element had become visible!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
@@ -575,6 +774,47 @@ public class SeleniumWait {
 		return element;
 	}
 	
+	final List<WebElement> waitForListToBeVisible(By locator) {
+		this.log.trace("Waiting for List to be visible.");
+		this.waitForPage();
+		List<WebElement> element = null;
+		try {
+			element = this.wait.until(new ExpectedCondition<List<WebElement>>() {
+				@Override
+				public List<WebElement> apply(WebDriver driver) {
+					List<WebElement> elements = null;
+					int count = 0;
+					int size = 0;
+					int previousSize = 0;
+					while(count != 10) {
+						elements = driver.findElements(locator);
+						size = elements.size();
+						if (size == previousSize) {
+							count++;
+						} else {
+							count = 0;
+						}
+						previousSize = size;
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							ExceptionUtils.getStackTrace(e);
+						}
+					}
+					return elements;
+				}
+			});
+			this.log.trace("List had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for List to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for List to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return element;
+	}
+	
 	final List<WebElement> waitForTableRowsToBeVisible(By locator) {
 		this.log.trace("Waiting for Table Rows to be visible.");
 		this.waitForPage();
@@ -605,12 +845,12 @@ public class SeleniumWait {
 					return elements;
 				}
 			});
-			this.log.trace("Nested Web Element had become visible!");
+			this.log.trace("Table Rows had become visible!");
 		} catch (TimeoutException e) {
-			this.log.error("Wait time for Nested Web Element to be visible has expired!");
+			this.log.error("Wait time for Table Rows to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to wait for Nested Web Element to be visible!");
+			this.log.error("Something went wrong while trying to wait for Table Rows to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 		return element;
@@ -734,6 +974,7 @@ public class SeleniumWait {
 		this.waitForPage();
 		boolean isValueEqual = false;
 		try {
+			this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 			isValueEqual = this.wait.until(ExpectedConditions.textToBe(locator, expectedValue));
 			this.log.trace("Text Value had matched the expected value!");
 		} catch (TimeoutException e) {
