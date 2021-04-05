@@ -121,28 +121,12 @@ public interface WebAutomation {
 	public void point(By locator);
 	
 	/**
-	 * Points mouse to the specified Web Element Location (utilizing Javascript).
-	 * 
-	 * @param locator Object used to locate Web Element to point mouse into.
-	 */
-	
-	public void pointJS(By locator);
-	
-	/**
 	 * Clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be clicked.
 	 */
 
 	public void click(By locator);
-	
-	/**
-	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
-	 * 
-	 * @param locator Object used to locate Web Element to be clicked.
-	 */
-	
-	public void clickJS(By locator);
 	
 	/**
 	 * Clicks and holds the specified Web Element. Used for Elements that are clickable.
@@ -220,16 +204,6 @@ public interface WebAutomation {
 	public void type(By locator, String inputText);
 	
 	/**
-	 * Simulates typing into a text box/area Web Element, which may set its value (utilizing Javascript). Text entry
-	 * Web Elements are INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param locator 	Object used to locate Web Element to type into.
-	 * @param inputText Text value to input.
-	 */
-
-	public void typeJS(By locator, String inputText);
-	
-	/**
 	 * Type input text at the specified Web Element from a row in a table based on text value from the same row.
 	 *
 	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
@@ -270,15 +244,6 @@ public interface WebAutomation {
 	 */
 
 	public void clear(By locator);
-	
-	/**
-	 * Clears value of a text box/area Web Element (utilizing Javascript). Text entry Web Elements are INPUT and
-	 * TEXTAREA Web Elements.
-	 * 
-	 * @param locator Object used to locate Web Element to clear value of.
-	 */
-
-	public void clearJS(By locator);
 	
 	/**
 	 * Clears value of the specified Web Element from a row in a table based on text value from the same row.

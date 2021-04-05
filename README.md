@@ -78,9 +78,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | Command                                                        | Description                                                                                                                                |
 | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | point                                                          | Points mouse to the specified Web Element.                                                                                                 |
-| pointJS                                                        | Points mouse to the specified Web Element (utilizing Javascript).                                                                          |
 | click                                                          | Clicks the specified Web Element. Used for Elements that are clickable.                                                                    |
-| clickJS                                                        | Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.                                             |
 | clickAndHold                                                   | Clicks and holds the specified Web Element. Used for Elements that are clickable.                                                          |
 | clickOnListElementBasedOnText                                  | Clicks the specified Web Element from an Element List based on text value. Used for Elements that are clickable.                           |
 | clickOnTableRowElementBasedOnTableRowElementText               | Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.      |
@@ -94,7 +92,6 @@ I.click(PageLogin.LOGIN_BUTTON);
 | press                                                          | Simulates pressing of characters into a text box/area Web Element.                                                                         |
 | pressOnTableRowElementBasedOnTableRowElementText               | Press specified keys at the specified Web Element from a row in a table based on text value from the same row.                             |
 | clear                                                          | Clears value of a text box/area Web Element.                                                                                               |
-| clearJS                                                        | Clears value of a text box/area Web Element (utilizing Javascript).                                                                        |
 | clearTableRowElementBasedOnTableRowElementText                 | Clears value of the specified Web Element from a row in a table based on text value from the same row.                                     |
 | select                                                         | Selects a Drop-down/Multi-select List Web Element Option.                                                                                  |
 | deselect                                                       | Deselects a Multi-select Web Element Option.                                                                                               |
