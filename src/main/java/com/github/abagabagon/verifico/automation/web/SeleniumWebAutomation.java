@@ -21,6 +21,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,8 +56,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	enum UserAction {
-		CLEAR, CLEARJS, CLICK, CLICKJS, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
-		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT, POINT, POINTJS, PRESS, SELECT, SEND_KEYS, SEND_KEYSJS
+		CLEAR, CLICK, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
+		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT, POINT, PRESS, SELECT, SEND_KEYS
 	}
 	
 	/* ####################################################### */
@@ -402,16 +403,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private void executeMouseCommands(UserAction userAction, By locator) {
 		boolean actionPerformed = false;
 		WebElement element = null;
+		String script = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
+				this.javascriptExecutor = (JavascriptExecutor) this.driver;
 				switch(userAction) {
 				case CLICK:
 					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					element.click();
-					break;
-				case CLICKJS:
-					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", element);
 					break;
 				case CLICK_AND_HOLD:
@@ -425,12 +423,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 				case POINT:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
 					this.action.moveToElement(element).perform();
-					break;
-				case POINTJS:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					String script = "window.scrollTo(0,"+ element.getLocation().y + ")";
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
-					this.javascriptExecutor.executeScript(script);
 					break;
 				default:
 					this.log.fatal("Unsupported User Action.");
@@ -446,7 +438,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 				element = this.seleniumWait.waitForObjectToBeVisible(locator);
+				script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
+				this.javascriptExecutor.executeScript(script);
 				this.action.moveToElement(element).perform();
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (MoveTargetOutOfBoundsException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is out-of-bounds.");
+				element = this.seleniumWait.waitForObjectToBeVisible(locator);
+				script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
+				this.javascriptExecutor.executeScript(script);
+				this.action.moveToElement(element).perform();
+				this.log.debug(ExceptionUtils.getStackTrace(e));
 			} catch (Exception e) {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -471,12 +473,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clickJS(By locator) {
-		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, locator);
-	}
-	
-	@Override
 	public void clickAndHold(By locator) {
 		this.log.debug("I click and hold Web Element: \"" + locator.toString() + "\".");
 		this.executeMouseCommands(UserAction.CLICK_AND_HOLD, locator);
@@ -492,12 +488,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void point(By locator) {
 		this.log.debug("I point at Web Element: \"" + locator.toString() + "\".");
 		this.executeMouseCommands(UserAction.POINT, locator);
-	}
-	
-	@Override
-	public void pointJS(By locator) {
-		this.log.debug("I scroll to Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.POINTJS, locator);
 	}
 	
 	private void executeKeyboardCommands(UserAction userAction, By locator, String inputText, Keys keyButton) {
@@ -518,11 +508,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 						element.sendKeys(Keys.DELETE);
 					}
 					break;
-				case CLEARJS:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
-					this.javascriptExecutor.executeScript("arguments[0].value = '';", element);
-					break;
 				case PRESS:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
 					element.sendKeys(keyButton);
@@ -530,11 +515,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 				case SEND_KEYS:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
 					element.sendKeys(inputText);
-					break;
-				case SEND_KEYSJS:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
-					this.javascriptExecutor.executeScript("arguments[0].value=arguments[1];", element, inputText);
 					break;
 				default:
 					this.log.fatal("Unsupported User Action.");
@@ -577,12 +557,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void clearJS(By locator) {
-		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.CLEARJS, locator, null, null);
-	}
-	
-	@Override
 	public void press(By locator, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\"."); 
 		this.executeKeyboardCommands(UserAction.SEND_KEYS, locator, null, keyButton);
@@ -592,12 +566,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void type(By locator, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
 		this.executeKeyboardCommands(UserAction.SEND_KEYS, locator, inputText, null);
-	}
-	
-	@Override
-	public void typeJS(By locator, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYSJS, locator, inputText, null);
 	}
 	
 	private String executeGetCommands(UserAction userAction, By locator, String attribute) {
@@ -618,7 +586,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					break;
 				case GET_TEXT:
 					element = this.seleniumWait.waitForObjectToBePresent(locator);
-					value = element.getText();
+					value = element.getText().trim();
 					break;
 				default:
 					this.log.fatal("Unsupported User Action.");
@@ -756,7 +724,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void select(By locator, By optionList, String option) {
 		this.log.debug("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
-		this.clickJS(locator);
+		this.click(locator);
 		this.clickOnListElementBasedOnText(optionList, option);
 	}
 	
@@ -770,19 +738,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
+		String script = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
 				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
 				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				this.seleniumWait.waitForObjectToBeClickable(childElement);
+				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
+				this.javascriptExecutor = (JavascriptExecutor) this.driver;
+				this.javascriptExecutor.executeScript(script);
 				switch(userAction) {
 				case CLICK:
-					childElement.click();
+					this.seleniumWait.waitForObjectToBeClickable(childElement);
+					this.javascriptExecutor = (JavascriptExecutor) this.driver;
+					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
 					break;
 				case CLICK_AND_HOLD:
+					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.action.clickAndHold(childElement).perform();
 					break;
 				case DOUBLE_CLICK:
+					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.action.doubleClick(childElement).perform();
 					break;
 				case POINT:
@@ -803,6 +778,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is unclickable because it's not on view.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 				this.seleniumWait.waitForObjectToBeVisible(childElement);
+				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
+				this.javascriptExecutor = (JavascriptExecutor) this.driver;
+				this.javascriptExecutor.executeScript(script);
 				this.action.moveToElement(childElement).perform();
 			} catch (Exception e) {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
@@ -901,7 +879,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					value = select.getFirstSelectedOption().getText().toLowerCase();
 					break;
 				case GET_TEXT:
-					value = childElement.getText();
+					value = childElement.getText().trim();
 					break;
 				default:
 					this.log.fatal("Unsupported User Action.");
@@ -987,7 +965,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	private void executeListMouseCommands(UserAction userAction, By objectList, String textToCheck) {
-		List<WebElement> elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -1010,7 +988,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 					default:
 						this.log.fatal("Unsupported User Action.");
 					}
-
 					flgTextFound = true;
 					break;
 				}
@@ -1031,20 +1008,28 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private void executeMouseCommands(UserAction userAction, By locator, int index) {
 		boolean actionPerformed = false;
 		List<WebElement> elements = null;
+		String script = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
 				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 				switch(userAction) {
 				case CLICK:
-					elements.get(index).click();
+					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
+					this.javascriptExecutor = (JavascriptExecutor) this.driver;
+					this.javascriptExecutor.executeScript("arguments[0].click();", elements.get(index));
 					break;
 				case CLICK_AND_HOLD:
+					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
 					this.action.clickAndHold(elements.get(index)).perform();
 					break;
 				case DOUBLE_CLICK:
+					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
 					this.action.doubleClick(elements.get(index)).perform();
 					break;
 				case POINT:
+					script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
+					this.javascriptExecutor = (JavascriptExecutor) this.driver;
+					this.javascriptExecutor.executeScript(script);
 					this.action.moveToElement(elements.get(index)).perform();
 					break;
 				default:
@@ -1061,6 +1046,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+				script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
+				this.javascriptExecutor = (JavascriptExecutor) this.driver;
+				this.javascriptExecutor.executeScript(script);
 				this.action.moveToElement(elements.get(index)).perform();
 			} catch (Exception e) {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
@@ -1406,6 +1394,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeeUrl(String url) {
 		this.log.debug("I see Page URL is not \"" + url + "\".");
+		this.seleniumWait.waitForPage();
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.equals(url);
 		boolean status = false;
@@ -1436,6 +1425,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeePartialUrl(String partialUrl) {
 		this.log.debug("I see partial Page URL is not \"" + partialUrl + "\".");
+		this.seleniumWait.waitForPage();
 		String actualUrl = this.driver.getCurrentUrl().trim();
 		boolean isUrlEqual = actualUrl.contains(partialUrl);
 		boolean status = false;
@@ -1466,6 +1456,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeeTitle(String title) {
 		this.log.debug("I see Page Title is not \"" + title + "\".");
+		this.seleniumWait.waitForPage();
 		String actualTitle = this.driver.getTitle().trim();
 		boolean isTitleEqual = actualTitle.equals(title);
 		boolean status = false;
@@ -1496,6 +1487,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeePartialTitle(String partialTitle) {
 		this.log.debug("I see partial Page Title is not \"" + partialTitle + "\".");
+		this.seleniumWait.waitForPage();
 		String actualTitle = this.driver.getTitle().trim();
 		boolean isTitleEqual = actualTitle.contains(partialTitle);
 		boolean status = false;
@@ -1618,8 +1610,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeText(By locator, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the text value of Web Element: \"" + locator.toString() + "\".");
-		boolean isValueEqual = this.seleniumWait.waitForTextToBe(locator, expectedValue);
 		String actualText = this.getText(locator).trim();
+		boolean isValueEqual = actualText.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
 			status = true;
@@ -1648,13 +1640,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeTextOfListElement(By locator, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> element = this.seleniumWait.waitForObjectsToBeVisible(locator);
-		int size = element.size();
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		int size = elements.size();
 		boolean flgTextFound = false;
 		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(j).getText().trim();
+				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
+				String text = element.getText().trim();
 				if (text.equals(expectedValue)) {
 					flgTextFound = true;
 					status = true;
@@ -1679,13 +1672,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeeTextOfListElement(By locator, String value) {
 		this.log.debug("I see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> element = this.seleniumWait.waitForObjectsToBeVisible(locator);
-		int size = element.size();
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		int size = elements.size();
 		boolean flgTextFound = false;
 		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(j).getText().trim();
+				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
+				String text = element.getText().trim();
 				if (text.equals(value)) {
 					flgTextFound = true;
 					this.log.error("I saw \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
@@ -2027,13 +2021,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seePartialTextOfListElement(By locator, String expectedPartialValue) {
 		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> element = this.seleniumWait.waitForObjectsToBeVisible(locator);
-		int size = element.size();
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		int size = elements.size();
 		boolean flgTextFound = false;
 		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(j).getText().trim();
+				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
+				String text = element.getText().trim();
 				if (text.contains(expectedPartialValue)) {
 					flgTextFound = true;
 					status = true;
@@ -2058,13 +2053,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean dontSeePartialTextOfListElement(By locator, String partialValue) {
 		this.log.debug("I see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> element = this.seleniumWait.waitForObjectsToBeVisible(locator);
-		int size = element.size();
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		int size = elements.size();
 		boolean flgTextFound = false;
 		boolean status = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				String text = element.get(j).getText().trim();
+				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
+				String text = element.getText().trim();
 				if (text.contains(partialValue)) {
 					flgTextFound = true;
 					this.log.error("I saw \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
@@ -2374,6 +2370,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean see(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
+		this.seleniumWait.waitForObjectToBeVisible(locator);
 		List<WebElement> elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 		boolean status = false;
 		if (elements.size() > 0) {
@@ -2389,6 +2386,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean dontSee(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" is not displayed.");
 		this.setImplicitWait(2);
+		this.seleniumWait.waitForObjectToBeInvisible(locator);
 		List<WebElement> elements = this.driver.findElements(locator);
 		boolean status = false;
 		if (elements.size() > 0) {
@@ -2572,7 +2570,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean seeAlertMessage(String expectedMessage) {
 		this.log.debug("I see \"" + expectedMessage + "\" Alert Message displayed.");
 		Alert alert = this.seleniumWait.waitForAlertToBePresent();
-		String actualMessage = alert.getText();
+		String actualMessage = alert.getText().trim();
 		boolean isValueEqual = actualMessage.equals(expectedMessage);
 		boolean status = false;
 		if(isValueEqual) {
