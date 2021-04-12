@@ -508,14 +508,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLEAR:
 					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					element.sendKeys(Keys.SPACE);
 					Platform platform = OperatingSystem.getOS();
 					if (platform == Platform.MAC) {
-						element.sendKeys(Keys.COMMAND + "a");
-						element.sendKeys(Keys.DELETE);
+						this.action.click(element)
+				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
 					} else {
-						element.sendKeys(Keys.CONTROL + "a");
-						element.sendKeys(Keys.DELETE);
+						this.action.click(element)
+				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
 					}
 					break;
 				case PRESS:
@@ -824,14 +827,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLEAR:
 					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(Keys.SPACE);
 					Platform platform = OperatingSystem.getOS();
 					if (platform == Platform.MAC) {
-						childElement.sendKeys(Keys.COMMAND + "a");
-						childElement.sendKeys(Keys.DELETE);
+						this.action.click(childElement)
+				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
 					} else {
-						childElement.sendKeys(Keys.CONTROL + "a");
-						childElement.sendKeys(Keys.DELETE);
+						this.action.click(childElement)
+				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
 					}
 					break;
 				case PRESS:
@@ -1331,7 +1337,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			try {
 				sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceObject);
 				targetElement = this.seleniumWait.waitForObjectToBeClickable(targetObject);
-				this.action = new Actions(this.driver);
 				this.action.dragAndDrop(sourceElement, targetElement).perform();
 				actionPerformed = true;
 			} catch (NullPointerException e) {
