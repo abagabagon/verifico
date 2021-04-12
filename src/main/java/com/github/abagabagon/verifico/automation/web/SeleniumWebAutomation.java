@@ -56,7 +56,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	enum UserAction {
-		CLEAR, CLICK, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
+		CLEAR, CLICK, CLICKJS, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT, POINT, PRESS, SELECT, SEND_KEYS
 	}
 	
@@ -410,6 +410,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLICK:
 					element = this.seleniumWait.waitForObjectToBeClickable(locator);
+					element.click();
+					break;
+				case CLICKJS:
+					element = this.seleniumWait.waitForObjectToBeClickable(locator);
 					this.javascriptExecutor.executeScript("arguments[0].click();", element);
 					break;
 				case CLICK_AND_HOLD:
@@ -470,6 +474,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void click(By locator) {
 		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
 		this.executeMouseCommands(UserAction.CLICK, locator);
+	}
+	
+	@Override
+	public void clickJS(By locator) {
+		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
+		this.executeMouseCommands(UserAction.CLICKJS, locator);
 	}
 	
 	@Override
@@ -749,6 +759,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 				switch(userAction) {
 				case CLICK:
 					this.seleniumWait.waitForObjectToBeClickable(childElement);
+					childElement.click();
+					break;
+				case CLICKJS:
+					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
 					break;
@@ -976,6 +990,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 					case CLICK:
 						this.executeMouseCommands(UserAction.CLICK, objectList, j);
 						break;
+					case CLICKJS:
+						this.executeMouseCommands(UserAction.CLICKJS, objectList, j);
+						break;
 					case CLICK_AND_HOLD:
 						this.executeMouseCommands(UserAction.CLICK_AND_HOLD, objectList, j);
 						break;
@@ -1014,6 +1031,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 				switch(userAction) {
 				case CLICK:
+					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
+					elements.get(index).click();
+					break;
+				case CLICKJS:
 					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
 					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", elements.get(index));
@@ -1074,6 +1095,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.executeListMouseCommands(UserAction.CLICKJS, objectList, textToCheck);
+	}
+	
+	@Override
 	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
 		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, textToCheck);
@@ -1099,6 +1126,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 						switch(userAction) {
 						case CLICK:
 							this.executeMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToDoActionTo, j);
+							break;
+						case CLICKJS:
+							this.executeMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToDoActionTo, j);
 							break;
 						case CLICK_AND_HOLD:
 							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, rowObjectList, rowObjectToDoActionTo, j);
@@ -1136,6 +1166,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
 	}
 	
 	@Override

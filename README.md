@@ -75,38 +75,40 @@ I.click(PageLogin.LOGIN_BUTTON);
 
 ###### **User Actions**
 
-| Command                                                        | Description                                                                                                                                |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| point                                                          | Points mouse to the specified Web Element.                                                                                                 |
-| click                                                          | Clicks the specified Web Element. Used for Elements that are clickable.                                                                    |
-| clickAndHold                                                   | Clicks and holds the specified Web Element. Used for Elements that are clickable.                                                          |
-| clickOnListElementBasedOnText                                  | Clicks the specified Web Element from an Element List based on text value. Used for Elements that are clickable.                           |
-| clickOnTableRowElementBasedOnTableRowElementText               | Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.      |
-| doubleClick                                                    | Double-clicks the specified Web Element. Used for Elements that are clickable.                                                             |
-| doubleClickOnListElementBasedOnText                            | Double-clicks the specified Web Element from an Object List based on text value. Used for Elements that are clickable.                     |
-| doubleClickOnTableRowElementBasedOnTableRowElementText         | Double-clicks the specified Web Element from a row in a table based on text value from the same row. Used for Elements that are clickable. |
-| dragAndDrop                                                    | Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.                                       |
-| type                                                           | Simulates typing into a text box/area Web Element.                                                                                         |
-| typeJS                                                         | Simulates typing into a text box/area Web Element (utilizing Javascript).                                                                  |
-| typeOnTableRowElementBasedOnTableRowElementText                | Type input text at the specified Web Element from a row in a table based on text value from the same row.                                  |
-| press                                                          | Simulates pressing of characters into a text box/area Web Element.                                                                         |
-| pressOnTableRowElementBasedOnTableRowElementText               | Press specified keys at the specified Web Element from a row in a table based on text value from the same row.                             |
-| clear                                                          | Clears value of a text box/area Web Element.                                                                                               |
-| clearTableRowElementBasedOnTableRowElementText                 | Clears value of the specified Web Element from a row in a table based on text value from the same row.                                     |
-| select                                                         | Selects a Drop-down/Multi-select List Web Element Option.                                                                                  |
-| deselect                                                       | Deselects a Multi-select Web Element Option.                                                                                               |
-| getText                                                        | Gets the visible innerText of this Web Element, including sub-elements, without any leading or trailing whitespace.                        |
-| getTextFromTableRowElementBasedOnTableRowElementText           | Gets the text of the specified Web Element from a row in a table based on text value from the same row.                                    |
-| getValue                                                       | Gets the value of the INPUT and TEXTAREA Web Element.                                                                                      |
-| getValueFromTableRowElementBasedOnTableRowElementText          | Gets value of the specified Web Element from a row in a table based on text value from the same row.                                       |
-| getAttributeValue                                              | Gets the value of the specified attribute of the Web Element.                                                                              |
-| getAttributeValueFromTableRowElementBasedOnTableRowElementText | Gets the attribute value of the specified Web Element from a row in a table based on text value from the same row                          |
-| getDropDownListValue                                           | Gets the selected option of the Drop-down List Web Element                                                                                 |
-| acceptAlert                                                    | Accepts Javascript Alert                                                                                                                   |
-| cancelAlert                                                    | Cancels Javascript Alert                                                                                                                   |
-| typeAlert                                                      | Simulates typing at Javascript Alert Text Box                                                                                              |
-| count                                                          | Counts instances of a Web Element in a Page.                                                                                               |
-| wait                                                           | Waits for a specific time (Seconds)                                                                                                        |
+| Command                                                        | Description                                                                                                                                                  |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| point                                                          | Points mouse to the specified Web Element.                                                                                                                   |
+| click                                                          | Clicks the specified Web Element. Used for Elements that are clickable.                                                                                      |
+| clickJS                                                        | Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.                                                               |
+| clickAndHold                                                   | Clicks and holds the specified Web Element. Used for Elements that are clickable.                                                                            |
+| clickOnListElementBasedOnText                                  | Clicks the specified Web Element from an Element List based on text value. Used for Elements that are clickable.                                             |
+| clickJSOnListElementBasedOnText                                | Clicks the specified Web Element from an Element List based on text value (utilizing Javascript). Used for Elements that are clickable.                      |
+| clickOnTableRowElementBasedOnTableRowElementText               | Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.                        |
+| clickJSOnTableRowElementBasedOnTableRowElementText             | Clicks the specified Web Element from a row in a table based on a text value from the same row (utilizing Javascript). Used for Elements that are clickable. |
+| doubleClick                                                    | Double-clicks the specified Web Element. Used for Elements that are clickable.                                                                               |
+| doubleClickOnListElementBasedOnText                            | Double-clicks the specified Web Element from an Object List based on text value. Used for Elements that are clickable.                                       |
+| doubleClickOnTableRowElementBasedOnTableRowElementText         | Double-clicks the specified Web Element from a row in a table based on text value from the same row. Used for Elements that are clickable.                   |
+| dragAndDrop                                                    | Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.                                                         |
+| type                                                           | Simulates typing into a text box/area Web Element.                                                                                                           |
+| typeOnTableRowElementBasedOnTableRowElementText                | Type input text at the specified Web Element from a row in a table based on text value from the same row.                                                    |
+| press                                                          | Simulates pressing of characters into a text box/area Web Element.                                                                                           |
+| pressOnTableRowElementBasedOnTableRowElementText               | Press specified keys at the specified Web Element from a row in a table based on text value from the same row.                                               |
+| clear                                                          | Clears value of a text box/area Web Element.                                                                                                                 |
+| clearTableRowElementBasedOnTableRowElementText                 | Clears value of the specified Web Element from a row in a table based on text value from the same row.                                                       |
+| select                                                         | Selects a Drop-down/Multi-select List Web Element Option.                                                                                                    |
+| deselect                                                       | Deselects a Multi-select Web Element Option.                                                                                                                 |
+| getText                                                        | Gets the visible innerText of this Web Element, including sub-elements, without any leading or trailing whitespace.                                          |
+| getTextFromTableRowElementBasedOnTableRowElementText           | Gets the text of the specified Web Element from a row in a table based on text value from the same row.                                                      |
+| getValue                                                       | Gets the value of the INPUT and TEXTAREA Web Element.                                                                                                        |
+| getValueFromTableRowElementBasedOnTableRowElementText          | Gets value of the specified Web Element from a row in a table based on text value from the same row.                                                         |
+| getAttributeValue                                              | Gets the value of the specified attribute of the Web Element.                                                                                                |
+| getAttributeValueFromTableRowElementBasedOnTableRowElementText | Gets the attribute value of the specified Web Element from a row in a table based on text value from the same row                                            |
+| getDropDownListValue                                           | Gets the selected option of the Drop-down List Web Element                                                                                                   |
+| acceptAlert                                                    | Accepts Javascript Alert                                                                                                                                     |
+| cancelAlert                                                    | Cancels Javascript Alert                                                                                                                                     |
+| typeAlert                                                      | Simulates typing at Javascript Alert Text Box                                                                                                                |
+| count                                                          | Counts instances of a Web Element in a Page.                                                                                                                 |
+| wait                                                           | Waits for a specific time (Seconds)                                                                                                                          |
 
 ###### **Verifications**
 
