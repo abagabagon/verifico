@@ -129,6 +129,14 @@ public interface WebAutomation {
 	public void click(By locator);
 	
 	/**
+	 * Clicks the specified Web Element (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param locator Object used to locate Web Element to be clicked.
+	 */
+
+	public void clickJS(By locator);
+	
+	/**
 	 * Clicks and holds the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be clicked and held.
@@ -146,6 +154,15 @@ public interface WebAutomation {
 	public void clickOnListElementBasedOnText(By objectList, String textToCheck);
 	
 	/**
+	 * Clicks the specified Web Element from an Element List based on text value (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param objectList	List Object Locator used to search text from and click whichever element equals the specified text.
+	 * @param textToCheck	Text to check at the specified object.
+	 */
+	
+	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck);
+	
+	/**
 	 * Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.
 	 * 
 	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
@@ -155,6 +172,17 @@ public interface WebAutomation {
 	 */
 	
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
+	
+	/**
+	 * Clicks the specified Web Element from a row in a table based on a text value from the same row (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to click if specified text is found on that row.
+	 */
+	
+	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
 	
 	/**
 	 * Double-clicks the specified Web Element. Used for Elements that are clickable.
