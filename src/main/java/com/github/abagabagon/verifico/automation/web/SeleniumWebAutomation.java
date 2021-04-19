@@ -2412,7 +2412,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean see(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
 		this.seleniumWait.waitForObjectToBeVisible(locator);
-		List<WebElement> elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
 		boolean status = false;
 		if (elements.size() > 0) {
 			status = true;
