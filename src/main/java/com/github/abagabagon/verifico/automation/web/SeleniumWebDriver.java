@@ -220,14 +220,13 @@ public class SeleniumWebDriver {
 	 */
 	
 	private static ChromeOptions setChromeDriverOptions(boolean isHeadless) {
-		Platform os = OperatingSystem.getOS();
 		ChromeOptions options = new ChromeOptions();
 		if(isHeadless) {
 			options.addArguments("--headless");
 		}
-		if(os == Platform.LINUX) {
-			options.addArguments("--disable-dev-shm-usage");
-		}
+		options.addArguments("--no-sandbox");
+		options.addArguments("--disable-gpu");
+		options.addArguments("--disable-dev-shm-usage");
 		options.addArguments("--ignore-certificate-errors");
 		return options;
     }
