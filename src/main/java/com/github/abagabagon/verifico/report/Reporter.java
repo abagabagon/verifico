@@ -1,5 +1,12 @@
 package com.github.abagabagon.verifico.report;
 
+/**
+ * Interface for Test Automation Reporting
+ * 
+ * @author albagabagon
+ *
+ */
+
 public interface Reporter {
 	
 	/**

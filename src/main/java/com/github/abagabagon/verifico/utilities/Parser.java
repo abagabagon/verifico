@@ -6,6 +6,13 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Parses data types
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class Parser {
 	
 	private static Logger log;

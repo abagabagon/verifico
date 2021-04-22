@@ -17,6 +17,13 @@ import com.github.abagabagon.verifico.enums.Mobile;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
+/**
+ * Appium implemented Web Driver Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class AppiumWebDriver {
 	
 	private Logger log;

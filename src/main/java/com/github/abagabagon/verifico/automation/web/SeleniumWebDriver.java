@@ -24,6 +24,13 @@ import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+/**
+ * Appium implemented Web Driver Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class SeleniumWebDriver {
 	
 	private Logger log;

@@ -11,6 +11,13 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DateUtil;
 
+/**
+ * Implemented Excel Data Retrieval for XLS File Type
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class XLSExcelData implements ExcelData {
 	
 	private Logger log;

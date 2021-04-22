@@ -12,6 +12,13 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+/**
+ * Implemented Extent Report Reporter
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class ExtentReport implements Reporter {
 	
 	private ExtentReports report;

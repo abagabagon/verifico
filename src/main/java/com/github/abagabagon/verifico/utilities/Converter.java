@@ -7,6 +7,13 @@ import java.util.Date;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Converts data types
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class Converter {
 	
 	private static Logger log;

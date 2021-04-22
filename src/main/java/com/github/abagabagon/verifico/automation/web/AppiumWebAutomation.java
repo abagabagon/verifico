@@ -8,6 +8,13 @@ import org.apache.logging.log4j.LogManager;
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Mobile;
 
+/**
+ * Appium implemented Web Automation Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class AppiumWebAutomation extends SeleniumWebAutomation {
 
 	private AppiumWebDriver appiumWebDriver;

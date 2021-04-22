@@ -2,6 +2,13 @@ package com.github.abagabagon.verifico.testmanagement;
 
 import java.util.ArrayList;
 
+/**
+ * Interface for Test Management Tool Integration
+ * 
+ * @author albagabagon
+ *
+ */
+
 public interface TestManagement {
 	
 	/**

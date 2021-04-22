@@ -24,6 +24,13 @@ import com.github.abagabagon.verifico.report.Reporter;
 import com.github.abagabagon.verifico.testmanagement.TestManagement;
 import com.github.abagabagon.verifico.testmanagement.TestRail;
 
+/**
+ * Main class of the Verifico Test Automation Library
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class Verifico {
 	
 	private Logger log;
@@ -33,6 +40,10 @@ public class Verifico {
 	private ExcelData excelData;
 	private TestManagement testManagement;
 	private Reporter report;
+	
+	/**
+	 * Verifico Test Automation Library
+	 */
 	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
