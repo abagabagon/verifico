@@ -41,6 +41,10 @@ public class Verifico {
 	private TestManagement testManagement;
 	private Reporter report;
 	
+	/**
+	 * Verifico Test Automation Library
+	 */
+	
 	public Verifico() {
 		this.log = LogManager.getLogger(this.getClass());
 	}

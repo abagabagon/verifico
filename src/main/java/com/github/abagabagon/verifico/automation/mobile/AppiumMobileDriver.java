@@ -29,6 +29,12 @@ public class AppiumMobileDriver {
 	private AppiumDriver<MobileElement> driver;
 	private URL appiumServerUrl;
 	
+	/**
+	 * Mobile Automation Driver using Appium
+	 * 
+	 * @param appiumServerUrl	Appium Server URL
+	 */
+	
 	public AppiumMobileDriver(URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumServerUrl = appiumServerUrl;

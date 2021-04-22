@@ -46,6 +46,16 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	private String platformVersion;
 	private String deviceName;
 	
+	/**
+	 * Mobile Automation using Appium
+	 * 
+	 * @param deviceName		Name of the Device (e. g. Serial Number)
+	 * @param mobile			Mobile Platform
+	 * @param platformVersion	Mobile Platform Version
+	 * @param applicationFile	Application File for testing
+	 * @param appiumServerUrl	Appium Server URL
+	 */
+	
 	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);

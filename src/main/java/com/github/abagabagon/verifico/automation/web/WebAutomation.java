@@ -187,7 +187,7 @@ public interface WebAutomation {
 	 * @param valueToCheck	Attribute Value to check at the specified object.
 	 */
 	
-	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String textToCheck);
+	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.
@@ -221,7 +221,7 @@ public interface WebAutomation {
 	 * @param rowObjectToClick		Object Locator relative to the Row Object to click if specified attribute value is found on that row.
 	 */
 	
-	public void clickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valuetToCheck, By rowObjectToClick);
+	public void clickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick);
 	
 	/**
 	 * Clicks the specified Web Element from a row in a table based on a attribute value from the same row (utilizing Javascript). Used for Elements that are clickable.
