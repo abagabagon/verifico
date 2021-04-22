@@ -991,7 +991,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
 				String text = elements.get(j).getText().trim();
-				if (text.equals(textToCheck)) {
+				if (text.contains(textToCheck)) {
 					switch(userAction) {
 					case CLICK:
 						this.executeMouseCommands(UserAction.CLICK, objectList, j);
@@ -1021,6 +1021,50 @@ public class SeleniumWebAutomation implements WebAutomation {
 					wait(1);
 				} else {
 					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
+	private void executeListMouseCommands(UserAction userAction, By objectList, String attribute, String valueToCheck) {
+		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
+		int size = elements.size();
+		boolean flgTextFound = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				String text = elements.get(j).getAttribute(attribute).trim();
+				if (text.contains(valueToCheck)) {
+					switch(userAction) {
+					case CLICK:
+						this.executeMouseCommands(UserAction.CLICK, objectList, j);
+						break;
+					case CLICKJS:
+						this.executeMouseCommands(UserAction.CLICKJS, objectList, j);
+						break;
+					case CLICK_AND_HOLD:
+						this.executeMouseCommands(UserAction.CLICK_AND_HOLD, objectList, j);
+						break;
+					case DOUBLE_CLICK:
+						this.executeMouseCommands(UserAction.DOUBLE_CLICK, objectList, j);
+						break;
+					case POINT:
+						this.executeMouseCommands(UserAction.POINT, objectList, j);
+						break;
+					default:
+						this.log.fatal("Unsupported User Action.");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1112,6 +1156,24 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, textToCheck);
 	}
 	
+	@Override
+	public void clickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.executeListMouseCommands(UserAction.CLICK, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.executeListMouseCommands(UserAction.CLICKJS, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void doubleClickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, attribute, valueToCheck);
+	}
+	
 	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
 		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
 		int size = rows.size();
@@ -1126,7 +1188,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					text = elementToCheckText.getText().trim();
 				}
-				if (text.equals(textToCheck)) {
+				if (text.contains(textToCheck)) {
 					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
 					if (elementToDoActionTo != null) {
 						switch(userAction) {
@@ -1168,6 +1230,62 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 	
+	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
+				String text = null;
+				if (elementToCheckText == null) {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
+					continue;
+				} else {
+					text = elementToCheckText.getAttribute(attribute).trim();
+				}
+				if (text.contains(valueToCheck)) {
+					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
+					if (elementToDoActionTo != null) {
+						switch(userAction) {
+						case CLICK:
+							this.executeMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToDoActionTo, j);
+							break;
+						case CLICKJS:
+							this.executeMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToDoActionTo, j);
+							break;
+						case CLICK_AND_HOLD:
+							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, rowObjectList, rowObjectToDoActionTo, j);
+							break;
+						case DOUBLE_CLICK:
+							this.executeMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToDoActionTo, j);
+							break;
+						case POINT:
+							this.executeMouseCommands(UserAction.POINT, rowObjectList,rowObjectToDoActionTo,  j);
+							break;
+						default:
+							this.log.fatal("Unsupported User Action.");
+						}
+					} else {
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
@@ -1182,8 +1300,26 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
+	}
+	
+	@Override
+	public void clickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void doubleClickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
 	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
@@ -1200,7 +1336,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					text = elementToCheckText.getText().trim();
 				}
-				if (text.equals(textToCheck)) {
+				if (text.contains(textToCheck)) {
 					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
 					if (elementToDoActionTo != null) {
 						switch(userAction) {
@@ -1269,7 +1405,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					text = elementToCheckText.getText().trim();
 				}
-				if (text.equals(textToCheck)) {
+				if (text.contains(textToCheck)) {
 					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
 					if (elementToDoActionTo != null) {
 						switch(userAction) {
@@ -1837,7 +1973,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
@@ -1886,7 +2022,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
@@ -1935,7 +2071,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						int listSize = elementToSeeTextFrom.size();
@@ -1991,7 +2127,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						int listSize = elementToSeeTextFrom.size();
@@ -2135,7 +2271,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeePartialTextFrom, j);
 				if (elementToSeeTextFrom != null) {
 					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.equals(expectedPartialValue)) {
+					if(seeText.contains(expectedPartialValue)) {
 						status = true;
 						flgTextFound = true;
 						this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
@@ -2173,7 +2309,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeePartialTextFrom, j);
 				if (elementToSeeTextFrom != null) {
 					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.equals(value)) {
+					if(seeText.contains(value)) {
 						flgTextFound = true;
 						this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						break;
@@ -2220,8 +2356,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
-						this.log.info("Text found: " + seeText);
-						boolean isValueEqual = seeText.equals(expectedValue);
+						boolean isValueEqual = seeText.contains(expectedValue);
 						if(isValueEqual) {
 							status = true;
 							this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
@@ -2270,8 +2405,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						String seeText = elementToSeeTextFrom.getText().trim();
-						this.log.info("Text found: " + seeText);
-						boolean isValueEqual = seeText.equals(value);
+						boolean isValueEqual = seeText.contains(value);
 						if(isValueEqual) {
 							this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 						} else {
@@ -2316,7 +2450,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						int listSize = elementToSeeTextFrom.size();
@@ -2372,7 +2506,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
 					if (elementToSeeTextFrom != null) {
 						int listSize = elementToSeeTextFrom.size();
@@ -2457,7 +2591,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSee = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectToSee, j);
 					if (elementToSee.size() > 0) {
 						status = true;
@@ -2501,7 +2635,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 				} else {
 					checkText = elementToCheckText.getText().trim();
 				}
-				if (checkText.equals(textToCheck)) {
+				if (checkText.contains(textToCheck)) {
 					List<WebElement> elementToSee = rows.get(j).findElements(rowObjectToSee);
 					if (elementToSee.size() > 0) {
 						this.log.error("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");

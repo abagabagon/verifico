@@ -163,6 +163,26 @@ public interface WebAutomation {
 	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck);
 	
 	/**
+	 * Clicks the specified Web Element from an Element List based on attribute value. Used for Elements that are clickable.
+	 * 
+	 * @param objectList	List Object Locator used to search attribute value from and click whichever element equals the specified attribute value.
+	 * @param attribute		Attribute to check at the specified object.
+	 * @param valueToCheck	Attribute Value to check at the specified object.
+	 */
+	
+	public void clickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck);
+	
+	/**
+	 * Clicks the specified Web Element from an Element List based on attribute value (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param objectList	List Object Locator used to search attribute value from and click whichever element equals the specified attribute value.
+	 * @param attribute		Attribute to check at the specified object.
+	 * @param valueToCheck	Attribute Value to check at the specified object.
+	 */
+	
+	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String textToCheck);
+	
+	/**
 	 * Clicks the specified Web Element from a row in a table based on a text value from the same row. Used for Elements that are clickable.
 	 * 
 	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
@@ -185,6 +205,30 @@ public interface WebAutomation {
 	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
 	
 	/**
+	 * Clicks the specified Web Element from a row in a table based on a attribute value from the same row. Used for Elements that are clickable.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified attribute value.
+	 * @param attribute				Attribute to check at the specified object to check Text.
+	 * @param valueToCheck			Attribute Value to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to click if specified attribute value is found on that row.
+	 */
+	
+	public void clickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valuetToCheck, By rowObjectToClick);
+	
+	/**
+	 * Clicks the specified Web Element from a row in a table based on a attribute value from the same row (utilizing Javascript). Used for Elements that are clickable.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified attribute value.
+	 * @param attribute				Attribute to check at the specified object to check Text.
+	 * @param valueToCheck			Attribute Value to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to click if specified attribute value is found on that row.
+	 */
+	
+	public void clickJSOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick);
+	
+	/**
 	 * Double-clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be double-clicked.
@@ -202,6 +246,16 @@ public interface WebAutomation {
 	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck);
 	
 	/**
+	 * Double-clicks the specified Web Element from an Element List based on attribute value. Used for Elements that are clickable.
+	 * 
+	 * @param objectList	List Object Locator used to search attribute value from and double-click whichever element equals the specified attribute value.
+	 * @param attribute		Attribute to check at the specified object.
+	 * @param valueToCheck	Attribute Value to check at the specified object.
+	 */
+	
+	public void doubleClickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck);
+	
+	/**
 	 * Double-clicks the specified Web Element from a row in a table based on text value from the same row. Used for Elements that are clickable.
 	 * 
 	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
@@ -211,6 +265,18 @@ public interface WebAutomation {
 	 */
 	
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick);
+	
+	/**
+	 * Double-clicks the specified Web Element from a row in a table based on attribute value from the same row. Used for Elements that are clickable.
+	 * 
+	 * @param rowObjectList				Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText		Object Locator relative to the Row Object from which to check the specified attribute value.
+	 * @param attribute					Attribute to check at the specified object to check Text.
+	 * @param valueToCheck				Attribute Value to check at the specified object to check Text.
+	 * @param rowObjectToDoubleClick	Object Locator relative to the Row Object to double-click if specified attribute value is found on that row.
+	 */
+	
+	public void doubleClickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToDoubleClick);
 	
 	/**
 	 * Drags a specified Web Element and drops it at target element. Used for Elements that can be dragged.
