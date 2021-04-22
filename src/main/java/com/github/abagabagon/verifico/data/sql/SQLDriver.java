@@ -10,6 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.abagabagon.verifico.enums.SQL;
 
+/**
+ * SQL Data configurations and connections handling
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class SQLDriver {
 	
 	private Logger log;

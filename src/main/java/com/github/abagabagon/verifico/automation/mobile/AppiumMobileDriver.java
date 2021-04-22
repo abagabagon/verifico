@@ -16,6 +16,13 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
+/**
+ * Appium implemented Mobile Driver Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class AppiumMobileDriver {
 	
 	private Logger log;

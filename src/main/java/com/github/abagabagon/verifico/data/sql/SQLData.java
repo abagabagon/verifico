@@ -12,6 +12,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.abagabagon.verifico.enums.SQL;
 
+/**
+ * SQL Data manipulation and retrieval
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class SQLData {
 	
 	private Logger log;

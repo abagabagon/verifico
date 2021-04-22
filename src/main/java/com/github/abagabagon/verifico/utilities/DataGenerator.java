@@ -7,6 +7,13 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Data Generator of several data types that can be used for testing
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class DataGenerator {
 	
 	private static Logger log;

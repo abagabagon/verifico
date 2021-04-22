@@ -29,6 +29,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
+/**
+ * Selenium implemented Web Automation Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class SeleniumWebAutomation implements WebAutomation {
 
 	protected WebDriver driver;
@@ -761,24 +768,19 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.javascriptExecutor.executeScript(script);
 				switch(userAction) {
 				case CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					childElement.click();
 					break;
 				case CLICKJS:
-					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
 					break;
 				case CLICK_AND_HOLD:
-					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.action.clickAndHold(childElement).perform();
 					break;
 				case DOUBLE_CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(childElement);
 					this.action.doubleClick(childElement).perform();
 					break;
 				case POINT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
 					this.action.moveToElement(childElement).perform();
 					break;
 				default:

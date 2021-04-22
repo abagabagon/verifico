@@ -1,5 +1,12 @@
 package com.github.abagabagon.verifico.automation.mobile;
 
+/**
+ * Interface for Mobile Automation Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public interface MobileAutomation {
 	
 	/*#######################################################*/

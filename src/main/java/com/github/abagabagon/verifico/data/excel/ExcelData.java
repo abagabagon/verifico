@@ -1,5 +1,12 @@
 package com.github.abagabagon.verifico.data.excel;
 
+/**
+ * Interface for retrieving Excel Data
+ * 
+ * @author albagabagon
+ *
+ */
+
 public interface ExcelData {
 	
 	/**

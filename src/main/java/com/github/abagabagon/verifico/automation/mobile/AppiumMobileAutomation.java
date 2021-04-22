@@ -24,6 +24,13 @@ import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.TapOptions;
 import io.appium.java_client.touch.offset.ElementOption;
 
+/**
+ * Appium implemented Mobile Automation Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public class AppiumMobileAutomation implements MobileAutomation {
 	
 	AppiumDriver<MobileElement> driver;

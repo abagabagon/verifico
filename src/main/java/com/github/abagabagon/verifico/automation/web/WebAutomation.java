@@ -3,6 +3,13 @@ package com.github.abagabagon.verifico.automation.web;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
+/**
+ * Interface for Web Automation Commands
+ * 
+ * @author albagabagon
+ *
+ */
+
 public interface WebAutomation {
 	
 	/*#######################################################*/
