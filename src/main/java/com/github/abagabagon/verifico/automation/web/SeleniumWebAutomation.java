@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -80,13 +81,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.setImplicitWait(10);
 		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15, this.driver));
 		this.action = new Actions(this.driver);
+		this.javascriptExecutor = (JavascriptExecutor)this.driver;
 	}
 	
 	@Override
 	public void openTab(String url) {
 		this.log.debug("I open New Tab.");
 		try {
-			this.javascriptExecutor = (JavascriptExecutor)this.driver;
 			String link = "window.open('" + url + "', '_blank');";
 			this.javascriptExecutor.executeScript(link);
 		} catch (NullPointerException e) {
@@ -349,7 +350,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("I scroll page.");
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
 		try {
-			this.javascriptExecutor = (JavascriptExecutor) this.driver;
 			this.javascriptExecutor.executeScript(script);
 		} catch (NullPointerException e) {
 			this.log.error("Unable to scroll page. Browser might not have been opened or initialized.");
@@ -413,7 +413,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		String script = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
-				this.javascriptExecutor = (JavascriptExecutor) this.driver;
 				switch(userAction) {
 				case CLICK:
 					element = this.seleniumWait.waitForObjectToBeClickable(locator);
@@ -546,6 +545,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			} catch (StaleElementReferenceException e) {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (ElementNotInteractableException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element cannot be interacted with.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+				element.click();
 			} catch (InvalidElementStateException e) {
 				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -764,14 +767,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
 				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
 				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor = (JavascriptExecutor) this.driver;
 				this.javascriptExecutor.executeScript(script);
 				switch(userAction) {
 				case CLICK:
 					childElement.click();
 					break;
 				case CLICKJS:
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
 					break;
 				case CLICK_AND_HOLD:
@@ -798,7 +799,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 				this.seleniumWait.waitForObjectToBeVisible(childElement);
 				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor = (JavascriptExecutor) this.driver;
 				this.javascriptExecutor.executeScript(script);
 				this.action.moveToElement(childElement).perform();
 			} catch (Exception e) {
@@ -1088,7 +1088,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 					break;
 				case CLICKJS:
 					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript("arguments[0].click();", elements.get(index));
 					break;
 				case CLICK_AND_HOLD:
@@ -1101,7 +1100,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 					break;
 				case POINT:
 					script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-					this.javascriptExecutor = (JavascriptExecutor) this.driver;
 					this.javascriptExecutor.executeScript(script);
 					this.action.moveToElement(elements.get(index)).perform();
 					break;
@@ -1120,7 +1118,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
 				script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-				this.javascriptExecutor = (JavascriptExecutor) this.driver;
 				this.javascriptExecutor.executeScript(script);
 				this.action.moveToElement(elements.get(index)).perform();
 			} catch (Exception e) {
@@ -2547,10 +2544,9 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean see(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
-		this.seleniumWait.waitForObjectToBeVisible(locator);
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
 		boolean status = false;
-		if (elements.size() > 0) {
+		if (element != null) {
 			status = true;
 			this.log.debug("I saw Web Element: \"" + locator.toString() + "\".");
 		} else {
