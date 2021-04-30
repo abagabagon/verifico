@@ -80,7 +80,7 @@ public class SQLData {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while executing SQL UPDATE Statement!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 
 		return this.resultSet;
@@ -109,7 +109,7 @@ public class SQLData {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while executing SQL UPDATE Statement!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 
 		if (updateCount > 0) {
@@ -142,7 +142,7 @@ public class SQLData {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while executing SQL INSERT Statement!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 
 		if (insertCount > 0) {
@@ -175,7 +175,7 @@ public class SQLData {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while executing SQL DELETE Statement!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 
 		if (deleteCount > 0) {
@@ -203,7 +203,7 @@ public class SQLData {
 			this.log.fatal("Error Code: " + e.getErrorCode());
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while closing and emptying ResultSet!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		this.log.debug("Successfully closed and emptied ResultSet.");
 	}
@@ -227,7 +227,7 @@ public class SQLData {
 			this.log.fatal("Error Code: " + e.getErrorCode());
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while closing SQL Connection!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		this.log.debug("Successfully closed all connections.");
 	}
