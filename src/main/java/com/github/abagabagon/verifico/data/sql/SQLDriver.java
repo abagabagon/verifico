@@ -110,6 +110,7 @@ public class SQLDriver {
 			this.log.fatal("SQL Exception: " + e.getMessage());
 			this.log.fatal("SQL State: " + e.getSQLState());
 			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing MySQL Connection!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
@@ -135,6 +136,7 @@ public class SQLDriver {
 			this.log.fatal("SQL Exception: " + e.getMessage());
 			this.log.fatal("SQL State: " + e.getSQLState());
 			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing MSSQL Connection!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));

@@ -201,6 +201,7 @@ public class SQLData {
 			this.log.fatal("SQL Exception: " + e.getMessage());
 			this.log.fatal("SQL State: " + e.getSQLState());
 			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while closing and emptying ResultSet!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
@@ -225,6 +226,7 @@ public class SQLData {
 			this.log.fatal("SQL Exception: " + e.getMessage());
 			this.log.fatal("SQL State: " + e.getSQLState());
 			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while closing SQL Connection!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
