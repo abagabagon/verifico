@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,31 +62,31 @@ public class SQLDriver {
 			}
 		} catch (LinkageError e) {
 			this.log.fatal("Encountered LinkageError while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (ClassNotFoundException e) {
 			this.log.fatal("Encountered ClassNotFoundException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (NoSuchMethodException e) {
 			this.log.fatal("Encountered NoSuchMethodException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (SecurityException e) {
 			this.log.fatal("Encountered SecurityException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (IllegalAccessException e) {
 			this.log.fatal("Encountered IllegalAccessException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (IllegalArgumentException e) {
 			this.log.fatal("Encountered IllegalArgumentException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (InstantiationException e) {
 			this.log.fatal("Encountered InstantiationException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (InvocationTargetException e) {
 			this.log.fatal("Encountered InvocationTargetException while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while instantiating " + this.sqlType + " JDBC Driver!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		
 		return this.connection;
@@ -111,7 +112,7 @@ public class SQLDriver {
 			this.log.fatal("Error Code: " + e.getErrorCode());
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing MySQL Connection!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		return connection;
 	}
@@ -136,7 +137,7 @@ public class SQLDriver {
 			this.log.fatal("Error Code: " + e.getErrorCode());
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing MSSQL Connection!");
-			e.printStackTrace();
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		return connection;
 	}
