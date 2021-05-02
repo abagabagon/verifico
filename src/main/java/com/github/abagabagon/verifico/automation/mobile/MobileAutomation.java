@@ -201,7 +201,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is equal to expected value.
 	 */
 
-	public boolean didntType(Object locator, String expectedValue);
+	public boolean didntType(Object locator, String value);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -249,7 +249,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is equal to expected value.
 	 */
 
-	public boolean dontSeeText(Object locator, String expectedValue);
+	public boolean dontSeeText(Object locator, String value);
 	
 	/**
 	 * Verifies if Mobile Element is displayed on Web Page.

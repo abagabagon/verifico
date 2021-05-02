@@ -105,7 +105,8 @@ public class Verifico {
 	 * @param deviceName		Name of the Device to which tests will be executed.
 	 * @param mobile			Specific Mobile Platform to which tests will be executed.
 	 * @param platformVersion	Version of the Mobile Platform.
-	 * @param applicationUrl	Application URL of the Mobile Application to be tested.
+	 * @param applicationUrl	Application URL where Installation File for the Mobile Application will be downloaded from.
+	 * @param applicationFile	Application Path and File where downloaded file will be located.
 	 * @param appiumServerUrl	URL of the running Appium Server.
 	 * @return					MobileAutomation instance
 	 */
