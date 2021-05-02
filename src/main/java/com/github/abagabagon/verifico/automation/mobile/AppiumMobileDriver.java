@@ -1,8 +1,11 @@
 package com.github.abagabagon.verifico.automation.mobile;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.remote.CapabilityType;
@@ -82,6 +85,36 @@ public class AppiumMobileDriver {
 		return this.driver;
 	}
 	
-
+	/**
+	 * Initializes and returns AndroidDriver Object.
+	 * 
+	 * @param platformVersion	Version of the Mobile Platform.
+	 * @param deviceName		Name of the Device to which tests will be executed.
+	 * @param applicationUrl	Application URL of the Mobile Application to be tested.
+	 * @return AndroidDriver Object
+	 */
+	
+	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, URL applicationUrl, File applicationFile) {
+		this.log.trace("Initializing AndroidDriver.");
+		
+		try {
+			FileUtils.copyURLToFile(applicationUrl, applicationFile);
+		} catch (IOException e) {
+			this.log.fatal("Encountered IOException while trying to get Android Driver.");
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to get Android Driver.");
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		}
+		DesiredCapabilities capabilities = new DesiredCapabilities();
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.Android);
+		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
+		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
+		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
+		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
+		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
+		this.log.trace("Successfully initialized AndroidDriver.");
+		return this.driver;
+	}
 
 }

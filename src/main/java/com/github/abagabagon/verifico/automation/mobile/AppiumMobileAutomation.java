@@ -38,6 +38,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	TouchActions actions;
 	Logger log;
 	File applicationFile;
+	URL applicationUrl;
 	long implicitWaitDuration;
 	long explicitWaitDuration;
 	
@@ -45,6 +46,11 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	private Mobile mobile;
 	private String platformVersion;
 	private String deviceName;
+	private ApplicationSource applicationSource;
+	
+	public enum ApplicationSource {
+		File, URL
+	}
 	
 	/**
 	 * Mobile Automation using Appium
@@ -63,6 +69,19 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
+		this.applicationSource = ApplicationSource.File;
+		this.applicationFile = applicationFile;
+	}
+	
+	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, URL applicationUrl, File applicationFile, URL appiumServerUrl) {
+		this.log = LogManager.getLogger(this.getClass());
+		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
+		this.implicitWaitDuration = 20;
+		this.mobile = mobile;
+		this.platformVersion = platformVersion;
+		this.deviceName = deviceName;
+		this.applicationSource = ApplicationSource.URL;
+		this.applicationUrl = applicationUrl;
 		this.applicationFile = applicationFile;
 	}
 	
@@ -79,7 +98,17 @@ public class AppiumMobileAutomation implements MobileAutomation {
 			this.action = new TouchAction<IOSTouchAction>(this.driver);
 			break;
 		case Android:
-			this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
+			switch(this.applicationSource) {
+			case File:
+				this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationFile);
+				break;
+			case URL:
+				this.driver = this.appiumMobileDriver.getAndroidDriver(this.platformVersion, this.deviceName, this.applicationUrl, this.applicationFile);
+				break;
+			default:
+				this.log.fatal("Unsupported Application Source Value.");
+				System.exit(1);
+			}
 			this.action = new TouchAction<AndroidTouchAction>(this.driver);
 			break;
 		default:
@@ -312,13 +341,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	/*#######################################################*/
 
 	@Override
-	public boolean verifyTappable(Object locator) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean verifyValue(Object locator, String expectedValue) {
+	public boolean typed(Object locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed at Mobile Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getValue((By)locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
@@ -332,9 +355,25 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		}
 		return status;	
 	}
+	
+	@Override
+	public boolean didntType(Object locator, String value) {
+		this.log.debug("I verify \"" + value + "\" is not displayed at Mobile Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getValue((By)locator);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(!isValueEqual) {
+			status = true;
+			this.log.debug("I don't see value: \"" + value + "\" from Mobile Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I see value: \"" + value + "\" from Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
 
 	@Override
-	public boolean verifyAttributeValue(Object locator, String attribute, String expectedValue) {
+	public boolean seeAttributeValue(Object locator, String attribute, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
 		String actualValue = this.getAttributeValue((By)locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
@@ -348,9 +387,25 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		}
 		return status;	
 	}
+	
+	@Override
+	public boolean dontSeeAttributeValue(Object locator, String attribute, String value) {
+		this.log.debug("I verify \"" + value + "\" is not displayed for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
+		String actualValue = this.getAttributeValue((By)locator, attribute);
+		boolean isValueEqual = actualValue.equals(value);
+		boolean status = false;
+		if(!isValueEqual) {
+			status = true;
+			this.log.debug("I don't see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I see value: \"" + value + "\" for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+		}
+		return status;	
+	}
 
 	@Override
-	public boolean verifyText(Object locator, String expectedValue) {
+	public boolean seeText(Object locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed.");
 		String actualText = this.getText((By)locator);
 		boolean isValueEqual = actualText.equals(expectedValue);
@@ -364,9 +419,25 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		}
 		return status;
 	}
+	
+	@Override
+	public boolean dontSeeText(Object locator, String value) {
+		this.log.debug("I verify \"" + value + "\" Text Value is displayed.");
+		String actualText = this.getText((By)locator);
+		boolean isValueEqual = actualText.equals(value);
+		boolean status = false;
+		if(!isValueEqual) {
+			status = true;
+			this.log.debug("I don't see text: \"" + value + "\" at Mobile Element: \"" + locator.toString() + "\".");
+		} else {
+			status = false;
+			this.log.error("I see text: \"" + value + "\" at Mobile Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+		}
+		return status;
+	}
 
 	@Override
-	public boolean verifyDisplayed(Object locator) {
+	public boolean see(Object locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		List<MobileElement> elements = this.getElements(locator);
 		boolean status = false;
@@ -381,7 +452,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean verifyNotDisplayed(Object locator) {
+	public boolean dontSee(Object locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		List<MobileElement> elements = this.getElements(locator);
@@ -398,7 +469,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean verifyEnabled(Object locator) {
+	public boolean seeEnabled(Object locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is enabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
@@ -414,7 +485,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean verifyDisabled(Object locator) {
+	public boolean seeDisabled(Object locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is disabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
