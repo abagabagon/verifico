@@ -180,16 +180,6 @@ public interface MobileAutomation {
 	/*#######################################################*/
 	
 	/**
-	 * Verifies if the Mobile Element is tappable or not.
-	 * 
-	 * @param locator Object used to locate Mobile Element to check.
-	 * @return	<code>true</code> if Mobile Element is tappable.
-	 * 			<code>false</code> if Mobile Element is not tappable.
-	 */
-	
-	public boolean verifyTappable(Object locator);
-
-	/**
 	 * Verifies the value of INPUT or TEXTAREA Mobile Elements if equal to the expected
 	 * value.
 	 * 
@@ -199,7 +189,19 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public boolean verifyValue(Object locator, String expectedValue);
+	public boolean typed(Object locator, String expectedValue);
+	
+	/**
+	 * Verifies the value of INPUT or TEXTAREA Mobile Elements if not equal to the expected
+	 * value.
+	 * 
+	 * @param locator	Object used to locate Mobile Element to assert the value from.
+	 * @param value		Expected value of the Mobile Element Text Box.
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean didntType(Object locator, String expectedValue);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -212,7 +214,20 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected attribute value.
 	 */
 
-	public boolean verifyAttributeValue(Object locator, String attribute, String expectedValue);
+	public boolean seeAttributeValue(Object locator, String attribute, String expectedValue);
+	
+	/**
+	 * Verifies the value of the specified attribute if not equal to the expected
+	 * value.
+	 * 
+	 * @param locator	Object used to locate Mobile Element to assert the value from.
+	 * @param attribute	Name of attribute to assert the value from.
+	 * @param value		Expected value of the Mobile Element Attribute.
+	 * @return	<code>true</code> if value is not equal to expected attribute value.
+	 * 			<code>false</code> if value is equal to expected attribute value.
+	 */
+
+	public boolean dontSeeAttributeValue(Object locator, String attribute, String value);
 
 	/**
 	 * Verifies Mobile Element with text if equal to expected text value.
@@ -223,7 +238,18 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public boolean verifyText(Object locator, String expectedValue);
+	public boolean seeText(Object locator, String expectedValue);
+	
+	/**
+	 * Verifies Mobile Element with text if not equal to expected text value.
+	 * 
+	 * @param locator	Object used to locate Mobile Element to assert the value from.
+	 * @param value		Expected text value
+	 * @return	<code>true</code> if value is not equal to expected value.
+	 * 			<code>false</code> if value is equal to expected value.
+	 */
+
+	public boolean dontSeeText(Object locator, String expectedValue);
 	
 	/**
 	 * Verifies if Mobile Element is displayed on Web Page.
@@ -233,7 +259,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not displayed on Web Page.
 	 */
 	
-	public boolean verifyDisplayed(Object locator);
+	public boolean see(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is not displayed on the Web Page.
@@ -243,7 +269,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is displayed on Web Page.
 	 */
 
-	public boolean verifyNotDisplayed(Object locator);
+	public boolean dontSee(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is enabled on the Web Page.
@@ -253,7 +279,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not enabled on Web Page.
 	 */
 
-	public boolean verifyEnabled(Object locator);
+	public boolean seeEnabled(Object locator);
 	
 	/**
 	 * Verifies Mobile Element is disabled on the Web Page.
@@ -263,6 +289,6 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not disabled on Web Page.
 	 */
 
-	public boolean verifyDisabled(Object locator);
+	public boolean seeDisabled(Object locator);
 
 }

@@ -100,6 +100,23 @@ public class Verifico {
 	}
 	
 	/**
+	 * Get MobileAutomation instance for Mobile Application Test Automation
+	 * 
+	 * @param deviceName		Name of the Device to which tests will be executed.
+	 * @param mobile			Specific Mobile Platform to which tests will be executed.
+	 * @param platformVersion	Version of the Mobile Platform.
+	 * @param applicationUrl	Application URL of the Mobile Application to be tested.
+	 * @param appiumServerUrl	URL of the running Appium Server.
+	 * @return					MobileAutomation instance
+	 */
+	
+	public final MobileAutomation getMobileAutomation(String deviceName, Mobile mobile, String platformVersion, URL applicationUrl, File applicationFile, URL appiumServerUrl) {
+		this.log.debug("Initializing MobileAutomation instance.");
+		this.mobileAutomation = new AppiumMobileAutomation(deviceName, mobile, platformVersion, applicationUrl, applicationFile, appiumServerUrl);
+		return this.mobileAutomation;
+	}
+	
+	/**
 	 * Get SQLData instance for Test Automation
 	 * 
 	 * @param sqlType	SQL Database Type
