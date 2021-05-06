@@ -52,6 +52,10 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		File, URL
 	}
 	
+	enum UserAction {
+		CLEAR, TAP, LONG_PRESS, COUNT, GET_ATTRIBUTE, GET_TEXT, SEND_KEYS
+	}
+	
 	/**
 	 * Mobile Automation using Appium
 	 * 
@@ -162,28 +166,28 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	/*                    USER ACTIONS                       */
 	/*#######################################################*/
 	
-	MobileElement getElement(Object locator) {
+	MobileElement getElement(By locator) {
 		MobileElement element = null;
-		element = this.driver.findElement((By)locator);
+		element = this.driver.findElement(locator);
 		return element;
 	}
 	
-	List<MobileElement> getElements(Object locator) {
+	List<MobileElement> getElements(By locator) {
 		List<MobileElement> elements;
-		elements = this.driver.findElements((By)locator);
+		elements = this.driver.findElements(locator);
 		return elements;
 	}
 
 	@Override
-	public void tap(Object locator) {
+	public void tap(By locator) {
 		this.log.debug("I tap on Mobile Element: \"" + locator.toString() + "\".");
 		TapOptions tapOptions = new TapOptions();
-		MobileElement element = this.driver.findElement((By)locator);
+		MobileElement element = this.driver.findElement(locator);
 		this.action.tap(tapOptions.withElement(ElementOption.element(element))).perform();
 	}
 	
 	@Override
-	public void tapFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToTap) {
+	public void tapFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToTap) {
 		this.log.debug("I tap a Mobile Element based on Text: \"" + textToCheck + "\".");
 		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<MobileElement> elementToTap = this.getElements(objectToTap);
@@ -204,15 +208,15 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 	
 	@Override
-	public void longPress(Object locator, long duration) {
+	public void longPress(By locator, long duration) {
 		this.log.debug("I long press on Mobile Element: \"" + locator.toString() + "\".");
 		LongPressOptions longPressOptions = new LongPressOptions();
-		MobileElement element = this.driver.findElement((By)locator);
+		MobileElement element = this.driver.findElement(locator);
 		this.action.longPress(longPressOptions.withElement(ElementOption.element(element)).withDuration(Duration.ofSeconds(duration))).release().perform();
 	}
 	
 	@Override
-	public void longPressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToLongPress, long duration) {
+	public void longPressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToLongPress, long duration) {
 		this.log.debug("I long press a Mobile Element based on Text: \"" + textToCheck + "\".");
 		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<MobileElement> elementToLongPress = this.getElements(objectToLongPress);
@@ -233,14 +237,14 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public void type(Object locator, String inputText) {
+	public void type(By locator, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Mobile Element: \"" + locator.toString() + "\".");
-		MobileElement element = this.driver.findElement((By)locator);
+		MobileElement element = this.driver.findElement(locator);
 		element.sendKeys(inputText);
 	}
 	
 	@Override
-	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText) {
+	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText) {
 		this.log.debug("I type at Web Element based on Text: \"" + textToCheck + "\".");
 		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<MobileElement> elementToFill = this.getElements(objectToFill);
@@ -260,14 +264,14 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public void clear(Object locator) {
+	public void clear(By locator) {
 		this.log.debug("I clear Mobile Element: \"" + locator.toString() + "\".");
-		MobileElement element = this.driver.findElement((By)locator);
+		MobileElement element = this.driver.findElement(locator);
 		element.clear();
 	}
 
 	@Override
-	public String getText(Object locator) {
+	public String getText(By locator) {
 		this.log.debug("I get text from Mobile Element: \"" + locator.toString() + "\".");
 		MobileElement element = this.getElement(locator);
 		String text = null;
@@ -279,7 +283,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom) {
+	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom) {
 		this.log.debug("I get text from a Mobile Element based on Text: \"" + textToCheck + "\".");
 		List<MobileElement> elementToCheckText = this.getElements(objectToCheckText);
 		List<MobileElement> elementToClick = this.getElements(objectToGetTextFrom);
@@ -301,7 +305,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public String getAttributeValue(Object locator, String attribute) {
+	public String getAttributeValue(By locator, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + locator.toString() + "\".");
 		String text = null;
 		MobileElement element = this.getElement(locator);
@@ -313,7 +317,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public String getValue(Object locator) {
+	public String getValue(By locator) {
 		this.log.debug("I get value from Mobile Element: \"" + locator.toString() + "\".");
 		String text = null;
 		MobileElement element = this.getElement(locator);
@@ -341,9 +345,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	/*#######################################################*/
 
 	@Override
-	public boolean typed(Object locator, String expectedValue) {
+	public boolean typed(By locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed at Mobile Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getValue((By)locator);
+		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
@@ -357,9 +361,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 	
 	@Override
-	public boolean didntType(Object locator, String value) {
+	public boolean didntType(By locator, String value) {
 		this.log.debug("I verify \"" + value + "\" is not displayed at Mobile Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getValue((By)locator);
+		String actualValue = this.getValue(locator);
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(!isValueEqual) {
@@ -373,9 +377,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean seeAttributeValue(Object locator, String attribute, String expectedValue) {
+	public boolean seeAttributeValue(By locator, String attribute, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" is displayed for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue((By)locator, attribute);
+		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
@@ -389,9 +393,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 	
 	@Override
-	public boolean dontSeeAttributeValue(Object locator, String attribute, String value) {
+	public boolean dontSeeAttributeValue(By locator, String attribute, String value) {
 		this.log.debug("I verify \"" + value + "\" is not displayed for attribute: \"" + attribute + "\" at Mobile Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue((By)locator, attribute);
+		String actualValue = this.getAttributeValue(locator, attribute);
 		boolean isValueEqual = actualValue.equals(value);
 		boolean status = false;
 		if(!isValueEqual) {
@@ -405,9 +409,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean seeText(Object locator, String expectedValue) {
+	public boolean seeText(By locator, String expectedValue) {
 		this.log.debug("I verify \"" + expectedValue + "\" Text Value is displayed.");
-		String actualText = this.getText((By)locator);
+		String actualText = this.getText(locator);
 		boolean isValueEqual = actualText.equals(expectedValue);
 		boolean status = false;
 		if(isValueEqual) {
@@ -421,9 +425,9 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 	
 	@Override
-	public boolean dontSeeText(Object locator, String value) {
+	public boolean dontSeeText(By locator, String value) {
 		this.log.debug("I verify \"" + value + "\" Text Value is displayed.");
-		String actualText = this.getText((By)locator);
+		String actualText = this.getText(locator);
 		boolean isValueEqual = actualText.equals(value);
 		boolean status = false;
 		if(!isValueEqual) {
@@ -437,7 +441,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean see(Object locator) {
+	public boolean see(By locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is displayed.");
 		List<MobileElement> elements = this.getElements(locator);
 		boolean status = false;
@@ -452,7 +456,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean dontSee(Object locator) {
+	public boolean dontSee(By locator) {
 		this.log.debug("I verify Mobile Element: \"" + locator.toString() + "\" is not displayed.");
 		this.initializeImplicitWait(2);
 		List<MobileElement> elements = this.getElements(locator);
@@ -469,7 +473,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean seeEnabled(Object locator) {
+	public boolean seeEnabled(By locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is enabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();
@@ -485,7 +489,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	}
 
 	@Override
-	public boolean seeDisabled(Object locator) {
+	public boolean seeDisabled(By locator) {
 		this.log.debug("I verify Mobile Element \"" + locator.toString() + "\" is disabled.");
 		MobileElement element = this.getElement(locator);
 		boolean isEnabled = element.isEnabled();

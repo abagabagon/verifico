@@ -1,5 +1,7 @@
 package com.github.abagabagon.verifico.automation.mobile;
 
+import org.openqa.selenium.By;
+
 /**
  * Interface for Mobile Automation Commands
  * 
@@ -67,7 +69,7 @@ public interface MobileAutomation {
 	 * @param locator Object used to locate Mobile Element to be tapped.
 	 */
 
-	public void tap(Object locator);
+	public void tap(By locator);
 	
 	/**
 	 * Taps the specified Mobile Element from a row in a table based on text value from the same row.
@@ -77,7 +79,7 @@ public interface MobileAutomation {
 	 * @param objectToTap		Object from same row to tap if text is found on that row.
 	 */
 	
-	public void tapFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToTap);
+	public void tapFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToTap);
 	
 	/**
 	 * Long presses the specified Mobile Element. Used for Elements that are tappable.
@@ -86,7 +88,7 @@ public interface MobileAutomation {
 	 * @param duration	Number of seconds to long press Mobile Element.
 	 */
 
-	public void longPress(Object locator, long duration);
+	public void longPress(By locator, long duration);
 	
 	/**
 	 * Long presses the specified Mobile Element from a row in a table based on text value from the same row.
@@ -97,7 +99,7 @@ public interface MobileAutomation {
 	 * @param duration			Number of seconds to long press Mobile Element.
 	 */
 	
-	public void longPressFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToLongPress, long duration);
+	public void longPressFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToLongPress, long duration);
 	
 	/**
 	 * Clears value of a text box/area Mobile Element.
@@ -105,7 +107,7 @@ public interface MobileAutomation {
 	 * @param locator Object used to locate Mobile Element to clear value of.
 	 */
 
-	public void clear(Object locator);
+	public void clear(By locator);
 	
 	/**
 	 * Simulates typing into a text box/area Mobile Element, which may set its value.
@@ -114,7 +116,7 @@ public interface MobileAutomation {
 	 * @param inputText Text to enter.
 	 */
 
-	public void type(Object locator, String inputText);
+	public void type(By locator, String inputText);
 	
 	/**
 	 * Type input text at the specified Mobile Element from a row in a table based on text value from the same row.
@@ -125,7 +127,7 @@ public interface MobileAutomation {
 	 * @param inputText			Text value to input
 	 */
 	
-	public void typeFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToFill, String inputText);
+	public void typeFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToFill, String inputText);
 	
 	/**
 	 * Get the visible innerText of this Mobile Element, including sub-elements, without
@@ -135,7 +137,7 @@ public interface MobileAutomation {
 	 * @return	Retrieved Mobile Element Text.
 	 */
 	
-	public String getText(Object locator);
+	public String getText(By locator);
 	
 	/**
 	 * Get text of the specified Mobile Element from a row in a table based on text value from the same row.
@@ -146,7 +148,7 @@ public interface MobileAutomation {
 	 * @return	Retrieved Mobile Element text value.
 	 */
 	
-	public String getTextFromTableBasedOnText(Object objectToCheckText, String textToCheck, Object objectToGetTextFrom);
+	public String getTextFromTableBasedOnText(By objectToCheckText, String textToCheck, By objectToGetTextFrom);
 	
 	/**
 	 * Get the value of the specified attribute of the Mobile Element.
@@ -156,7 +158,7 @@ public interface MobileAutomation {
 	 * @return	Retrieved Mobile Element attribute value.
 	 */
 	
-	public String getAttributeValue(Object locator, String attribute);
+	public String getAttributeValue(By locator, String attribute);
 
 	/**
 	 * Gets the value of the INPUT and TEXTAREA Mobile Elements.
@@ -165,7 +167,7 @@ public interface MobileAutomation {
 	 * @return	Retrieved value of the INPUT/TEXTAREA Mobile Element.
 	 */
 	
-	public String getValue(Object locator);
+	public String getValue(By locator);
 	
 	/**
 	 * Waits for a specific time (Seconds).
@@ -189,7 +191,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public boolean typed(Object locator, String expectedValue);
+	public boolean typed(By locator, String expectedValue);
 	
 	/**
 	 * Verifies the value of INPUT or TEXTAREA Mobile Elements if not equal to the expected
@@ -201,7 +203,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is equal to expected value.
 	 */
 
-	public boolean didntType(Object locator, String value);
+	public boolean didntType(By locator, String value);
 	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
@@ -214,7 +216,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected attribute value.
 	 */
 
-	public boolean seeAttributeValue(Object locator, String attribute, String expectedValue);
+	public boolean seeAttributeValue(By locator, String attribute, String expectedValue);
 	
 	/**
 	 * Verifies the value of the specified attribute if not equal to the expected
@@ -227,7 +229,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is equal to expected attribute value.
 	 */
 
-	public boolean dontSeeAttributeValue(Object locator, String attribute, String value);
+	public boolean dontSeeAttributeValue(By locator, String attribute, String value);
 
 	/**
 	 * Verifies Mobile Element with text if equal to expected text value.
@@ -238,7 +240,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is not equal to expected value.
 	 */
 
-	public boolean seeText(Object locator, String expectedValue);
+	public boolean seeText(By locator, String expectedValue);
 	
 	/**
 	 * Verifies Mobile Element with text if not equal to expected text value.
@@ -249,7 +251,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if value is equal to expected value.
 	 */
 
-	public boolean dontSeeText(Object locator, String value);
+	public boolean dontSeeText(By locator, String value);
 	
 	/**
 	 * Verifies if Mobile Element is displayed on Web Page.
@@ -259,7 +261,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not displayed on Web Page.
 	 */
 	
-	public boolean see(Object locator);
+	public boolean see(By locator);
 	
 	/**
 	 * Verifies Mobile Element is not displayed on the Web Page.
@@ -269,7 +271,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is displayed on Web Page.
 	 */
 
-	public boolean dontSee(Object locator);
+	public boolean dontSee(By locator);
 	
 	/**
 	 * Verifies Mobile Element is enabled on the Web Page.
@@ -279,7 +281,7 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not enabled on Web Page.
 	 */
 
-	public boolean seeEnabled(Object locator);
+	public boolean seeEnabled(By locator);
 	
 	/**
 	 * Verifies Mobile Element is disabled on the Web Page.
@@ -289,6 +291,6 @@ public interface MobileAutomation {
 	 * 			<code>false</code> if Mobile Element is not disabled on Web Page.
 	 */
 
-	public boolean seeDisabled(Object locator);
+	public boolean seeDisabled(By locator);
 
 }
