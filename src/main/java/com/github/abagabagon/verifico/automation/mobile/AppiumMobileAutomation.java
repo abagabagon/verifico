@@ -630,13 +630,13 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	@Override
 	public void longPressOnListElementBasedOnText(By objectList, String textToCheck, long duration) {
 		this.log.debug("I tap a Mobile Element from the Mobile Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListTapCommands(UserAction.TAP, objectList, textToCheck, duration);
+		this.executeListTapCommands(UserAction.LONG_PRESS, objectList, textToCheck, duration);
 	}
 	
 	@Override
 	public void longPressOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck, long duration) {
 		this.log.debug("I tap a Mobile Element from the Mobile Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListTapCommands(UserAction.TAP, objectList, attribute, valueToCheck, duration);
+		this.executeListTapCommands(UserAction.LONG_PRESS, objectList, attribute, valueToCheck, duration);
 	}
 	
 	private void executeTableTapCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, long duration) {
