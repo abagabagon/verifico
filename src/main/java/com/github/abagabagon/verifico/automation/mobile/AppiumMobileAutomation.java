@@ -296,7 +296,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	@Override
 	public void clear(By locator) {
 		this.log.debug("I clear Mobile Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, locator, null);
+		this.executeKeyboardCommands(UserAction.CLEAR, locator, null);
 	}
 	
 	private String executeGetCommands(UserAction userAction, By locator, String attribute) {
