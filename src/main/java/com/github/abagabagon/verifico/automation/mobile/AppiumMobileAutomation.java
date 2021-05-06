@@ -69,7 +69,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
-		this.implicitWaitDuration = 20;
+		this.implicitWaitDuration = 10;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
@@ -80,7 +80,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, URL applicationUrl, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
-		this.implicitWaitDuration = 20;
+		this.implicitWaitDuration = 10;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
