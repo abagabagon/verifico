@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.abagabagon</groupId>
 	<artifactId>verifico</artifactId>
-	<version>1.7.2</version>
+	<version>1.8.0</version>
 	<packaging>jar</packaging>
 	<name>Verifico</name>
 	<description>Web and Mobile Test Automation Library</description>
@@ -131,7 +131,7 @@
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>7.4.1</version>
+			<version>7.5.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
@@ -187,6 +187,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.24</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.7.2</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
 		<dependency>
 			<groupId>org.xerial</groupId>
@@ -203,7 +209,7 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>4.2.2</version>
+			<version>4.4.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.paulhammant/ngwebdriver -->
 		<dependency>

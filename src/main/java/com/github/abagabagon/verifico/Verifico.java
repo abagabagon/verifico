@@ -128,9 +128,9 @@ public class Verifico {
 	 * @return			SQLData instance
 	 */
 	
-	public final SQLData getSQLData(SQL sqlType, String dbServer, String dbName, String user, String password) {
+	public final SQLData getSQLData(SQL sqlType, String dbServer, String dbName, String user, String password, boolean isSSLUsed) {
 		this.log.debug("Initializing SQLData instance.");
-		this.sqlData = new SQLData(sqlType, dbServer, dbName, user, password);
+		this.sqlData = new SQLData(sqlType, dbServer, dbName, user, password, isSSLUsed);
 		return this.sqlData;
 	}
 	
