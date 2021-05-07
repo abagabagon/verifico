@@ -100,7 +100,7 @@ public class SQLDriver {
 	
 	private Connection getMySQLConnection() {
 		this.log.debug("Initializing MySQL Connection.");
-		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName;
+		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName + "?useSSL=false";
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(this.url, this.user, this.password);
