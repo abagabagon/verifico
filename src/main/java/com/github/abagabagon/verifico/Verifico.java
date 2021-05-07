@@ -125,6 +125,7 @@ public class Verifico {
 	 * @param dbName	SQL Database Name
 	 * @param user		User Name for SQL Database Access
 	 * @param password	Password of User Name for SQL Database Access
+	 * @param isSSLUsed	If SSL is used for the Database Connection
 	 * @return			SQLData instance
 	 */
 	
