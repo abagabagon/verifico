@@ -29,15 +29,17 @@ public class SQLData {
 	private String dbName;
 	private String user;
 	private String password;
+	private boolean isSSLUsed;
 	private SQLDriver sqlDriver;
 
-	public SQLData(SQL sqlType, String dbServer, String dbName, String user, String password) {
+	public SQLData(SQL sqlType, String dbServer, String dbName, String user, String password, boolean isSSLUsed) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.sqlType = sqlType;
 		this.dbServer = dbServer;
 		this.dbName = dbName;
 		this.user = user;
 		this.password = password;
+		this.isSSLUsed = isSSLUsed;
 	}
 	
 	/* ####################################################### */
@@ -52,7 +54,7 @@ public class SQLData {
 	
 	public Connection openConnection() {
 		this.log.debug("I open SQL Connection.");
-		this.sqlDriver = new SQLDriver(this.sqlType, this.dbServer, this.dbName, this.user, this.password);
+		this.sqlDriver = new SQLDriver(this.sqlType, this.dbServer, this.dbName, this.user, this.password, this.isSSLUsed);
 		this.connection = this.sqlDriver.getSQLConnection();
 		return this.connection;
 	}

@@ -26,16 +26,18 @@ public class SQLDriver {
 	private String dbName;
 	private String user;
 	private String password;
+	private boolean isSSLUsed;
 	private Connection connection;
 	private String url;
 	
-	public SQLDriver(SQL sqlType, String dbServer, String dbName, String user, String password) {
+	public SQLDriver(SQL sqlType, String dbServer, String dbName, String user, String password, boolean isSSLUsed) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.sqlType = sqlType;
 		this.dbServer = dbServer;
 		this.dbName = dbName;
 		this.user = user;
 		this.password = password;
+		this.isSSLUsed = isSSLUsed;
 	}
 	
 	/**
@@ -56,6 +58,10 @@ public class SQLDriver {
 			case MSSQL:
 				Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver").getDeclaredConstructor().newInstance();
 				this.connection = this.getMSSQLConnection();
+				break;
+			case MariaDB:
+				Class.forName("org.mariadb.jdbc.Driver").getDeclaredConstructor().newInstance();
+				this.connection = this.getMariaDBConnection();
 				break;
 			default:
 				this.log.fatal(this.sqlType + " is an unsupported SQL Type.");
@@ -100,7 +106,12 @@ public class SQLDriver {
 	
 	private Connection getMySQLConnection() {
 		this.log.debug("Initializing MySQL Connection.");
-		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName + "?useSSL=false";
+		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName;
+		if (this.isSSLUsed) {
+			this.url = this.url + "?useSSL=true";
+		} else {
+			this.url = this.url + "?useSSL=false";
+		}
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(this.url, this.user, this.password);
@@ -127,6 +138,11 @@ public class SQLDriver {
 	private Connection getMSSQLConnection() {
 		this.log.debug("Initializing MSSQL Connection.");
 		this.url = "jdbc:sqlserver://" + this.dbServer + ":1433/" + this.dbName;
+		if (this.isSSLUsed) {
+			this.url = this.url + "?useSSL=true";
+		} else {
+			this.url = this.url + "?useSSL=false";
+		}
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection(this.url, this.user, this.password);
@@ -139,6 +155,37 @@ public class SQLDriver {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing MSSQL Connection!");
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		}
+		return connection;
+	}
+	
+	/**
+	 * Initializes MariaDB Connection.
+	 * 
+	 * @return MariaDB Connection
+	 */
+	
+	private Connection getMariaDBConnection() {
+		this.log.debug("Initializing MariaDB Connection.");
+		this.url = "jdbc:mariadb://" + this.dbServer + ":3306/" + this.dbName;
+		if (this.isSSLUsed) {
+			this.url = this.url + "?useSSL=true";
+		} else {
+			this.url = this.url + "?useSSL=false";
+		}
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection(this.url, this.user, this.password);
+			this.log.debug("Successfully initialized SQL Connection.");
+		} catch (SQLException e) {
+			this.log.fatal("Encountered SQLException while initializing MySQL Connection!");
+			this.log.fatal("SQL Exception: " + e.getMessage());
+			this.log.fatal("SQL State: " + e.getSQLState());
+			this.log.fatal("Error Code: " + e.getErrorCode());
+			this.log.fatal(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Encountered Exception while initializing MySQL Connection!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		return connection;

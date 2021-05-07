@@ -125,12 +125,13 @@ public class Verifico {
 	 * @param dbName	SQL Database Name
 	 * @param user		User Name for SQL Database Access
 	 * @param password	Password of User Name for SQL Database Access
+	 * @param isSSLUsed	If SSL is used for the Database Connection
 	 * @return			SQLData instance
 	 */
 	
-	public final SQLData getSQLData(SQL sqlType, String dbServer, String dbName, String user, String password) {
+	public final SQLData getSQLData(SQL sqlType, String dbServer, String dbName, String user, String password, boolean isSSLUsed) {
 		this.log.debug("Initializing SQLData instance.");
-		this.sqlData = new SQLData(sqlType, dbServer, dbName, user, password);
+		this.sqlData = new SQLData(sqlType, dbServer, dbName, user, password, isSSLUsed);
 		return this.sqlData;
 	}
 	
