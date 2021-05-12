@@ -73,7 +73,7 @@ public class SQLData {
 	
 	private ResultSet execute(SQLQuery sqlQuery, PreparedStatement preparedStatement) {
 		this.log.debug("------------------------------------------------------------------------");
-		this.log.debug("Executing " + sqlQuery + " Query:\n" + preparedStatement.toString());
+		this.log.debug("EXECUTING " + String.valueOf(sqlQuery).toUpperCase() + " QUERY:\n" + preparedStatement.toString());
 		this.log.debug("------------------------------------------------------------------------");
 		
 		boolean status = false;
@@ -136,11 +136,11 @@ public class SQLData {
 		
 		if(status) {
 			this.log.debug("------------------------------------------------------------------------");
-			this.log.debug("Successful in executing " + sqlQuery + " Query.");
+			this.log.debug("SUCCESSFUL EXECUTION OF " + String.valueOf(sqlQuery).toUpperCase() + " QUERY.");
 			this.log.debug("------------------------------------------------------------------------");
 		} else {
 			this.log.debug("------------------------------------------------------------------------");
-			this.log.error("Failed to execute " + sqlQuery + " Query.");
+			this.log.error("FAILED EXECUTION OF " + String.valueOf(sqlQuery).toUpperCase() + " QUERY.");
 			this.log.debug("------------------------------------------------------------------------");
 		}
 
@@ -155,7 +155,6 @@ public class SQLData {
 	 */
 	
 	public ResultSet select(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL SELECT Statement.");
 		this.resultSet = execute(SQLQuery.SELECT, preparedStatement);
 		return this.resultSet;
 	}
@@ -167,7 +166,6 @@ public class SQLData {
 	 */
 	
 	public void update(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL UPDATE Statement.");
 		this.execute(SQLQuery.UPDATE, preparedStatement);
 	}
 	
@@ -178,7 +176,6 @@ public class SQLData {
 	 */
 	
 	public void insert(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL INSERT Statement.");
 		this.execute(SQLQuery.INSERT, preparedStatement);
 	}
 	
@@ -189,7 +186,6 @@ public class SQLData {
 	 */
 	
 	public void delete(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL DELETE Statement.");
 		this.execute(SQLQuery.DELETE, preparedStatement);
 	}
 	
