@@ -72,52 +72,78 @@ public class SQLData {
 	}
 	
 	private ResultSet execute(SQLQuery sqlQuery, PreparedStatement preparedStatement) {
-		try {
-			switch(sqlQuery) {
-			case SELECT:
-				this.resultSet = preparedStatement.executeQuery();
-				break;
-			case UPDATE:
-				int updateCount = preparedStatement.executeUpdate();
-				if (updateCount > 0) {
-					this.log.debug(updateCount + " SQL Record(s) updated.");
-				} else {
-					this.log.error("No SQL Records were updated.");
+		this.log.debug("------------------------------------------------------------------------");
+		this.log.debug("EXECUTING " + String.valueOf(sqlQuery).toUpperCase() + " QUERY:\n" + preparedStatement.toString());
+		this.log.debug("------------------------------------------------------------------------");
+		
+		boolean status = false;
+		this.resultSet = null;
+		int count = 0;
+		for(int i = 0; i < 3; i++) {
+			try {
+				switch(sqlQuery) {
+				case SELECT:
+					this.resultSet = preparedStatement.executeQuery();
+					break;
+				case UPDATE:
+					count = preparedStatement.executeUpdate();
+					if (count > 0) {
+						this.log.debug(count + " SQL Record(s) updated.");
+					} else {
+						this.log.error("No SQL Records were updated.");
+					}
+					break;
+				case INSERT:
+					count = preparedStatement.executeUpdate();
+					if (count > 0) {
+						this.log.debug(count + " SQL Record(s) inserted.");
+					} else {
+						this.log.error("No SQL Records were inserted.");
+					}
+				case DELETE:
+					count = preparedStatement.executeUpdate();
+					if (count > 0) {
+						this.log.debug(count + " SQL Record(s) deleted.");
+					} else {
+						this.log.error("No SQL Records were deleted.");
+					}
+				default:
+					this.log.fatal(sqlQuery + " is an unsupported SQL Query.");
 				}
-				break;
-			case INSERT:
-				int insertCount = preparedStatement.executeUpdate();
-				if (insertCount > 0) {
-					this.log.debug(insertCount + " SQL Record(s) inserted.");
-				} else {
-					this.log.error("No SQL Records were inserted.");
+				
+				if (this.resultSet != null || count > 0) {
+					status = true;
+					break;
 				}
-			case DELETE:
-				int deleteCount = preparedStatement.executeUpdate();
-				if (deleteCount > 0) {
-					this.log.debug(deleteCount + " SQL Record(s) deleted.");
-				} else {
-					this.log.error("No SQL Records were deleted.");
-				}
-			default:
-				this.log.fatal(sqlQuery + " is an unsupported SQL Query.");
+				
+			} catch (SQLTimeoutException e) {
+				this.log.fatal("Encountered SQLTimeoutException while executing " + sqlQuery + " Query! Retrying API Request (" + i + "/3).");
+				this.log.fatal("SQL State: " + e.getSQLState());
+				this.log.fatal("Error Code: " + e.getErrorCode());
+				this.log.fatal("Message: " + e.getMessage());
+				this.log.fatal(ExceptionUtils.getStackTrace(e));
+			} catch (SQLException e) {
+				this.log.fatal("Encountered SQLException while executing " + sqlQuery + " Query! Retrying API Request (" + i + "/3).");
+				this.log.fatal("SQL State: " + e.getSQLState());
+				this.log.fatal("Error Code: " + e.getErrorCode());
+				this.log.fatal("Message: " + e.getMessage());
+				this.log.fatal(ExceptionUtils.getStackTrace(e));
+			} catch (Exception e) {
+				this.log.fatal("Encountered Exception while executing " + sqlQuery + " Query! Retrying API Request (" + i + "/3).");
+				this.log.fatal(ExceptionUtils.getStackTrace(e));
 			}
-		} catch (SQLTimeoutException e) {
-			this.log.fatal("Encountered SQLTimeoutException while executing " + sqlQuery + " Query!");
-			this.log.fatal("SQL State: " + e.getSQLState());
-			this.log.fatal("Error Code: " + e.getErrorCode());
-			this.log.fatal("Message: " + e.getMessage());
-			this.log.fatal(ExceptionUtils.getStackTrace(e));
-		} catch (SQLException e) {
-			this.log.fatal("Encountered SQLException while executing " + sqlQuery + " Query!");
-			this.log.fatal("SQL State: " + e.getSQLState());
-			this.log.fatal("Error Code: " + e.getErrorCode());
-			this.log.fatal("Message: " + e.getMessage());
-			this.log.fatal(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.fatal("Encountered Exception while executing " + sqlQuery + " Query!");
-			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
+		
+		if(status) {
+			this.log.debug("------------------------------------------------------------------------");
+			this.log.debug("SUCCESSFUL EXECUTION OF " + String.valueOf(sqlQuery).toUpperCase() + " QUERY.");
+			this.log.debug("------------------------------------------------------------------------");
+		} else {
+			this.log.debug("------------------------------------------------------------------------");
+			this.log.error("FAILED EXECUTION OF " + String.valueOf(sqlQuery).toUpperCase() + " QUERY.");
+			this.log.debug("------------------------------------------------------------------------");
+		}
+
 		return this.resultSet;
 	}
 	
@@ -129,7 +155,6 @@ public class SQLData {
 	 */
 	
 	public ResultSet select(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL SELECT Statement.");
 		this.resultSet = execute(SQLQuery.SELECT, preparedStatement);
 		return this.resultSet;
 	}
@@ -141,7 +166,6 @@ public class SQLData {
 	 */
 	
 	public void update(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL UPDATE Statement.");
 		this.execute(SQLQuery.UPDATE, preparedStatement);
 	}
 	
@@ -152,7 +176,6 @@ public class SQLData {
 	 */
 	
 	public void insert(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL INSERT Statement.");
 		this.execute(SQLQuery.INSERT, preparedStatement);
 	}
 	
@@ -163,7 +186,6 @@ public class SQLData {
 	 */
 	
 	public void delete(PreparedStatement preparedStatement) {
-		this.log.debug("I execute SQL DELETE Statement.");
 		this.execute(SQLQuery.DELETE, preparedStatement);
 	}
 	

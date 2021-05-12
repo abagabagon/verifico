@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 /**
  * Wait commands for Selenium Implementation
@@ -352,9 +353,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be present has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for element to be present!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -376,9 +379,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -408,9 +413,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -431,9 +438,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -456,9 +465,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element to be present has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element to be present!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -481,9 +492,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element to be present has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element to be present!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -505,9 +518,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -529,9 +544,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Elements to be present has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for elements to be present!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -554,9 +571,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element List to be present has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element List to be present!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -579,9 +598,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element List to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element List to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -603,9 +624,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested List Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested List Web Element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -628,9 +651,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Nested Web Element List to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Nested Web Element List to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -655,9 +680,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return isVisible;
 	}
@@ -680,9 +707,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be invisible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be invisible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return isVisible;
 	}
@@ -704,9 +733,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -727,9 +758,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return elements;
 	}
@@ -751,9 +784,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -774,9 +809,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Web Element to be clickable has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Encountered Exception while waiting for element to be clickable!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -815,9 +852,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for List to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for List to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
@@ -856,9 +895,11 @@ public class SeleniumWait {
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Table Rows to be visible has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		} catch (Exception e) {
 			this.log.error("Something went wrong while trying to wait for Table Rows to be visible!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
 		}
 		return element;
 	}
