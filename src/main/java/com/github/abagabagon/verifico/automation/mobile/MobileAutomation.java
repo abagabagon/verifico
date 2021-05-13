@@ -64,6 +64,37 @@ public interface MobileAutomation {
 	/*#######################################################*/
 	
 	/**
+	 * Simulates swiping based on the specified coordinates.
+	 * 
+	 * @param startX	X coordinate for the start scroll swipe position
+	 * @param startY	Y coordinate for the start scroll swipe position
+	 * @param endX		X coordinate for the end scroll swipe position
+	 * @param endY		Y coordinate for the end scroll swipe position
+	 */
+	
+	public void swipe(int startX, int startY, int endX, int endY);
+	
+	/**
+	 * Simulates swipe up.
+	 */
+	
+	public void swipeUp();
+	
+	/**
+	 * Simulates swipe down.
+	 */
+	
+	public void swipeDown();
+	
+	/**
+	 * Swipe to the specified Mobile Element position.
+	 * 
+	 * @param locator Object used to locate Mobile Element.
+	 */
+	
+	public void swipe(By locator);
+	
+	/**
 	 * Taps the specified Mobile Element. Used for Elements that are tappable.
 	 * 
 	 * @param locator Object used to locate Mobile Element to be tapped.
@@ -260,6 +291,15 @@ public interface MobileAutomation {
 	 */
 
 	public void wait(int duration);
+	
+	/**
+	 * Counts instances of a Mobile Element in a Page.
+	 * 
+	 * @param locator Object used to locate Mobile Element to count.
+	 * @return Instance Count of the Mobile Element in the Page.
+	 */
+	
+	public int count(By locator);
 	
 	/*#######################################################*/
 	/*                     VERIFICATIONS                     */

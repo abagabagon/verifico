@@ -10,6 +10,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -26,7 +27,9 @@ import io.appium.java_client.android.AndroidTouchAction;
 import io.appium.java_client.ios.IOSTouchAction;
 import io.appium.java_client.touch.LongPressOptions;
 import io.appium.java_client.touch.TapOptions;
+import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.ElementOption;
+import io.appium.java_client.touch.offset.PointOption;
 
 /**
  * Appium implemented Mobile Automation Commands
@@ -73,7 +76,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
-		this.implicitWaitDuration = 10;
+		this.implicitWaitDuration = 5;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
@@ -84,7 +87,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	public AppiumMobileAutomation(String deviceName, Mobile mobile, String platformVersion, URL applicationUrl, File applicationFile, URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumMobileDriver = new AppiumMobileDriver(appiumServerUrl);
-		this.implicitWaitDuration = 10;
+		this.implicitWaitDuration = 5;
 		this.mobile = mobile;
 		this.platformVersion = platformVersion;
 		this.deviceName = deviceName;
@@ -188,6 +191,57 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */
 	/*#######################################################*/
+	
+	@Override
+	public void swipe(int startX, int startY, int endX, int endY) {
+		this.log.debug("I swipe from (" + startX + ", " + startY + ") Coordinate to (" + endX + ", " + endY + ") Coordinate.");
+		this.action.press(PointOption.point(startX, startY)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000))).moveTo(PointOption.point(endX, endY)).release().perform();
+	}
+	
+	@Override
+	public void swipeDown() {
+		this.log.debug("I swipe down.");
+		double anchorPercentage = 0.5;
+		double startPercentage = 0.2;
+		double finalPercentage = 0.8;
+		Dimension size = this.driver.manage().window().getSize();
+		int anchor = (int) (size.width * anchorPercentage);
+		int startPoint = (int) (size.height * startPercentage);
+		int endPoint = (int) (size.height * finalPercentage);
+		this.action.press(PointOption.point(anchor, startPoint)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000))).moveTo(PointOption.point(anchor, endPoint)).release().perform();
+	}
+	
+	@Override
+	public void swipeUp() {
+		this.log.debug("I swipe up.");
+		double anchorPercentage = 0.5;
+		double startPercentage = 0.8;
+		double finalPercentage = 0.2;
+		Dimension size = this.driver.manage().window().getSize();
+		int anchor = (int) (size.width * anchorPercentage);
+		int startPoint = (int) (size.height * startPercentage);
+		int endPoint = (int) (size.height * finalPercentage);
+		this.action.press(PointOption.point(anchor, startPoint)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000))).moveTo(PointOption.point(anchor, endPoint)).release().perform();
+	}
+	
+	@Override
+	public void swipe(By locator) {
+		this.log.debug("I swipe to Mobile Element: \"" + locator.toString() + "\".");
+		double anchorPercentage = 0.5;
+		double startPercentage = 0.8;
+		double finalPercentage = 0.2;
+		boolean isElementFound = this.driver.findElements(locator).size() > 0;
+		
+		while(!isElementFound) {
+			Dimension size = this.driver.manage().window().getSize();
+			int anchor = (int) (size.width * anchorPercentage);
+			int startPoint = (int) (size.height * startPercentage);
+			int endPoint = (int) (size.height * finalPercentage);
+			this.action.press(PointOption.point(anchor, startPoint)).waitAction(WaitOptions.waitOptions(Duration.ofMillis(2000))).moveTo(PointOption.point(anchor, endPoint)).release().perform();
+			isElementFound = this.driver.findElements(locator).size() > 0;
+		}
+
+	}
 	
 	private void executeTapCommands(UserAction userAction, By locator, long duration) {
 		boolean actionPerformed = false;
@@ -877,6 +931,15 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		this.log.debug("I get text from Mobile Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Mobile Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Mobile Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
 		return retrievedText;
+	}
+	
+	@Override
+	public int count(By locator) {
+		this.log.debug("I count Mobile Element: \"" + locator.toString() + "\".");
+		List<MobileElement> element = this.driver.findElements(locator);
+		int size = element.size();
+		this.log.debug("I counted " + size + " instances of Mobile Element: \"" + locator.toString() + "\".");
+		return size;
 	}
 
 	@Override
