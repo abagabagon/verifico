@@ -59,6 +59,12 @@ public interface MobileAutomation {
 	
 	public void setGeolocation(Object location);
 	
+	/**
+	 * Resets application data.
+	 */
+	
+	public void resetApp();
+	
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */
 	/*#######################################################*/

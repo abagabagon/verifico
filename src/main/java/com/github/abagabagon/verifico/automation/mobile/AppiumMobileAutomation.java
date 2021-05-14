@@ -188,6 +188,12 @@ public class AppiumMobileAutomation implements MobileAutomation {
 		this.driver.setLocation(geoLocation);
 	}
 	
+	@Override
+	public void resetApp() {
+		this.log.debug("I reset application.");
+		this.driver.resetApp();
+	}
+	
 	/*#######################################################*/
 	/*                    USER ACTIONS                       */
 	/*#######################################################*/
