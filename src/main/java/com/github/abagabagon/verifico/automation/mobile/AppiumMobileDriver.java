@@ -80,6 +80,8 @@ public class AppiumMobileDriver {
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
+		capabilities.setCapability(MobileCapabilityType.FULL_RESET, "true");
+		capabilities.setCapability(MobileCapabilityType.NO_RESET, "false");
 		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
