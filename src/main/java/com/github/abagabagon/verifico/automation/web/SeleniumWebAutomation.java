@@ -1716,7 +1716,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1731,7 +1731,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.debug("I didn't see \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1746,7 +1746,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1761,7 +1761,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
+			this.log.debug("I didn't see \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
 		}
 		return status;	
 	}
@@ -1793,7 +1793,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedValue + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
@@ -1808,7 +1808,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("I saw \"" + value + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as not text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.debug("I didn't see \"" + value + "\" as text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
@@ -2174,7 +2174,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			status = true;
 			this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + expectedPartialValue + "\" as not the partial text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
@@ -2189,7 +2189,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.error("I saw \"" + partialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
 		} else {
 			status = true;
-			this.log.debug("I didn't see \"" + partialValue + "\" as not the partial the text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
+			this.log.debug("I didn't see \"" + partialValue + "\" as the partial the text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
 		}
 		return status;
 	}
