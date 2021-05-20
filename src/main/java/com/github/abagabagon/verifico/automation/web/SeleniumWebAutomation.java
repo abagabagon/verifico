@@ -1138,6 +1138,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void pointOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.executeListMouseCommands(UserAction.POINT, objectList, textToCheck);
+	}
+	
+	@Override
 	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
 		this.executeListMouseCommands(UserAction.CLICK, objectList, textToCheck);
@@ -1153,6 +1159,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
 		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, textToCheck);
+	}
+	
+	@Override
+	public void pointOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.executeListMouseCommands(UserAction.POINT, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
@@ -1286,6 +1298,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void pointOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.POINT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
@@ -1301,6 +1319,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
 		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
+	}
+	
+	@Override
+	public void pointOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
