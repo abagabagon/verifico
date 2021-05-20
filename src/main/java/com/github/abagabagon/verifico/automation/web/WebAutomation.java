@@ -128,6 +128,48 @@ public interface WebAutomation {
 	public void point(By locator);
 	
 	/**
+	 * Points the specified Web Element from an Element List based on text value.
+	 * 
+	 * @param objectList	List Object Locator used to search text from and point whichever element equals the specified text.
+	 * @param textToCheck	Text to check at the specified object.
+	 */
+	
+	public void pointOnListElementBasedOnText(By objectList, String textToCheck);
+	
+	/**
+	 * Points the specified Web Element from an Element List based on attribute value.
+	 * 
+	 * @param objectList	List Object Locator used to search attribute value from and point whichever element equals the specified attribute value.
+	 * @param attribute		Attribute to check at the specified object.
+	 * @param valueToCheck	Attribute Value to check at the specified object.
+	 */
+	
+	public void pointOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck);
+	
+	/**
+	 * Points the specified Web Element from a row in a table based on a text value from the same row.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified text.
+	 * @param textToCheck			Text to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to point if specified text is found on that row.
+	 */
+	
+	public void pointOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick);
+	
+	/**
+	 * Points the specified Web Element from a row in a table based on a attribute value from the same row.
+	 * 
+	 * @param rowObjectList			Object Locator that corresponds to the Rows from the Table.
+	 * @param rowObjectToCheckText	Object Locator relative to the Row Object from which to check the specified attribute value.
+	 * @param attribute				Attribute to check at the specified object to check Text.
+	 * @param valueToCheck			Attribute Value to check at the specified object to check Text.
+	 * @param rowObjectToClick		Object Locator relative to the Row Object to point if specified attribute value is found on that row.
+	 */
+	
+	public void pointOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick);
+	
+	/**
 	 * Clicks the specified Web Element. Used for Elements that are clickable.
 	 * 
 	 * @param locator Object used to locate Web Element to be clicked.
