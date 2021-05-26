@@ -1,11 +1,9 @@
-#Verifico
-
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Maven Central](https://img.shields.io/maven-central/v/com.github.abagabagon/verifico.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.abagabagon%22%20AND%20a:%22verifico%22)
 
-## **Background**
+# **Background**
 One of the disadvantages of Selenium and Appium is the steep learning curve required for users to be able to implement it. One also have to go over issues such as automation test flakiness, unhandled exceptions, etc. so they could learn how to properly implement commands of Selenium and Appium. The project is built in order to eliminate this issue.
 
-## **Components**
+# **Components**
 
 | Component         | Java API                                                                                                      | Version     |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- | ----------- |
@@ -17,7 +15,7 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 | MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                   | 8.0.22      |
 | MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15)| 8.2.2.jre8  |
 
-## **Web Automation**
+# **Web Automation**
 
 For Web Application Automation, create an instance of the `WebAutomation` Object which is shown below:
 
@@ -52,9 +50,9 @@ I.type(PageLogin.PASSWORD_TEXTBOX, "ABCabc123");
 I.click(PageLogin.LOGIN_BUTTON);
 ```
 
-### **Web Automation Commands**
+## **Web Automation Commands**
 
-#### **Browser Actions**
+### **Browser Actions**
 
 | Command               | Description                                          |
 | --------------------- | ---------------------------------------------------- |
@@ -73,7 +71,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | closeTab              | Closes Tab of a Web Browser                          |
 | closeBrowser          | Closes Web Browser                                   |
 
-#### **User Actions**
+### **User Actions**
 
 | Command                                                        | Description                                                                                                                                                       |
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -120,7 +118,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | count                                                          | Counts instances of a Web Element in a Page.                                                                                                                      |
 | wait                                                           | Waits for a specific time (Seconds)                                                                                                                               |
 
-#### **Verifications**
+### **Verifications**
 
 | Command                                                           | Description                                                                                                                              |
 | ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -170,9 +168,9 @@ I.click(PageLogin.LOGIN_BUTTON);
 | counted                                                           | Verifies Web Element Instance count is equal to expected count.                                                                          |
 | seeAlertMessage                                                   | Verifies Javascript Alert Message displayed if equal to expected message                                                                 |
 
-### **Mobile Automation Commands**
+## **Mobile Automation Commands**
 
-#### **Device Actions**
+### **Device Actions**
 
 | Command          | Description                          |
 | ---------------- | ------------------------------------ |
@@ -185,7 +183,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | resetApp         | Resets application data.             |
 
 
-#### **User Actions**
+### **User Actions**
 
 | Command                                                        | Description                                                                                                                                        |
 | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -213,7 +211,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | count                                                          | Counts instances of a Mobile Element in a Screen.                                                                                                  |
 | wait                                                           | Waits for a specific time (Seconds)                                                                                                                |
 
-#### **Verifications**
+### **Verifications**
 
 | Command                                                           | Description                                                                                                                                 |
 | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -248,7 +246,7 @@ I.click(PageLogin.LOGIN_BUTTON);
 | seeEnabled                                                        | Verifies Mobile Element is enabled on the Web Page                                                                                          |
 | seeDisabled                                                       | Verifies Mobile Element is disabled on the Web Page                                                                                         |
 
-## **Excel Data**
+# **Excel Data**
 
 ```java
 Excel excelType = Excel.XLS;
@@ -258,7 +256,7 @@ Verifico verifico = new Verifico();
 ExcelData excelData = verifico.getExcelData(excelType, filePath);
 ```
 
-## **SQL Data**
+# **SQL Data**
 
 ```java
 SQL sqlType = "MySQL";
