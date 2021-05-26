@@ -17,6 +17,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 /**
@@ -80,8 +81,9 @@ public class AppiumMobileDriver {
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
-		capabilities.setCapability(MobileCapabilityType.FULL_RESET, "true");
+		capabilities.setCapability(MobileCapabilityType.FULL_RESET, "true");		
 		capabilities.setCapability(MobileCapabilityType.NO_RESET, "false");
+		capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, "true");
 		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
@@ -114,6 +116,7 @@ public class AppiumMobileDriver {
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
+		capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, "true");
 		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
