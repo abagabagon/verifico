@@ -1241,16 +1241,16 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 	
-	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
+	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
 		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
 			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
+				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
 				String text = null;
 				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking attribute value at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
 					continue;
 				} else {
 					text = elementToCheckText.getAttribute(attribute).trim();
@@ -1286,10 +1286,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 			}
 			if (!flgTextFound) {
 				if(i < 4) {
-					this.log.debug("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					this.log.debug("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+					this.log.error("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
 				}
 			} else {
 				break;
@@ -1322,27 +1322,27 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void pointOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
+	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
-	public void clickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
+	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClick);
+	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToDoubleClick);
+	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
 	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
@@ -1395,10 +1395,66 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 	
+	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
+				String text = null;
+				if (elementToCheckText == null) {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
+					continue;
+				} else {
+					text = elementToCheckText.getAttribute(attribute).trim();
+				}
+				if (text.contains(textToCheck)) {
+					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
+					if (elementToDoActionTo != null) {
+						switch(userAction) {
+						case CLEAR:
+							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, null);
+							break;
+						case PRESS:
+							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, keyButton);
+							break;
+						case SEND_KEYS:
+							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, inputText, null);
+							break;
+						default:
+							this.log.fatal("Unsupported User Action.");
+						}
+					} else {
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
 		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableKeyboardCommands(UserAction.CLEAR, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, textToCheck, null);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableKeyboardCommands(UserAction.CLEAR, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
 	}
 	
 	@Override
@@ -1408,9 +1464,21 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableKeyboardCommands(UserAction.PRESS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
 	}
 	
 	private String executeTableGetCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String attribute) {
@@ -1465,10 +1533,69 @@ public class SeleniumWebAutomation implements WebAutomation {
 		return value;
 	}
 	
+	private String executeTableGetCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String textToCheck, By rowObjectToDoActionTo, String attribute) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean flgTextFound = false;
+		String value = null;
+		for(int i = 1; i <= 4; i++) {
+			for(int j = 0; j < size; j++) {
+				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
+				String text = null;
+				if (elementToCheckText == null) {
+					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
+					continue;
+				} else {
+					text = elementToCheckText.getAttribute(attributeToCheck).trim();
+				}
+				if (text.contains(textToCheck)) {
+					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
+					if (elementToDoActionTo != null) {
+						switch(userAction) {
+						case GET_ATTRIBUTE:
+							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, attribute);
+							break;
+						case GET_DROPDOWN:
+							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
+							break;
+						case GET_TEXT:
+							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
+							break;
+						default:
+							this.log.fatal("Unsupported User Action.");
+						}
+					} else {
+						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
+					}
+					flgTextFound = true;
+					break;
+				}
+			}
+			if (!flgTextFound) {
+				if(i < 4) {
+					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+		return value;
+	}
+	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
 		return retrievedValue;
 	}
 	
@@ -1480,9 +1607,23 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
 		return retrievedValue;
 	}
 	
