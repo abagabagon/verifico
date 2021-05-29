@@ -30,7 +30,7 @@ public class RestAPI {
 		}
 	}
 	
-	public final Response request(HTTPMethod method, String endPoint, RequestSpecification requestSpecification) {
+	private final Response request(HTTPMethod method, String endPoint, RequestSpecification requestSpecification) {
 		Response response = null;
 		JsonPath responseJson = null;
 		boolean status = false;
@@ -91,11 +91,27 @@ public class RestAPI {
 		return response;
 	}
 	
+	/**
+	 * GET HTTP Method API Request 
+	 * 
+	 * @param endPoint				End point of API Request
+	 * @param requestSpecification	Specification object containing Headers, Body and Parameters for API Request
+	 * @return Response Object of API Request
+	 */
+	
 	public final Response get(String endPoint, RequestSpecification requestSpecification) {
 		log.debug("I process GET API Request.");
 		Response response = this.request(HTTPMethod.GET, endPoint, requestSpecification);		
 		return response;
 	}
+	
+	/**
+	 * POST HTTP Method API Request 
+	 * 
+	 * @param endPoint				End point of API Request
+	 * @param requestSpecification	Specification object containing Headers, Body and Parameters for API Request
+	 * @return Response Object of API Request
+	 */
 	
 	public final Response post(String endPoint, RequestSpecification requestSpecification) {
 		log.debug("I process GET API Request.");
@@ -103,11 +119,27 @@ public class RestAPI {
 		return response;
 	}
 	
+	/**
+	 * PUT HTTP Method API Request 
+	 * 
+	 * @param endPoint				End point of API Request
+	 * @param requestSpecification	Specification object containing Headers, Body and Parameters for API Request
+	 * @return Response Object of API Request
+	 */
+	
 	public final Response put(String endPoint, RequestSpecification requestSpecification) {
 		log.debug("I process GET API Request.");
 		Response response = this.request(HTTPMethod.PUT, endPoint, requestSpecification);		
 		return response;
 	}
+	
+	/**
+	 * DELETE HTTP Method API Request 
+	 * 
+	 * @param endPoint				End point of API Request
+	 * @param requestSpecification	Specification object containing Headers, Body and Parameters for API Request
+	 * @return Response Object of API Request
+	 */
 	
 	public final Response delete(String endPoint, RequestSpecification requestSpecification) {
 		log.debug("I process GET API Request.");
