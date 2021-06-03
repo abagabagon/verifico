@@ -114,7 +114,7 @@ public class RestAPI {
 	 */
 	
 	public final Response post(String endPoint, RequestSpecification requestSpecification) {
-		log.debug("I process GET API Request.");
+		log.debug("I process POST API Request.");
 		Response response = this.request(HTTPMethod.POST, endPoint, requestSpecification);		
 		return response;
 	}
@@ -128,7 +128,7 @@ public class RestAPI {
 	 */
 	
 	public final Response put(String endPoint, RequestSpecification requestSpecification) {
-		log.debug("I process GET API Request.");
+		log.debug("I process PUT API Request.");
 		Response response = this.request(HTTPMethod.PUT, endPoint, requestSpecification);		
 		return response;
 	}
@@ -142,7 +142,7 @@ public class RestAPI {
 	 */
 	
 	public final Response delete(String endPoint, RequestSpecification requestSpecification) {
-		log.debug("I process GET API Request.");
+		log.debug("I process DELETE API Request.");
 		Response response = this.request(HTTPMethod.DELETE, endPoint, requestSpecification);		
 		return response;
 	}
