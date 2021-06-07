@@ -63,6 +63,10 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.isHeadless = isHeadless;
 	}
 	
+	enum BrowserAction {
+		OPEN_BROWSER, OPEN_TAB, GO_TO, MAXIMIZE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER
+	}
+	
 	enum UserAction {
 		CLEAR, CLICK, CLICKJS, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT, POINT, PRESS, SELECT, SEND_KEYS
@@ -71,59 +75,128 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/* ####################################################### */
 	/*                     BROWSER ACTIONS                     */
 	/* ####################################################### */
-
+	
+	void execute(BrowserAction browserAction, String input) {
+		this.log.debug("I open New Tab.");
+		try {
+			switch(browserAction) {
+			case OPEN_BROWSER:
+				this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
+				this.maximize();
+				this.deleteAllCookies();
+				this.setImplicitWait(10);
+				this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15, this.driver));
+				this.action = new Actions(this.driver);
+				this.javascriptExecutor = (JavascriptExecutor)this.driver;
+				break;
+			case OPEN_TAB:
+				String link = "window.open('" + input + "', '_blank');";
+				this.javascriptExecutor.executeScript(link);
+				break;
+			case MAXIMIZE:
+				this.driver.manage().window().maximize();
+				break;
+			case DELETE_ALL_COOKIES:
+				this.driver.manage().deleteAllCookies();
+				break;
+			case GO_TO:
+				this.driver.get(input);
+				this.seleniumWait.waitForPage();
+				break;
+			case BACK:
+				this.driver.navigate().back();
+				this.seleniumWait.waitForPage();
+				break;
+			case FORWARD:
+				this.driver.navigate().forward();
+				this.seleniumWait.waitForPage();
+				break;
+			case REFRESH:
+				this.driver.navigate().refresh();
+				this.seleniumWait.waitForPage();
+				break;
+			case CLOSE_TAB:
+				this.driver.close();
+				break;
+			case CLOSE_BROWSER:
+				this.driver.quit();
+				break;
+			default:
+				this.log.fatal("Unsupported Browser Action.");
+			}
+		} catch (NullPointerException e) {
+			this.log.fatal("Unable to perform \"" + String.valueOf(browserAction) + "\". Browser might not have been opened or initialized.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			if (this.driver == null) {
+				System.exit(1);
+			}
+		} catch (TimeoutException e) {
+			this.log.fatal("Wait time to perform \"" + String.valueOf(browserAction) + "\" has expired.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.fatal("Something went wrong while trying to perform \"" + String.valueOf(browserAction) + "\" has expired.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+	}
+	
 	@Override
 	public void openBrowser() {
 		this.log.debug("I open Web Browser.");
-		this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
-		this.maximizeBrowserWindow();
-		this.deleteAllCookies();
-		this.setImplicitWait(10);
-		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15, this.driver));
-		this.action = new Actions(this.driver);
-		this.javascriptExecutor = (JavascriptExecutor)this.driver;
+		this.execute(BrowserAction.OPEN_BROWSER, null);
+	}
+	
+	@Override
+	public void closeBrowser() {
+		this.log.debug("I close Browser.");
+		this.execute(BrowserAction.CLOSE_BROWSER, null);
 	}
 	
 	@Override
 	public void openTab(String url) {
 		this.log.debug("I open New Tab.");
-		try {
-			String link = "window.open('" + url + "', '_blank');";
-			this.javascriptExecutor.executeScript(link);
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to open New Tab. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (TimeoutException e) {
-			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to navigate to Url \"" + url + "\" .");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
+		this.execute(BrowserAction.OPEN_TAB, url);
+	}
+	
+	@Override
+	public void closeTab() {
+		this.log.debug("I close Tab.");
+		this.execute(BrowserAction.CLOSE_TAB, null);
 	}
 
 	@Override
 	public void goTo(String url) {
 		this.log.debug("I navigate to URL: \"" + url + "\".");
-		try {
-			this.driver.get(url);
-			this.seleniumWait.waitForPage();
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to navigate to Url \"" + url + ". Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (TimeoutException e) {
-			this.log.fatal("Wait time to navigate to Url \"" + url + "\" has expired.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to navigate to Url \"" + url + "\" .");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
+		this.execute(BrowserAction.GO_TO, url);
+	}
+	
+	@Override
+	public void back() {
+		this.log.debug("I click back.");
+		this.execute(BrowserAction.BACK, null);
+	}
+
+	@Override
+	public void forward() {
+		this.log.debug("I click forward.");
+		this.execute(BrowserAction.FORWARD, null);
+	}
+
+	@Override
+	public void refresh() {
+		this.log.debug("I click refresh.");
+		this.execute(BrowserAction.REFRESH, null);
+	}
+
+	@Override
+	public void maximize() {
+		this.log.trace("I maximize Web Browser Window.");
+		this.execute(BrowserAction.MAXIMIZE, null);
+	}
+
+	@Override
+	public void deleteAllCookies() {
+		this.log.trace("I delete all cookies.");
+		this.execute(BrowserAction.DELETE_ALL_COOKIES, null);
 	}
 	
 	@Override
@@ -226,124 +299,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		}
 	}
 
-	@Override
-	public void back() {
-		this.log.debug("I click back.");
-		try {
-			this.driver.navigate().back();
-			this.seleniumWait.waitForPage();
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to click back. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to click back.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
 
-	@Override
-	public void forward() {
-		this.log.debug("I click forward.");
-		try {
-			this.driver.navigate().forward();
-			this.seleniumWait.waitForPage();
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to click forward. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to click forward.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
-
-	@Override
-	public void refresh() {
-		this.log.debug("I click refresh.");
-		try {
-			this.driver.navigate().refresh();
-			this.seleniumWait.waitForPage();
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to click refresh. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to click refresh.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
-
-	@Override
-	public void closeTab() {
-		try {
-			this.log.debug("I close Tab.");
-			this.driver.close();
-		} catch (NullPointerException e) {
-			this.log.error("Unable to close Tab. Tab might have already been closed or browser was never opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to close Tab.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
-
-	@Override
-	public void closeBrowser() {
-		try {
-			this.log.debug("I close Browser.");
-			this.driver.quit();
-		} catch (NullPointerException e) {
-			this.log.error("Unable to close Browser. Browser might have already been closed or was never opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to close Browser.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
-	
-	@Override
-	public void maximizeBrowserWindow() {
-		this.log.trace("I maximize Web Browser Window.");
-		try {
-			this.driver.manage().window().maximize();
-		} catch (NullPointerException e) {
-			this.log.error("Unable to maximize browser window. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to maximize browser window.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
-
-	@Override
-	public void deleteAllCookies() {
-		this.log.trace("I delete all cookies.");
-		try {
-			this.driver.manage().deleteAllCookies();
-		} catch (NullPointerException e) {
-			this.log.error("Unable to delete all cookies. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to delete all cookies.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
 	
 	@Override
 	public void scroll(String pixelHorizontal, String pixelVertical) {
@@ -378,21 +334,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		WebDriverWait wait = null;
 		try {
 			wait = new WebDriverWait(driver, duration);
-		} catch (NullPointerException e) {
-			this.log.error("Unable to initialize Explicit Wait. Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to scroll page.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-		return wait;
-	}
-	
-	WebDriverWait setExplicitWait(long duration, WebElement element) {
-		this.log.trace("I initialize Explicit Wait.");
-		WebDriverWait wait = null;
-		try {
-			wait = new WebDriverWait((WebDriver) element, duration);
 		} catch (NullPointerException e) {
 			this.log.error("Unable to initialize Explicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -755,6 +696,374 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void deselect(By locator, String option) {
 		this.log.debug("I deselect option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		this.executeSelectCommands(UserAction.DESELECT, locator, option);
+	}
+	
+	private void executeMouseCommands(UserAction userAction, By parent, By child) {
+		boolean actionPerformed = false;
+		WebElement parentElement = null;
+		WebElement childElement = null;
+		String script = null;
+		for(int i = 1; i <= 4; i++) {
+			try {
+				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
+				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
+				this.javascriptExecutor.executeScript(script);
+				switch(userAction) {
+				case CLICK:
+					childElement.click();
+					break;
+				case CLICKJS:
+					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
+					break;
+				case CLICK_AND_HOLD:
+					this.action.clickAndHold(childElement).perform();
+					break;
+				case DOUBLE_CLICK:
+					this.action.doubleClick(childElement).perform();
+					break;
+				case POINT:
+					this.action.moveToElement(childElement).perform();
+					break;
+				default:
+					this.log.fatal("Unsupported User Action.");
+				}
+				actionPerformed = true;
+			} catch (NullPointerException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (StaleElementReferenceException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (ElementClickInterceptedException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is unclickable because it's not on view.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+				this.seleniumWait.waitForObjectToBeVisible(childElement);
+				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
+				this.javascriptExecutor.executeScript(script);
+				this.action.moveToElement(childElement).perform();
+			} catch (Exception e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			if (!actionPerformed) {
+				if(i < 4) {
+					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void pointOnChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.POINT, parent, child);
+	}
+	
+	@Override
+	public void clickOnChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.CLICK, parent, child);
+	}
+	
+	@Override
+	public void clickJSOnChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.CLICKJS, parent, child);
+	}
+	
+	@Override
+	public void clickAndHoldChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I click and hold Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.CLICK_AND_HOLD, parent, child);
+	}
+	
+	@Override
+	public void doubleClickOnChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, child);
+	}
+	
+	@Override
+	public void pointOnChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.POINT, parent, child, index);
+	}
+	
+	@Override
+	public void clickOnChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.CLICK, parent, child, index);
+	}
+	
+	@Override
+	public void clickJSOnChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.CLICKJS, parent, child, index);
+	}
+	
+	@Override
+	public void doubleClickOnChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, child, index);
+	}
+	
+	private void executeKeyboardCommands(UserAction userAction, By parent, By child, String inputText, Keys keyButton) {
+		boolean actionPerformed = false;
+		WebElement parentElement = null;
+		WebElement childElement = null;
+		for(int i = 1; i <= 4; i++) {
+			try {
+				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
+				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+				switch(userAction) {
+				case CLEAR:
+					this.seleniumWait.waitForObjectToBeVisible(childElement);
+					Platform platform = OperatingSystem.getOS();
+					if (platform == Platform.MAC) {
+						this.action.click(childElement)
+				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
+					} else {
+						this.action.click(childElement)
+				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
+				        .pause(200).sendKeys(Keys.DELETE)
+				        .perform();
+					}
+					break;
+				case PRESS:
+					this.seleniumWait.waitForObjectToBeVisible(childElement);
+					childElement.sendKeys(keyButton);
+					break;
+				case SEND_KEYS:
+					this.seleniumWait.waitForObjectToBeVisible(childElement);
+					childElement.sendKeys(inputText);
+					break;
+				default:
+					this.log.fatal("Unsupported User Action.");
+				}
+				actionPerformed = true;
+			} catch (NullPointerException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (StaleElementReferenceException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (InvalidElementStateException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element might be disabled and unclickable.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (IllegalArgumentException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Input Text is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (Exception e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			if (!actionPerformed) {
+				if(i < 4) {
+					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void clearChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeKeyboardCommands(UserAction.CLEAR, parent, child, null, null);
+	}
+	
+	@Override
+	public void pressOnChildElementWithinParentElement(By parent, By child, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\"."); 
+		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, null, keyButton);
+	}
+	
+	@Override
+	public void typeOnChildElementWithinParentElement(By parent, By child, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, inputText, null);
+	}
+	
+	@Override
+	public void clearChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeKeyboardCommands(UserAction.CLEAR, parent, child, index, null, null);
+	}
+	
+	@Override
+	public void pressOnChildElementWithinParentElement(By parent, int index, By child, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeKeyboardCommands(UserAction.PRESS, parent, child, index, null, keyButton);
+	}
+	
+	@Override
+	public void typeOnChildElementWithinParentElement(By parent, int index, By child, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, index, inputText, null);
+	}
+	
+	private String executeGetCommands(UserAction userAction, By parent, By child, String attribute) {
+		boolean actionPerformed = false;
+		WebElement parentElement = null;
+		WebElement childElement = null;
+		String value = null;
+		Select select = null;
+		for(int i = 1; i <= 4; i++) {
+			try {
+				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
+				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+				switch(userAction) {
+				case GET_ATTRIBUTE:
+					value = childElement.getAttribute(attribute);
+					break;
+				case GET_DROPDOWN:
+					value = select.getFirstSelectedOption().getText().toLowerCase();
+					break;
+				case GET_TEXT:
+					value = childElement.getText().trim();
+					break;
+				default:
+					this.log.fatal("Unsupported User Action.");
+				}
+				actionPerformed = true;
+			} catch (NullPointerException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (StaleElementReferenceException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (UnexpectedTagNameException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+				childElement.click();
+			} catch (Exception e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			if (!actionPerformed) {
+				if(i < 4) {
+					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+		return value;
+	}
+	
+	@Override
+	public String getTextFromChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.executeGetCommands(UserAction.GET_TEXT, parent, child, null);
+		return text;
+	}
+	
+	@Override
+	public String getValueFromChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, "value");
+		return text;
+	}
+	
+	@Override
+	public String getAttributeValueFromChildElementWithinParentElement(By parent, By child, String attribute) {
+		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, attribute);
+		return text;
+	}
+	
+	@Override
+	public String getDropDownListValueFromChildElementWithinParentElement(By parent, By child) {
+		this.log.debug("I get value from Drop-down List Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.executeGetCommands(UserAction.GET_DROPDOWN, parent, child, null);
+		return text;
+	}
+	
+	@Override
+	public String getTextFromChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedText = this.executeGetCommands(UserAction.GET_TEXT, parent, child, index, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromChildElementWithinParentElement(By parent, int index, By child) {
+		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, index, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromChildElementWithinParentElement(By parent, int index, By child, String attribute) {
+		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, index, attribute);
+		return retrievedValue;
+	}
+	
+	@SuppressWarnings("unused")
+	private String executeSelectCommands(UserAction userAction, By parent, By child, String option) {
+		boolean actionPerformed = false;
+		WebElement parentElement = null;
+		WebElement childElement = null;
+		String value = null;
+		for(int i = 1; i <= 4; i++) {
+			try {
+				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
+				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+				switch(userAction) {
+				case SELECT:
+					this.seleniumWait.waitForObjectToBeVisible(childElement);
+					this.select(userAction, childElement, option);
+					break;
+				case DESELECT:
+					this.seleniumWait.waitForObjectToBeVisible(childElement);
+					this.select(userAction, childElement, option);
+					break;
+				default:
+					this.log.fatal("Unsupported User Action.");
+				}
+				actionPerformed = true;
+			} catch (NullPointerException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (StaleElementReferenceException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (UnexpectedTagNameException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+				childElement.click();
+			} catch (Exception e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			if (!actionPerformed) {
+				if(i < 4) {
+					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+		return value;
 	}
 	
 	private void executeMouseCommands(UserAction userAction, By parent, By child, int index) {
@@ -1186,25 +1495,25 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
-	public void pointOnListElementBasedOnIndex(By objectList, int index) {
+	public void pointOnListElement(By objectList, int index) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
 		this.executeMouseCommands(UserAction.POINT, objectList, index);
 	}
 	
 	@Override
-	public void clickOnListElementBasedOnIndex(By objectList, int index) {
+	public void clickOnListElement(By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
 		this.executeMouseCommands(UserAction.CLICK, objectList, index);
 	}
 	
 	@Override
-	public void clickJSOnListElementBasedOnIndex(By objectList, int index) {
+	public void clickJSOnListElement(By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
 		this.executeMouseCommands(UserAction.CLICKJS, objectList, index);
 	}
 	
 	@Override
-	public void doubleClickOnListElementBasedOnIndex(By objectList, int index) {
+	public void doubleClickOnListElement(By objectList, int index) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
 		this.executeMouseCommands(UserAction.DOUBLE_CLICK, objectList, index);
 	}
@@ -1369,30 +1678,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
-	@Override
-	public void pointOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToPoint, int index) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.POINT, rowObjectList, rowObjectToPoint, index);
-	}
-	
-	@Override
-	public void clickOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToClick, int index) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToClick, index);
-	}
-	
-	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToClick, int index) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToClick, index);
-	}
-	
-	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToDoubleClick, int index) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToDoubleClick, index);
-	}
-	
 	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
 		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
 		int size = rows.size();
@@ -1527,24 +1812,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
 		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	@Override
-	public void clearTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToClear, int index) {
-		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeKeyboardCommands(UserAction.CLEAR, rowObjectList, rowObjectToClear, index, null, null);
-	}
-	
-	@Override
-	public void pressOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToTypeOn, int index, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeKeyboardCommands(UserAction.PRESS, rowObjectList, rowObjectToTypeOn, index, null, keyButton);
-	}
-	
-	@Override
-	public void typeOnTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToTypeOn, int index, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToTypeOn, index, inputText, null);
 	}
 	
 	private String executeTableGetCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String attribute) {
@@ -1690,27 +1957,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
 		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getAttributeValueFromTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToGetAttributeValueFrom, int index, String attribute) {
-		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToGetAttributeValueFrom, index, attribute);
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getTextFromTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToGetTextFrom, int index) {
-		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		String retrievedText = this.executeGetCommands(UserAction.GET_TEXT, rowObjectList, rowObjectToGetTextFrom, index, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValueFromTableRowElementBasedOnTableRowIndex(By rowObjectList, By rowObjectToGetValueFrom, int index) {
-		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on row index: \"" + index + "\".");
-		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToGetValueFrom, index, "value");
 		return retrievedValue;
 	}
 	
