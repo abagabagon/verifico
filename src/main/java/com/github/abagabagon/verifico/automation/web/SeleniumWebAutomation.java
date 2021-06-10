@@ -2,7 +2,6 @@ package com.github.abagabagon.verifico.automation.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -10,25 +9,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.github.abagabagon.verifico.automation.web.SeleniumBrowserCommands.BrowserAction;
+import com.github.abagabagon.verifico.automation.web.SeleniumBrowserCommands.SwitchAction;
+import com.github.abagabagon.verifico.automation.web.SeleniumGetCommands.GetAction;
+import com.github.abagabagon.verifico.automation.web.SeleniumKeyboardCommands.KeyboardAction;
+import com.github.abagabagon.verifico.automation.web.SeleniumMouseCommands.MouseAction;
+import com.github.abagabagon.verifico.automation.web.SeleniumSelectCommands.SelectAction;
 import com.github.abagabagon.verifico.enums.Browser;
-import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 /**
  * Selenium implemented Web Automation Commands
@@ -49,6 +47,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private SeleniumWebDriver seleniumWebDriver;
 	private SeleniumWait seleniumWait;
 	
+	
+	private SeleniumBrowserCommands browserCommand;
+	private SeleniumGetCommands getCommand;
+	private SeleniumKeyboardCommands keyboardCommand;
+	private SeleniumMouseCommands mouseCommand;
+	private SeleniumSelectCommands selectCommand;
+
+	
 	public SeleniumWebAutomation(Browser browser) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.seleniumWebDriver = new SeleniumWebDriver();
@@ -63,204 +69,92 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.isHeadless = isHeadless;
 	}
 	
-	enum BrowserAction {
-		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER
-	}
-	
-	enum SwitchAction {
-		BY_TITLE, BY_URL
-	}
-	
-	enum UserAction {
-		CLEAR, CLICK, CLICKJS, CLICK_AND_HOLD, COUNT, DESELECT, DOUBLE_CLICK, DRAG_AND_DROP,
-		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT, POINT, PRESS, SELECT, SEND_KEYS
-	}
-	
 	/* ####################################################### */
 	/*                     BROWSER ACTIONS                     */
 	/* ####################################################### */
-	
-	private void execute(BrowserAction browserAction, String input) {
-		this.log.debug("I open New Tab.");
-		try {
-			switch(browserAction) {
-			case OPEN_TAB:
-				String link = "window.open('" + input + "', '_blank');";
-				this.javascriptExecutor.executeScript(link);
-				break;
-			case MAXIMIZE:
-				this.driver.manage().window().maximize();
-				break;
-			case DELETE_ALL_COOKIES:
-				this.driver.manage().deleteAllCookies();
-				break;
-			case GO_TO:
-				this.driver.get(input);
-				this.seleniumWait.waitForPage();
-				break;
-			case BACK:
-				this.driver.navigate().back();
-				this.seleniumWait.waitForPage();
-				break;
-			case FORWARD:
-				this.driver.navigate().forward();
-				this.seleniumWait.waitForPage();
-				break;
-			case REFRESH:
-				this.driver.navigate().refresh();
-				this.seleniumWait.waitForPage();
-				break;
-			case CLOSE_TAB:
-				this.driver.close();
-				break;
-			case CLOSE_BROWSER:
-				this.driver.quit();
-				break;
-			default:
-				this.log.fatal("Unsupported Browser Action.");
-			}
-		} catch (NullPointerException e) {
-			this.log.fatal("Unable to perform \"" + String.valueOf(browserAction) + "\". Browser might not have been opened or initialized.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-			if (this.driver == null) {
-				System.exit(1);
-			}
-		} catch (TimeoutException e) {
-			this.log.fatal("Wait time to perform \"" + String.valueOf(browserAction) + "\" has expired.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to perform \"" + String.valueOf(browserAction) + "\" has expired.");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
-	}
 	
 	@Override
 	public void openBrowser() {
 		this.log.debug("I open Web Browser.");
 		this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
-		this.maximize();
-		this.deleteAllCookies();
-		this.setImplicitWait(10);
 		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15));
 		this.action = new Actions(this.driver);
 		this.javascriptExecutor = (JavascriptExecutor)this.driver;
+		this.browserCommand = new SeleniumBrowserCommands(this.driver, this.javascriptExecutor, this.seleniumWait);
+		this.getCommand = new SeleniumGetCommands(this.driver, this.seleniumWait);
+		this.keyboardCommand = new SeleniumKeyboardCommands(this.driver, this.action, this.seleniumWait);
+		this.mouseCommand = new SeleniumMouseCommands(this.driver, this.javascriptExecutor, this.action, this.seleniumWait);
+		this.selectCommand = new SeleniumSelectCommands(this.driver, this.seleniumWait);
+		this.maximize();
+		this.deleteAllCookies();
+		this.setImplicitWait(10);
 	}
 	
 	@Override
 	public void closeBrowser() {
 		this.log.debug("I close Browser.");
-		this.execute(BrowserAction.CLOSE_BROWSER, null);
+		this.browserCommand.execute(BrowserAction.CLOSE_BROWSER, null);
 	}
 	
 	@Override
 	public void openTab(String url) {
 		this.log.debug("I open New Tab.");
-		this.execute(BrowserAction.OPEN_TAB, url);
+		this.browserCommand.execute(BrowserAction.OPEN_TAB, url);
 	}
 	
 	@Override
 	public void closeTab() {
 		this.log.debug("I close Tab.");
-		this.execute(BrowserAction.CLOSE_TAB, null);
+		this.browserCommand.execute(BrowserAction.CLOSE_TAB, null);
 	}
 
 	@Override
 	public void goTo(String url) {
 		this.log.debug("I navigate to URL: \"" + url + "\".");
-		this.execute(BrowserAction.GO_TO, url);
+		this.browserCommand.execute(BrowserAction.GO_TO, url);
 	}
 	
 	@Override
 	public void back() {
 		this.log.debug("I click back.");
-		this.execute(BrowserAction.BACK, null);
+		this.browserCommand.execute(BrowserAction.BACK, null);
 	}
 
 	@Override
 	public void forward() {
 		this.log.debug("I click forward.");
-		this.execute(BrowserAction.FORWARD, null);
+		this.browserCommand.execute(BrowserAction.FORWARD, null);
 	}
 
 	@Override
 	public void refresh() {
 		this.log.debug("I click refresh.");
-		this.execute(BrowserAction.REFRESH, null);
+		this.browserCommand.execute(BrowserAction.REFRESH, null);
 	}
 
 	@Override
 	public void maximize() {
 		this.log.trace("I maximize Web Browser Window.");
-		this.execute(BrowserAction.MAXIMIZE, null);
+		this.browserCommand.execute(BrowserAction.MAXIMIZE, null);
 	}
 
 	@Override
 	public void deleteAllCookies() {
 		this.log.trace("I delete all cookies.");
-		this.execute(BrowserAction.DELETE_ALL_COOKIES, null);
-	}
-	
-	private boolean executeSwitchTab(SwitchAction switchAction, String input) {
-		this.log.debug("I switch to Tab with Page URL/Title: \"" + input + "\".");
-		boolean isExisting = false;
-		for(int i = 1; i <= 4; i++) {
-			Set<String> windows = this.driver.getWindowHandles();
-			for (String windowId: windows) {
-				this.driver.switchTo().window(windowId);
-				try {
-					switch(switchAction) {
-					case BY_TITLE:
-						String currentTitle = this.driver.getTitle();
-						if(currentTitle.equals(input)) {
-							isExisting = true;
-							this.log.debug("Successfully switched to Tab with Title: \"" + input + "\".");
-							break;
-						}
-					case BY_URL:
-						String currentUrl = this.driver.getCurrentUrl();
-						if(currentUrl.equals(input)) {
-							isExisting = true;
-							this.log.debug("Successfully switched to Tab with URL: \"" + input + "\".");
-							break;
-						}
-						break;
-					default:
-						this.log.fatal("Unsupported Switch Action.");
-					}
-
-				} catch (NoSuchWindowException e) {
-					this.log.error("Tab with URL/Title: \"" + input + "\" could not be found. Please check if provided Page Title is correct.");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-				} catch (Exception e) {
-					this.log.error("Something went wrong while trying to switch tab by URL/Title: \"" + input + "\".");
-					this.log.debug(ExceptionUtils.getStackTrace(e));
-				}
-			}
-			if (!isExisting) {
-				if(i < 4) {
-					this.log.debug("Tab with the Page URL/Title: \"" + input + "\" was not found. Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.debug("Tab with the Page URL/Title: \"" + input + "\" was not found.");
-				}
-			} else {
-				break;
-			}
-		}
-		return isExisting;
+		this.browserCommand.execute(BrowserAction.DELETE_ALL_COOKIES, null);
 	}
 	
 	@Override
 	public boolean switchTabByTitle(String title) {
 		this.log.debug("I switch to Tab with Page Title: \"" + title + "\".");
-		boolean isExisting = this.executeSwitchTab(SwitchAction.BY_TITLE, title);
+		boolean isExisting = this.browserCommand.executeSwitchTab(SwitchAction.BY_TITLE, title);
 		return isExisting;
 	}
 	
 	@Override
 	public boolean switchTabByURL(String url) {
 		this.log.debug("I switch to Tab with Page URL: \"" + url + "\".");
-		boolean isExisting = this.executeSwitchTab(SwitchAction.BY_URL, url);
+		boolean isExisting = this.browserCommand.executeSwitchTab(SwitchAction.BY_URL, url);
 		return isExisting;
 	}
 	
@@ -289,8 +183,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-
-
 	
 	@Override
 	public void scroll(String pixelHorizontal, String pixelVertical) {
@@ -339,341 +231,86 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/*                       USER ACTIONS                      */
 	/* ####################################################### */
 	
-	private void executeMouseCommands(UserAction userAction, By locator) {
-		boolean actionPerformed = false;
-		WebElement element = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				switch(userAction) {
-				case CLICK:
-					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					element.click();
-					break;
-				case CLICKJS:
-					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					this.javascriptExecutor.executeScript("arguments[0].click();", element);
-					break;
-				case CLICK_AND_HOLD:
-					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					this.action.clickAndHold(element).perform();
-					break;
-				case DOUBLE_CLICK:
-					element = this.seleniumWait.waitForObjectToBeClickable(locator);
-					this.action.doubleClick(element).perform();
-					break;
-				case POINT:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.action.moveToElement(element).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				element = this.seleniumWait.waitForObjectToBeVisible(locator);
-				script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(element).perform();
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (MoveTargetOutOfBoundsException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is out-of-bounds.");
-				element = this.seleniumWait.waitForObjectToBeVisible(locator);
-				script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(element).perform();
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-	}
-	
 	@Override
 	public void click(By locator) {
 		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.CLICK, locator);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, locator);
 	}
 	
 	@Override
 	public void clickJS(By locator) {
 		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, locator);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, locator);
 	}
 	
 	@Override
 	public void clickAndHold(By locator) {
 		this.log.debug("I click and hold Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.CLICK_AND_HOLD, locator);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK_AND_HOLD, locator);
 	}
 	
 	@Override
 	public void doubleClick(By locator) {
 		this.log.debug("I double click Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.DOUBLE_CLICK, locator);
+		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, locator);
 	}
 	
 	@Override
 	public void point(By locator) {
 		this.log.debug("I point at Web Element: \"" + locator.toString() + "\".");
-		this.executeMouseCommands(UserAction.POINT, locator);
-	}
-	
-	private void executeKeyboardCommands(UserAction userAction, By locator, String inputText, Keys keyButton) {
-		boolean actionPerformed = false;
-		WebElement element = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				switch(userAction) {
-				case CLEAR:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					Platform platform = OperatingSystem.getOS();
-					if (platform == Platform.MAC) {
-						this.action.click(element)
-				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					} else {
-						this.action.click(element)
-				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					}
-					break;
-				case PRESS:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					element.sendKeys(keyButton);
-					break;
-				case SEND_KEYS:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					element.sendKeys(inputText);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementNotInteractableException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element cannot be interacted with.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				element.click();
-			} catch (InvalidElementStateException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element might be disabled and unclickable.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				element.click();
-			} catch (IllegalArgumentException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Input Text is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeMouseCommands(MouseAction.POINT, locator);
 	}
 	
 	@Override
 	public void clear(By locator) {
 		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.CLEAR, locator, null, null);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, locator, null, null);
 	}
 	
 	@Override
 	public void press(By locator, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\"."); 
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, locator, null, keyButton);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, locator, null, keyButton);
 	}
 	
 	@Override
 	public void type(By locator, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, locator, inputText, null);
-	}
-	
-	private String executeGetCommands(UserAction userAction, By locator, String attribute) {
-		boolean actionPerformed = false;
-		WebElement element = null;
-		String value = null;
-		Select select = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				switch(userAction) {
-				case GET_ATTRIBUTE:
-					element = this.seleniumWait.waitForObjectToBePresent(locator);
-					value = element.getAttribute(attribute);
-					break;
-				case GET_DROPDOWN:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					value = select.getFirstSelectedOption().getText().toLowerCase();
-					break;
-				case GET_TEXT:
-					element = this.seleniumWait.waitForObjectToBePresent(locator);
-					value = element.getText().trim();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, locator, inputText, null);
 	}
 	
 	@Override
 	public String getText(By locator) {
 		this.log.debug("I get text from Web Element: \"" + locator.toString() + "\".");
-		String text = this.executeGetCommands(UserAction.GET_TEXT, locator, null);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_TEXT, locator, null);
 		return text;
 	}
 	
 	@Override
 	public String getValue(By locator) {
 		this.log.debug("I get value from Web Element: \"" + locator.toString() + "\".");
-		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, locator, "value");
+		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, locator, "value");
 		return text;
 	}
 	
 	@Override
 	public String getAttributeValue(By locator, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + locator.toString() + "\".");
-		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, locator, attribute);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, locator, attribute);
 		return text;
 	}
 	
 	@Override
 	public String getDropDownListValue(By locator) {
 		this.log.debug("I get value from Drop-down List Web Element: \"" + locator.toString() + "\".");
-		String text = this.executeGetCommands(UserAction.GET_DROPDOWN, locator, null);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_DROPDOWN, locator, null);
 		return text;
-	}
-	
-	private void executeSelectCommands(UserAction userAction, By locator, String option) {
-		boolean actionPerformed = false;
-		WebElement element = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				switch(userAction) {
-				case SELECT:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.select(userAction, element, option);
-					break;
-				case DESELECT:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.select(userAction, element, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-	}
-	
-	private void select(UserAction userAction, WebElement element, String option) {
-		Select select = new Select(element);
-		int size = select.getOptions().size();
-		boolean flgOptionTicked = false;
-		for (int j = 0; j < size; j++) {
-			if (option.equals(select.getOptions().get(j).getText().trim())) {
-				switch(userAction) {
-				case SELECT:
-					select.selectByVisibleText(option);
-					flgOptionTicked = true;
-				case DESELECT:
-					select.deselectByVisibleText(option);
-					flgOptionTicked = true;
-				default:
-					this.log.fatal("Unsupported SELECT Mode.");
-				}
-				break;
-			}
-		}
-		if (flgOptionTicked == false) {
-			this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
-		}
 	}
 	
 	@Override
 	public void select(By locator, String option) {
 		this.log.debug("I select option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
-		this.executeSelectCommands(UserAction.SELECT, locator, option);
+		this.selectCommand.executeSelectCommands(SelectAction.SELECT, locator, option);
 	}
 	
 	@Override
@@ -686,2123 +323,541 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public void deselect(By locator, String option) {
 		this.log.debug("I deselect option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
-		this.executeSelectCommands(UserAction.DESELECT, locator, option);
-	}
-	
-	private void executeMouseCommands(UserAction userAction, By parent, By child) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				switch(userAction) {
-				case CLICK:
-					childElement.click();
-					break;
-				case CLICKJS:
-					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
-					break;
-				case CLICK_AND_HOLD:
-					this.action.clickAndHold(childElement).perform();
-					break;
-				case DOUBLE_CLICK:
-					this.action.doubleClick(childElement).perform();
-					break;
-				case POINT:
-					this.action.moveToElement(childElement).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				this.seleniumWait.waitForObjectToBeVisible(childElement);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(childElement).perform();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.selectCommand.executeSelectCommands(SelectAction.DESELECT, locator, option);
 	}
 	
 	@Override
 	public void point(By parent, By child) {
 		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.POINT, parent, child);
+		this.mouseCommand.executeMouseCommands(MouseAction.POINT, parent, child);
 	}
 	
 	@Override
 	public void click(By parent, By child) {
 		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.CLICK, parent, child);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, parent, child);
 	}
 	
 	@Override
 	public void clickJS(By parent, By child) {
 		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, parent, child);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, parent, child);
 	}
 	
 	@Override
 	public void clickAndHold(By parent, By child) {
 		this.log.debug("I click and hold Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.CLICK_AND_HOLD, parent, child);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK_AND_HOLD, parent, child);
 	}
 	
 	@Override
 	public void doubleClick(By parent, By child) {
 		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, child);
-	}
-	
-	private void executeMouseCommands(UserAction userAction, By parent, By child, int index) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				switch(userAction) {
-				case CLICK:
-					childElement.click();
-					break;
-				case CLICKJS:
-					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
-					break;
-				case CLICK_AND_HOLD:
-					this.action.clickAndHold(childElement).perform();
-					break;
-				case DOUBLE_CLICK:
-					this.action.doubleClick(childElement).perform();
-					break;
-				case POINT:
-					this.action.moveToElement(childElement).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				this.seleniumWait.waitForObjectToBeVisible(childElement);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(childElement).perform();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, parent, child);
 	}
 	
 	@Override
 	public void point(By parent, int index, By child) {
 		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.POINT, parent, child, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.POINT, parent, child, index);
 	}
 	
 	@Override
 	public void click(By parent, int index, By child) {
 		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.CLICK, parent, child, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, parent, child, index);
 	}
 	
 	@Override
 	public void clickJS(By parent, int index, By child) {
 		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, parent, child, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, parent, child, index);
 	}
 	
 	@Override
 	public void doubleClick(By parent, int index, By child) {
 		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, child, index);
-	}
-	
-	private void executeKeyboardCommands(UserAction userAction, By parent, By child, String inputText, Keys keyButton) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case CLEAR:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					Platform platform = OperatingSystem.getOS();
-					if (platform == Platform.MAC) {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					} else {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					}
-					break;
-				case PRESS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(keyButton);
-					break;
-				case SEND_KEYS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(inputText);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (InvalidElementStateException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element might be disabled and unclickable.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (IllegalArgumentException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Input Text is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, parent, child, index);
 	}
 	
 	@Override
 	public void clear(By parent, By child) {
 		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeKeyboardCommands(UserAction.CLEAR, parent, child, null, null);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, parent, child, null, null);
 	}
 	
 	@Override
 	public void press(By parent, By child, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\"."); 
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, null, keyButton);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, null, keyButton);
 	}
 	
 	@Override
 	public void type(By parent, By child, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, inputText, null);
-	}
-	
-	private void executeKeyboardCommands(UserAction userAction, By parent, By child, int index, String inputText, Keys keyButton) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case CLEAR:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					Platform platform = OperatingSystem.getOS();
-					if (platform == Platform.MAC) {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					} else {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					}
-					break;
-				case PRESS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(keyButton);
-					break;
-				case SEND_KEYS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(inputText);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (InvalidElementStateException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element might be disabled and unclickable.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (IllegalArgumentException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Input Text is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, inputText, null);
 	}
 	
 	@Override
 	public void clear(By parent, int index, By child) {
 		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeKeyboardCommands(UserAction.CLEAR, parent, child, index, null, null);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, parent, child, index, null, null);
 	}
 	
 	@Override
 	public void press(By parent, int index, By child, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeKeyboardCommands(UserAction.PRESS, parent, child, index, null, keyButton);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.PRESS, parent, child, index, null, keyButton);
 	}
 	
 	@Override
 	public void type(By parent, int index, By child, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.executeKeyboardCommands(UserAction.SEND_KEYS, parent, child, index, inputText, null);
+		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, index, inputText, null);
 	}
-	
-	private String executeGetCommands(UserAction userAction, By parent, By child, String attribute) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String value = null;
-		Select select = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case GET_ATTRIBUTE:
-					value = childElement.getAttribute(attribute);
-					break;
-				case GET_DROPDOWN:
-					value = select.getFirstSelectedOption().getText().toLowerCase();
-					break;
-				case GET_TEXT:
-					value = childElement.getText().trim();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
-	}
-	
+
 	@Override
 	public String getText(By parent, By child) {
 		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.executeGetCommands(UserAction.GET_TEXT, parent, child, null);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_TEXT, parent, child, null);
 		return text;
 	}
 	
 	@Override
 	public String getValue(By parent, By child) {
 		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, "value");
+		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, "value");
 		return text;
 	}
 	
 	@Override
 	public String getAttributeValue(By parent, By child, String attribute) {
 		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, attribute);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, attribute);
 		return text;
 	}
 	
 	@Override
 	public String getDropDownListValue(By parent, By child) {
 		this.log.debug("I get value from Drop-down List Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.executeGetCommands(UserAction.GET_DROPDOWN, parent, child, null);
+		String text = this.getCommand.executeGetCommands(GetAction.GET_DROPDOWN, parent, child, null);
 		return text;
-	}
-	
-	private String executeGetCommands(UserAction userAction, By parent, By child, int index, String attribute) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String value = null;
-		Select select = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case GET_ATTRIBUTE:
-					value = childElement.getAttribute(attribute);
-					break;
-				case GET_DROPDOWN:
-					value = select.getFirstSelectedOption().getText().toLowerCase();
-					break;
-				case GET_TEXT:
-					value = childElement.getText().trim();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
 	}
 	
 	@Override
 	public String getText(By parent, int index, By child) {
 		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedText = this.executeGetCommands(UserAction.GET_TEXT, parent, child, index, null);
+		String retrievedText = this.getCommand.executeGetCommands(GetAction.GET_TEXT, parent, child, index, null);
 		return retrievedText;
 	}
 	
 	@Override
 	public String getValue(By parent, int index, By child) {
 		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, index, "value");
+		String retrievedValue = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, index, "value");
 		return retrievedValue;
 	}
 	
 	@Override
 	public String getAttributeValue(By parent, int index, By child, String attribute) {
 		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedValue = this.executeGetCommands(UserAction.GET_ATTRIBUTE, parent, child, index, attribute);
+		String retrievedValue = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, index, attribute);
 		return retrievedValue;
-	}
-	
-	@SuppressWarnings("unused")
-	private String executeSelectCommands(UserAction userAction, By parent, By child, String option) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case SELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(userAction, childElement, option);
-					break;
-				case DESELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(userAction, childElement, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
-	}
-	
-	@SuppressWarnings("unused")
-	private String executeSelectCommands(UserAction userAction, By parent, By child, int index, String option) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case SELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(userAction, childElement, option);
-					break;
-				case DESELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(userAction, childElement, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
-	}
-	
-	private void executeListMouseCommands(UserAction userAction, By objectList, String textToCheck) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				String text = elements.get(j).getText().trim();
-				if (text.contains(textToCheck)) {
-					switch(userAction) {
-					case CLICK:
-						this.executeMouseCommands(UserAction.CLICK, objectList, j);
-						break;
-					case CLICKJS:
-						this.executeMouseCommands(UserAction.CLICKJS, objectList, j);
-						break;
-					case CLICK_AND_HOLD:
-						this.executeMouseCommands(UserAction.CLICK_AND_HOLD, objectList, j);
-						break;
-					case DOUBLE_CLICK:
-						this.executeMouseCommands(UserAction.DOUBLE_CLICK, objectList, j);
-						break;
-					case POINT:
-						this.executeMouseCommands(UserAction.POINT, objectList, j);
-						break;
-					default:
-						this.log.fatal("Unsupported User Action.");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
 	}
 	
 	@Override
 	public void pointOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.POINT, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, objectList, textToCheck);
 	}
 	
 	@Override
 	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICK, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, objectList, textToCheck);
 	}
 	
 	@Override
 	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICKJS, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, objectList, textToCheck);
 	}
 	
 	@Override
 	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, textToCheck);
-	}
-	
-	private void executeListMouseCommands(UserAction userAction, By objectList, String attribute, String valueToCheck) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				String text = elements.get(j).getAttribute(attribute).trim();
-				if (text.contains(valueToCheck)) {
-					switch(userAction) {
-					case CLICK:
-						this.executeMouseCommands(UserAction.CLICK, objectList, j);
-						break;
-					case CLICKJS:
-						this.executeMouseCommands(UserAction.CLICKJS, objectList, j);
-						break;
-					case CLICK_AND_HOLD:
-						this.executeMouseCommands(UserAction.CLICK_AND_HOLD, objectList, j);
-						break;
-					case DOUBLE_CLICK:
-						this.executeMouseCommands(UserAction.DOUBLE_CLICK, objectList, j);
-						break;
-					case POINT:
-						this.executeMouseCommands(UserAction.POINT, objectList, j);
-						break;
-					default:
-						this.log.fatal("Unsupported User Action.");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, objectList, textToCheck);
 	}
 	
 	@Override
 	public void pointOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.POINT, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void clickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICK, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICKJS, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void doubleClickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, objectList, attribute, valueToCheck);
-	}
-	
-	private void executeMouseCommands(UserAction userAction, By locator, int index) {
-		boolean actionPerformed = false;
-		List<WebElement> elements = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
-				switch(userAction) {
-				case CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					elements.get(index).click();
-					break;
-				case CLICKJS:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.javascriptExecutor.executeScript("arguments[0].click();", elements.get(index));
-					break;
-				case CLICK_AND_HOLD:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.action.clickAndHold(elements.get(index)).perform();
-					break;
-				case DOUBLE_CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.action.doubleClick(elements.get(index)).perform();
-					break;
-				case POINT:
-					script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-					this.javascriptExecutor.executeScript(script);
-					this.action.moveToElement(elements.get(index)).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				elements = this.seleniumWait.waitForObjectsToBeVisible(locator);
-				script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(elements.get(index)).perform();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void pointOnListElement(By objectList, int index) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.POINT, objectList, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.POINT, objectList, index);
 	}
 	
 	@Override
 	public void clickOnListElement(By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.CLICK, objectList, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, objectList, index);
 	}
 	
 	@Override
 	public void clickJSOnListElement(By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.CLICKJS, objectList, index);
+		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, objectList, index);
 	}
 	
 	@Override
 	public void doubleClickOnListElement(By objectList, int index) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeMouseCommands(UserAction.DOUBLE_CLICK, objectList, index);
-	}
-	
-	
-	private void executeListMouseCommands(UserAction userAction, By parent, By objectList, String textToCheck) {
-		this.seleniumWait.waitForListToBeVisible(objectList);
-		List<WebElement> elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, objectList);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				String text = elements.get(j).getText().trim();
-				if (text.contains(textToCheck)) {
-					switch(userAction) {
-					case CLICK:
-						this.executeListMouseCommands(UserAction.CLICK, parent, objectList, j);
-						break;
-					case CLICKJS:
-						this.executeListMouseCommands(UserAction.CLICKJS, parent, objectList, j);
-						break;
-					case CLICK_AND_HOLD:
-						this.executeListMouseCommands(UserAction.CLICK_AND_HOLD, parent, objectList, j);
-						break;
-					case DOUBLE_CLICK:
-						this.executeListMouseCommands(UserAction.DOUBLE_CLICK, parent, objectList, j);
-						break;
-					case POINT:
-						this.executeListMouseCommands(UserAction.POINT, parent, objectList, j);
-						break;
-					default:
-						this.log.fatal("Unsupported User Action.");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, objectList, index);
 	}
 	
 	@Override
 	public void pointOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.POINT, parent, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, textToCheck);
 	}
 	
 	@Override
 	public void clickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICK, parent, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, textToCheck);
 	}
 	
 	@Override
 	public void clickJSOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICKJS, parent, objectList, textToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, textToCheck);
 	}
 	
 	@Override
 	public void doubleClickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, parent, objectList, textToCheck);
-	}
-	
-	private void executeListMouseCommands(UserAction userAction, By parent, By objectList, String attribute, String valueToCheck) {
-		this.seleniumWait.waitForListToBeVisible(objectList);
-		List<WebElement> elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, objectList);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				String text = elements.get(j).getAttribute(attribute).trim();
-				if (text.contains(valueToCheck)) {
-					switch(userAction) {
-					case CLICK:
-						this.executeListMouseCommands(UserAction.CLICK, parent, objectList, j);
-						break;
-					case CLICKJS:
-						this.executeListMouseCommands(UserAction.CLICKJS, parent, objectList, j);
-						break;
-					case CLICK_AND_HOLD:
-						this.executeListMouseCommands(UserAction.CLICK_AND_HOLD, parent, objectList, j);
-						break;
-					case DOUBLE_CLICK:
-						this.executeListMouseCommands(UserAction.DOUBLE_CLICK, parent, objectList, j);
-						break;
-					case POINT:
-						this.executeListMouseCommands(UserAction.POINT, parent, objectList, j);
-						break;
-					default:
-						this.log.fatal("Unsupported User Action.");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element List: \"" +  objectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, textToCheck);
 	}
 	
 	@Override
 	public void pointOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.POINT, parent, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void clickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICK, parent, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void clickJSOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.CLICKJS, parent, objectList, attribute, valueToCheck);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void doubleClickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
 		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, parent, objectList, attribute, valueToCheck);
-	}
-	
-	private void executeListMouseCommands(UserAction userAction, By parent, By child, int index) {
-		boolean actionPerformed = false;
-		List<WebElement> elements = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				this.seleniumWait.waitForObjectsToBeVisible(child);
-				elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, child);
-				switch(userAction) {
-				case CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					elements.get(index).click();
-					break;
-				case CLICKJS:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.javascriptExecutor.executeScript("arguments[0].click();", elements.get(index));
-					break;
-				case CLICK_AND_HOLD:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.action.clickAndHold(elements.get(index)).perform();
-					break;
-				case DOUBLE_CLICK:
-					this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
-					this.action.doubleClick(elements.get(index)).perform();
-					break;
-				case POINT:
-					script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-					this.javascriptExecutor.executeScript(script);
-					this.action.moveToElement(elements.get(index)).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				elements = this.seleniumWait.waitForObjectsToBeVisible(child);
-				script = "window.scrollTo(" + elements.get(index).getLocation().x + ","+ elements.get(index).getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(elements.get(index)).perform();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Web Element \"" + child.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, attribute, valueToCheck);
 	}
 	
 	@Override
 	public void pointOnListElement(By parent, By objectList, int index) {
 		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeListMouseCommands(UserAction.POINT, parent, objectList, index);
+		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, index);
 	}
 	
 	@Override
 	public void clickOnListElement(By parent, By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeListMouseCommands(UserAction.CLICK, parent, objectList, index);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, index);
 	}
 	
 	@Override
 	public void clickJSOnListElement(By parent, By objectList, int index) {
 		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeListMouseCommands(UserAction.CLICKJS, parent, objectList, index);
+		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, index);
 	}
 	
 	@Override
 	public void doubleClickOnListElement(By parent, By objectList, int index) {
 		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.executeListMouseCommands(UserAction.DOUBLE_CLICK, parent, objectList, index);
-	}
-	
-	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLICK:
-							this.executeMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICKJS:
-							this.executeMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICK_AND_HOLD:
-							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case DOUBLE_CLICK:
-							this.executeMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case POINT:
-							this.executeMouseCommands(UserAction.POINT, rowObjectList,rowObjectToDoActionTo,  j);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, index);
 	}
 	
 	@Override
 	public void pointOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
 		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.POINT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.POINT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
 	}
 	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
 		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
-	}
-	
-	private void executeTableMouseCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking attribute value at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attribute).trim();
-				}
-				if (text.contains(valueToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLICK:
-							this.executeMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICKJS:
-							this.executeMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICK_AND_HOLD:
-							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case DOUBLE_CLICK:
-							this.executeMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case POINT:
-							this.executeMouseCommands(UserAction.POINT, rowObjectList,rowObjectToDoActionTo,  j);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
 	}
 	
 	@Override
 	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
 		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
 	}
 	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICKJS, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
 		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
-	}
-	
-	private void executeMouseCommands(UserAction userAction, By parent, By rowObjectList, By child, int index) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String script = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForNestedObjectsToBePresent(parent, rowObjectList).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				switch(userAction) {
-				case CLICK:
-					childElement.click();
-					break;
-				case CLICKJS:
-					this.javascriptExecutor.executeScript("arguments[0].click();", childElement);
-					break;
-				case CLICK_AND_HOLD:
-					this.action.clickAndHold(childElement).perform();
-					break;
-				case DOUBLE_CLICK:
-					this.action.doubleClick(childElement).perform();
-					break;
-				case POINT:
-					this.action.moveToElement(childElement).perform();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (ElementClickInterceptedException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is unclickable because it's not on view.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				this.seleniumWait.waitForObjectToBeVisible(childElement);
-				script = "window.scrollTo(" + childElement.getLocation().x + ","+ childElement.getLocation().y + ")";
-				this.javascriptExecutor.executeScript(script);
-				this.action.moveToElement(childElement).perform();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-	}
-	
-	private void executeTableMouseCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLICK:
-							this.executeMouseCommands(UserAction.CLICK, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICKJS:
-							this.executeMouseCommands(UserAction.CLICKJS, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICK_AND_HOLD:
-							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case DOUBLE_CLICK:
-							this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case POINT:
-							this.executeMouseCommands(UserAction.POINT, parent, rowObjectList,rowObjectToDoActionTo,  j);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
 	@Override
 	public void pointOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
 		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.POINT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.POINT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
 	}
 	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void clickJSOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICKJS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
 		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
-	}
-	
-	private void executeTableMouseCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking attribute value at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attribute).trim();
-				}
-				if (text.contains(valueToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLICK:
-							this.executeMouseCommands(UserAction.CLICK, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICKJS:
-							this.executeMouseCommands(UserAction.CLICKJS, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case CLICK_AND_HOLD:
-							this.executeMouseCommands(UserAction.CLICK_AND_HOLD, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case DOUBLE_CLICK:
-							this.executeMouseCommands(UserAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToDoActionTo, j);
-							break;
-						case POINT:
-							this.executeMouseCommands(UserAction.POINT, parent, rowObjectList,rowObjectToDoActionTo,  j);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the \"" + attribute + "\" attribute value \"" + valueToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
 	}
 	
 	@Override
 	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
 		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
 	}
 	
 	@Override
 	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
 		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.CLICKJS, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
 	}
 	
 	@Override
 	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
 		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.executeTableMouseCommands(UserAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
-	}
-	
-	
-	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLEAR:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, null);
-							break;
-						case PRESS:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, keyButton);
-							break;
-						case SEND_KEYS:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, inputText, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
 		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.CLEAR, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
 	}
 	
 	@Override
 	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.PRESS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
 	}
 	
 	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	private void executeTableKeyboardCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attribute).trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLEAR:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, null);
-							break;
-						case PRESS:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null, keyButton);
-							break;
-						case SEND_KEYS:
-							this.executeKeyboardCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, inputText, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
 	}
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
 		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.CLEAR, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
 	}
 	
 	@Override
 	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.PRESS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
 	}
 	
 	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	private void executeKeyboardCommands(UserAction userAction, By parent, By rowObjectList, By child, int index, String inputText, Keys keyButton) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForNestedObjectsToBePresent(parent, rowObjectList).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case CLEAR:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					Platform platform = OperatingSystem.getOS();
-					if (platform == Platform.MAC) {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.COMMAND).sendKeys("a").keyUp(Keys.COMMAND)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					} else {
-						this.action.click(childElement)
-				        .pause(200).keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL)
-				        .pause(200).sendKeys(Keys.DELETE)
-				        .perform();
-					}
-					break;
-				case PRESS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(keyButton);
-					break;
-				case SEND_KEYS:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					childElement.sendKeys(inputText);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (InvalidElementStateException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element might be disabled and unclickable.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (IllegalArgumentException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Input Text is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-	}
-	
-	private void executeTableKeyboardCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLEAR:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null, null);
-							break;
-						case PRESS:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null, keyButton);
-							break;
-						case SEND_KEYS:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, inputText, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
 	}
 	
 	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
 	}
 	
 	@Override
 	public void pressOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.PRESS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
 	}
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
 		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
-	}
-	
-	private void executeTableKeyboardCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attribute).trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case CLEAR:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null, null);
-							break;
-						case PRESS:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null, keyButton);
-							break;
-						case SEND_KEYS:
-							this.executeKeyboardCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, inputText, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
 	}
 	
 	@Override
 	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
 	}
 	
 	@Override
 	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.PRESS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
 	}
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
 		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.executeTableKeyboardCommands(UserAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
-	}
-	
-	
-	private String executeTableGetCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String attribute) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case GET_ATTRIBUTE:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, attribute);
-							break;
-						case GET_DROPDOWN:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						case GET_TEXT:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
+		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
 	}
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
 		return retrievedValue;
 	}
 	
 	@Override
 	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
 		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
+		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
 		return retrievedText;
 	}
 	
 	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
 		return retrievedValue;
-	}
-	
-	private String executeTableGetCommands(UserAction userAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String textToCheck, By rowObjectToDoActionTo, String attribute) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attributeToCheck).trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case GET_ATTRIBUTE:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, attribute);
-							break;
-						case GET_DROPDOWN:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						case GET_TEXT:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
 	}
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
 		return retrievedValue;
 	}
 	
 	@Override
 	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
 		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
 		return retrievedText;
 	}
 	
 	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
 		return retrievedValue;
-	}
-	
-	private String executeGetCommands(UserAction userAction, By parent, By rowObjectList, By child, int index, String attribute) {
-		boolean actionPerformed = false;
-		WebElement parentElement = null;
-		WebElement childElement = null;
-		String value = null;
-		Select select = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForNestedObjectsToBePresent(parent, rowObjectList).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(userAction) {
-				case GET_ATTRIBUTE:
-					value = childElement.getAttribute(attribute);
-					break;
-				case GET_DROPDOWN:
-					value = select.getFirstSelectedOption().getText().toLowerCase();
-					break;
-				case GET_TEXT:
-					value = childElement.getText().trim();
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(userAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
-	}
-	
-	private String executeTableGetCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String attribute) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckText, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getText().trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case GET_ATTRIBUTE:
-							value = this.executeGetCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, attribute);
-							break;
-						case GET_DROPDOWN:
-							value = this.executeGetCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						case GET_TEXT:
-							value = this.executeGetCommands(userAction, parent, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
 	}
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
 		return retrievedValue;
 	}
 	
 	@Override
 	public String getTextFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
 		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
+		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
 		return retrievedText;
 	}
 	
 	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
 		return retrievedValue;
-	}
-	
-	private String executeTableGetCommands(UserAction userAction, By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String textToCheck, By rowObjectToDoActionTo, String attribute) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		String value = null;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToCheckAttributeValue, j);
-				String text = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					text = elementToCheckText.getAttribute(attributeToCheck).trim();
-				}
-				if (text.contains(textToCheck)) {
-					WebElement elementToDoActionTo = this.seleniumWait.waitForNestedObjectToBeVisible(parent, rowObjectList, rowObjectToDoActionTo, j);
-					if (elementToDoActionTo != null) {
-						switch(userAction) {
-						case GET_ATTRIBUTE:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, attribute);
-							break;
-						case GET_DROPDOWN:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						case GET_TEXT:
-							value = this.executeGetCommands(userAction, rowObjectList, rowObjectToDoActionTo, j, null);
-							break;
-						default:
-							this.log.fatal("Unsupported User Action.");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToDoActionTo.toString() + "\" to perform the User Action \"" + String.valueOf(userAction) + "\" on at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckAttributeValue.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return value;
 	}
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
 		return retrievedValue;
 	}
 	
 	@Override
 	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
 		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedText = this.executeTableGetCommands(UserAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
 		return retrievedText;
 	}
 	
 	@Override
 	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
 		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.executeTableGetCommands(UserAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
+		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
 		return retrievedValue;
 	}
 	
@@ -2819,24 +874,24 @@ public class SeleniumWebAutomation implements WebAutomation {
 				this.action.dragAndDrop(sourceElement, targetElement).perform();
 				actionPerformed = true;
 			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Element created is NULL.");
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Element created is NULL.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". The Web Element is no longer present in the Web Page.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 			} catch (TimeoutException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Wait time has expired.");
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Wait time has expired.");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
 				this.log.debug(ExceptionUtils.getStackTrace(e));
 			}
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(UserAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
+					this.log.error("Failed to perform User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
 				}
 			} else {
 				break;
