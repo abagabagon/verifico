@@ -231,35 +231,348 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/*                       USER ACTIONS                      */
 	/* ####################################################### */
 	
+	/********************** MOUSE COMMANDS *********************/
+	
+	@Override
+	public void point(By locator) {
+		this.log.debug("I point at Web Element: \"" + locator.toString() + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.POINT, locator);
+	}
+	
 	@Override
 	public void click(By locator) {
 		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, locator);
+		this.mouseCommand.doBasicCommand(MouseAction.CLICK, locator);
 	}
 	
 	@Override
 	public void clickJS(By locator) {
 		this.log.debug("I click Web Element: \"" + locator.toString() + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, locator);
+		this.mouseCommand.doBasicCommand(MouseAction.CLICKJS, locator);
 	}
 	
 	@Override
 	public void clickAndHold(By locator) {
 		this.log.debug("I click and hold Web Element: \"" + locator.toString() + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK_AND_HOLD, locator);
+		this.mouseCommand.doBasicCommand(MouseAction.CLICK_AND_HOLD, locator);
 	}
 	
 	@Override
 	public void doubleClick(By locator) {
 		this.log.debug("I double click Web Element: \"" + locator.toString() + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, locator);
+		this.mouseCommand.doBasicCommand(MouseAction.DOUBLE_CLICK, locator);
 	}
 	
 	@Override
-	public void point(By locator) {
-		this.log.debug("I point at Web Element: \"" + locator.toString() + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.POINT, locator);
+	public void point(By parent, By child) {
+		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.POINT, parent, child);
 	}
+	
+	@Override
+	public void click(By parent, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.CLICK, parent, child);
+	}
+	
+	@Override
+	public void clickJS(By parent, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.CLICKJS, parent, child);
+	}
+	
+	@Override
+	public void clickAndHold(By parent, By child) {
+		this.log.debug("I click and hold Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.CLICK_AND_HOLD, parent, child);
+	}
+	
+	@Override
+	public void doubleClick(By parent, By child) {
+		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.DOUBLE_CLICK, parent, child);
+	}
+	
+	@Override
+	public void point(By parent, int index, By child) {
+		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.POINT, parent, index, child);
+	}
+	
+	@Override
+	public void click(By parent, int index, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.CLICK, parent, index, child);
+	}
+	
+	@Override
+	public void clickJS(By parent, int index, By child) {
+		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.CLICKJS, parent, index, child);
+	}
+	
+	@Override
+	public void doubleClick(By parent, int index, By child) {
+		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.mouseCommand.doBasicCommand(MouseAction.DOUBLE_CLICK, parent, index, child);
+	}
+	
+	@Override
+	public void pointOnListElement(By objectList, int index) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.POINT, objectList, index);
+	}
+	
+	@Override
+	public void clickOnListElement(By objectList, int index) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.CLICK, objectList, index);
+	}
+	
+	@Override
+	public void clickJSOnListElement(By objectList, int index) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.CLICKJS, objectList, index);
+	}
+	
+	@Override
+	public void doubleClickOnListElement(By objectList, int index) {
+		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.DOUBLE_CLICK, objectList, index);
+	}
+	
+	@Override
+	public void pointOnListElement(By parent, By objectList, int index) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.POINT, parent, objectList, index);
+	}
+	
+	@Override
+	public void clickOnListElement(By parent, By objectList, int index) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.CLICK, parent, objectList, index);
+	}
+	
+	@Override
+	public void clickJSOnListElement(By parent, By objectList, int index) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.CLICKJS, parent, objectList, index);
+	}
+	
+	@Override
+	public void doubleClickOnListElement(By parent, By objectList, int index) {
+		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
+		this.mouseCommand.doListCommand(MouseAction.DOUBLE_CLICK, parent, objectList, index);
+	}
+	
+	@Override
+	public void pointOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.POINT, objectList, textToCheck);
+	}
+	
+	@Override
+	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.CLICK, objectList, textToCheck);
+	}
+	
+	@Override
+	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.CLICKJS, objectList, textToCheck);
+	}
+	
+	@Override
+	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
+		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.DOUBLE_CLICK, objectList, textToCheck);
+	}
+	
+	@Override
+	public void pointOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.POINT, parent, objectList, textToCheck);
+	}
+	
+	@Override
+	public void clickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.CLICK, parent, objectList, textToCheck);
+	}
+	
+	@Override
+	public void clickJSOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.CLICKJS, parent, objectList, textToCheck);
+	}
+	
+	@Override
+	public void doubleClickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
+		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnText(MouseAction.DOUBLE_CLICK, parent, objectList, textToCheck);
+	}
+	
+	@Override
+	public void pointOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.POINT, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void clickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.CLICK, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.CLICKJS, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void doubleClickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.DOUBLE_CLICK, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void pointOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.POINT, parent, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void clickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.CLICK, parent, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void clickJSOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.CLICKJS, parent, objectList, attribute, valueToCheck);
+	}
+	
+	@Override
+	public void doubleClickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
+		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
+		this.mouseCommand.doListCommandBasedOnAttributeValue(MouseAction.DOUBLE_CLICK, parent, objectList, attribute, valueToCheck);
+	}
+	
+	
+	@Override
+	public void pointOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.POINT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
+	}
+	
+	@Override
+	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
+	}
+	
+	@Override
+	public void pointOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.POINT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
+	}
+	
+	@Override
+	public void clickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnText(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
+	}
+	
+	@Override
+	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
+	}
+	
+	@Override
+	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
+	}
+	
+	@Override
+	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
+		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
+	}
+	
+	@Override
+	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
+		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
+	}
+	
+	@Override
+	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
+		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
+	}
+	
+	/********************** KEYBOARD COMMANDS *********************/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@Override
 	public void clear(By locator) {
@@ -324,60 +637,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void deselect(By locator, String option) {
 		this.log.debug("I deselect option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		this.selectCommand.executeSelectCommands(SelectAction.DESELECT, locator, option);
-	}
-	
-	@Override
-	public void point(By parent, By child) {
-		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.POINT, parent, child);
-	}
-	
-	@Override
-	public void click(By parent, By child) {
-		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, parent, child);
-	}
-	
-	@Override
-	public void clickJS(By parent, By child) {
-		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, parent, child);
-	}
-	
-	@Override
-	public void clickAndHold(By parent, By child) {
-		this.log.debug("I click and hold Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK_AND_HOLD, parent, child);
-	}
-	
-	@Override
-	public void doubleClick(By parent, By child) {
-		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, parent, child);
-	}
-	
-	@Override
-	public void point(By parent, int index, By child) {
-		this.log.debug("I point at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.POINT, parent, child, index);
-	}
-	
-	@Override
-	public void click(By parent, int index, By child) {
-		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, parent, child, index);
-	}
-	
-	@Override
-	public void clickJS(By parent, int index, By child) {
-		this.log.debug("I click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, parent, child, index);
-	}
-	
-	@Override
-	public void doubleClick(By parent, int index, By child) {
-		this.log.debug("I double-click Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, parent, child, index);
 	}
 	
 	@Override
@@ -465,245 +724,17 @@ public class SeleniumWebAutomation implements WebAutomation {
 		return retrievedValue;
 	}
 	
-	@Override
-	public void pointOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, objectList, textToCheck);
-	}
+
 	
-	@Override
-	public void clickOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, objectList, textToCheck);
-	}
+
 	
-	@Override
-	public void clickJSOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, objectList, textToCheck);
-	}
+
 	
-	@Override
-	public void doubleClickOnListElementBasedOnText(By objectList, String textToCheck) {
-		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, objectList, textToCheck);
-	}
 	
-	@Override
-	public void pointOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, objectList, attribute, valueToCheck);
-	}
 	
-	@Override
-	public void clickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, objectList, attribute, valueToCheck);
-	}
+
 	
-	@Override
-	public void clickJSOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void doubleClickOnListElementBasedOnAttributeValue(By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void pointOnListElement(By objectList, int index) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.POINT, objectList, index);
-	}
-	
-	@Override
-	public void clickOnListElement(By objectList, int index) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICK, objectList, index);
-	}
-	
-	@Override
-	public void clickJSOnListElement(By objectList, int index) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.CLICKJS, objectList, index);
-	}
-	
-	@Override
-	public void doubleClickOnListElement(By objectList, int index) {
-		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeMouseCommands(MouseAction.DOUBLE_CLICK, objectList, index);
-	}
-	
-	@Override
-	public void pointOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, textToCheck);
-	}
-	
-	@Override
-	public void clickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, textToCheck);
-	}
-	
-	@Override
-	public void clickJSOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, textToCheck);
-	}
-	
-	@Override
-	public void doubleClickOnListElementBasedOnText(By parent, By objectList, String textToCheck) {
-		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the text: \"" + textToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, textToCheck);
-	}
-	
-	@Override
-	public void pointOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void clickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void clickJSOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void doubleClickOnListElementBasedOnAttributeValue(By parent, By objectList, String attribute, String valueToCheck) {
-		this.log.debug("I double-click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, attribute, valueToCheck);
-	}
-	
-	@Override
-	public void pointOnListElement(By parent, By objectList, int index) {
-		this.log.debug("I point a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.POINT, parent, objectList, index);
-	}
-	
-	@Override
-	public void clickOnListElement(By parent, By objectList, int index) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICK, parent, objectList, index);
-	}
-	
-	@Override
-	public void clickJSOnListElement(By parent, By objectList, int index) {
-		this.log.debug("I click a Web Element from the Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.CLICKJS, parent, objectList, index);
-	}
-	
-	@Override
-	public void doubleClickOnListElement(By parent, By objectList, int index) {
-		this.log.debug("I double-click a Web Element from a Web Element List: \"" + objectList.toString() + "\" based on the index: \"" + index + "\".");
-		this.mouseCommand.executeListMouseCommands(MouseAction.DOUBLE_CLICK, parent, objectList, index);
-	}
-	
-	@Override
-	public void pointOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.POINT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
-	}
-	
-	@Override
-	public void clickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
-	}
-	
-	@Override
-	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
-	}
-	
-	@Override
-	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
-	}
-	
-	@Override
-	public void pointOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToPoint) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.POINT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToPoint);
-	}
-	
-	@Override
-	public void clickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToDoubleClick);
-	}
-	
-	@Override
-	public void pointOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToPoint) {
-		this.log.debug("I point the Web Element: \"" + rowObjectToPoint.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToPoint);
-	}
-	
-	@Override
-	public void clickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void clickJSOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToClick) {
-		this.log.debug("I click the Web Element: \"" + rowObjectToClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.CLICKJS, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToClick);
-	}
-	
-	@Override
-	public void doubleClickOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoubleClick) {
-		this.log.debug("I double-click the Web Element: \"" + rowObjectToDoubleClick.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		this.mouseCommand.executeTableMouseCommands(MouseAction.DOUBLE_CLICK, parent, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
-	}
+
 	
 	@Override
 	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {

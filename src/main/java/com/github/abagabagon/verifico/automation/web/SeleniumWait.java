@@ -572,6 +572,42 @@ public class SeleniumWait {
 		}
 		return element;
 	}
+	
+	/**
+	 * Waits for WebElement to be visible at the Web Page.
+	 *
+	 * @param ancestorElement	Ancestor element to wait for.
+	 * @param parentList		Object used to locate parent element to wait for.
+	 * @param child		 		Object used to locate child element to wait for.
+	 * @param index				Index of object to locate from the Parent Object List.
+	 * @return Created Web Element
+	 */
+	
+	final WebElement waitForNestedObjectToBeVisible(WebElement ancestorElement, By parentList, By child, int index) {
+		this.log.trace("Waiting for Nested Web Element to be visible.");
+		this.waitForPage();
+		WebElement element = null;
+		try {
+			element = this.wait.until(new ExpectedCondition<WebElement>() {
+				@Override
+				public WebElement apply(WebDriver driver) {
+					List<WebElement> parentListElement = ancestorElement.findElements(parentList);
+					WebElement childElement = parentListElement.get(index).findElement(child);
+					return childElement;
+				}
+			});
+			this.log.trace("Nested Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Nested Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for Nested Web Element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		}
+		return element;
+	}
 
 	/**
 	 * Waits for WebElements to be present at the Web Page.
