@@ -27,37 +27,53 @@ public class SeleniumSelectCommands {
 		DESELECT, SELECT
 	}
 	
+	boolean execute(SelectAction selectAction, WebElement element, String option) {
+		boolean actionPerformed = false;
+		try {
+			Select select = new Select(element);
+			int size = select.getOptions().size();
+			boolean flgOptionTicked = false;
+			for (int j = 0; j < size; j++) {
+				if (option.equals(select.getOptions().get(j).getText().trim())) {
+					switch(selectAction) {
+					case SELECT:
+						select.selectByVisibleText(option);
+						flgOptionTicked = true;
+					case DESELECT:
+						select.deselectByVisibleText(option);
+						flgOptionTicked = true;
+					default:
+						this.log.fatal("Unsupported SELECT Mode.");
+					}
+					break;
+				}
+			}
+			if (flgOptionTicked == false) {
+				this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
+			}
+			actionPerformed = true;
+		} catch (NullPointerException e) {
+			this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + element.toString() + "\". Element created is NULL.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (StaleElementReferenceException e) {
+			this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + element.toString() + "\". The Web Element is no longer present in the Web Page.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (UnexpectedTagNameException e) {
+			this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + element.toString() + "\". Element does not have a SELECT Tag.");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + element.toString() + "\".");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return actionPerformed;
+	}
+	
 	void executeSelectCommands(SelectAction selectAction, By locator, String option) {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			try {
-				switch(selectAction) {
-				case SELECT:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.select(selectAction, element, option);
-					break;
-				case DESELECT:
-					element = this.seleniumWait.waitForObjectToBeVisible(locator);
-					this.select(selectAction, element, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			actionPerformed = this.execute(selectAction, element, option);
 			if (!actionPerformed) {
 				if(i < 4) {
 					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
@@ -71,65 +87,16 @@ public class SeleniumSelectCommands {
 		}
 	}
 	
-	void select(SelectAction selectAction, WebElement element, String option) {
-		Select select = new Select(element);
-		int size = select.getOptions().size();
-		boolean flgOptionTicked = false;
-		for (int j = 0; j < size; j++) {
-			if (option.equals(select.getOptions().get(j).getText().trim())) {
-				switch(selectAction) {
-				case SELECT:
-					select.selectByVisibleText(option);
-					flgOptionTicked = true;
-				case DESELECT:
-					select.deselectByVisibleText(option);
-					flgOptionTicked = true;
-				default:
-					this.log.fatal("Unsupported SELECT Mode.");
-				}
-				break;
-			}
-		}
-		if (flgOptionTicked == false) {
-			this.log.error("Failed to select an option. Option \"" + option + "\" is invalid!");
-		}
-	}
+
 	
 	void executeSelectCommands(SelectAction selectAction, By parent, By child, String option) {
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(selectAction) {
-				case SELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(selectAction, childElement, option);
-					break;
-				case DESELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(selectAction, childElement, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
+			parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
+			childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
 					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
@@ -148,36 +115,9 @@ public class SeleniumSelectCommands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			try {
-				parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-				childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
-				switch(selectAction) {
-				case SELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(selectAction, childElement, option);
-					break;
-				case DESELECT:
-					this.seleniumWait.waitForObjectToBeVisible(childElement);
-					this.select(selectAction, childElement, option);
-					break;
-				default:
-					this.log.fatal("Unsupported User Action.");
-				}
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (UnexpectedTagNameException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\". Element does not have a SELECT Tag.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-				childElement.click();
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
+			parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
+			childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
 					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
