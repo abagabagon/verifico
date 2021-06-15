@@ -263,7 +263,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parentElementList.get(parentIndex), rowObjectList, rowObjectToCheckText, j);
 				String text = elementToCheckText.getText().trim();
 				if (text.contains(textToCheck)) {
-					this.doTableCommand(keyboardAction, parentList, rowObjectList, j, rowObjectToDoActionTo, inputText, keyButton);
+					this.doTableCommand(keyboardAction, parentList, parentIndex, rowObjectList, j, rowObjectToDoActionTo, inputText, keyButton);
 					flgTextFound = true;
 					break;
 				}
@@ -347,7 +347,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(parentElementList.get(parentIndex), rowObjectList, rowObjectToCheckAttributeValue, j);
 				String text = elementToCheckText.getAttribute(attribute).trim();
 				if (text.contains(valueToCheck)) {
-					this.doTableCommand(keyboardAction, parentList, rowObjectList, j, rowObjectToDoActionTo, inputText, keyButton);
+					this.doTableCommand(keyboardAction, parentList, parentIndex, rowObjectList, j, rowObjectToDoActionTo, inputText, keyButton);
 					flgTextFound = true;
 					break;
 				}
