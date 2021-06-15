@@ -84,7 +84,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.browserCommand = new SeleniumBrowserCommands(this.driver, this.javascriptExecutor, this.seleniumWait);
 		this.getCommand = new SeleniumGetCommands(this.driver, this.seleniumWait);
 		this.keyboardCommand = new SeleniumKeyboardCommands(this.driver, this.action, this.seleniumWait);
-		this.mouseCommand = new SeleniumMouseCommands(this.driver, this.javascriptExecutor, this.action, this.seleniumWait);
+		this.mouseCommand = new SeleniumMouseCommands(this.javascriptExecutor, this.action, this.seleniumWait);
 		this.selectCommand = new SeleniumSelectCommands(this.driver, this.seleniumWait);
 		this.maximize();
 		this.deleteAllCookies();

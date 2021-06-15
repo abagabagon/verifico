@@ -4,11 +4,11 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SeleniumGeneralCommands {
+public class SeleniumCommands {
 
 	private Logger log;
 	
-	public SeleniumGeneralCommands() {
+	public SeleniumCommands() {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
