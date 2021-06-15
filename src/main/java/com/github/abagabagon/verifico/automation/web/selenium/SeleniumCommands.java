@@ -12,23 +12,7 @@ public class SeleniumCommands {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
-	void isTextDisplayed() {
-		
-	}
-	
-	int getIndexBasedOnText() {
-		return 0;
-	}
-	
-	void isAttributeValueDisplayed() {
-		
-	}
-	
-	int getIndexBasedOnAttributeValue() {
-		return 0;
-	}
-	
-	void wait(int duration) {
+	protected void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Second(s).");
 		try {
 			Thread.sleep(duration * 1000);
