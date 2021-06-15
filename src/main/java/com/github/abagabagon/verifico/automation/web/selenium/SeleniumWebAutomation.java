@@ -562,36 +562,204 @@ public class SeleniumWebAutomation implements WebAutomation {
 	/********************** KEYBOARD COMMANDS *********************/
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public void clear(By locator) {
 		this.log.debug("I clear Web Element: \"" + locator.toString() + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, locator, null, null);
+		this.keyboardCommand.doBasicCommand(KeyboardAction.CLEAR, locator, null, null);
 	}
 	
 	@Override
 	public void press(By locator, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\"."); 
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, locator, null, keyButton);
+		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, locator, null, keyButton);
 	}
 	
 	@Override
 	public void type(By locator, String inputText) {
 		this.log.debug("I type \"" + inputText + "\" at Web Element: \"" + locator.toString() + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, locator, inputText, null);
+		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, locator, inputText, null);
 	}
+	
+	@Override
+	public void clear(By parent, By child) {
+		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.keyboardCommand.doBasicCommand(KeyboardAction.CLEAR, parent, child, null, null);
+	}
+	
+	@Override
+	public void press(By parent, By child, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\"."); 
+		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, parent, child, null, keyButton);
+	}
+	
+	@Override
+	public void type(By parent, By child, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, parent, child, inputText, null);
+	}
+	
+	@Override
+	public void clear(By parent, int index, By child) {
+		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.keyboardCommand.doBasicCommand(KeyboardAction.CLEAR, parent, index, child, null, null);
+	}
+	
+	@Override
+	public void press(By parent, int index, By child, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.keyboardCommand.doBasicCommand(KeyboardAction.PRESS, parent, index, child, null, keyButton);
+	}
+	
+	@Override
+	public void type(By parent, int index, By child, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, parent, index, child, inputText, null);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.SEND_KEYS, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.PRESS, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnText(KeyboardAction.CLEAR, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
+	}
+	
+	@Override
+	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
+		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.SEND_KEYS, parentList, parentIndex, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, inputText, null);
+	}
+	
+	@Override
+	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
+		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.PRESS, parentList, parentIndex, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToTypeOn, null, keyButton);
+	}
+	
+	@Override
+	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
+		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.CLEAR, parentList, parentIndex, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	@Override
 	public String getText(By locator) {
@@ -638,42 +806,6 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void deselect(By locator, String option) {
 		this.log.debug("I deselect option: \"" + option + "\" from Web Element: \"" + locator.toString() + "\".");
 		this.selectCommand.executeSelectCommands(SelectAction.DESELECT, locator, option);
-	}
-	
-	@Override
-	public void clear(By parent, By child) {
-		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, parent, child, null, null);
-	}
-	
-	@Override
-	public void press(By parent, By child, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\"."); 
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, null, keyButton);
-	}
-	
-	@Override
-	public void type(By parent, By child, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, inputText, null);
-	}
-	
-	@Override
-	public void clear(By parent, int index, By child) {
-		this.log.debug("I clear Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.CLEAR, parent, child, index, null, null);
-	}
-	
-	@Override
-	public void press(By parent, int index, By child, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.PRESS, parent, child, index, null, keyButton);
-	}
-	
-	@Override
-	public void type(By parent, int index, By child, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" at Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		this.keyboardCommand.executeKeyboardCommands(KeyboardAction.SEND_KEYS, parent, child, index, inputText, null);
 	}
 
 	@Override
@@ -737,77 +869,13 @@ public class SeleniumWebAutomation implements WebAutomation {
 	
 
 	
-	@Override
-	public void clearTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
-		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
-	}
+
 	
-	@Override
-	public void pressOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
-	}
+
 	
-	@Override
-	public void typeOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
-	}
+
 	
-	@Override
-	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
-		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
-	}
-	
-	@Override
-	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
-	}
-	
-	@Override
-	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	@Override
-	public void typeOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	@Override
-	public void pressOnTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToTypeOn, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToTypeOn, null, keyButton);
-	}
-	
-	@Override
-	public void clearTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToClear) {
-		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToClear, null, null);
-	}
-	
-	@Override
-	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText) {
-		this.log.debug("I type \"" + inputText + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.SEND_KEYS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, inputText, null);
-	}
-	
-	@Override
-	public void pressOnTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToTypeOn, Keys keyButton) {
-		this.log.debug("I press \"" + keyButton.toString() + "\" on Web Element: \"" + rowObjectToTypeOn.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\" attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.PRESS, parent, rowObjectList, rowObjectToCheckText, valueToCheck, rowObjectToTypeOn, null, keyButton);
-	}
-	
-	@Override
-	public void clearTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckText, String attribute, String valueToCheck, By rowObjectToClear) {
-		this.log.debug("I clear Web Element: \"" + rowObjectToClear.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the \"" + attribute + "\"attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.keyboardCommand.executeTableKeyboardCommands(KeyboardAction.CLEAR, parent, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
-	}
+
 	
 	@Override
 	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
