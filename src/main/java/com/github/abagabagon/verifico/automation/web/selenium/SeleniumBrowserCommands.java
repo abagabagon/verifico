@@ -10,7 +10,7 @@ import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 
-public class SeleniumBrowserCommands {
+public class SeleniumBrowserCommands extends SeleniumCommands {
 
 	protected WebDriver driver;
 	protected Logger log;
@@ -135,20 +135,6 @@ public class SeleniumBrowserCommands {
 			}
 		}
 		return isExisting;
-	}
-	
-	private void wait(int duration) {
-		this.log.debug("I wait for " + duration + " Second(s).");
-		try {
-			Thread.sleep(duration * 1000);
-		} catch (IllegalArgumentException e) {
-			this.log.error("Encountered IllegalArgumentException while waiting for " + duration + ".");
-		} catch (InterruptedException e) {
-			this.log.error("Encountered InterruptedException while waiting for " + duration + ".");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for " + duration + ".");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
 	}
 	
 }
