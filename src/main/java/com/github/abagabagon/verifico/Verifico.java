@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.abagabagon.verifico.automation.mobile.AppiumMobileAutomation;
 import com.github.abagabagon.verifico.automation.mobile.MobileAutomation;
-import com.github.abagabagon.verifico.automation.web.AppiumWebAutomation;
-import com.github.abagabagon.verifico.automation.web.SeleniumWebAutomation;
 import com.github.abagabagon.verifico.automation.web.WebAutomation;
+import com.github.abagabagon.verifico.automation.web.appium.AppiumWebAutomation;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumWebAutomation;
 import com.github.abagabagon.verifico.data.excel.ExcelData;
 import com.github.abagabagon.verifico.data.excel.XLSExcelData;
 import com.github.abagabagon.verifico.data.excel.XLSXExcelData;

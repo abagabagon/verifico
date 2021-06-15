@@ -1,4 +1,4 @@
-package com.github.abagabagon.verifico.automation.web;
+package com.github.abagabagon.verifico.automation.web.selenium;
 
 import java.util.List;
 
@@ -33,6 +33,10 @@ public class SeleniumMouseCommands {
 	
 	enum MouseAction {
 		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT
+	}
+	
+	void isTextDisplayed() {
+		
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package com.github.abagabagon.verifico.automation.web;
+package com.github.abagabagon.verifico.automation.web.selenium;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;

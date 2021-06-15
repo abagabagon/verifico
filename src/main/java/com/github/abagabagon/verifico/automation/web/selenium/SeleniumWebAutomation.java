@@ -1,4 +1,4 @@
-package com.github.abagabagon.verifico.automation.web;
+package com.github.abagabagon.verifico.automation.web.selenium;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +20,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.github.abagabagon.verifico.automation.web.SeleniumBrowserCommands.BrowserAction;
-import com.github.abagabagon.verifico.automation.web.SeleniumBrowserCommands.SwitchAction;
-import com.github.abagabagon.verifico.automation.web.SeleniumGetCommands.GetAction;
-import com.github.abagabagon.verifico.automation.web.SeleniumKeyboardCommands.KeyboardAction;
-import com.github.abagabagon.verifico.automation.web.SeleniumMouseCommands.MouseAction;
-import com.github.abagabagon.verifico.automation.web.SeleniumSelectCommands.SelectAction;
+import com.github.abagabagon.verifico.automation.web.WebAutomation;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumBrowserCommands.BrowserAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumBrowserCommands.SwitchAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumGetCommands.GetAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumKeyboardCommands.KeyboardAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumMouseCommands.MouseAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumSelectCommands.SelectAction;
 import com.github.abagabagon.verifico.enums.Browser;
 
 /**
