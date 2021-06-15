@@ -678,6 +678,44 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.mouseCommand.doTableCommandBasedOnAttributeValue(MouseAction.DOUBLE_CLICK, parentList, parentIndex, rowObjectList, rowObjectToCheckAttributeValue, attribute, valueToCheck, rowObjectToDoubleClick);
 	}
 	
+	@Override
+	public void dragAndDrop(By sourceObject, By targetObject) {
+		this.log.debug("I drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\".");
+		boolean actionPerformed = false;
+		WebElement sourceElement = null;
+		WebElement targetElement = null;
+		for(int i = 1; i <= 4; i++) {
+			try {
+				sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceObject);
+				targetElement = this.seleniumWait.waitForObjectToBeClickable(targetObject);
+				this.action.dragAndDrop(sourceElement, targetElement).perform();
+				actionPerformed = true;
+			} catch (NullPointerException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Element created is NULL.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (StaleElementReferenceException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". The Web Element is no longer present in the Web Page.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (TimeoutException e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Wait time has expired.");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			} catch (Exception e) {
+				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
+				this.log.debug(ExceptionUtils.getStackTrace(e));
+			}
+			if (!actionPerformed) {
+				if(i < 4) {
+					this.log.debug("Retrying User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\" " + i + "/3.");
+					wait(1);
+				} else {
+					this.log.error("Failed to perform User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
+				}
+			} else {
+				break;
+			}
+		}
+	}
+	
 	/********************** KEYBOARD COMMANDS *********************/
 	
 	
@@ -843,70 +881,214 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.keyboardCommand.doTableCommandBasedOnAttributeValue(KeyboardAction.CLEAR, parentList, parentIndex, rowObjectList, rowObjectToCheckText, attribute, valueToCheck, rowObjectToClear, valueToCheck, null);
 	}
 	
+	/********************** GET COMMANDS *********************/
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	
 	@Override
 	public String getText(By locator) {
 		this.log.debug("I get text from Web Element: \"" + locator.toString() + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_TEXT, locator, null);
+		String text = this.getCommand.doBasicCommand(GetAction.GET_TEXT, locator, null);
 		return text;
 	}
 	
 	@Override
 	public String getValue(By locator) {
 		this.log.debug("I get value from Web Element: \"" + locator.toString() + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, locator, "value");
+		String text = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, locator, "value");
 		return text;
 	}
 	
 	@Override
 	public String getAttributeValue(By locator, String attribute) {
 		this.log.debug("I get attribute value from Web Element: \"" + locator.toString() + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, locator, attribute);
+		String text = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, locator, attribute);
 		return text;
 	}
 	
 	@Override
 	public String getDropDownListValue(By locator) {
 		this.log.debug("I get value from Drop-down List Web Element: \"" + locator.toString() + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_DROPDOWN, locator, null);
+		String text = this.getCommand.doBasicCommand(GetAction.GET_DROPDOWN, locator, null);
 		return text;
 	}
+	
+	@Override
+	public String getText(By parent, By child) {
+		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.getCommand.doBasicCommand(GetAction.GET_TEXT, parent, child, null);
+		return text;
+	}
+	
+	@Override
+	public String getValue(By parent, By child) {
+		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, parent, child, "value");
+		return text;
+	}
+	
+	@Override
+	public String getAttributeValue(By parent, By child, String attribute) {
+		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, parent, child, attribute);
+		return text;
+	}
+	
+	@Override
+	public String getDropDownListValue(By parent, By child) {
+		this.log.debug("I get value from Drop-down List Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String text = this.getCommand.doBasicCommand(GetAction.GET_DROPDOWN, parent, child, null);
+		return text;
+	}
+	
+	@Override
+	public String getText(By parent, int index, By child) {
+		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedText = this.getCommand.doBasicCommand(GetAction.GET_TEXT, parent, index, child,  null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValue(By parent, int index, By child) {
+		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedValue = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, parent, index, child, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValue(By parent, int index, By child, String attribute) {
+		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
+		String retrievedValue = this.getCommand.doBasicCommand(GetAction.GET_ATTRIBUTE, parent, index, child, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnText(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnText(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnText(GetAction.GET_TEXT, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementText(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnText(GetAction.GET_ATTRIBUTE, parentList, parentIndex, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
+		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, parentList, parentIndex, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
+		return retrievedValue;
+	}
+	
+	@Override
+	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
+		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedText = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_TEXT, parentList, parentIndex, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
+		return retrievedText;
+	}
+	
+	@Override
+	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
+		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		String retrievedValue = this.getCommand.doTableCommandBasedOnAttributeValue(GetAction.GET_ATTRIBUTE, parentList, parentIndex, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
+		return retrievedValue;
+	}
+	
+	
+	/********************** SELECT COMMANDS *********************/
 	
 	@Override
 	public void select(By locator, String option) {
@@ -927,197 +1109,8 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.selectCommand.executeSelectCommands(SelectAction.DESELECT, locator, option);
 	}
 
-	@Override
-	public String getText(By parent, By child) {
-		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_TEXT, parent, child, null);
-		return text;
-	}
+	/********************** GENERAL COMMANDS *********************/
 	
-	@Override
-	public String getValue(By parent, By child) {
-		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, "value");
-		return text;
-	}
-	
-	@Override
-	public String getAttributeValue(By parent, By child, String attribute) {
-		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, attribute);
-		return text;
-	}
-	
-	@Override
-	public String getDropDownListValue(By parent, By child) {
-		this.log.debug("I get value from Drop-down List Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String text = this.getCommand.executeGetCommands(GetAction.GET_DROPDOWN, parent, child, null);
-		return text;
-	}
-	
-	@Override
-	public String getText(By parent, int index, By child) {
-		this.log.debug("I get text from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedText = this.getCommand.executeGetCommands(GetAction.GET_TEXT, parent, child, index, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValue(By parent, int index, By child) {
-		this.log.debug("I get value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedValue = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, index, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getAttributeValue(By parent, int index, By child, String attribute) {
-		this.log.debug("I get attribute value from Child Web Element: \"" + child.toString() + "\" within Parent Web Element: \"" + parent + "\".");
-		String retrievedValue = this.getCommand.executeGetCommands(GetAction.GET_ATTRIBUTE, parent, child, index, attribute);
-		return retrievedValue;
-	}
-	
-
-	
-
-	
-
-	
-	
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-	@Override
-	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
-		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getTextFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
-		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValueFromTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
-		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
-		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
-		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
-		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getAttributeValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
-		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetAttributeValueFrom, attribute);
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getTextFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetTextFrom) {
-		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetTextFrom, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValueFromTableRowElementBasedOnTableRowElementText(By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToGetValueFrom) {
-		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToGetValueFrom, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getAttributeValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetAttributeValueFrom, String attribute) {
-		this.log.debug("I get attribute value from Web Element: \"" + rowObjectToGetAttributeValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetAttributeValueFrom, attribute);
-		return retrievedValue;
-	}
-	
-	@Override
-	public String getTextFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetTextFrom) {
-		this.log.debug("I get text from Web Element: \"" + rowObjectToGetTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedText = this.getCommand.executeTableGetCommands(GetAction.GET_TEXT, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetTextFrom, null);
-		return retrievedText;
-	}
-	
-	@Override
-	public String getValueFromTableRowElementBasedOnTableRowElementAttributeValue(By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToGetValueFrom) {
-		this.log.debug("I get value from Web Element: \"" + rowObjectToGetValueFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
-		String retrievedValue = this.getCommand.executeTableGetCommands(GetAction.GET_ATTRIBUTE, parent, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToGetValueFrom, "value");
-		return retrievedValue;
-	}
-	
-	@Override
-	public void dragAndDrop(By sourceObject, By targetObject) {
-		this.log.debug("I drag and drop Web Element: \"" + sourceObject.toString() + "\" to Web Element: \"" + targetObject.toString() + "\".");
-		boolean actionPerformed = false;
-		WebElement sourceElement = null;
-		WebElement targetElement = null;
-		for(int i = 1; i <= 4; i++) {
-			try {
-				sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceObject);
-				targetElement = this.seleniumWait.waitForObjectToBeClickable(targetObject);
-				this.action.dragAndDrop(sourceElement, targetElement).perform();
-				actionPerformed = true;
-			} catch (NullPointerException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Element created is NULL.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (StaleElementReferenceException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". The Web Element is no longer present in the Web Page.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (TimeoutException e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\". Wait time has expired.");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			} catch (Exception e) {
-				this.log.warn("Unable to perform \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
-				this.log.debug(ExceptionUtils.getStackTrace(e));
-			}
-			if (!actionPerformed) {
-				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\" " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceObject.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-	}
-
 	@Override
 	public void acceptAlert() {
 		this.log.debug("I accept Javascript Alert.");
@@ -1167,7 +1160,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	/* ####################################################### */
-	/*                      VERIFICATIONS                      */
+	/*                        ASSERTIONS                       */
 	/* ####################################################### */
 	
 	@Override
