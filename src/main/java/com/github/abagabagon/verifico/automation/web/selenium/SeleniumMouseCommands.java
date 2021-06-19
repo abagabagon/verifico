@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
@@ -20,15 +21,12 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	private Actions action;
 	private SeleniumWait seleniumWait;
 	
-	public SeleniumMouseCommands(JavascriptExecutor javascriptExecutor, Actions action, SeleniumWait seleniumWait) {
+	public SeleniumMouseCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, Actions action, SeleniumWait seleniumWait) {
+		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.javascriptExecutor = javascriptExecutor;
 		this.action = action;
 		this.seleniumWait = seleniumWait;
-	}
-	
-	enum MouseAction {
-		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT
 	}
 	
 	/**

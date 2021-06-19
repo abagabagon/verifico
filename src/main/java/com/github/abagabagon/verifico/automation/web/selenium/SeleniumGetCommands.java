@@ -20,13 +20,10 @@ public class SeleniumGetCommands extends SeleniumCommands {
 	private String retrievedValue;
 	
 	public SeleniumGetCommands(WebDriver driver, SeleniumWait seleniumWait) {
+		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.seleniumWait = seleniumWait;
-	}
-
-	enum GetAction {
-		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
 	}
 	
 	boolean execute(GetAction getAction, WebElement element, String attribute) {

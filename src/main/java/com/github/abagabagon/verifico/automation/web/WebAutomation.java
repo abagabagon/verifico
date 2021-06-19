@@ -1787,6 +1787,10 @@ public interface WebAutomation {
 
 	public boolean didntType(By locator, String value);
 	
+	public boolean partialTyped(By locator, String expectedPartialValue);
+	
+	public boolean didntPartiallyType(By locator, String partialValue);
+	
 	/**
 	 * Verifies the value of the specified attribute if equal to the expected
 	 * value.
@@ -1894,6 +1898,14 @@ public interface WebAutomation {
 
 	public boolean dontSeeTextOfListElement(By locator, String textValue);
 	
+	public boolean seeAttributeValueOfListElement(By locator, String attribute, String expectedValue);
+	
+	public boolean dontSeeAttributeValueOfListElement(By locator, String attribute, String value);
+
+	public boolean seePartialAttributeValueOfListElement(By locator, String attribute, String expectedPartialValue);
+	
+	public boolean dontSeePartialAttributeValueOfListElement(By locator, String attribute, String partialValue);
+	
 	/**
 	 * Verifies if text value exists from text of a Web Element in a Table Row.
 	 * 
@@ -1917,6 +1929,10 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value);
+	
+	public boolean seeAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String attribute, String expectedValue);
+	
+	public boolean dontSeeAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String attribute, String value);
 	
 	/**
 	 * Verifies Web Element with text if equal to expected text value from a row in a table based on text value from the same row.
@@ -1946,6 +1962,10 @@ public interface WebAutomation {
 
 	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value);
 	
+	public boolean seeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue);
+	
+	public boolean dontSeeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String value);
+	
 	/**
 	 * Verifies text value if it exists in a Web Element List from a row in a table based on text value from the same row.
 	 * 
@@ -1973,6 +1993,10 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	public boolean seeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
 	
 	/**
 	 * Verifies Web Element with text if equal to expected partial text value.
@@ -2042,6 +2066,10 @@ public interface WebAutomation {
 
 	public boolean dontSeePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value);
 	
+	public boolean seePartialAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String attribute, String expectedPartialValue);
+	
+	public boolean dontSeePartialAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String attribute, String value);
+	
 	/**
 	 * Verifies Web Element with text if equal to expected partial text value from a row in a table based on text value from the same row.
 	 * 
@@ -2070,6 +2098,10 @@ public interface WebAutomation {
 
 	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue);
 	
+	public boolean seePartialAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue);
+	
+	public boolean dontSeePartialAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String value);
+	
 	/**
 	 * Verifies partial text value if it exists in a Web Element List from a row in a table based on text value from the same row.
 	 * 
@@ -2097,6 +2129,10 @@ public interface WebAutomation {
 	 */
 
 	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	
+	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
@@ -2183,6 +2219,14 @@ public interface WebAutomation {
 	 */
 
 	public boolean deselected(By locator);
+	
+	public boolean seeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
+	
+	public boolean dontSeeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
+	
+	public boolean seeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
+	
+	public boolean dontSeeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee);
 	
 	/**
 	 * Verifies Web Element Instance count is equal to expected count.

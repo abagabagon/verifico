@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 
-public class SeleniumSelectCommands {
+public class SeleniumSelectCommands extends SeleniumCommands {
 
 	protected WebDriver driver;
 	protected Logger log;
@@ -18,13 +18,10 @@ public class SeleniumSelectCommands {
 	
 	
 	public SeleniumSelectCommands(WebDriver driver, SeleniumWait seleniumWait) {
+		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.seleniumWait = seleniumWait;
-	}
-
-	enum SelectAction {
-		DESELECT, SELECT
 	}
 	
 	boolean execute(SelectAction selectAction, WebElement element, String option) {
@@ -128,20 +125,6 @@ public class SeleniumSelectCommands {
 			} else {
 				break;
 			}
-		}
-	}
-	
-	void wait(int duration) {
-		this.log.debug("I wait for " + duration + " Second(s).");
-		try {
-			Thread.sleep(duration * 1000);
-		} catch (IllegalArgumentException e) {
-			this.log.error("Encountered IllegalArgumentException while waiting for " + duration + ".");
-		} catch (InterruptedException e) {
-			this.log.error("Encountered InterruptedException while waiting for " + duration + ".");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for " + duration + ".");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
 	

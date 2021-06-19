@@ -1135,6 +1135,114 @@ public class SeleniumWait {
 		}
 		return isValueEqual;
 	}
+	
+	/**
+	 * Waits for Text Box/Area Attribute, Value to be the same as expected value.
+	 * 
+	 * @param locator       By Object used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value is same as expected value.
+	 *         <code>false</code> if Value is different from expected value.
+	 */
+
+	final boolean waitForAttributeValueToBe(By locator, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to match expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeToBe(locator, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to be the same as expected value.
+	 * 
+	 * @param element       Web Element used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value is same as expected value.
+	 *         <code>false</code> if Value is different from expected value.
+	 */
+
+	final boolean waitForAttributeValueToBe(WebElement element, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to match expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeToBe(element, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to contain the expected value.
+	 * 
+	 * @param locator       By Object used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value contains the expected value.
+	 *         <code>false</code> if Value does not contain expected value.
+	 */
+
+	final boolean waitForAttributeValueToContain(By locator, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to contain expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(locator, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value contains the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to contain the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to contain expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to contain the expected value.
+	 * 
+	 * @param element       Web Element used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value contains the expected value.
+	 *         <code>false</code> if Value does not contain the expected value.
+	 */
+
+	final boolean waitForAttributeValueToContain(WebElement element, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to contain expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value contains the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to contain the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to contain expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
 
 	/**
 	 * Waits for Text Value to be the same as expected value.

@@ -1,7 +1,6 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -17,16 +16,17 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.github.abagabagon.verifico.automation.web.WebAutomation;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumBrowserCommands.BrowserAction;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumBrowserCommands.SwitchAction;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumGetCommands.GetAction;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumKeyboardCommands.KeyboardAction;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumMouseCommands.MouseAction;
-import com.github.abagabagon.verifico.automation.web.selenium.SeleniumSelectCommands.SelectAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.BrowserAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.GetAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.KeyboardAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.MouseAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.SelectAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.StateAssertionAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.SwitchAction;
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumCommands.ValueAssertionAction;
 import com.github.abagabagon.verifico.enums.Browser;
 
 /**
@@ -49,11 +49,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	private SeleniumWait seleniumWait;
 	
 	
+	private SeleniumCommands generalCommand;
 	private SeleniumBrowserCommands browserCommand;
 	private SeleniumGetCommands getCommand;
 	private SeleniumKeyboardCommands keyboardCommand;
 	private SeleniumMouseCommands mouseCommand;
 	private SeleniumSelectCommands selectCommand;
+	private SeleniumValueAssertionCommands valueAssertionCommand;
+	private SeleniumStateAssertionCommands stateAssertionCommand;
 
 	
 	public SeleniumWebAutomation(Browser browser) {
@@ -81,11 +84,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15));
 		this.action = new Actions(this.driver);
 		this.javascriptExecutor = (JavascriptExecutor)this.driver;
+		this.generalCommand = new SeleniumCommands(this.driver, this.seleniumWait);
 		this.browserCommand = new SeleniumBrowserCommands(this.driver, this.javascriptExecutor, this.seleniumWait);
 		this.getCommand = new SeleniumGetCommands(this.driver, this.seleniumWait);
 		this.keyboardCommand = new SeleniumKeyboardCommands(this.driver, this.action, this.seleniumWait);
-		this.mouseCommand = new SeleniumMouseCommands(this.javascriptExecutor, this.action, this.seleniumWait);
+		this.mouseCommand = new SeleniumMouseCommands(this.driver, this.javascriptExecutor, this.action, this.seleniumWait);
 		this.selectCommand = new SeleniumSelectCommands(this.driver, this.seleniumWait);
+		this.valueAssertionCommand = new SeleniumValueAssertionCommands(this.driver, this.seleniumWait);
+		this.stateAssertionCommand = new SeleniumStateAssertionCommands(this.driver, this.seleniumWait);
 		this.maximize();
 		this.deleteAllCookies();
 		this.setImplicitWait(10);
@@ -1135,28 +1141,14 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public int count(By locator) {
 		this.log.debug("I count Web Element: \"" + locator.toString() + "\".");
-		this.seleniumWait.waitForPage();
-		this.setImplicitWait(2);
-		List<WebElement> element = this.driver.findElements(locator);
-		int size = element.size();
-		this.setImplicitWait(10);
-		this.log.debug("I counted " + size + " instances of Web Element: \"" + locator.toString() + "\".");
+		int size = this.generalCommand.count(locator);
 		return size;
 	}
 	
 	@Override
 	public void wait(int duration) {
 		this.log.debug("I wait for " + duration + " Second(s).");
-		try {
-			Thread.sleep(duration * 1000);
-		} catch (IllegalArgumentException e) {
-			this.log.error("Encountered IllegalArgumentException while waiting for " + duration + ".");
-		} catch (InterruptedException e) {
-			this.log.error("Encountered InterruptedException while waiting for " + duration + ".");
-		} catch (Exception e) {
-			this.log.error("Encountered Exception while waiting for " + duration + ".");
-			this.log.debug(ExceptionUtils.getStackTrace(e));
-		}
+		this.generalCommand.wait(duration);
 	}
 	
 	/* ####################################################### */
@@ -1166,1109 +1158,409 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeUrl(String expectedUrl) {
 		this.log.debug("I see Page URL: \"" + expectedUrl + "\".");
-		boolean isUrlEqual = this.seleniumWait.waitForUrlToBe(expectedUrl);
-		String actualUrl = this.driver.getCurrentUrl().trim();
-		boolean status = false;
-		if(isUrlEqual) {
-			status = true;
-			this.log.debug("I saw Page URL: \"" + expectedUrl + "\".");
-		} else {
-			this.log.error("I didn't see Page URL: \"" + expectedUrl + "\". Actual URL is \"" + actualUrl + "\".");
-		}
+		this.seleniumWait.waitForUrlToBe(expectedUrl);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.URL, null, null, expectedUrl);
 		return status;
-	}
-	
-	@Override
-	public boolean dontSeeUrl(String url) {
-		this.log.debug("I see Page URL is not \"" + url + "\".");
-		this.seleniumWait.waitForPage();
-		String actualUrl = this.driver.getCurrentUrl().trim();
-		boolean isUrlEqual = actualUrl.equals(url);
-		boolean status = false;
-		if(isUrlEqual) {
-			this.log.error("I saw Page URL: \"" + url + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see Page URL: \"" + url + "\". Actual URL is \"" + actualUrl + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean seePartialUrl(String partialUrl) {
-		this.log.debug("I see partial Page URL: \"" + partialUrl + "\".");
-		boolean isUrlEqual = this.seleniumWait.waitForUrlToContain(partialUrl);
-		String actualUrl = this.driver.getCurrentUrl().trim();
-		boolean status = false;
-		if(isUrlEqual) {
-			status = true;
-			this.log.debug("I saw partial Page URL: \"" + partialUrl + "\".");
-		} else {
-			this.log.error("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
-		}
-		return status;	
-	}
-	
-	@Override
-	public boolean dontSeePartialUrl(String partialUrl) {
-		this.log.debug("I see partial Page URL is not \"" + partialUrl + "\".");
-		this.seleniumWait.waitForPage();
-		String actualUrl = this.driver.getCurrentUrl().trim();
-		boolean isUrlEqual = actualUrl.contains(partialUrl);
-		boolean status = false;
-		if(isUrlEqual) {
-			this.log.error("I saw partial Page URL: \"" + partialUrl + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see partial Page URL: \"" + partialUrl + "\". Actual URL is \"" + actualUrl + "\".");
-		}
-		return status;	
 	}
 	
 	@Override
 	public boolean seeTitle(String expectedTitle) {
 		this.log.debug("I see Page Title: \"" + expectedTitle + "\".");
-		boolean isTitleEqual = this.seleniumWait.waitForTitleToBe(expectedTitle);
-		String actualTitle = this.driver.getTitle().trim();
-		boolean status = false;
-		if(isTitleEqual) {
-			status = true;
-			this.log.debug("I saw Page Title: \"" + expectedTitle + "\".");
-		} else {
-			this.log.error("I didn't see Page Title: \"" + expectedTitle + "\". Actual Title is \"" + actualTitle + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean dontSeeTitle(String title) {
-		this.log.debug("I see Page Title is not \"" + title + "\".");
-		this.seleniumWait.waitForPage();
-		String actualTitle = this.driver.getTitle().trim();
-		boolean isTitleEqual = actualTitle.equals(title);
-		boolean status = false;
-		if(isTitleEqual) {
-			this.log.error("I saw Page Title: \"" + title + "\".");
-		} else {
-			status = true;
-			this.log.debug("I don't see Page Title: \"" + title + "\". Actual Title is \"" + actualTitle + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean seePartialTitle(String expectedPartialTitle) {
-		this.log.debug("I see partial Page Title: \"" + expectedPartialTitle + "\".");
-		boolean isTitleEqual = this.seleniumWait.waitForTitleToContain(expectedPartialTitle);
-		String actualTitle = this.driver.getTitle().trim();
-		boolean status = false;
-		if(isTitleEqual) {
-			status = true;
-			this.log.debug("I saw Page Title: \"" + expectedPartialTitle + "\".");
-		} else {
-			this.log.error("I didn't see Page Title: \"" + expectedPartialTitle + "\". Actual Title is \"" + actualTitle + "\".");
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean dontSeePartialTitle(String partialTitle) {
-		this.log.debug("I see partial Page Title is not \"" + partialTitle + "\".");
-		this.seleniumWait.waitForPage();
-		String actualTitle = this.driver.getTitle().trim();
-		boolean isTitleEqual = actualTitle.contains(partialTitle);
-		boolean status = false;
-		if(isTitleEqual) {
-			this.log.error("I saw Page Title: \"" + partialTitle + "\".");
-		} else {
-			status = true;
-			this.log.debug("I don't see Page Title: \"" + partialTitle + "\". Actual Title is \"" + actualTitle + "\".");
-		}
+		this.seleniumWait.waitForTitleToBe(expectedTitle);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.TITLE, null, null, expectedTitle);
 		return status;
 	}
 	
 	@Override
 	public boolean typed(By locator, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" is typed on Web Element: \"" + locator.toString() + "\".");
-		boolean isValueEqual = this.seleniumWait.waitForValueToBe(locator, expectedValue);
-		String actualValue = this.getValue(locator);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I typed \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't type \"" + expectedValue + "\" on Web Element: \"" + locator.toString() + "\". Actual value typed is \"" + actualValue + "\".");
-		}
-		return status;	
-	}
-	
-	@Override
-	public boolean didntType(By locator, String value) {
-		this.log.debug("I see \"" + value + "\" is not typed on Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getValue(locator);
-		boolean isValueEqual = actualValue.equals(value);
-		boolean status = false;
-		if(isValueEqual) {
-			this.log.error("I typed \"" + value + "\" on Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't type \"" + value + "\" on Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		this.seleniumWait.waitForAttributeValueToBe(element, "value", expectedValue);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.ATTRIBUTE, element, "value", expectedValue);
 		return status;	
 	}
 	
 	@Override
 	public boolean seeAttributeValue(By locator, String attribute, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue(locator, attribute);
-		boolean isValueEqual = actualValue.equals(expectedValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		this.seleniumWait.waitForAttributeValueToBe(element, attribute, expectedValue);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.ATTRIBUTE, element, attribute, expectedValue);
+		return status;	
+	}
+	
+	@Override
+	public boolean selectedDropDown(By locator, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" is selected at Drop-down List Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.DROPDOWN, element, null, expectedValue);
+		return status;	
+	}
+	
+	@Override
+	public boolean seeText(By locator, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		this.seleniumWait.waitForTextToBe(element, expectedValue);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.TEXT, element, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeUrl(String url) {
+		this.log.debug("I see Page URL is not \"" + url + "\".");
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.URL, null, null, url);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTitle(String title) {
+		this.log.debug("I see Page Title is not \"" + title + "\".");
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.TITLE, null, null, title);
+		return status;
+	}
+	
+	@Override
+	public boolean didntType(By locator, String value) {
+		this.log.debug("I see \"" + value + "\" is not typed on Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.ATTRIBUTE, element, "value", value);
 		return status;	
 	}
 	
 	@Override
 	public boolean dontSeeAttributeValue(By locator, String attribute, String value) {
 		this.log.debug("I see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue(locator, attribute);
-		boolean isValueEqual = actualValue.equals(value);
-		boolean status = false;
-		if(isValueEqual) {
-			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
-		return status;	
-	}
-	
-	@Override
-	public boolean seePartialAttributeValue(By locator, String attribute, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue(locator, attribute);
-		boolean isValueEqual = actualValue.contains(expectedValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I saw \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
-		return status;	
-	}
-	
-	@Override
-	public boolean dontSeePartialAttributeValue(By locator, String attribute, String value) {
-		this.log.debug("I see \"" + value + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		String actualValue = this.getAttributeValue(locator, attribute);
-		boolean isValueEqual = actualValue.contains(value);
-		boolean status = false;
-		if(isValueEqual) {
-			this.log.error("I saw \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
-		return status;	
-	}
-
-	@Override
-	public boolean selectedDropDown(By locator, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" is selected at Drop-down List Web Element: \"" + locator.toString() + "\".");
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		Select select = new Select(element);
-		String actualValue = select.getFirstSelectedOption().getText().toLowerCase();
-		boolean isValueEqual = actualValue.equals(expectedValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I selected: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't select: \"" + expectedValue + "\" at Drop-down List Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualValue + "\".");
-		}
-		return status;
-	}
-
-	@Override
-	public boolean seeText(By locator, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of Web Element: \"" + locator.toString() + "\".");
-		String actualText = this.getText(locator).trim();
-		boolean isValueEqual = actualText.equals(expectedValue);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I saw \"" + expectedValue + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
-		return status;
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.ATTRIBUTE, element, attribute, value);
+		return status;	
 	}
 	
 	@Override
 	public boolean dontSeeText(By locator, String value) {
 		this.log.debug("I see \"" + value + "\" as not the text value of Web Element: \"" + locator.toString() + "\".");
-		String actualText = this.getText(locator).trim();
-		boolean isValueEqual = actualText.equals(value);
-		boolean status = false;
-		if(isValueEqual) {
-			this.log.error("I saw \"" + value + "\" as text value of at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see \"" + value + "\" as text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.TEXT, element, null, value);
+		return status;	
+	}
+	
+	@Override
+	public boolean seePartialUrl(String expectedPartialUrl) {
+		this.log.debug("I see partial Page URL: \"" + expectedPartialUrl + "\".");
+		this.seleniumWait.waitForUrlToContain(expectedPartialUrl);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.PARTIAL_URL, null, null, expectedPartialUrl);
 		return status;
 	}
 	
 	@Override
-	public boolean seeTextOfListElement(By locator, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
-				String text = element.getText().trim();
-				if (text.equals(expectedValue)) {
-					flgTextFound = true;
-					status = true;
-					this.log.debug("I saw \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+	public boolean seePartialTitle(String expectedPartialTitle) {
+		this.log.debug("I see partial Page Title: \"" + expectedPartialTitle + "\".");
+		this.seleniumWait.waitForTitleToContain(expectedPartialTitle);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.PARTIAL_TITLE, null, null, expectedPartialTitle);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeeTextOfListElement(By locator, String value) {
-		this.log.debug("I see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
-				String text = element.getText().trim();
-				if (text.equals(value)) {
-					flgTextFound = true;
-					this.log.error("I saw \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+	public boolean partialTyped(By locator, String expectedPartialValue) {
+		this.log.debug("I see \"" + expectedPartialValue + "\" is partially typed on Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, element, "value", expectedPartialValue);
+		return status;	
+	}
+	
+	@Override
+	public boolean seePartialAttributeValue(By locator, String attribute, String expectedPartialAttributeValue) {
+		this.log.debug("I see \"" + expectedPartialAttributeValue + "\" as the partial value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		this.seleniumWait.waitForAttributeValueToContain(element, attribute, expectedPartialAttributeValue);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, element, attribute, expectedPartialAttributeValue);
+		return status;	
+	}
+	
+	@Override
+	public boolean seePartialText(By locator, String expectedPartialText) {
+		this.log.debug("I see \"" + expectedPartialText + "\" as the partial text value of Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		this.seleniumWait.waitForTextToContain(element, expectedPartialText);
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.PARTIAL_TEXT, element, null, expectedPartialText);
 		return status;
 	}
 	
 	@Override
-	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-			int size = rows.size();
-			for(int j = 0; j < size; j++) {
-				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-				if (elementToSeeTextFrom != null) {
-					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.equals(expectedValue)) {
-						status = true;
-						flgTextFound = true;
-						this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						break;
-					} else {
-						flgTextFound = false;
-						this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-					}
-				} else {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeeTextFrom.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+	public boolean dontSeePartialUrl(String partialUrl) {
+		this.log.debug("I see partial Page URL is not \"" + partialUrl + "\".");
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.PARTIAL_URL, null, null, partialUrl);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value) {
-		this.log.debug("I see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-				if (elementToSeeTextFrom != null) {
-					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.equals(value)) {
-						flgTextFound = true;
-						this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						break;
-					} else {
-						flgTextFound = false;
-						this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-					}
-				} else {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeeTextFrom.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+	public boolean dontSeePartialTitle(String partialTitle) {
+		this.log.debug("I see partial Page Title is not \"" + partialTitle + "\".");
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.PARTIAL_TITLE, null, null, partialTitle);
 		return status;
 	}
 	
 	@Override
-	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						String seeText = elementToSeeTextFrom.getText().trim();
-						boolean isValueEqual = seeText.equals(expectedValue);
-						if(isValueEqual) {
-							status = true;
-							this.log.debug("I saw \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						} else {
-							this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return status;
+	public boolean didntPartiallyType(By locator, String partialValue) {
+		this.log.debug("I see \"" + partialValue + "\" is not partially typed on Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, element, "value", partialValue);
+		return status;	
 	}
 	
 	@Override
-	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
-		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						String seeText = elementToSeeTextFrom.getText().trim();
-						boolean isValueEqual = seeText.equals(value);
-						if(isValueEqual) {
-							this.log.error("I saw \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						} else {
-							this.log.debug("I didn't see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						int listSize = elementToSeeTextFrom.size();
-						for(int k = 0; k < listSize; k++) {
-							String seeText = elementToSeeTextFrom.get(k).getText().trim();
-							boolean isValueEqual = seeText.equals(expectedValue);
-							if(isValueEqual) {
-								status = true;
-								this.log.debug("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-								break;
-							} else {
-								this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-							}
-						}
-						if(!status) {
-							this.log.error("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
-		this.log.debug("I see \"" + expectedValue + "\" as not the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						int listSize = elementToSeeTextFrom.size();
-						for(int k = 0; k < listSize; k++) {
-							String seeText = elementToSeeTextFrom.get(k).getText().trim();
-							boolean isValueEqual = seeText.equals(expectedValue);
-							if(isValueEqual) {
-								this.log.error("I saw \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-								status = false;
-								break;
-							} else {
-								this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-								status = true;
-							}
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean seePartialText(By locator, String expectedPartialValue) {
-		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of Web Element: \"" + locator.toString() + "\".");
-		boolean isValueEqual = this.seleniumWait.waitForTextToContain(locator, expectedPartialValue);
-		String actualText = this.getText(locator).trim();
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
-		return status;
+	public boolean dontSeePartialAttributeValue(By locator, String attribute, String partialAttributeValue) {
+		this.log.debug("I see \"" + partialAttributeValue + "\" as not the value for attribute: \"" + attribute + "\" of Web Element: \"" + locator.toString() + "\".");
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, element, attribute, partialAttributeValue);
+		return status;	
 	}
 	
 	@Override
 	public boolean dontSeePartialText(By locator, String partialValue) {
 		this.log.debug("I see \"" + partialValue + "\" as not the partial text value of Web Element: \"" + locator.toString() + "\".");
-		String actualText = this.getText(locator).trim();
-		boolean isValueEqual = actualText.contains(partialValue);
-		boolean status = false;
-		if(isValueEqual) {
-			this.log.error("I saw \"" + partialValue + "\" as the partial text value of at Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see \"" + partialValue + "\" as the partial the text value of Web Element: \"" + locator.toString() + "\". Actual value is \"" + actualText + "\".");
-		}
+		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
+		boolean status = this.valueAssertionCommand.isNotEqual(ValueAssertionAction.PARTIAL_TEXT, element, null, partialValue);
+		return status;	
+	}
+	
+	@Override
+	public boolean seeTextOfListElement(By locator, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListEqual(ValueAssertionAction.TEXT, locator, null, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialTextOfListElement(By locator, String expectedPartialValue) {
 		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
-				String text = element.getText().trim();
-				if (text.contains(expectedPartialValue)) {
-					flgTextFound = true;
-					status = true;
-					this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isListEqual(ValueAssertionAction.PARTIAL_TEXT, locator, null, expectedPartialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfListElement(By locator, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the attribute value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListEqual(ValueAssertionAction.ATTRIBUTE, locator, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfListElement(By locator, String attribute, String expectedPartialValue) {
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial attribute value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, locator, attribute, expectedPartialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfListElement(By locator, String value) {
+		this.log.debug("I see \"" + value + "\" as the text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListNotEqual(ValueAssertionAction.TEXT, locator, null, value);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialTextOfListElement(By locator, String partialValue) {
 		this.log.debug("I see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
-		int size = elements.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, j);
-				String text = element.getText().trim();
-				if (text.contains(partialValue)) {
-					flgTextFound = true;
-					this.log.error("I saw \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see \"" + partialValue + "\" as the partial text value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isListNotEqual(ValueAssertionAction.PARTIAL_TEXT, locator, null, partialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValueOfListElement(By locator, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as the attribute value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListNotEqual(ValueAssertionAction.ATTRIBUTE, locator, null, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfListElement(By locator, String attribute, String partialValue) {
+		this.log.debug("I see \"" + partialValue + "\" as the partial attribute value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isListNotEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, locator, null, partialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableEqual(ValueAssertionAction.TEXT, rowObjectList, rowObjectToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String expectedPartialValue) {
 		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeePartialTextFrom, j);
-				if (elementToSeeTextFrom != null) {
-					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.contains(expectedPartialValue)) {
-						status = true;
-						flgTextFound = true;
-						this.log.debug("I saw \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						break;
-					} else {
-						this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-					}
-				} else {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeePartialTextFrom.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see \"" + expectedPartialValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isTableEqual(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToSeePartialTextFrom, null, expectedPartialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableNotEqual(ValueAssertionAction.TEXT, rowObjectList, rowObjectToSeeTextFrom, null, value);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String value) {
 		this.log.debug("I see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeePartialTextFrom, j);
-				if (elementToSeeTextFrom != null) {
-					String seeText = elementToSeeTextFrom.getText().trim();
-					if(seeText.contains(value)) {
-						flgTextFound = true;
-						this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						break;
-					} else {
-						this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-					}
-				} else {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToSeePartialTextFrom.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeePartialTextFrom + "\" in one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isTableNotEqual(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToSeePartialTextFrom, null, value);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the attribute value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableEqual(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String attribute, String expectedPartialValue) {
+		this.log.debug("I see \"" + expectedPartialValue + "\" as the partial attribute value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToSeePartialTextFrom, attribute, expectedPartialValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeeTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as the attribute value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableNotEqual(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToSeeTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfTableRowElement(By rowObjectList, By rowObjectToSeePartialTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as the partial attribute value of the Web Element: \"" + rowObjectToSeePartialTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		boolean status = this.valueAssertionCommand.isTableNotEqual(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToSeePartialTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						String seeText = elementToSeeTextFrom.getText().trim();
-						boolean isValueEqual = seeText.contains(expectedValue);
-						if(isValueEqual) {
-							status = true;
-							this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						} else {
-							this.log.debug("I didn't see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, null, value);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String value) {
 		this.log.debug("I see \"" + value + "\" as not the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						String seeText = elementToSeeTextFrom.getText().trim();
-						boolean isValueEqual = seeText.contains(value);
-						if(isValueEqual) {
-							this.log.error("I saw \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						} else {
-							this.log.debug("I didn't see \"" + value + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, null, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as not the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						int listSize = elementToSeeTextFrom.size();
-						for(int k = 0; k < listSize; k++) {
-							String seeText = elementToSeeTextFrom.get(k).getText().trim();
-							boolean isValueEqual = seeText.contains(expectedValue);
-							if(isValueEqual) {
-								status = true;
-								this.log.debug("I saw \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-								break;
-							} else {
-								this.log.debug("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-							}
-						}
-						if (!status) {
-							this.log.error("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see partial text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as not the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, j);
-					if (elementToSeeTextFrom != null) {
-						int listSize = elementToSeeTextFrom.size();
-						for(int k = 0; k < listSize; k++) {
-							String seeText = elementToSeeTextFrom.get(k).getText().trim();
-							boolean isValueEqual = seeText.contains(expectedValue);
-							if(isValueEqual) {
-								this.log.error("I saw \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-								break;
-							} else {
-								this.log.debug("I didn't see \"" + expectedValue + "\" as the partial text value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\". Actual value is \"" + seeText + "\".");
-							}
-						}
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" to see text of at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
 		return status;
 	}
-
+	
+	@Override
+	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		return status;
+	}
+	
 	@Override
 	public boolean see(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean status = false;
-		if (element != null) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\".");
-		} else {
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\".");
-		}
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DISPLAYED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean dontSee(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" is not displayed.");
-		this.setImplicitWait(2);
-		this.seleniumWait.waitForObjectToBeInvisible(locator);
-		List<WebElement> elements = this.driver.findElements(locator);
-		boolean status = false;
-		if (elements.size() > 0) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\".");
-		} else {
-			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\".");
-		}
-		this.setImplicitWait(10);
-		return status;
-	}
-	
-	@Override
-	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSee = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectToSee, j);
-					if (elementToSee.size() > 0) {
-						status = true;
-						this.log.debug("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					} else {
-						this.log.debug("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		return status;
-	}
-	
-	@Override
-	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		this.setImplicitWait(2);
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		int size = rows.size();
-		boolean flgTextFound = false;
-		boolean status = false;
-		for(int i = 1; i <= 4; i++) {
-			for(int j = 0; j < size; j++) {
-				WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, j);
-				String checkText = null;
-				if (elementToCheckText == null) {
-					this.log.debug("I didn't see the Web Element: \"" +  rowObjectToCheckText.toString() + "\" for checking text at Row \"" + j + "\" of Web Element: \"" + rowObjectList.toString() + "\". Skipping.");
-					continue;
-				} else {
-					checkText = elementToCheckText.getText().trim();
-				}
-				if (checkText.contains(textToCheck)) {
-					List<WebElement> elementToSee = rows.get(j).findElements(rowObjectToSee);
-					if (elementToSee.size() > 0) {
-						this.log.error("I saw the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					} else {
-						status = true;
-						this.log.debug("I didn't see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
-					}
-					flgTextFound = true;
-					break;
-				}
-			}
-			if (!flgTextFound) {
-				if(i < 4) {
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\". Retrying " + i + "/3.");
-					wait(1);
-				} else {
-					status = true;
-					this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
-				}
-			} else {
-				break;
-			}
-		}
-		this.setImplicitWait(10);
+		int size = this.count(locator);
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.NOT_DISPLAYED, null, size);
 		return status;
 	}
 	
@@ -2276,14 +1568,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean seeEnabled(By locator) {
 		this.log.debug("I see Web Element \"" + locator.toString() + "\" enabled.");
 		WebElement element = this.seleniumWait.waitForObjectToBePresent(locator);
-		boolean isEnabled = element.isEnabled();
-		boolean status = false;
-		if (isEnabled) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" enabled.");
-		} else {
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" enabled.");
-		}
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.ENABLED, element, 0);
 		return status;
 	}
 
@@ -2291,78 +1576,80 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean seeDisabled(By locator) {
 		this.log.debug("I see Web Element \"" + locator.toString() + "\" disabled.");
 		WebElement element = this.seleniumWait.waitForObjectToBePresent(locator);
-		boolean isEnabled = element.isEnabled();
-		boolean status = false;
-		if (isEnabled) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\" enabled.");
-		} else {
-			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" enabled.");
-		}
-		this.log.info("Status Enabled? " + isEnabled);
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DISABLED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean selected(By locator) {
 		this.log.debug("I see Web Element \"" + locator.toString() + "\" selected.");
-		this.seleniumWait.waitForObjectSelectionStateToBe(locator, true);
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean isSelected = element.isSelected();
-		boolean status = false;
-		if (isSelected) {
-			status = true;
-			this.log.debug("I saw Web Element: \"" + locator.toString() + "\" selected.");
-		} else {
-			this.log.error("I didn't see Web Element: \"" + locator.toString() + "\" selected.");
-		}
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.SELECTED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean deselected(By locator) {
 		this.log.debug("I see element \"" + locator.toString() + "\" not selected.");
-		this.seleniumWait.waitForObjectSelectionStateToBe(locator, false);
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean isSelected = element.isSelected();
-		boolean status = false;
-		if (isSelected) {
-			this.log.error("I saw Web Element: \"" + locator.toString() + "\" selected.");
-		} else {
-			status = true;
-			this.log.debug("I didn't see Web Element: \"" + locator.toString() + "\" selected.");
-		}
+		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DESELECTED, element, 0);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.NOT_DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		return status;
+	}
+	
+	@Override
+	public boolean seeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.ENABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DISABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		return status;
+	}
+	
+	@Override
+	public boolean seeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.SELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DESELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
 		return status;
 	}
 	
 	@Override
 	public boolean counted(By locator, int count) {
 		this.log.debug("I count Web Element: \"" + locator.toString() + "\".");
-		boolean isEqual = this.seleniumWait.waitForCountToBe(locator, count);
-		int size = this.driver.findElements(locator).size();
-		boolean status = false;
-		if (isEqual) {
-			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is \"" + count + "\".");
-			status = true;
-		} else {
-			this.log.error("I verified count of Web Element: \"" + locator.toString() + "\" is not \"" + count + "\". Actual count is \"" + size + "\".");
-		}
+		boolean status = this.generalCommand.counted(locator, count);
 		return status;
 	}
-
+	
 	@Override
 	public boolean seeAlertMessage(String expectedMessage) {
 		this.log.debug("I see \"" + expectedMessage + "\" Alert Message displayed.");
-		Alert alert = this.seleniumWait.waitForAlertToBePresent();
-		String actualMessage = alert.getText().trim();
-		boolean isValueEqual = actualMessage.equals(expectedMessage);
-		boolean status = false;
-		if(isValueEqual) {
-			status = true;
-			this.log.debug("I saw alert message: \"" + expectedMessage + "\" displayed.");
-		} else {
-			this.log.error("I didn't see alert message: \"" + expectedMessage + "\" displayed.");
-		}
+		boolean status = this.valueAssertionCommand.isEqual(ValueAssertionAction.ALERT_MESSAGE, null, null, expectedMessage);
 		return status;
 	}
+
 }

@@ -18,18 +18,11 @@ public class SeleniumBrowserCommands extends SeleniumCommands {
 	private SeleniumWait seleniumWait;
 	
 	public SeleniumBrowserCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, SeleniumWait seleniumWait) {
+		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.javascriptExecutor = javascriptExecutor;
 		this.seleniumWait = seleniumWait;
-	}
-	
-	enum BrowserAction {
-		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER
-	}
-	
-	enum SwitchAction {
-		BY_TITLE, BY_URL
 	}
 
 	void execute(BrowserAction browserAction, String input) {

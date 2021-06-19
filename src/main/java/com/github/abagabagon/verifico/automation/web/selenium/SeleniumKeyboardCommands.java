@@ -25,14 +25,11 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	private SeleniumWait seleniumWait;
 	
 	public SeleniumKeyboardCommands(WebDriver driver, Actions action, SeleniumWait seleniumWait) {
+		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.action = action;
 		this.seleniumWait = seleniumWait;
-	}
-	
-	enum KeyboardAction {
-		CLEAR, PRESS, SEND_KEYS
 	}
 	
 	boolean execute(KeyboardAction keyboardAction, WebElement element, String inputText, Keys keyButton) {
