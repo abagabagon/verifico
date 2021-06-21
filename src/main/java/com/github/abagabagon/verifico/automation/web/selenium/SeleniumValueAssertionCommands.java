@@ -40,7 +40,11 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 			break;
 		case ATTRIBUTE:
 			this.actualValue = element.getAttribute(attribute);
-			status = this.actualValue.equals(value);
+			if (this.actualValue != null) {
+				status = this.actualValue.equals(value);
+			} else {
+				status = false;
+			}
 			break;
 		case DROPDOWN:
 			select = new Select(element);
@@ -87,9 +91,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isEqual(ValueAssertionAction valueAssertionAction, WebElement element, String attribute, String expectedValue) {
 		boolean status = this.isValueDisplayed(valueAssertionAction, element, attribute, expectedValue);
 		if(status) {
-			this.log.debug("I saw " + String.valueOf(valueAssertionAction) + ": \"" + expectedValue + "\".");
+			this.log.debug("I saw " + String.valueOf(valueAssertionAction) + " Value: \"" + expectedValue + "\".");
 		} else {
-			this.log.error("I didn't see " + String.valueOf(valueAssertionAction) + ": \"" + expectedValue + "\". Actual value is \"" + this.actualValue + "\".");
+			this.log.error("I didn't see " + String.valueOf(valueAssertionAction) + " Value: \"" + expectedValue + "\". Actual value is \"" + this.actualValue + "\".");
 		}
 		
 		return status;
@@ -98,9 +102,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isNotEqual(ValueAssertionAction valueAssertionAction, WebElement element, String attribute, String value) {
 		boolean status = this.isValueDisplayed(valueAssertionAction, element, attribute, value);
 		if(status) {
-			this.log.error("I saw " + String.valueOf(valueAssertionAction) + ": \"" + value + "\".");
+			this.log.error("I saw " + String.valueOf(valueAssertionAction) + " Value: \"" + value + "\".");
 		} else {
-			this.log.debug("I didn't see " + String.valueOf(valueAssertionAction) + ": \"" + value + "\". Actual value is \"" + this.actualValue + "\".");
+			this.log.debug("I didn't see " + String.valueOf(valueAssertionAction) + " Value: \"" + value + "\". Actual value is \"" + this.actualValue + "\".");
 		}
 		
 		return !status;
@@ -157,9 +161,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isTableEqual(ValueAssertionAction valueAssertionAction, By objectList, By child, String attribute, String searchValue) {
 		boolean isFound = this.isValueDisplayedFromNestedList(valueAssertionAction, objectList, child, attribute, searchValue);
 		if(isFound) {
-			this.log.debug("I saw \"" + searchValue + "\" as the text value of the Web Element: \"" + child.toString() + "\" within one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
+			this.log.debug("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + child.toString() + "\" within one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + searchValue + "\" as the text value of the Web Element: \"" + child.toString() + "\" in one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
+			this.log.error("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + child.toString() + "\" in one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
 		}
 		return isFound;
 	}
@@ -167,9 +171,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isTableNotEqual(ValueAssertionAction valueAssertionAction, By objectList, By child, String attribute, String searchValue) {
 		boolean isFound = this.isValueDisplayedFromNestedList(valueAssertionAction, objectList, child, attribute, searchValue);
 		if(isFound) {
-			this.log.error("I saw \"" + searchValue + "\" as the text value of the Web Element: \"" + child.toString() + "\" within one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
+			this.log.error("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + child.toString() + "\" within one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
 		} else {
-			this.log.debug("I didn't see \"" + searchValue + "\" as the text value of the Web Element: \"" + child.toString() + "\" in one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
+			this.log.debug("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + child.toString() + "\" in one of the Rows of the Web Element: \"" + objectList.toString() + "\".");
 		}
 		return !isFound;
 	}
@@ -193,9 +197,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isTableEqualBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
 		boolean isFound = this.isValueDisplayedFromNestedListBasedOnText(valueAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, searchValue);
 		if(isFound) {
-			this.log.debug("I saw \"" + searchValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.debug("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		} else {
-			this.log.error("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.error("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		}
 		return isFound;
 	}
@@ -203,9 +207,45 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isTableNotEqualBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
 		boolean isFound = this.isValueDisplayedFromNestedListBasedOnText(valueAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSeeTextFrom, attribute, searchValue);
 		if(isFound) {
-			this.log.error("I saw \"" + searchValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.error("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		} else {
-			this.log.debug("I didn't see the text \"" + textToCheck + "\" from the Web Element: \"" +  rowObjectToCheckText.toString() + "\" within one of the Rows of Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.debug("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		}
+		return !isFound;
+	}
+	
+	public boolean isValueDisplayedFromNestedListBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean status = false;
+		for(int i = 0; i < size; i++) {
+			WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, i);
+			String checkText = elementToCheckText.getAttribute(attributeToCheck).trim();
+			if (checkText != null && checkText.contains(valueToCheck)) {
+				WebElement elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToSeeTextFrom, i);
+				status = this.isValueDisplayed(valueAssertionAction, elementToSeeTextFrom, attribute, searchValue);
+				break;	
+			}
+		}
+		return status;
+	}
+	
+	boolean isTableEqualBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
+		boolean isFound = this.isValueDisplayedFromNestedListBasedOnAttributeValue(valueAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, searchValue);
+		if(isFound) {
+			this.log.debug("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		} else {
+			this.log.error("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		}
+		return isFound;
+	}
+	
+	boolean isTableNotEqualBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
+		boolean isFound = this.isValueDisplayedFromNestedListBasedOnAttributeValue(valueAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, searchValue);
+		if(isFound) {
+			this.log.error("I saw \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		} else {
+			this.log.debug("I didn't see \"" + searchValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		}
 		return !isFound;
 	}
@@ -235,9 +275,9 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isListTableEqualBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		boolean isFound = this.isListValueDisplayedFromNestedListBasedOnText(valueAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
 		if(isFound) {
-			this.log.debug("I saw \"" + expectedValue + "\" as the " + valueAssertionAction + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.debug("I saw \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		} else {
-			this.log.error("I didn't see \"" + expectedValue + "\" as the " + valueAssertionAction + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.error("I didn't see \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		}
 		return isFound;
 	}
@@ -245,9 +285,51 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	boolean isListTableNotEqualBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		boolean isFound = this.isListValueDisplayedFromNestedListBasedOnText(valueAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
 		if(isFound) {
-			this.log.error("I saw \"" + expectedValue + "\" as the " + valueAssertionAction + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.error("I saw \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		} else {
-			this.log.debug("I didn't see \"" + expectedValue + "\" as the " + valueAssertionAction + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+			this.log.debug("I didn't see \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		}
+		return !isFound;
+	}
+	
+	private boolean isListValueDisplayedFromNestedListBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean status = false;
+		for(int i = 0; i < size; i++) {
+			WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, i);
+			String checkText = elementToCheckText.getAttribute(attributeToCheck).trim();
+			if (checkText.contains(valueToCheck)) {
+				List<WebElement> elementToSeeTextFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectListToSeeTextFrom, i);
+				int listSize = elementToSeeTextFrom.size();
+				for(int j = 0; j < listSize; j++) {
+					status = this.isValueDisplayed(valueAssertionAction, elementToSeeTextFrom.get(j), attribute, expectedValue);
+					if(status) {
+						break;
+					}
+				}
+				break;
+			}
+		}
+		return status;
+	}
+	
+	boolean isListTableEqualBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		boolean isFound = this.isListValueDisplayedFromNestedListBasedOnAttributeValue(valueAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		if(isFound) {
+			this.log.debug("I saw \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		} else {
+			this.log.error("I didn't see \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		}
+		return isFound;
+	}
+	
+	boolean isListTableNotEqualBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		boolean isFound = this.isListValueDisplayedFromNestedListBasedOnAttributeValue(valueAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		if(isFound) {
+			this.log.error("I saw \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
+		} else {
+			this.log.debug("I didn't see \"" + expectedValue + "\" as the " + String.valueOf(valueAssertionAction) + " value of one of the Elements in the Web Element List: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\".");
 		}
 		return !isFound;
 	}

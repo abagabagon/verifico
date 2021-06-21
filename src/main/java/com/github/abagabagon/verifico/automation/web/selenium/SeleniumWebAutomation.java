@@ -1495,64 +1495,176 @@ public class SeleniumWebAutomation implements WebAutomation {
 	@Override
 	public boolean seeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
-	public boolean seeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+	public boolean seeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
 		return status;
 	}
 	
 	@Override
-	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as not the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as not the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as not the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
 		this.log.debug("I see \"" + expectedValue + "\" as not the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, textToCheck, expectedValue);
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnText(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnAttributeValue(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialTextOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnAttributeValue(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnAttributeValue(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, null, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTextOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String value) {
+		this.log.debug("I see \"" + value + "\" as not the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, null, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValueOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as not the text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnAttributeValue(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String value) {
+		this.log.debug("I see \"" + value + "\" as not the partial text value of the Web Element: \"" + rowObjectToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isTableNotEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSeeTextFrom, attribute, value);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnAttributeValue(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seeAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnAttributeValue(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnAttributeValue(ValueAssertionAction.TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the partial text value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_TEXT, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, null, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnAttributeValue(ValueAssertionAction.ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
+		this.log.debug("I see \"" + expectedValue + "\" as not the partial attribute value of the Web Element: \"" + rowObjectListToSeeTextFrom.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.valueAssertionCommand.isListTableNotEqualBasedOnAttributeValue(ValueAssertionAction.PARTIAL_ATTRIBUTE, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectListToSeeTextFrom, attribute, expectedValue);
 		return status;
 	}
 	
 	@Override
 	public boolean see(By locator) {
-		this.log.debug("I see Web Element: \"" + locator.toString() + "\" displayed.");
+		this.log.debug("I see Web Element: \"" + locator.toString() + "\" is displayed.");
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DISPLAYED, element, 0);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.DISPLAYED, element, 0);
 		return status;
 	}
 
@@ -1560,81 +1672,123 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public boolean dontSee(By locator) {
 		this.log.debug("I see Web Element: \"" + locator.toString() + "\" is not displayed.");
 		int size = this.count(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.NOT_DISPLAYED, null, size);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.NOT_DISPLAYED, null, size);
 		return status;
 	}
 	
 	@Override
 	public boolean seeEnabled(By locator) {
-		this.log.debug("I see Web Element \"" + locator.toString() + "\" enabled.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" is enabled.");
 		WebElement element = this.seleniumWait.waitForObjectToBePresent(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.ENABLED, element, 0);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.ENABLED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean seeDisabled(By locator) {
-		this.log.debug("I see Web Element \"" + locator.toString() + "\" disabled.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" is disabled.");
 		WebElement element = this.seleniumWait.waitForObjectToBePresent(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DISABLED, element, 0);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.DISABLED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean selected(By locator) {
-		this.log.debug("I see Web Element \"" + locator.toString() + "\" selected.");
+		this.log.debug("I see Web Element \"" + locator.toString() + "\" is selected.");
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.SELECTED, element, 0);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.SELECTED, element, 0);
 		return status;
 	}
 
 	@Override
 	public boolean deselected(By locator) {
-		this.log.debug("I see element \"" + locator.toString() + "\" not selected.");
+		this.log.debug("I see element \"" + locator.toString() + "\" is deselected.");
 		WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator);
-		boolean status = this.stateAssertionCommand.isStateEqual(StateAssertionAction.DESELECTED, element, 0);
+		boolean status = this.stateAssertionCommand.isElementStateEqual(StateAssertionAction.DESELECTED, element, 0);
 		return status;
 	}
 	
 	@Override
 	public boolean seeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" is displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		return status;
 	}
 	
 	@Override
 	public boolean dontSeeTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
 		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.NOT_DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.NOT_DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		return status;
 	}
 	
 	@Override
 	public boolean seeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.ENABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to be enabled within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.ENABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeeEnabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DISABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+	public boolean seeDisabledOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to be disabled within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.DISABLED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		return status;
 	}
 	
 	@Override
 	public boolean seeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.SELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to be selected within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.SELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		return status;
 	}
 	
 	@Override
-	public boolean dontSeeSelectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
-		boolean status = this.stateAssertionCommand.isNestedListStateEqual(StateAssertionAction.DESELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+	public boolean seeDeselectedOnTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to be deselected within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the text: \"" + textToCheck + "\" from the Web Element: \"" + rowObjectToCheckText.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnText(StateAssertionAction.DESELECTED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean seeTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" is displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean dontSeeTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" to not be displayed within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.NOT_DISPLAYED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean seeEnabledOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" si enabled within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.ENABLED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean seeDisabledOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" is disabled within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.DISABLED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean seeSelectedOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" is selected within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.SELECTED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
+		return status;
+	}
+	
+	@Override
+	public boolean seeDeselectedOnTableRowElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		this.log.debug("I see the Web Element: \"" + rowObjectToSee.toString() + "\" is deselected within one of the Rows of the Web Element: \"" + rowObjectList.toString() + "\" based on the " + attributeToCheck + " attribute value: \"" + valueToCheck + "\" from the Web Element: \"" + rowObjectToCheckAttributeValue.toString() + "\" within the same row.");
+		boolean status = this.stateAssertionCommand.isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction.DESELECTED, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
 		return status;
 	}
 	

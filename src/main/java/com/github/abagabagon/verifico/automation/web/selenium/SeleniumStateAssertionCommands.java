@@ -28,7 +28,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 			status = element.isDisplayed();
 			break;
 		case NOT_DISPLAYED:
-			if(size > 0) {
+			if(size == 0) {
 				status = true;
 			}
 			break;
@@ -51,12 +51,16 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 		return status;
 	}
 	
-	boolean isStateEqual(StateAssertionAction stateAssertionAction, WebElement element, int size) {
+	boolean isElementStateEqual(StateAssertionAction stateAssertionAction, WebElement element, int size) {
 		boolean status = this.isElementStateSetAs(stateAssertionAction, element, size);
 		if(status) {
-			this.log.debug("I saw element state is " + String.valueOf(stateAssertionAction) + "\".");
+			if (stateAssertionAction == StateAssertionAction.NOT_DISPLAYED) {
+				this.log.debug("I saw state of the Web Element as " + String.valueOf(stateAssertionAction) + ".");
+			} else {
+				this.log.debug("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+			}
 		} else {
-			this.log.error("I didn't see element state as " + String.valueOf(stateAssertionAction) + "\".");
+			this.log.error("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		}
 		return status;
 	}
@@ -78,12 +82,39 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 		return status;
 	}
 	
-	boolean isNestedListStateEqual(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
+	boolean isNestedElementStateEqualBasedOnText(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
 		boolean status = this.isElementStateSetAsFromNestedListBasedOnText(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
 		if(status) {
-			this.log.debug("I saw element state is " + String.valueOf(stateAssertionAction) + "\".");
+			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
-			this.log.error("I didn't see element state as " + String.valueOf(stateAssertionAction) + "\".");
+			this.log.error("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+		}
+		return status;
+	}
+	
+	public boolean isElementStateSetAsFromNestedListBasedOnAttributeValue(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToCheckStateFrom) {
+		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		int size = rows.size();
+		boolean status = false;
+		for(int i = 0; i < size; i++) {
+			WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, i);
+			String checkText = elementToCheckText.getText().trim();
+			if (checkText.contains(valueToCheck)) {
+				WebElement elementToCheckStateFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				List<WebElement> elementsToCheckStateFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				status = this.isElementStateSetAs(stateAssertionAction, elementToCheckStateFrom, elementsToCheckStateFrom.size());
+				break;	
+			}
+		}
+		return status;
+	}
+	
+	boolean isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
+		boolean status = this.isElementStateSetAsFromNestedListBasedOnAttributeValue(stateAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToCheckAttributeValue);
+		if(status) {
+			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+		} else {
+			this.log.error("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		}
 		return status;
 	}
