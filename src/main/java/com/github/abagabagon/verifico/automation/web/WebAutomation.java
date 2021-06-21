@@ -1803,8 +1803,8 @@ public interface WebAutomation {
 	 * Verifies the value of INPUT or TEXTAREA Web Elements if not partially equal to the specified
 	 * value.
 	 * 
-	 * @param locator	Object used to locate Web Element to assert the value from.
-	 * @param value		Value of the Web Element Text Box.
+	 * @param locator		Object used to locate Web Element to assert the value from.
+	 * @param partialValue	Partial value of the Web Element Text Box.
 	 * @return	<code>true</code> if value is not partially equal to specified value.
 	 * 			<code>false</code> if value is partially equal to specified value.
 	 */
@@ -1933,9 +1933,9 @@ public interface WebAutomation {
 	/**
 	 * Verifies if attribute value does not exist from Web Element List.
 	 * 
-	 * @param locator		Object used to locate Web Element List to assert the attribute value from.
-	 * @param attribute		Name of attribute to assert the value from.
-	 * @param expectedValue	Attribute value to verify
+	 * @param locator	Object used to locate Web Element List to assert the attribute value from.
+	 * @param attribute	Name of attribute to assert the value from.
+	 * @param value		Attribute value to verify
 	 * @return	<code>true</code> if attribute value does not exist from Web Element List.
 	 * 			<code>false</code> if attribute value exists from Web Element List.
 	 */
@@ -2041,12 +2041,13 @@ public interface WebAutomation {
 	 * @param rowObjectToCheckText				Object Locator relative to the Row Object from which to check the specified text.
 	 * @param textToCheck						Text to check at the specified object to check Text.
 	 * @param rowObjectToSeeAttributeValueFrom	Object Locator relative to the Row Object to assert attribute value from if specified value is found on that row.
+	 * @param attribute							Name of attribute to assert the value from.
 	 * @param value								Attribute value to check
 	 * @return	<code>true</code> if value is not equal to expected attribute value.
 	 * 			<code>false</code> if value is equal to expected attribute value.
 	 */
 	
-	public boolean dontSeeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String value);
+	public boolean dontSeeAttributeValueOfTableRowElementBasedOnTableRowElementText(By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeAttributeValueFrom, String attribute, String value);
 	
 	/**
 	 * Verifies text value if it exists in a Web Element List from a row in a table based on text value from the same row.
@@ -2492,7 +2493,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is not equal to partial text value.
 	 */
 	
-	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	public boolean seePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedPartialValue);
 	
 	/**
 	 * Verifies attribute value if it exists in a Web Element List from a row in a table based on attribute value from the same row.
@@ -2524,7 +2525,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is not equal to partial attribute value.
 	 */
 	
-	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String expectedValue);
+	public boolean seePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String expectedPartialValue);
 	
 	/**
 	 * Verifies text value if it does not exist in a Web Element List from a row in a table based on attribute value from the same row.
@@ -2539,7 +2540,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is equal to text value.
 	 */
 	
-	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	public boolean dontSeeTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String value);
 	
 	/**
 	 * Verifies partial text value if it does not exist in a Web Element List from a row in a table based on attribute value from the same row.
@@ -2554,7 +2555,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is equal to partial text value.
 	 */
 	
-	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String expectedValue);
+	public boolean dontSeePartialTextOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String value);
 	
 	/**
 	 * Verifies attribute value if it does not exist in a Web Element List from a row in a table based on attribute value from the same row.
@@ -2570,7 +2571,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is equal to attribute value.
 	 */
 	
-	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String expectedValue);
+	public boolean dontSeeAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String value);
 	
 	/**
 	 * Verifies partial attribute value if it does not exist in a Web Element List from a row in a table based on attribute value from the same row.
@@ -2586,7 +2587,7 @@ public interface WebAutomation {
 	 * 			<code>false</code> if value is equal to partial attribute value.
 	 */
 	
-	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String expectedValue);
+	public boolean dontSeePartialAttributeValueOfTableRowListElementBasedOnTableRowElementAttributeValue(By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeAttributeValueFrom, String attribute, String value);
 	
 	/**
 	 * Verifies if Web Element is displayed on Web Page.
