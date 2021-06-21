@@ -2027,6 +2027,7 @@ public interface WebAutomation {
 	 * @param rowObjectToCheckText				Object Locator relative to the Row Object from which to check the specified text.
 	 * @param textToCheck						Text to check at the specified object to check Text.
 	 * @param rowObjectToSeeAttributeValueFrom	Object Locator relative to the Row Object to assert attribute value from if specified value is found on that row.
+	 * @param attribute							Name of attribute to assert the value from.
 	 * @param expectedValue						Expected attribute value
 	 * @return	<code>true</code> if value is equal to expected attribute value.
 	 * 			<code>false</code> if value is not equal to expected attribute value.
