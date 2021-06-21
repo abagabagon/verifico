@@ -1,4 +1,4 @@
-package com.github.abagabagon.verifico.automation.web;
+package com.github.abagabagon.verifico.automation.web.selenium;
 
 import java.util.List;
 
@@ -391,8 +391,8 @@ public class SeleniumWait {
 	/**
 	 * Waits for WebElement to be visible at the Web Page.
 	 * 
-	 * @param locator Object used to locate element to wait for.
-	 * @param index Object from a Web Element List.
+	 * @param locator	Object used to locate element to wait for.
+	 * @param index		Index of object to locate from the Object List.
 	 * @return Created Web Element
 	 */
 
@@ -501,7 +501,16 @@ public class SeleniumWait {
 		return element;
 	}
 	
-	final WebElement waitForNestedObjectToBeVisible(By parent, By child, int index) {
+	/**
+	 * Waits for WebElement to be visible at the Web Page.
+	 * 
+	 * @param parentList	Object used to locate parent element to wait for.
+	 * @param child		 	Object used to locate child element to wait for.
+	 * @param index			Index of object to locate from the Parent Object List.
+	 * @return Created Web Element
+	 */
+	
+	final WebElement waitForNestedObjectToBeVisible(By parentList, By child, int index) {
 		this.log.trace("Waiting for Nested Web Element to be visible.");
 		this.waitForPage();
 		WebElement element = null;
@@ -509,8 +518,81 @@ public class SeleniumWait {
 			element = this.wait.until(new ExpectedCondition<WebElement>() {
 				@Override
 				public WebElement apply(WebDriver driver) {
-					List<WebElement> parentElement = driver.findElements(parent);
+					List<WebElement> parentElement = driver.findElements(parentList);
 					WebElement childElement = parentElement.get(index).findElement(child);
+					return childElement;
+				}
+			});
+			this.log.trace("Nested Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Nested Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for Nested Web Element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		}
+		return element;
+	}
+	
+	/**
+	 * Waits for WebElement to be visible at the Web Page.
+	 *
+	 * @param ancestor		Object used to locate ancestor element to wait for.
+	 * @param parentList	Object used to locate parent element to wait for.
+	 * @param child		 	Object used to locate child element to wait for.
+	 * @param index			Index of object to locate from the Parent Object List.
+	 * @return Created Web Element
+	 */
+	
+	final WebElement waitForNestedObjectToBeVisible(By ancestor, By parentList, By child, int index) {
+		this.log.trace("Waiting for Nested Web Element to be visible.");
+		this.waitForPage();
+		WebElement element = null;
+		try {
+			element = this.wait.until(new ExpectedCondition<WebElement>() {
+				@Override
+				public WebElement apply(WebDriver driver) {
+					WebElement ancestorElement = driver.findElement(ancestor);
+					List<WebElement> parentListElement = ancestorElement.findElements(parentList);
+					WebElement childElement = parentListElement.get(index).findElement(child);
+					return childElement;
+				}
+			});
+			this.log.trace("Nested Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Nested Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for Nested Web Element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		}
+		return element;
+	}
+	
+	/**
+	 * Waits for WebElement to be visible at the Web Page.
+	 *
+	 * @param ancestorElement	Ancestor element to wait for.
+	 * @param parentList		Object used to locate parent element to wait for.
+	 * @param child		 		Object used to locate child element to wait for.
+	 * @param index				Index of object to locate from the Parent Object List.
+	 * @return Created Web Element
+	 */
+	
+	final WebElement waitForNestedObjectToBeVisible(WebElement ancestorElement, By parentList, By child, int index) {
+		this.log.trace("Waiting for Nested Web Element to be visible.");
+		this.waitForPage();
+		WebElement element = null;
+		try {
+			element = this.wait.until(new ExpectedCondition<WebElement>() {
+				@Override
+				public WebElement apply(WebDriver driver) {
+					List<WebElement> parentListElement = ancestorElement.findElements(parentList);
+					WebElement childElement = parentListElement.get(index).findElement(child);
 					return childElement;
 				}
 			});
@@ -607,7 +689,16 @@ public class SeleniumWait {
 		return elements;
 	}
 	
-	final List<WebElement> waitForNestedObjectsToBeVisible(By parent, By child, int index) {
+	/**
+	 * Waits for WebElement List to be visible at the Web Page.
+	 *
+	 * @param parentList	Object used to locate parent element to wait for.
+	 * @param childlist		Object used to locate child element to wait for.
+	 * @param index			Index of object to locate from the Parent Object List.
+	 * @return Created Web Element List
+	 */
+	
+	final List<WebElement> waitForNestedObjectsToBeVisible(By parentList, By childList, int index) {
 		this.log.trace("Waiting for Nested List Web Element to be visible.");
 		this.waitForPage();
 		List<WebElement> elements = null;
@@ -615,9 +706,46 @@ public class SeleniumWait {
 			elements = this.wait.until(new ExpectedCondition<List<WebElement>>() {
 				@Override
 				public List<WebElement> apply(WebDriver driver) {
-					List<WebElement> parentElement = driver.findElements(parent);
-					List<WebElement> childElement = parentElement.get(index).findElements(child);
+					List<WebElement> parentElement = driver.findElements(parentList);
+					List<WebElement> childElement = parentElement.get(index).findElements(childList);
 					return childElement;
+				}
+			});
+			this.log.trace("Nested List Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Nested List Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		} catch (Exception e) {
+			this.log.error("Something went wrong while trying to wait for Nested List Web Element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		}
+		return elements;
+	}
+	
+	/**
+	 * Waits for WebElement List to be visible at the Web Page.
+	 *
+	 * @param ancestor		Object used to locate ancestor element to wait for.
+	 * @param parentList	Object used to locate parent element to wait for.
+	 * @param childlist		Object used to locate child element to wait for.
+	 * @param index			Index of object to locate from the Parent Object List.
+	 * @return Created Web Element List
+	 */
+	
+	final List<WebElement> waitForNestedObjectsToBeVisible(By ancestor, By parentList, By childList, int index) {
+		this.log.trace("Waiting for Nested List Web Element to be visible.");
+		this.waitForPage();
+		List<WebElement> elements = null;
+		try {
+			elements = this.wait.until(new ExpectedCondition<List<WebElement>>() {
+				@Override
+				public List<WebElement> apply(WebDriver driver) {
+					WebElement ancestorElement = driver.findElement(ancestor);
+					List<WebElement> parentListElement = ancestorElement.findElements(parentList);
+					List<WebElement> childListElement = parentListElement.get(index).findElements(childList);
+					return childListElement;
 				}
 			});
 			this.log.trace("Nested List Web Element had become visible!");
@@ -997,6 +1125,114 @@ public class SeleniumWait {
 		boolean isValueEqual = false;
 		try {
 			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(element, "value", expectedValue));
+			this.log.trace("Text Box/Area Value contains the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to contain the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to contain expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+	
+	/**
+	 * Waits for Text Box/Area Attribute, Value to be the same as expected value.
+	 * 
+	 * @param locator       By Object used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value is same as expected value.
+	 *         <code>false</code> if Value is different from expected value.
+	 */
+
+	final boolean waitForAttributeValueToBe(By locator, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to match expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeToBe(locator, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to be the same as expected value.
+	 * 
+	 * @param element       Web Element used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value is same as expected value.
+	 *         <code>false</code> if Value is different from expected value.
+	 */
+
+	final boolean waitForAttributeValueToBe(WebElement element, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to match expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeToBe(element, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value had matched the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to match the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to match expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to contain the expected value.
+	 * 
+	 * @param locator       By Object used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value contains the expected value.
+	 *         <code>false</code> if Value does not contain expected value.
+	 */
+
+	final boolean waitForAttributeValueToContain(By locator, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to contain expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(locator, attribute, expectedValue));
+			this.log.trace("Text Box/Area Value contains the expected value!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Text Box/Area Value to contain the expected value has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for Text Box/Area Value to contain expected value!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+		}
+		return isValueEqual;
+	}
+
+	/**
+	 * Waits for Text Box/Area Attribute Value to contain the expected value.
+	 * 
+	 * @param element       Web Element used to locate element to wait for.
+	 * @param attribute     Attribute of the element to wait for.
+	 * @param expectedValue Expected Text Box/Area Value to compare into
+	 * @return <code>true</code> if Value contains the expected value.
+	 *         <code>false</code> if Value does not contain the expected value.
+	 */
+
+	final boolean waitForAttributeValueToContain(WebElement element, String attribute, String expectedValue) {
+		this.log.trace("Waiting for Text Box/Area Value to contain expected value.");
+		this.waitForPage();
+		boolean isValueEqual = false;
+		try {
+			isValueEqual = this.wait.until(ExpectedConditions.attributeContains(element, attribute, expectedValue));
 			this.log.trace("Text Box/Area Value contains the expected value!");
 		} catch (TimeoutException e) {
 			this.log.error("Wait time for Text Box/Area Value to contain the expected value has expired!");

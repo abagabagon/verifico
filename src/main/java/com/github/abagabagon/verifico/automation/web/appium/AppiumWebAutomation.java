@@ -1,10 +1,11 @@
-package com.github.abagabagon.verifico.automation.web;
+package com.github.abagabagon.verifico.automation.web.appium;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 
+import com.github.abagabagon.verifico.automation.web.selenium.SeleniumWebAutomation;
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.enums.Mobile;
 
@@ -44,7 +45,7 @@ public class AppiumWebAutomation extends SeleniumWebAutomation {
 		this.driver = this.appiumWebDriver.getWebDriver(this.mobile, this.browser, this.platformVersion, this.deviceName);
 		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
-		this.setImplicitWait(10);
+		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		deleteAllCookies();
 	}
 
