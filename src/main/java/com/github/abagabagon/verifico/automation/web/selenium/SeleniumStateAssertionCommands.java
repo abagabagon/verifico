@@ -60,7 +60,12 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 				this.log.debug("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 			}
 		} else {
-			this.log.error("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+			if (stateAssertionAction == StateAssertionAction.NOT_DISPLAYED) {
+				this.log.error("I saw state of the Web Element as " + String.valueOf(stateAssertionAction) + ".");
+			} else {
+				this.log.error("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+			}
+			
 		}
 		return status;
 	}
