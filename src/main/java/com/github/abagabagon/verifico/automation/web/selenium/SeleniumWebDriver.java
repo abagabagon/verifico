@@ -13,10 +13,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.opera.OperaDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.github.abagabagon.verifico.enums.Browser;
@@ -51,18 +48,12 @@ public class SeleniumWebDriver {
 				case FIREFOX:
 					this.driver = this.getFirefoxDriver(true);
 					break;
-				case PHANTOMJS:
-					this.driver = this.getPhantomJSDriver();
-					break;
 				default:
 					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
 					System.exit(1);
 				}
 			} else {
 				switch (browser) {
-				case PHANTOMJS:
-					this.driver = this.getPhantomJSDriver();
-					break;
 				case CHROME:
 					this.driver = this.getChromeDriver(false);
 					break;
@@ -71,9 +62,6 @@ public class SeleniumWebDriver {
 					break;
 				case FIREFOX:
 					this.driver = this.getFirefoxDriver(false);
-					break;
-				case OPERA:
-					this.driver = this.getOperaDriver();
 					break;
 				case EDGE:
 					this.driver = this.getEdgeDriver();
@@ -134,21 +122,6 @@ public class SeleniumWebDriver {
 	}
 	
 	/**
-	 * Initializes and returns Opera WebDriver Object.
-	 * 
-	 * @return Opera WebDriver Object
-	 */
-	
-	private WebDriver getOperaDriver() {
-		this.log.trace("Initializing Opera Driver.");
-		WebDriver driver;
-		WebDriverManager.operadriver().setup();
-		driver = new OperaDriver();
-		this.log.trace("Successfully initialized Opera Driver.");
-		return driver;
-	}
-	
-	/**
 	 * Initializes and returns Microsoft Edge WebDriver Object.
 	 * 
 	 * @return Microsoft Edge WebDriver Object
@@ -199,23 +172,6 @@ public class SeleniumWebDriver {
 		this.log.trace("Initializing Safari Driver.");
 		WebDriver driver = new SafariDriver();
 		this.log.trace("Successfully initialized Safari Driver.");
-		return driver;
-	}
-	
-	/**
-	 * Initializes and returns PhantomJS WebDriver Object.
-	 * 
-	 * @return PhantomJS WebDriver Object
-	 */
-
-	private WebDriver getPhantomJSDriver() {
-		this.log.trace("Initializing PhantomJS Driver.");
-		DesiredCapabilities caps = new DesiredCapabilities();
-		caps.setJavascriptEnabled(true);                
-		caps.setCapability("takesScreenshot", true);  
-		WebDriverManager.phantomjs().setup();
-		WebDriver driver = new PhantomJSDriver(caps);
-		this.log.trace("Successfully initialized PhantomJS Driver.");
 		return driver;
 	}
 	

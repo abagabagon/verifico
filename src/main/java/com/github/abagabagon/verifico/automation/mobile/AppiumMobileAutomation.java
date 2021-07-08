@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -132,7 +131,7 @@ public class AppiumMobileAutomation implements MobileAutomation {
 	private void initializeImplicitWait(long duration) {
 		this.log.trace("I initialize Implicit Wait.");
 		try {
-			this.driver.manage().timeouts().implicitlyWait(duration, TimeUnit.SECONDS);
+			this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		} catch (NullPointerException e) {
 			this.log.error("Unable to initialize Implicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
