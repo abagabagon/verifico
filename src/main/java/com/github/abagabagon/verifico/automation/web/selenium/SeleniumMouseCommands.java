@@ -102,7 +102,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForObjectToBeClickable(locator);
+			element = this.seleniumWait.waitForObjectToBeVisible(locator);
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -190,7 +190,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
 			elements = this.seleniumWait.waitForObjectsToBeVisible(objectList);
-			element = this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
+			element = this.seleniumWait.waitForObjectToBeVisible(elements.get(index));
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -221,7 +221,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 		for(int i = 1; i <= 4; i++) {
 			this.seleniumWait.waitForObjectsToBeVisible(childList);
 			elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, childList);
-			element = this.seleniumWait.waitForObjectToBeClickable(elements.get(index));
+			element = this.seleniumWait.waitForObjectToBeVisible(elements.get(index));
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -255,7 +255,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 			parentElementList = this.seleniumWait.waitForObjectsToBeVisible(parentList);
 			this.seleniumWait.waitForObjectsToBeVisible(childList);
 			childElementList = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), childList);
-			this.seleniumWait.waitForObjectToBeClickable(childElementList.get(childIndex));
+			this.seleniumWait.waitForObjectToBeVisible(childElementList.get(childIndex));
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
