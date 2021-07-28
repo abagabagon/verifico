@@ -36,9 +36,11 @@ public class SeleniumSelectCommands extends SeleniumCommands {
 					case SELECT:
 						select.selectByVisibleText(option);
 						flgOptionTicked = true;
+						break;
 					case DESELECT:
 						select.deselectByVisibleText(option);
 						flgOptionTicked = true;
+						break;
 					default:
 						this.log.fatal("Unsupported SELECT Mode.");
 					}
