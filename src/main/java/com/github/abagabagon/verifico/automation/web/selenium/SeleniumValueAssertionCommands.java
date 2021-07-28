@@ -48,7 +48,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 			break;
 		case DROPDOWN:
 			select = new Select(element);
-			this.actualValue = select.getFirstSelectedOption().getText().toLowerCase();
+			this.actualValue = select.getFirstSelectedOption().getText();
 			status = this.actualValue.equals(value);
 			break;
 		case TEXT:
