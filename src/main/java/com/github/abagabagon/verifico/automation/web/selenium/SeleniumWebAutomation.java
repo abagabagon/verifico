@@ -732,6 +732,12 @@ public class SeleniumWebAutomation implements WebAutomation {
 	}
 	
 	@Override
+	public void press(Keys keyButton) {
+		this.log.debug("I press \"" + keyButton + "."); 
+		this.action.sendKeys(keyButton).perform();;
+	}
+	
+	@Override
 	public void press(By locator, Keys keyButton) {
 		this.log.debug("I press \"" + keyButton + "\" at Web Element: \"" + locator.toString() + "\"."); 
 		this.keyboardCommand.doBasicCommand(KeyboardAction.SEND_KEYS, locator, null, keyButton);
