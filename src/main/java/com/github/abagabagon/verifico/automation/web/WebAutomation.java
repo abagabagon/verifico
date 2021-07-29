@@ -1039,6 +1039,14 @@ public interface WebAutomation {
 	public void typeOnTableRowElementBasedOnTableRowElementAttributeValue(By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToTypeOn, String inputText);
 	
 	/**
+	 * Simulates pressing of characters.
+	 * 
+	 * @param keyButton	Key Button to press
+	 */
+	
+	public void press(Keys keyButton);
+	
+	/**
 	 * Simulates pressing of characters into a text box/area Web Element.
 	 * 
 	 * @param locator 	Object used to locate Web Element to type into.
