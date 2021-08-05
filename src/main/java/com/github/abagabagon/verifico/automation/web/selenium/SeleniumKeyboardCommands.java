@@ -195,7 +195,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	
 	
 	void doTableCommandBasedOnText(KeyboardAction keyboardAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -222,7 +222,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	}
 	
 	void doTableCommandBasedOnText(KeyboardAction keyboardAction, By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -250,8 +250,8 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	}
 	
 	void doTableCommandBasedOnText(KeyboardAction keyboardAction, By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
-		List<WebElement> parentElementList = this.seleniumWait.waitForTableRowsToBeVisible(parentList);
+		this.seleniumWait.waitForListElement(rowObjectList);
+		List<WebElement> parentElementList = this.seleniumWait.waitForListElement(parentList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -279,7 +279,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	}
 	
 	void doTableCommandBasedOnAttributeValue(KeyboardAction keyboardAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -306,7 +306,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	}
 	
 	void doTableCommandBasedOnAttributeValue(KeyboardAction keyboardAction, By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -334,7 +334,7 @@ public class SeleniumKeyboardCommands extends SeleniumCommands {
 	}
 	
 	void doTableCommandBasedOnAttributeValue(KeyboardAction keyboardAction, By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo, String inputText, Keys keyButton) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> parentElementList = this.seleniumWait.waitForObjectsToBeVisible(parentList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), rowObjectList);
 		int size = rows.size();
