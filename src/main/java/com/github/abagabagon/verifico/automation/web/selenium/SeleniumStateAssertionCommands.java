@@ -71,15 +71,18 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 	}
 	
 	public boolean isElementStateSetAsFromNestedListBasedOnText(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToCheckStateFrom) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
 			WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckText, i);
 			String checkText = elementToCheckText.getText().trim();
 			if (checkText.contains(textToCheck)) {
-				WebElement elementToCheckStateFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
-				List<WebElement> elementsToCheckStateFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				WebElement elementToCheckStateFrom = null;
+				List<WebElement> elementsToCheckStateFrom = this.driver.findElements(rowObjectList).get(i).findElements(rowObjectToCheckStateFrom);
+				if(elementsToCheckStateFrom.size() > 0) {
+					elementToCheckStateFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				}
 				status = this.isElementStateSetAs(stateAssertionAction, elementToCheckStateFrom, elementsToCheckStateFrom.size());
 				break;	
 			}
@@ -88,7 +91,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 	}
 	
 	boolean isNestedElementStateEqualBasedOnText(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		boolean status = this.isElementStateSetAsFromNestedListBasedOnText(stateAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		boolean status = this.isElementStateSetAsFromNestedListBasedOnText(stateAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToSee);
 		if(status) {
 			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
@@ -98,15 +101,18 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 	}
 	
 	public boolean isElementStateSetAsFromNestedListBasedOnAttributeValue(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToCheckStateFrom) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
 			WebElement elementToCheckText = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckAttributeValue, i);
 			String checkText = elementToCheckText.getText().trim();
 			if (checkText.contains(valueToCheck)) {
-				WebElement elementToCheckStateFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
-				List<WebElement> elementsToCheckStateFrom = this.seleniumWait.waitForNestedObjectsToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				WebElement elementToCheckStateFrom = null;
+				List<WebElement> elementsToCheckStateFrom = this.driver.findElements(rowObjectList).get(i).findElements(rowObjectToCheckStateFrom);
+				if(elementsToCheckStateFrom.size() > 0) {
+					elementToCheckStateFrom = this.seleniumWait.waitForNestedObjectToBeVisible(rowObjectList, rowObjectToCheckStateFrom, i);
+				}
 				status = this.isElementStateSetAs(stateAssertionAction, elementToCheckStateFrom, elementsToCheckStateFrom.size());
 				break;	
 			}
@@ -115,7 +121,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 	}
 	
 	boolean isNestedElementStateEqualBasedOnAttributeValue(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSee) {
-		boolean status = this.isElementStateSetAsFromNestedListBasedOnAttributeValue(stateAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToCheckAttributeValue);
+		boolean status = this.isElementStateSetAsFromNestedListBasedOnAttributeValue(stateAssertionAction, rowObjectList, rowObjectToCheckAttributeValue, attributeToCheck, valueToCheck, rowObjectToSee);
 		if(status) {
 			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
