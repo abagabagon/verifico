@@ -946,8 +946,8 @@ public class SeleniumWait {
 		return element;
 	}
 	
-	final List<WebElement> waitForListToBeVisible(By locator) {
-		this.log.trace("Waiting for List to be visible.");
+	final List<WebElement> waitForListElement(By locator) {
+		this.log.trace("Waiting for List Element.");
 		this.waitForPage();
 		List<WebElement> element = null;
 		try {
@@ -976,21 +976,20 @@ public class SeleniumWait {
 					return elements;
 				}
 			});
-			this.log.trace("List had become visible!");
 		} catch (TimeoutException e) {
-			this.log.error("Wait time for List to be visible has expired!");
+			this.log.error("Wait time for List Element has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			Assert.fail();
 		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to wait for List to be visible!");
+			this.log.error("Something went wrong while trying to wait for List Element!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			Assert.fail();
 		}
 		return element;
 	}
 	
-	final List<WebElement> waitForTableRowsToBeVisible(By locator) {
-		this.log.trace("Waiting for Table Rows to be visible.");
+	final List<WebElement> waitForListElement(By parentList, By childList, int index) {
+		this.log.trace("Waiting for List Element.");
 		this.waitForPage();
 		List<WebElement> element = null;
 		try {
@@ -1002,7 +1001,8 @@ public class SeleniumWait {
 					int size = 0;
 					int previousSize = 0;
 					while(count != 10) {
-						elements = driver.findElements(locator);
+						List<WebElement> parentElement = driver.findElements(parentList);
+						elements = parentElement.get(index).findElements(childList);
 						size = elements.size();
 						if (size == previousSize) {
 							count++;
@@ -1019,13 +1019,12 @@ public class SeleniumWait {
 					return elements;
 				}
 			});
-			this.log.trace("Table Rows had become visible!");
 		} catch (TimeoutException e) {
-			this.log.error("Wait time for Table Rows to be visible has expired!");
+			this.log.error("Wait time for List Element has expired!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			Assert.fail();
 		} catch (Exception e) {
-			this.log.error("Something went wrong while trying to wait for Table Rows to be visible!");
+			this.log.error("Something went wrong while trying to wait for List Element!");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 			Assert.fail();
 		}

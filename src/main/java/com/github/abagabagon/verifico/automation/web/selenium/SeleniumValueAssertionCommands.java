@@ -111,7 +111,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	private boolean isValueDisplayedFromList(ValueAssertionAction valueAssertionAction, By locator, String attribute, String searchValue) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		List<WebElement> elements = this.seleniumWait.waitForListElement(locator);
 		int size = elements.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
@@ -145,7 +145,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	private boolean isValueDisplayedFromNestedList(ValueAssertionAction valueAssertionAction, By objectList, By child, String attribute, String searchValue) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(objectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(objectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int j = 0; j < size; j++) {
@@ -179,7 +179,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	public boolean isValueDisplayedFromNestedListBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
@@ -215,7 +215,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	public boolean isValueDisplayedFromNestedListBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectToSeeTextFrom, String attribute, String searchValue) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
@@ -251,7 +251,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	private boolean isListValueDisplayedFromNestedListBasedOnText(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {
@@ -293,7 +293,7 @@ public class SeleniumValueAssertionCommands extends SeleniumCommands {
 	}
 	
 	private boolean isListValueDisplayedFromNestedListBasedOnAttributeValue(ValueAssertionAction valueAssertionAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attributeToCheck, String valueToCheck, By rowObjectListToSeeTextFrom, String attribute, String expectedValue) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean status = false;
 		for(int i = 0; i < size; i++) {

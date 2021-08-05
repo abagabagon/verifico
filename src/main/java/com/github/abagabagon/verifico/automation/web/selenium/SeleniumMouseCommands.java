@@ -279,7 +279,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnText(MouseAction mouseAction, By objectList, String textToCheck) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
+		List<WebElement> elements = this.seleniumWait.waitForListElement(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -314,7 +314,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnText(MouseAction mouseAction, By parent, By childList, String textToCheck) {
-		this.seleniumWait.waitForListToBeVisible(childList);
+		this.seleniumWait.waitForListElement(childList);
 		List<WebElement> elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, childList);
 		int size = elements.size();
 		boolean flgTextFound = false;
@@ -351,7 +351,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnText(MouseAction mouseAction, By parentList, int parentIndex, By childList, String textToCheck) {
-		this.seleniumWait.waitForListToBeVisible(childList);
+		this.seleniumWait.waitForListElement(childList);
 		List<WebElement> parentElementList = this.seleniumWait.waitForObjectsToBePresent(parentList);
 		List<WebElement> childElementList = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), childList);
 		int size = childElementList.size();
@@ -388,7 +388,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnAttributeValue(MouseAction mouseAction, By objectList, String attribute, String valueToCheck) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(objectList);
+		List<WebElement> elements = this.seleniumWait.waitForListElement(objectList);
 		int size = elements.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -424,7 +424,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnAttributeValue(MouseAction mouseAction, By parent, By childList, String attribute, String valueToCheck) {
-		this.seleniumWait.waitForListToBeVisible(childList);
+		this.seleniumWait.waitForListElement(childList);
 		List<WebElement> elements = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, childList);
 		int size = elements.size();
 		boolean flgTextFound = false;
@@ -462,7 +462,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doListCommandBasedOnAttributeValue(MouseAction mouseAction, By parentList, int parentIndex, By childList, String attribute, String valueToCheck) {
-		this.seleniumWait.waitForListToBeVisible(childList);
+		this.seleniumWait.waitForListElement(childList);
 		List<WebElement> parentElementList = this.seleniumWait.waitForObjectsToBePresent(parentList);
 		List<WebElement> childElementList = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), childList);
 		int size = childElementList.size();
@@ -565,7 +565,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnText(MouseAction mouseAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -603,7 +603,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnText(MouseAction mouseAction, By parent, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -643,7 +643,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnText(MouseAction mouseAction, By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> parentElement = this.seleniumWait.waitForObjectsToBePresent(parentList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElement.get(parentIndex), rowObjectList);
 		int size = rows.size();
@@ -683,7 +683,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnAttributeValue(MouseAction mouseAction, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
-		List<WebElement> rows = this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		List<WebElement> rows = this.seleniumWait.waitForListElement(rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
 		for(int i = 1; i <= 4; i++) {
@@ -722,7 +722,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnAttributeValue(MouseAction mouseAction, By parent, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parent, rowObjectList);
 		int size = rows.size();
 		boolean flgTextFound = false;
@@ -763,7 +763,7 @@ public class SeleniumMouseCommands extends SeleniumCommands {
 	 */
 	
 	void doTableCommandBasedOnAttributeValue(MouseAction mouseAction, By parentList, int parentIndex, By rowObjectList, By rowObjectToCheckAttributeValue, String attribute, String valueToCheck, By rowObjectToDoActionTo) {
-		this.seleniumWait.waitForTableRowsToBeVisible(rowObjectList);
+		this.seleniumWait.waitForListElement(rowObjectList);
 		List<WebElement> parentElementList = this.seleniumWait.waitForObjectsToBeVisible(parentList);
 		List<WebElement> rows = this.seleniumWait.waitForNestedObjectsToBeVisible(parentElementList.get(parentIndex), rowObjectList);
 		int size = rows.size();

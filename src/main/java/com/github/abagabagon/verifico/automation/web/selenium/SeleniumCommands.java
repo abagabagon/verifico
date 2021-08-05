@@ -55,7 +55,7 @@ public class SeleniumCommands {
 	}
 	
 	protected int getListIndex(ValueAssertionAction valueAssertionAction, By locator, String attribute, String searchValue) {
-		List<WebElement> elements = this.seleniumWait.waitForListToBeVisible(locator);
+		List<WebElement> elements = this.seleniumWait.waitForListElement(locator);
 		int size = elements.size();
 		int index = 0;
 		boolean flgTextFound = false;
