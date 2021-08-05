@@ -88,7 +88,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 	}
 	
 	boolean isNestedElementStateEqualBasedOnText(StateAssertionAction stateAssertionAction, By rowObjectList, By rowObjectToCheckText, String textToCheck, By rowObjectToSee) {
-		boolean status = this.isElementStateSetAsFromNestedListBasedOnText(StateAssertionAction.DISPLAYED, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
+		boolean status = this.isElementStateSetAsFromNestedListBasedOnText(stateAssertionAction, rowObjectList, rowObjectToCheckText, textToCheck, rowObjectToCheckText);
 		if(status) {
 			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
