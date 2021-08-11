@@ -95,7 +95,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 		if(status) {
 			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
-			this.log.error("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+			this.log.error("I didn't see state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		}
 		return status;
 	}
@@ -125,7 +125,7 @@ public class SeleniumStateAssertionCommands extends SeleniumCommands {
 		if(status) {
 			this.log.debug("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		} else {
-			this.log.error("I saw state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+			this.log.error("I didn't see state of the Web Element: \"" + rowObjectToSee.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
 		}
 		return status;
 	}
