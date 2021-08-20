@@ -1,7 +1,7 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
-import java.time.Duration;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -81,7 +81,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	public void openBrowser() {
 		this.log.debug("I open Web Browser.");
 		this.driver = this.seleniumWebDriver.getWebDriver(this.browser, this.isHeadless);
-		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(15));
+		this.seleniumWait = new SeleniumWait(this.driver, this.setExplicitWait(5));
 		this.action = new Actions(this.driver);
 		this.javascriptExecutor = (JavascriptExecutor)this.driver;
 		this.generalCommand = new SeleniumCommands(this.driver, this.seleniumWait);
@@ -209,7 +209,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 	void setImplicitWait(long duration) {
 		this.log.trace("I initialize Implicit Wait.");
 		try {
-			this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		} catch (NullPointerException e) {
 			this.log.error("Unable to initialize Implicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
@@ -223,7 +223,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.log.trace("I initialize Explicit Wait.");
 		WebDriverWait wait = null;
 		try {
-			wait = new WebDriverWait(this.driver, Duration.ofSeconds(2));
+			wait = new WebDriverWait(this.driver, duration);
 		} catch (NullPointerException e) {
 			this.log.error("Unable to initialize Explicit Wait. Browser might not have been opened or initialized.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
