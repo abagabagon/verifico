@@ -100,7 +100,6 @@ public class AppiumMobileDriver {
 	
 	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, URL applicationUrl, File applicationFile) {
 		this.log.trace("Initializing AndroidDriver.");
-		
 		try {
 			FileUtils.copyURLToFile(applicationUrl, applicationFile);
 		} catch (IOException e) {

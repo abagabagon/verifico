@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.abagabagon</groupId>
 	<artifactId>verifico</artifactId>
-	<version>1.11.9</version>
+	<version>1.11.10</version>
 	<packaging>jar</packaging>
 	<name>Verifico</name>
 	<description>Web and Mobile Test Automation Library</description>
@@ -125,7 +125,7 @@
 		<dependency>
 		    <groupId>org.seleniumhq.selenium</groupId>
 		    <artifactId>selenium-java</artifactId>
-		    <version>4.0.0-beta-4</version>
+		    <version>3.141.59</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
 		<dependency>

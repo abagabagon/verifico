@@ -1,7 +1,7 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
-import java.time.Duration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -99,10 +99,10 @@ public class SeleniumCommands {
 	
 	protected int count(By locator) {
 		this.seleniumWait.waitForPage();
-		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+		this.driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 		List<WebElement> element = this.driver.findElements(locator);
 		int size = element.size();
-		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return size;
 	}
 	
