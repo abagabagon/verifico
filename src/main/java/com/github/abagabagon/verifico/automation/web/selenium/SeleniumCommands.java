@@ -54,49 +54,6 @@ public class SeleniumCommands {
 		this.seleniumWait = seleniumWait;
 	}
 	
-	protected int getListIndex(ValueAssertionAction valueAssertionAction, By locator, String attribute, String searchValue) {
-		List<WebElement> elements = this.seleniumWait.waitForListElement(locator);
-		int size = elements.size();
-		int index = 0;
-		boolean flgTextFound = false;
-		boolean status = false;
-		String retrievedValue = null;
-		for(int i = 0; i < size; i++) {
-			WebElement element = this.seleniumWait.waitForObjectToBeVisible(locator, i);
-			switch(valueAssertionAction) {
-			case TEXT:
-				retrievedValue = element.getText().trim();
-				status = retrievedValue.equals(searchValue);
-				break;
-			case PARTIAL_TEXT:
-				retrievedValue = element.getText().trim();
-				status = retrievedValue.contains(searchValue);
-				break;
-			case ATTRIBUTE:
-				retrievedValue = element.getAttribute(attribute).trim();
-				status = retrievedValue.equals(searchValue);
-				break;
-			case PARTIAL_ATTRIBUTE:
-				retrievedValue = element.getAttribute(attribute).trim();
-				status = retrievedValue.contains(searchValue);
-				break;
-			default:
-				this.log.fatal("Unsupported Get Index Action.");
-			}
-			if (status) {
-				flgTextFound = true;
-				index = i;
-				this.log.debug("I saw \"" + searchValue + "\" " + valueAssertionAction + " value at index " + index + " from the Web Element List: \"" + locator.toString() + "\".");
-				break;
-			}
-		}
-		if (!flgTextFound) {
-			index = 999999;
-			this.log.error("I didn't see \"" + searchValue + "\" as the " + valueAssertionAction + " value of one of the Web Elements from the Web Element List: \"" + locator.toString() + "\".");
-		}
-		return index;
-	}
-	
 	protected int count(By locator) {
 		this.seleniumWait.waitForPage();
 		this.driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
