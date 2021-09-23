@@ -3,7 +3,9 @@ package com.github.abagabagon.verifico.utilities;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,6 +89,28 @@ public class Converter {
 			log.error("Encountered Exception while converting Date to String!");
 		}
 		return dateString;
+	}
+	
+	/**
+	 * Converts a Month String (e. g. "Sep") to its integer equivalent.
+	 * 
+	 * @param  month		Month String that will be converted to integer.
+	 * @param  monthFormat	Format of Month String.
+	 * @return Month in integer
+	 */
+
+	public static final int convertMonthStringToInteger(String month, String monthFormat) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(monthFormat, Locale.ENGLISH).parse(month);
+		} catch (ParseException e) {
+			log.error("Encountered ParseException while converting String to Date Format!");
+		} catch (Exception e) {
+			log.error("Encountered Exception while converting String to Date Format!");
+		}
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date); 
+		return cal.get(Calendar.MONTH) + 1;
 	}
 	
 }
