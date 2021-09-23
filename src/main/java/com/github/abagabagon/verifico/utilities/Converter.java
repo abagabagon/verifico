@@ -1,8 +1,11 @@
 package com.github.abagabagon.verifico.utilities;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,11 +63,54 @@ public class Converter {
 			date = new SimpleDateFormat(dateFormat).parse(stringDate);
 			log.trace("Successfully parsed String Date!");
 		} catch (ParseException e) {
-			log.error("Encountered ParseException while converting Date from String to Date Format!");
+			log.error("Encountered ParseException while converting String to Date Format!");
 		} catch (Exception e) {
-			log.error("Encountered Exception while converting Date from String to Date Format!");
+			log.error("Encountered Exception while converting String to Date Format!");
 		}
 		return date;
+	}
+	
+	/**
+	 * Converts a Date to String by specified format.
+	 * 
+	 * @param  date			Date that will be converted to String.
+	 * @param  dateFormat	Format of the date.
+	 * @return Converted Date
+	 */
+
+	public static final String convertDateToString(Date date, String dateFormat) {
+		String dateString = null;
+		try {
+			log.trace("Parsing String Date.");
+			DateFormat format = new SimpleDateFormat(dateFormat);
+			dateString = format.format(date);
+			log.trace("Successfully parsed String Date!");
+		} catch (Exception e) {
+			log.error("Encountered Exception while converting Date to String!");
+		}
+		return dateString;
+	}
+	
+	/**
+	 * Converts a Month String (e. g. "Sep") to its integer equivalent.
+	 * 
+	 * @param  month		Month String that will be converted to integer.
+	 * @param  monthFormat	Format of Month String.
+	 * @return Month in integer
+	 */
+
+	public static final int convertMonthStringToInteger(String month, String monthFormat) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(monthFormat, Locale.ENGLISH).parse(month);
+		} catch (ParseException e) {
+			log.error("Encountered ParseException while converting String to Date Format!");
+		} catch (Exception e) {
+			log.error("Encountered Exception while converting String to Date Format!");
+		}
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date); 
+		return cal.get(Calendar.MONTH) + 1;
 	}
 	
 }

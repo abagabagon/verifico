@@ -869,6 +869,32 @@ public class SeleniumWait {
 		}
 		return elements;
 	}
+	
+	/**
+	 * Waits for WebElements to be visible at the Web Page.
+	 * 
+	 * @param element WebElement used to locate element to wait for.
+	 * @return Created List of Web Elements
+	 */
+
+	final List<WebElement> waitForObjectsToBeVisible(WebElement element) {
+		this.log.trace("Waiting for Web Element to be visible.");
+		this.waitForPage();
+		List<WebElement> elements = null;
+		try {
+			elements = this.wait.until(ExpectedConditions.visibilityOfAllElements(element));
+			this.log.trace("Web Element had become visible!");
+		} catch (TimeoutException e) {
+			this.log.error("Wait time for Web Element to be visible has expired!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		} catch (Exception e) {
+			this.log.error("Encountered Exception while waiting for element to be visible!");
+			this.log.debug(ExceptionUtils.getStackTrace(e));
+			Assert.fail();
+		}
+		return elements;
+	}
 
 	/**
 	 * Waits for WebElements to be visible at the Web Page.
