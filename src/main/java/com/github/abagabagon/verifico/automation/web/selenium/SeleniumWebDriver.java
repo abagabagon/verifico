@@ -191,6 +191,8 @@ public class SeleniumWebDriver {
 		options.addArguments("--disable-gpu");
 		options.addArguments("--disable-dev-shm-usage");
 		options.addArguments("--ignore-certificate-errors");
+		options.addArguments("--window-size=1280,1024");
+		options.addArguments("--allow-insecure-localhost");
 		return options;
     }
 	
