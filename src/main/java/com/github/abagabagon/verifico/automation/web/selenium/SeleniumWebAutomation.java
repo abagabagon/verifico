@@ -94,7 +94,7 @@ public class SeleniumWebAutomation implements WebAutomation {
 		this.stateAssertionCommand = new SeleniumStateAssertionCommands(this.driver, this.seleniumWait);
 		this.maximize();
 		this.deleteAllCookies();
-		this.setImplicitWait(10);
+		this.setImplicitWait(5);
 	}
 	
 	@Override
