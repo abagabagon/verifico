@@ -1,230 +1,271 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-/**
- * Appium implemented Web Driver Commands
- * 
- * @author albagabagon
- *
- */
-
 public class SeleniumWebDriver {
 	
 	private Logger log;
-	private WebDriver driver;
+	private WebDriver chromeDriver;
+	private WebDriver firefoxDriver;
+	private WebDriver edgeDriver;
+	private WebDriver ieDriver;
+	private WebDriver safariDriver;
 	
 	public SeleniumWebDriver() {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
-	WebDriver getWebDriver(Browser browser, boolean isHeadless) {
-		this.log.trace("Initializing Selenium Web Driver.");
-		try {
-			if(isHeadless) {
-				switch (browser) {
-				case CHROME:
-					this.driver = this.getChromeDriver(true);
-					break;
-				case FIREFOX:
-					this.driver = this.getFirefoxDriver(true);
-					break;
-				default:
-					this.log.fatal("Unsupported Web Browser or Headless Browsing is Unsupported by Web Browser.");
-					System.exit(1);
-				}
-			} else {
-				switch (browser) {
-				case CHROME:
-					this.driver = this.getChromeDriver(false);
-					break;
-				case SAFARI:
-					this.driver = this.getSafariDriver();
-					break;
-				case FIREFOX:
-					this.driver = this.getFirefoxDriver(false);
-					break;
-				case EDGE:
-					this.driver = this.getEdgeDriver();
-					break;
-				case IE:
-					this.driver = this.getIEDriver();
-					break;
-				default:
-					this.log.fatal("Unsupported Web Browser.");
-					System.exit(1);
-				}
-			}
-		} catch (WebDriverException e) {
-			this.log.fatal("Unable to initialize Selenium Web Driver for " + browser + ".");
-			this.log.fatal(ExceptionUtils.getStackTrace(e));
-			System.exit(1);
-		} catch (Exception e) {
-			this.log.fatal("Something went wrong while trying to initialize Selenium Web Driver for " + browser + ".");
-			this.log.fatal(ExceptionUtils.getStackTrace(e));
-			System.exit(1);
-		}
-		
-		return this.driver;
-	}
-	
 	/**
-	 * Initializes and returns Google Chrome WebDriver Object.
-	 * 
-	 * @param  isHeadless Set driver on headless mode.
-	 * @return Google Chrome WebDriver Object
+	 * Sets/initializes Chrome WebDriver.
 	 */
 	
-	private WebDriver getChromeDriver(boolean isHeadless) {
-		this.log.trace("Initializing Google Chrome Driver.");
-		WebDriver driver;
+	public final void setChromeDriver() {
+		this.log.trace("Initializing " + String.valueOf(Browser.CHROME) + " WebDriver.");
 		WebDriverManager.chromedriver().setup();
-		ChromeOptions options = setChromeDriverOptions(isHeadless); 
-		driver = new ChromeDriver(options);
-		this.log.trace("Successfully initialized Google Chrome Driver.");
-		return driver;
+		this.chromeDriver = new ChromeDriver();
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.CHROME) + " WebDriver.");
 	}
 	
 	/**
-	 * Initializes and returns Mozilla Firefox WebDriver Object.
+	 * Sets/initializes Chrome WebDriver with specified Options.
 	 * 
-	 * @param  isHeadless Set driver on headless mode.
-	 * @return Mozilla Firefox (Gecko) WebDriver Object
+	 * @param options User-specified ChromeOptions for Chrome WebDriver.
 	 */
 	
-	private WebDriver getFirefoxDriver(boolean isHeadless) {
-		this.log.trace("Initializing Mozilla Firefox Driver.");
-		WebDriver driver;
+	public final void setChromeDriver(ChromeOptions options) {
+		this.log.trace("Initializing " + String.valueOf(Browser.CHROME) + " WebDriver.");
+		WebDriverManager.chromedriver().setup();
+		this.chromeDriver = new ChromeDriver(options);
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.CHROME) + " WebDriver.");
+	}
+	
+	/**
+	 * Sets/initializes Firefox WebDriver.
+	 */
+	
+	public final void setFirefoxDriver() {
+		this.log.trace("Initializing " + String.valueOf(Browser.FIREFOX) + " WebDriver.");
 		WebDriverManager.firefoxdriver().setup();
-		FirefoxOptions options = setFirefoxDriverOptions(isHeadless);
-		driver = new FirefoxDriver(options);
-		this.log.trace("Successfully initialized Mozilla Firefox Driver.");
-		return driver;
+		this.firefoxDriver = new FirefoxDriver();
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.FIREFOX) + " WebDriver.");
 	}
 	
 	/**
-	 * Initializes and returns Microsoft Edge WebDriver Object.
+	 * Sets/initializes Firefox WebDriver with specified Options.
 	 * 
-	 * @return Microsoft Edge WebDriver Object
+	 * @param options User-specified FirefoxOptions for Firefox WebDriver.
 	 */
 	
-	private WebDriver getEdgeDriver() {
-		this.log.trace("Initializing Microsoft Edge Driver.");
-		WebDriver driver;
+	public final void setFirefoxDriver(FirefoxOptions options) {
+		this.log.trace("Initializing " + String.valueOf(Browser.FIREFOX) + " WebDriver.");
+		WebDriverManager.firefoxdriver().setup();
+		this.firefoxDriver = new FirefoxDriver(options);
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.FIREFOX) + " WebDriver.");
+	}
+	
+	/**
+	 * Sets/initializes Microsoft Edge WebDriver.
+	 */
+	
+	public final void setEdgeDriver() {
+		this.log.trace("Initializing " + String.valueOf(Browser.EDGE) + " WebDriver.");
 		WebDriverManager.edgedriver().setup();
-		driver = new EdgeDriver();
-		this.log.trace("Successfully initialized Microsoft Edge Driver.");
-		return driver;
+		this.edgeDriver = new EdgeDriver();
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.EDGE) + " WebDriver.");
 	}
 	
 	/**
-	 * Initializes and returns Internet Explorer WebDriver Object.
+	 * Sets/initializes Microsoft Edge WebDriver with specified Options.
 	 * 
-	 * @return Internet Explorer WebDriver Object
+	 * @param options User-specified EdgeOptions for Microsoft Edge WebDriver.
 	 */
 	
-	private WebDriver getIEDriver() {
-		this.log.trace("Initializing Internet Explorer Driver.");
-		WebDriver driver;
-		WebDriverManager.iedriver().setup();
-		InternetExplorerOptions options = setInternetExplorerDriverOptions();
-		driver = new InternetExplorerDriver(options);
-		this.log.trace("Successfully initialized Internet Explorer Driver.");
-		return driver;
+	public final void setEdgeDriver(EdgeOptions options) {
+		this.log.trace("Initializing " + String.valueOf(Browser.EDGE) + " WebDriver.");
+		WebDriverManager.edgedriver().setup();
+		this.edgeDriver = new EdgeDriver(options);
+		this.log.trace("Successfully initialized " + String.valueOf(Browser.EDGE) + " WebDriver.");
 	}
 	
 	/**
-	 * Initializes and returns Safari WebDriver Object.
+	 * Sets/initializes Internet Explorer WebDriver.
 	 * 
-	 * @return Safari WebDriver Object
+	 * Note: Can be run only on Windows.
 	 */
-
-	private WebDriver getSafariDriver() {
-		this.log.trace("Setting Property of Safari Driver.");
+	
+	public final void setIEDriver() {
+		this.log.trace("Initializing " + String.valueOf(Browser.IE) + " WebDriver.");		
+		Platform operatingSystem = OperatingSystem.getOS();
+		
+		switch(operatingSystem) {
+		case WINDOWS:
+			WebDriverManager.iedriver().setup();
+			this.ieDriver = new InternetExplorerDriver();
+			this.log.trace("Successfully initialized " + String.valueOf(Browser.IE) + " WebDriver.");
+			break;
+		default:
+			this.log.fatal("Unsupported Operating System for running automation using " + String.valueOf(Browser.IE) + " String.valueOf(Browser. Please report issue to Automation Team.");
+		}
+	}
+	
+	/**
+	 * Sets/initializes Internet Explorer WebDriver with specified Options.
+	 * 
+	 * Note: Can be run only on Windows.
+	 * 
+	 * @param options User-specified InternetExplorerOptions for Internet Explorer WebDriver.
+	 */
+	
+	public final void setIEDriver(InternetExplorerOptions options) {
+		this.log.trace("Initializing " + String.valueOf(Browser.IE) + " WebDriver.");
+		Platform operatingSystem = OperatingSystem.getOS();
+		
+		switch(operatingSystem) {
+		case WINDOWS:
+			WebDriverManager.iedriver().setup();
+			this.ieDriver = new InternetExplorerDriver(options);
+			this.log.trace("Successfully initialized " + String.valueOf(Browser.IE) + " WebDriver.");
+			break;
+		default:
+			this.log.fatal("Unsupported Operating System for running automation using " + String.valueOf(Browser.IE) + " String.valueOf(Browser. Please report issue to Automation Team.");
+		}
+	}
+	
+	/**
+	 * Sets/initializes Safari WebDriver.
+	 * 
+	 * Note: Can be run only on MacOS.
+	 */
+	
+	public final void setSafariDriver() {
+		this.log.trace("Initializing " + String.valueOf(Browser.SAFARI) + " WebDriver.");
 		Platform operatingSystem = OperatingSystem.getOS();
 		
 		switch(operatingSystem) {
 		case MAC:
+			this.safariDriver = new SafariDriver();
+			this.log.trace("Successfully initialized " + String.valueOf(Browser.SAFARI) + " WebDriver.");
 			break;
 		default:
-			this.log.fatal("Unsupported Operating System. Please report issue to QA Team.");
+			this.log.fatal("Unsupported Operating System for running automation using " + String.valueOf(Browser.SAFARI) + " String.valueOf(Browser. Please report issue to Automation Team.");
 		}
-
-		this.log.trace("Initializing Safari Driver.");
-		WebDriver driver = new SafariDriver();
-		this.log.trace("Successfully initialized Safari Driver.");
-		return driver;
 	}
 	
 	/**
-	 * Sets ChromeOptions for ChromeDriver.
+	 * Sets/initializes Safari WebDriver with specified Options.
 	 * 
-	 * @param  isHeadless Set option on headless mode.
-	 * @return ChromeOptions
+	 * Note: Can be run only on MacOS.
+	 * 
+	 * @param options User-specified SafariOptions for Safari WebDriver.
 	 */
 	
-	private static ChromeOptions setChromeDriverOptions(boolean isHeadless) {
-		ChromeOptions options = new ChromeOptions();
-		if(isHeadless) {
-			options.addArguments("--headless");
+	public final void setSafariDriver(SafariOptions options) {
+		this.log.trace("Initializing " + String.valueOf(Browser.SAFARI) + " WebDriver.");
+		Platform operatingSystem = OperatingSystem.getOS();
+		
+		switch(operatingSystem) {
+		case MAC:
+			this.safariDriver = new SafariDriver(options);
+			this.log.trace("Successfully initialized " + String.valueOf(Browser.SAFARI) + " WebDriver.");
+			break;
+		default:
+			this.log.fatal("Unsupported Operating System for running automation using " + String.valueOf(Browser.SAFARI) + " String.valueOf(Browser. Please report issue to Automation Team.");
 		}
-		options.addArguments("--no-sandbox");
-		options.addArguments("--disable-gpu");
-		options.addArguments("--disable-dev-shm-usage");
-		options.addArguments("--ignore-certificate-errors");
-		options.addArguments("--window-size=1280,1024");
-		options.addArguments("--allow-insecure-localhost");
-		return options;
-    }
-	
-	/**
-	 * Sets FirefoxOptions for FirefoxDriver
-	 * 
-	 * @param  isHeadless Set option on headless mode.
-	 * @return FirefoxOptions
-	 */
-	
-	private static FirefoxOptions setFirefoxDriverOptions(boolean isHeadless) {
-		FirefoxOptions options = new FirefoxOptions();
-		options.setCapability(CapabilityType.HAS_NATIVE_EVENTS, false);
-		options.setHeadless(isHeadless);
-		return options;
 	}
 	
 	/**
-	 * Sets InternetExplorerOptions for InternetExplorerDriver
+	 * Gets Chrome WebDriver.
 	 * 
-	 * @return InternetExplorerOptions
+	 * Note: Make sure Chrome WebDriver is initialized first before getting.
+	 * 
+	 * @return Google Chrome WebDriver
 	 */
-
-	private static InternetExplorerOptions setInternetExplorerDriverOptions() {
-		InternetExplorerOptions options = new InternetExplorerOptions();
-		options.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
-		options.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, false);
-		options.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
-		options.setCapability(InternetExplorerDriver.IE_ENSURE_CLEAN_SESSION, true);
-		options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
-		options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-		return options;
-    }
+	
+	public final WebDriver getChromeDriver() {
+		this.log.trace("Getting " + String.valueOf(Browser.CHROME) + " WebDriver.");
+		this.checkNullWebDriver(Browser.CHROME, this.chromeDriver);
+		return this.chromeDriver;
+	}
+	
+	/**
+	 * Gets Firefox WebDriver.
+	 * 
+	 * Note: Make sure Firefox WebDriver is initialized first before getting.
+	 * 
+	 * @return Firefox WebDriver
+	 */
+	
+	public final WebDriver getFirefoxDriver() {
+		this.log.trace("Getting " + String.valueOf(Browser.FIREFOX) + " WebDriver.");
+		this.checkNullWebDriver(Browser.FIREFOX, this.firefoxDriver);
+		return this.firefoxDriver;
+	}
+	
+	/**
+	 * Gets Microsoft Edge WebDriver.
+	 * 
+	 * Note: Make sure Microsoft Edge Driver is initialized first before getting.
+	 * 
+	 * @return Microsoft Edge WebDriver
+	 */
+	
+	public final WebDriver getEdgeDriver() {
+		this.log.trace("Getting " + String.valueOf(Browser.EDGE) + " WebDriver.");
+		this.checkNullWebDriver(Browser.EDGE, this.edgeDriver);
+		return this.edgeDriver;
+	}
+	
+	/**
+	 * Gets Internet Explorer WebDriver.
+	 * 
+	 * Note: Make sure Internet Explorer WebDriver is initialized first before getting.
+	 * 
+	 * @return Internet Explorer WebDriver
+	 */
+	
+	public final WebDriver getIeDriver() {
+		this.log.trace("Getting " + String.valueOf(Browser.IE) + " WebDriver.");
+		this.checkNullWebDriver(Browser.IE, this.ieDriver);
+		return this.ieDriver;
+	}
+	
+	/**
+	 * Gets Safari WebDriver.
+	 * 
+	 * Note: Make sure Safari WebDriver is initialized first before getting.
+	 * 
+	 * @return Safari WebDriver
+	 */
+	
+	public final WebDriver getSafariDriver() {
+		this.log.trace("Getting " + String.valueOf(Browser.SAFARI) + " WebDriver.");
+		this.checkNullWebDriver(Browser.SAFARI, this.safariDriver);
+		return this.safariDriver;
+	}
+	
+	private void checkNullWebDriver(Browser browser, WebDriver driver) {
+		if (driver == null) {
+			this.log.fatal(String.valueOf(browser) + " Driver still not initialized. Initialize first before getting the WebDriver.");
+			System.exit(1);
+		}
+	}
 
 }
