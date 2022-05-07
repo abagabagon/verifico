@@ -61,6 +61,11 @@ public class SeleniumWebElement {
 		return element;
 	}
 	
+	WebElement createElement(By parent, By child) {
+		WebElement nestedElement = this.seleniumWait.waitForNestedElementToBePresent(parent, child);
+		return nestedElement;
+	}
+	
 	WebElement createElement(WebElement parent, By child) {
 		WebElement nestedElement = this.seleniumWait.waitForNestedElementToBePresent(parent, child);
 		return nestedElement;
@@ -69,6 +74,11 @@ public class SeleniumWebElement {
 	List<WebElement> createListElement(By locator) {
 		List<WebElement> elements = this.seleniumWait.waitForListElementToBePresent(locator);
 		return elements;
+	}
+	
+	List<WebElement> createListElement(By parent, By child) {
+		List<WebElement> nestedElement = this.seleniumWait.waitForNestedListElementToBePresent(parent, child);
+		return nestedElement;
 	}
 	
 	List<WebElement> createListElement(WebElement parent, By child) {
