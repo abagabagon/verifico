@@ -1,7 +1,7 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class SeleniumCommands {
+public class Commands {
 
 	private Logger log;
 	private WebDriver driver;
@@ -22,10 +22,6 @@ public class SeleniumCommands {
 	
 	enum SwitchAction {
 		BY_TITLE, BY_URL
-	}
-	
-	enum MouseAction {
-		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT
 	}
 	
 	enum GetAction {
@@ -48,7 +44,7 @@ public class SeleniumCommands {
 		DISPLAYED, NOT_DISPLAYED, ENABLED, DISABLED, SELECTED, DESELECTED
 	}
 	
-	public SeleniumCommands(WebDriver driver, SeleniumWait seleniumWait) {
+	public Commands(WebDriver driver, SeleniumWait seleniumWait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.seleniumWait = seleniumWait;
@@ -56,15 +52,15 @@ public class SeleniumCommands {
 	
 	protected int count(By locator) {
 		this.seleniumWait.waitForPage();
-		this.driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 		List<WebElement> element = this.driver.findElements(locator);
 		int size = element.size();
-		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return size;
 	}
 	
 	protected boolean counted(By locator, int count) {
-		boolean isEqual = this.seleniumWait.waitForCountToBe(locator, count);
+		boolean isEqual = this.seleniumWait.waitForElementCountToBe(locator, count);
 		int size = this.driver.findElements(locator).size();
 		boolean status = false;
 		if (isEqual) {
