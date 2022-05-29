@@ -16,10 +16,6 @@ public class Commands {
 	private WebDriver driver;
 	private SeleniumWait seleniumWait;
 	
-	enum SelectAction {
-		DESELECT, SELECT
-	}
-	
 	enum ValueAssertionAction {
 		URL, PARTIAL_URL, TITLE, PARTIAL_TITLE, ATTRIBUTE, PARTIAL_ATTRIBUTE, DROPDOWN, PARTIAL_DROPDOWN, TEXT, PARTIAL_TEXT, ALERT_MESSAGE
 	}

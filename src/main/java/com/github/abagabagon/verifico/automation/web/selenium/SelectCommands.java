@@ -10,21 +10,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 
-public class SeleniumSelectCommands extends SeleniumCommands {
+public class SelectCommands extends Commands {
 
 	protected WebDriver driver;
 	protected Logger log;
 	private SeleniumWait seleniumWait;
 	
+	private enum SelectAction {
+		DESELECT, SELECT
+	}
 	
-	public SeleniumSelectCommands(WebDriver driver, SeleniumWait seleniumWait) {
+	public SelectCommands(WebDriver driver, SeleniumWait seleniumWait) {
 		super(driver, seleniumWait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.seleniumWait = seleniumWait;
 	}
 	
-	boolean execute(SelectAction selectAction, WebElement element, String option) {
+	private boolean execute(SelectAction selectAction, WebElement element, String option) {
 		boolean actionPerformed = false;
 		try {
 			Select select = new Select(element);
@@ -67,11 +70,11 @@ public class SeleniumSelectCommands extends SeleniumCommands {
 		return actionPerformed;
 	}
 	
-	void executeSelectCommands(SelectAction selectAction, By locator, String option) {
+	private void doCommand(SelectAction selectAction, By locator, String option) {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForObjectToBeVisible(locator);
+			element = this.seleniumWait.waitForElementToBeVisible(locator);
 			actionPerformed = this.execute(selectAction, element, option);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -85,16 +88,14 @@ public class SeleniumSelectCommands extends SeleniumCommands {
 			}
 		}
 	}
-	
 
-	
-	void executeSelectCommands(SelectAction selectAction, By parent, By child, String option) {
+	private void doCommand(SelectAction selectAction, By parent, By child, String option) {
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForObjectToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
+			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -109,13 +110,13 @@ public class SeleniumSelectCommands extends SeleniumCommands {
 		}
 	}
 	
-	void executeSelectCommands(SelectAction selectAction, By parent, By child, int index, String option) {
+	private void doCommand(SelectAction selectAction, WebElement parent, By child, String option) {
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForObjectsToBeVisible(parent).get(index);
-			childElement = this.seleniumWait.waitForNestedObjectToBePresent(parentElement, child);
+			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
+			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -128,6 +129,76 @@ public class SeleniumSelectCommands extends SeleniumCommands {
 				break;
 			}
 		}
+	}
+	
+	/**
+	 * Selects a Drop-down List Web Element Option of the specified Locator.
+	 * 
+	 * @param locator	Locator of Web Element to select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void select(By locator, String option) {
+		this.doCommand(SelectAction.SELECT, locator, option);
+	}
+	
+	/**
+	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
+	 * 
+	 * @param locator	Locator of Parent Web Element.
+	 * @param locator	Locator of Child Web Element to select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void select(By parent, By child, String option) {
+		this.doCommand(SelectAction.SELECT, parent, child, option);
+	}
+	
+	/**
+	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
+	 * 
+	 * @param locator	Parent Web Element.
+	 * @param locator	Locator of Child Web Element to select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void select(WebElement parent, By child, String option) {
+		this.doCommand(SelectAction.SELECT, parent, child, option);
+	}
+	
+	/**
+	 * De-selects a Drop-down List Web Element Option of the specified Locator.
+	 * 
+	 * @param locator	Locator of Web Element to de-select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void deselect(By locator, String option) {
+		this.doCommand(SelectAction.DESELECT, locator, option);
+	}
+	
+	/**
+	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
+	 * 
+	 * @param locator	Locator of Parent Web Element.
+	 * @param locator	Locator of Child Web Element to de-select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void deselect(By parent, By child, String option) {
+		this.doCommand(SelectAction.DESELECT, parent, child, option);
+	}
+	
+	/**
+	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
+	 * 
+	 * @param locator	Parent Web Element.
+	 * @param locator	Locator of Child Web Element to de-select option.
+	 * @param option	Option to be selected.
+	 */
+	
+	public final void deselect(WebElement parent, By child, String option) {
+		this.doCommand(SelectAction.DESELECT, parent, child, option);
 	}
 	
 }
