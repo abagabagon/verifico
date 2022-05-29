@@ -20,10 +20,6 @@ public class Commands {
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
 	}
 	
-	enum KeyboardAction {
-		CLEAR, PRESS, SEND_KEYS
-	}
-	
 	enum SelectAction {
 		DESELECT, SELECT
 	}
