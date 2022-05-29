@@ -32,15 +32,6 @@ public class MouseCommands extends Commands {
 		this.seleniumWait = seleniumWait;
 	}
 	
-	/**
-	 * Implementation of Selenium Mouse Commands.
-	 * 
-	 * @param mouseAction	Mouse Action to perform
-	 * @param element		Web Element to perform Mouse Action to.
-	 * @return	<code>true</code> if able to perform Mouse Action.
-	 * 			<code>false</code> if unable to perform Mouse Action.
-	 */
-	
 	private boolean execute(MouseAction mouseAction, WebElement element) {
 		boolean actionPerformed = false;
 		try {
@@ -94,13 +85,6 @@ public class MouseCommands extends Commands {
 		return actionPerformed;
 	}
 	
-	/**
-	 * Performs Mouse Commands on specified object.
-	 * 
-	 * @param mouseAction	Mouse Action to perform
-	 * @param locator		Element to perform Mouse Action to
-	 */
-	
 	private void doCommand(MouseAction mouseAction, By locator) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
@@ -120,14 +104,6 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
-	/**
-	 * Performs Mouse Commands on specified child object nested within a parent object.
-	 * 
-	 * @param mouseAction	Mouse Action to perform
-	 * @param parent		Parent Element of Child Element to perform Mouse Action to
-	 * @param child			Child Element to perform Mouse Action to
-	 */
 	
 	private void doCommand(MouseAction mouseAction, By parent, By child) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
@@ -150,14 +126,6 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
-	/**
-	 * Performs Mouse Commands on specified child object nested within a parent object.
-	 * 
-	 * @param mouseAction	Mouse Action to perform
-	 * @param parent		Parent Element of Child Element to perform Mouse Action to
-	 * @param child			Child Element to perform Mouse Action to
-	 */
 	
 	private void doCommand(MouseAction mouseAction, WebElement parent, By child) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
