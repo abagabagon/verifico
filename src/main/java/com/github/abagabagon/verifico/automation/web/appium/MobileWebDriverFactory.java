@@ -13,13 +13,13 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
-public class AppiumWebDriver {
+public class MobileWebDriverFactory {
 	
 	private Logger log;
 	public WebDriver driver;
 	private URL appiumServerUrl;
 	
-	public AppiumWebDriver(URL appiumServerUrl) {
+	public MobileWebDriverFactory(URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumServerUrl = appiumServerUrl;
 	}
