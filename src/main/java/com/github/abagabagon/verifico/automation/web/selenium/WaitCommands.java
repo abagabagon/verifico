@@ -17,14 +17,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-public class SeleniumWait {
+public class WaitCommands {
 
 	private Logger log;
 	private WebDriver driver;
 	private WebDriverWait wait;
 	private Alert alert;
 
-	public SeleniumWait(WebDriver driver, WebDriverWait wait) {
+	public WaitCommands(WebDriver driver, WebDriverWait wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		if (driver == null || wait == null) {
 			this.log.fatal("WebDriver or WebDriverWait is NULL.");

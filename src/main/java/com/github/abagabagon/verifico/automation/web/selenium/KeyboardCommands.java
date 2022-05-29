@@ -20,18 +20,18 @@ public class KeyboardCommands extends Commands {
 	protected WebDriver driver;
 	protected Logger log;
 	private Actions action;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
 	private enum KeyboardAction {
 		CLEAR, PRESS, TYPE
 	}
 	
-	public KeyboardCommands(WebDriver driver, Actions action, SeleniumWait seleniumWait) {
-		super(driver, seleniumWait);
+	public KeyboardCommands(WebDriver driver, Actions action, WaitCommands wait) {
+		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.action = action;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
 	private boolean execute(KeyboardAction keyboardAction, WebElement element, String inputText, Keys keyButton) {
@@ -91,7 +91,7 @@ public class KeyboardCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForElementToBeVisible(locator);
+			element = this.wait.waitForElementToBeVisible(locator);
 			actionPerformed = this.execute(keyboardAction, element, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -112,8 +112,8 @@ public class KeyboardCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -134,8 +134,8 @@ public class KeyboardCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {

@@ -14,17 +14,17 @@ public class SelectCommands extends Commands {
 
 	protected WebDriver driver;
 	protected Logger log;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
 	private enum SelectAction {
 		DESELECT, SELECT
 	}
 	
-	public SelectCommands(WebDriver driver, SeleniumWait seleniumWait) {
-		super(driver, seleniumWait);
+	public SelectCommands(WebDriver driver, WaitCommands wait) {
+		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
 	private boolean execute(SelectAction selectAction, WebElement element, String option) {
@@ -74,7 +74,7 @@ public class SelectCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForElementToBeVisible(locator);
+			element = this.wait.waitForElementToBeVisible(locator);
 			actionPerformed = this.execute(selectAction, element, option);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -94,8 +94,8 @@ public class SelectCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -115,8 +115,8 @@ public class SelectCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {

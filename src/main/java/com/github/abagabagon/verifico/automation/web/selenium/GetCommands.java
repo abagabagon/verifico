@@ -14,18 +14,18 @@ public class GetCommands extends Commands {
 
 	protected WebDriver driver;
 	protected Logger log;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	private String retrievedValue;
 	
 	private enum GetAction {
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
 	}
 	
-	public GetCommands(WebDriver driver, SeleniumWait seleniumWait) {
-		super(driver, seleniumWait);
+	public GetCommands(WebDriver driver, WaitCommands wait) {
+		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
 	boolean execute(GetAction getAction, WebElement element, String attribute) {
@@ -69,7 +69,7 @@ public class GetCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForElementToBePresent(locator);
+			element = this.wait.waitForElementToBePresent(locator);
 			actionPerformed = this.execute(getAction, element, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -91,8 +91,8 @@ public class GetCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -114,8 +114,8 @@ public class GetCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {

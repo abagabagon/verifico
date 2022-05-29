@@ -14,42 +14,21 @@ public class Commands {
 
 	private Logger log;
 	private WebDriver driver;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
-	enum ValueAssertionAction {
-		URL, PARTIAL_URL, TITLE, PARTIAL_TITLE, ATTRIBUTE, PARTIAL_ATTRIBUTE, DROPDOWN, PARTIAL_DROPDOWN, TEXT, PARTIAL_TEXT, ALERT_MESSAGE
-	}
-	
-	enum StateAssertionAction {
-		DISPLAYED, NOT_DISPLAYED, ENABLED, DISABLED, SELECTED, DESELECTED
-	}
-	
-	public Commands(WebDriver driver, SeleniumWait seleniumWait) {
+	public Commands(WebDriver driver, WaitCommands wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
 	protected int count(By locator) {
-		this.seleniumWait.waitForPage();
+		this.wait.waitForPage();
 		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 		List<WebElement> element = this.driver.findElements(locator);
 		int size = element.size();
 		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return size;
-	}
-	
-	protected boolean counted(By locator, int count) {
-		boolean isEqual = this.seleniumWait.waitForElementCountToBe(locator, count);
-		int size = this.driver.findElements(locator).size();
-		boolean status = false;
-		if (isEqual) {
-			this.log.debug("I verified count of Web Element: \"" + locator.toString() + "\" is \"" + count + "\".");
-			status = true;
-		} else {
-			this.log.error("I verified count of Web Element: \"" + locator.toString() + "\" is not \"" + count + "\". Actual count is \"" + size + "\".");
-		}
-		return status;
 	}
 	
 	protected void wait(int duration) {

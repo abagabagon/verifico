@@ -16,7 +16,7 @@ public class BrowserCommands extends Commands {
 	protected WebDriver driver;
 	protected Logger log;
 	private JavascriptExecutor javascriptExecutor;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
 	private enum BrowserAction {
 		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_COOKIE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER, SCROLL
@@ -26,12 +26,12 @@ public class BrowserCommands extends Commands {
 		BY_TITLE, BY_URL, TO_ORIGINAL
 	}
 	
-	public BrowserCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, SeleniumWait seleniumWait) {
-		super(driver, seleniumWait);
+	public BrowserCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, WaitCommands wait) {
+		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.javascriptExecutor = javascriptExecutor;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 
 	private void execute(BrowserAction browserAction, String input) {
@@ -54,19 +54,19 @@ public class BrowserCommands extends Commands {
 				break;
 			case GO_TO:
 				this.driver.get(input);
-				this.seleniumWait.waitForPage();
+				this.wait.waitForPage();
 				break;
 			case BACK:
 				this.driver.navigate().back();
-				this.seleniumWait.waitForPage();
+				this.wait.waitForPage();
 				break;
 			case FORWARD:
 				this.driver.navigate().forward();
-				this.seleniumWait.waitForPage();
+				this.wait.waitForPage();
 				break;
 			case REFRESH:
 				this.driver.navigate().refresh();
-				this.seleniumWait.waitForPage();
+				this.wait.waitForPage();
 				break;
 			case CLOSE_TAB:
 				this.driver.close();

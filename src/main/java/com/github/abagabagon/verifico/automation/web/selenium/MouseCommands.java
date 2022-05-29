@@ -18,18 +18,18 @@ public class MouseCommands extends Commands {
 	private Logger log;
 	private JavascriptExecutor javascriptExecutor;
 	private Actions action;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
 	private enum MouseAction {
 		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT
 	}
 	
-	public MouseCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, Actions action, SeleniumWait seleniumWait) {
-		super(driver, seleniumWait);
+	public MouseCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, Actions action, WaitCommands wait) {
+		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.javascriptExecutor = javascriptExecutor;
 		this.action = action;
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
 	private boolean execute(MouseAction mouseAction, WebElement element) {
@@ -66,14 +66,14 @@ public class MouseCommands extends Commands {
 		} catch (ElementClickInterceptedException e) {
 			this.log.warn("Unable to perform \"" + String.valueOf(mouseAction) + "\" for Web Element \"" + element.toString() + "\". The Web Element is unclickable because it's not on view.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
-			element = this.seleniumWait.waitForElementToBeVisible(element);
+			element = this.wait.waitForElementToBeVisible(element);
 			String script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
 			this.javascriptExecutor.executeScript(script);
 			this.action.moveToElement(element).perform();
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		} catch (MoveTargetOutOfBoundsException e) {
 			this.log.warn("Unable to perform \"" + String.valueOf(mouseAction) + "\" for Web Element \"" + element.toString() + "\". The Web Element is out-of-bounds.");
-			element = this.seleniumWait.waitForElementToBeVisible(element);
+			element = this.wait.waitForElementToBeVisible(element);
 			String script = "window.scrollTo(" + element.getLocation().x + ","+ element.getLocation().y + ")";
 			this.javascriptExecutor.executeScript(script);
 			this.action.moveToElement(element).perform();
@@ -90,7 +90,7 @@ public class MouseCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.seleniumWait.waitForElementToBeVisible(locator);
+			element = this.wait.waitForElementToBeVisible(locator);
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -111,8 +111,8 @@ public class MouseCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.seleniumWait.waitForElementToBeVisible(parent);
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.wait.waitForElementToBeVisible(parent);
+			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -132,7 +132,7 @@ public class MouseCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			childElement = this.seleniumWait.waitForNestedElementToBePresent(parent, child);
+			childElement = this.wait.waitForNestedElementToBePresent(parent, child);
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -321,8 +321,8 @@ public class MouseCommands extends Commands {
 		WebElement targetElement = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
-				sourceElement = this.seleniumWait.waitForObjectToBeClickable(sourceLocator);
-				targetElement = this.seleniumWait.waitForObjectToBeClickable(targetLocator);
+				sourceElement = this.wait.waitForObjectToBeClickable(sourceLocator);
+				targetElement = this.wait.waitForObjectToBeClickable(targetLocator);
 				this.action.dragAndDrop(sourceElement, targetElement).perform();
 				actionPerformed = true;
 			} catch (NullPointerException e) {

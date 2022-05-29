@@ -8,21 +8,21 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class SeleniumWebElement {
+public class WebElementFactory {
 
 	private Logger log;
-	private SeleniumWait seleniumWait;
+	private WaitCommands wait;
 	
-	public SeleniumWebElement(WebDriver driver, SeleniumWait seleniumWait) {
+	public WebElementFactory(WebDriver driver, WaitCommands wait) {
 		this.log = LogManager.getLogger(this.getClass());
-		this.seleniumWait = seleniumWait;
+		this.wait = wait;
 	}
 	
-	enum ValueCheckType {
+	private enum ValueCheckType {
 		TEXT, ATTRIBUTE
 	}
 	
-	int getListIndex(ValueCheckType valueCheckType, List<WebElement> elements, String attribute, String searchValue) {
+	private int getListIndex(ValueCheckType valueCheckType, List<WebElement> elements, String attribute, String searchValue) {
 		int size = elements.size();
 		int index = 0;
 		boolean flgTextFound = false;
@@ -56,33 +56,33 @@ public class SeleniumWebElement {
 		return index;
 	}
 	
-	WebElement createElement(By locator) {
-		WebElement element = this.seleniumWait.waitForElementToBePresent(locator);
+	public final WebElement createElement(By locator) {
+		WebElement element = this.wait.waitForElementToBePresent(locator);
 		return element;
 	}
 	
-	WebElement createElement(By parent, By child) {
-		WebElement nestedElement = this.seleniumWait.waitForNestedElementToBePresent(parent, child);
+	public final WebElement createElement(By parent, By child) {
+		WebElement nestedElement = this.wait.waitForNestedElementToBePresent(parent, child);
 		return nestedElement;
 	}
 	
-	WebElement createElement(WebElement parent, By child) {
-		WebElement nestedElement = this.seleniumWait.waitForNestedElementToBePresent(parent, child);
+	public final WebElement createElement(WebElement parent, By child) {
+		WebElement nestedElement = this.wait.waitForNestedElementToBePresent(parent, child);
 		return nestedElement;
 	}
 	
-	List<WebElement> createListElement(By locator) {
-		List<WebElement> elements = this.seleniumWait.waitForListElementToBePresent(locator);
+	public final List<WebElement> createListElement(By locator) {
+		List<WebElement> elements = this.wait.waitForListElementToBePresent(locator);
 		return elements;
 	}
 	
-	List<WebElement> createListElement(By parent, By child) {
-		List<WebElement> nestedElement = this.seleniumWait.waitForNestedListElementToBePresent(parent, child);
+	public final List<WebElement> createListElement(By parent, By child) {
+		List<WebElement> nestedElement = this.wait.waitForNestedListElementToBePresent(parent, child);
 		return nestedElement;
 	}
 	
-	List<WebElement> createListElement(WebElement parent, By child) {
-		List<WebElement> nestedElement = this.seleniumWait.waitForNestedListElementToBeVisible(parent, child);
+	public final List<WebElement> createListElement(WebElement parent, By child) {
+		List<WebElement> nestedElement = this.wait.waitForNestedListElementToBeVisible(parent, child);
 		return nestedElement;
 	}
 	

@@ -20,7 +20,7 @@ import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class SeleniumWebDriver {
+public class WebDriverFactory {
 	
 	private Logger log;
 	private WebDriver chromeDriver;
@@ -29,7 +29,7 @@ public class SeleniumWebDriver {
 	private WebDriver ieDriver;
 	private WebDriver safariDriver;
 	
-	public SeleniumWebDriver() {
+	public WebDriverFactory() {
 		this.log = LogManager.getLogger(this.getClass());
 	}
 	
