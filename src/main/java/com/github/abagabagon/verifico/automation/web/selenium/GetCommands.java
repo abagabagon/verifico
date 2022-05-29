@@ -65,6 +65,7 @@ public class GetCommands extends Commands {
 	}
 	
 	private String doCommand(GetAction getAction, By locator, String attribute) {
+		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
@@ -85,6 +86,7 @@ public class GetCommands extends Commands {
 	}
 	
 	private String doCommand(GetAction getAction, By parent, By child, String attribute) {
+		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
@@ -107,6 +109,7 @@ public class GetCommands extends Commands {
 	}
 	
 	private String doCommand(GetAction getAction, WebElement parent, By child, String attribute) {
+		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
