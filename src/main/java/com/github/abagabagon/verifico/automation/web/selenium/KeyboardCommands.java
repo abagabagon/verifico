@@ -157,7 +157,7 @@ public class KeyboardCommands extends Commands {
 	 * @param locator Locator of Web Element to clear the value from.
 	 */
 	
-	public void clear(By locator) {
+	public final void clear(By locator) {
 		this.doCommand(KeyboardAction.CLEAR, locator, null, null);
 	}
 	
@@ -169,7 +169,7 @@ public class KeyboardCommands extends Commands {
 	 * @param locator	Locator of Child Web Element to clear the value from.
 	 */
 	
-	public void clear(By parent, By child) {
+	public final void clear(By parent, By child) {
 		this.doCommand(KeyboardAction.CLEAR, parent, child, null, null);
 	}
 	
@@ -181,7 +181,7 @@ public class KeyboardCommands extends Commands {
 	 * @param locator	Locator of Child Web Element to clear the value from.
 	 */
 	
-	public void clear(WebElement parent, By child) {
+	public final void clear(WebElement parent, By child) {
 		this.doCommand(KeyboardAction.CLEAR, parent, child, null, null);
 	}
 	
@@ -191,7 +191,7 @@ public class KeyboardCommands extends Commands {
 	 * @param keyButton Key Button to press.
 	 */
 	
-	public void press(Keys keyButton) { 
+	public final void press(Keys keyButton) { 
 		this.action.sendKeys(keyButton).perform();;
 	}
 	
@@ -202,7 +202,7 @@ public class KeyboardCommands extends Commands {
 	 * @param keyButton	Key Button to press
 	 */
 	
-	public void press(By locator, Keys keyButton) {
+	public final void press(By locator, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, locator, null, keyButton);
 	}
 	
@@ -214,7 +214,7 @@ public class KeyboardCommands extends Commands {
 	 * @param keyButton	Key Button to press
 	 */
 	
-	public void press(By parent, By child, Keys keyButton) {
+	public final void press(By parent, By child, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, parent, child, null, keyButton);
 	}
 	
@@ -226,7 +226,7 @@ public class KeyboardCommands extends Commands {
 	 * @param keyButton	Key Button to press
 	 */
 	
-	public void press(WebElement parent, By child, Keys keyButton) {
+	public final void press(WebElement parent, By child, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, parent, child, null, keyButton);
 	}
 	
@@ -238,7 +238,7 @@ public class KeyboardCommands extends Commands {
 	 * @param inputText Text value to input.
 	 */
 	
-	public void type(By locator, String inputText) {
+	public final void type(By locator, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, locator, inputText, null);
 	}
 	
@@ -251,7 +251,7 @@ public class KeyboardCommands extends Commands {
 	 * @param inputText Text value to input.
 	 */
 	
-	public void type(By parent, By child, String inputText) {
+	public final void type(By parent, By child, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, parent, child, inputText, null);
 	}
 	
@@ -264,7 +264,7 @@ public class KeyboardCommands extends Commands {
 	 * @param inputText Text value to input.
 	 */
 	
-	public void type(WebElement parent, By child, String inputText) {
+	public final void type(WebElement parent, By child, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, parent, child, inputText, null);
 	}
 
