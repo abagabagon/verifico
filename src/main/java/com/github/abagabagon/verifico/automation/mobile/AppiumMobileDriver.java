@@ -8,29 +8,20 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.github.abagabagon.verifico.enums.Mobile;
-
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
-/**
- * Appium implemented Mobile Driver Commands
- * 
- * @author albagabagon
- *
- */
-
 public class AppiumMobileDriver {
 	
 	private Logger log;
-	private AppiumDriver<MobileElement> driver;
+	private AppiumDriver driver;
 	private URL appiumServerUrl;
 	
 	/**
@@ -52,14 +43,14 @@ public class AppiumMobileDriver {
 	 * @return					IOSDriver Object
 	 */
 
-	AppiumDriver<MobileElement> getIOSDriver(String platformVersion, String deviceName) {
+	AppiumDriver getIOSDriver(String platformVersion, String deviceName) {
 		this.log.trace("Initializing IOSDriver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.iOS);
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Platform.IOS);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "XCUITest");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
-		this.driver = new IOSDriver<MobileElement>(this.appiumServerUrl, capabilities);
+		this.driver = new IOSDriver(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized IOSDriver.");
 		return this.driver;
 	}
@@ -73,10 +64,10 @@ public class AppiumMobileDriver {
 	 * @return AndroidDriver Object
 	 */
 	
-	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, File applicationFile) {
+	AppiumDriver getAndroidDriver(String platformVersion, String deviceName, File applicationFile) {
 		this.log.trace("Initializing AndroidDriver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.Android);
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Platform.ANDROID);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
@@ -84,7 +75,7 @@ public class AppiumMobileDriver {
 		capabilities.setCapability(MobileCapabilityType.FULL_RESET, "true");		
 		capabilities.setCapability(MobileCapabilityType.NO_RESET, "false");
 		capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, "true");
-		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
+		this.driver = new AndroidDriver(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
 	}
@@ -98,7 +89,7 @@ public class AppiumMobileDriver {
 	 * @return AndroidDriver Object
 	 */
 	
-	AppiumDriver<MobileElement> getAndroidDriver(String platformVersion, String deviceName, URL applicationUrl, File applicationFile) {
+	AppiumDriver getAndroidDriver(String platformVersion, String deviceName, URL applicationUrl, File applicationFile) {
 		this.log.trace("Initializing AndroidDriver.");
 		try {
 			FileUtils.copyURLToFile(applicationUrl, applicationFile);
@@ -110,13 +101,13 @@ public class AppiumMobileDriver {
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
 		DesiredCapabilities capabilities = new DesiredCapabilities();
-		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Mobile.Android);
+		capabilities.setCapability(CapabilityType.PLATFORM_NAME, Platform.ANDROID);
 		capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "UIAutomator2");
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
 		capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
 		capabilities.setCapability(MobileCapabilityType.APP, applicationFile.getAbsolutePath());
 		capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, "true");
-		this.driver = new AndroidDriver<MobileElement>(this.appiumServerUrl, capabilities);
+		this.driver = new AndroidDriver(this.appiumServerUrl, capabilities);
 		this.log.trace("Successfully initialized AndroidDriver.");
 		return this.driver;
 	}
