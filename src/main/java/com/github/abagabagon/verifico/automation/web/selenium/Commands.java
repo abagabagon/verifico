@@ -16,10 +16,6 @@ public class Commands {
 	private WebDriver driver;
 	private SeleniumWait seleniumWait;
 	
-	enum GetAction {
-		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
-	}
-	
 	enum SelectAction {
 		DESELECT, SELECT
 	}
