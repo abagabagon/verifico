@@ -101,8 +101,8 @@ public class MouseCommands extends Commands {
 	 * @param locator		Element to perform Mouse Action to
 	 */
 	
-	private void doBasicCommand(MouseAction mouseAction, By locator) {
-		this.log.debug("Performing " + String.valueOf(mouseAction) + " to the Web Element: \"" + locator.toString() + "\".");
+	private void doCommand(MouseAction mouseAction, By locator) {
+		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
@@ -129,8 +129,8 @@ public class MouseCommands extends Commands {
 	 * @param child			Child Element to perform Mouse Action to
 	 */
 	
-	private void doBasicCommand(MouseAction mouseAction, By parent, By child) {
-		this.log.debug("Performing " + String.valueOf(mouseAction) + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
+	private void doCommand(MouseAction mouseAction, By parent, By child) {
+		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
@@ -159,8 +159,8 @@ public class MouseCommands extends Commands {
 	 * @param child			Child Element to perform Mouse Action to
 	 */
 	
-	private void doBasicCommand(MouseAction mouseAction, WebElement parent, By child) {
-		this.log.debug("Performing " + String.valueOf(mouseAction) + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
+	private void doCommand(MouseAction mouseAction, WebElement parent, By child) {
+		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
@@ -186,7 +186,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void click(By locator) {
-		this.doBasicCommand(MouseAction.CLICK, locator);
+		this.doCommand(MouseAction.CLICK, locator);
 	}
 	
 	/**
@@ -197,7 +197,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void click(By parent, By child) {
-		this.doBasicCommand(MouseAction.CLICK, parent, child);
+		this.doCommand(MouseAction.CLICK, parent, child);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void click(WebElement parent, By child) {
-		this.doBasicCommand(MouseAction.CLICK, parent, child);
+		this.doCommand(MouseAction.CLICK, parent, child);
 	}
 	
 	/**
@@ -218,7 +218,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickJs(By locator) {
-		this.doBasicCommand(MouseAction.CLICKJS, locator);
+		this.doCommand(MouseAction.CLICKJS, locator);
 	}
 	
 	/**
@@ -229,7 +229,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickJs(By parent, By child) {
-		this.doBasicCommand(MouseAction.CLICKJS, parent, child);
+		this.doCommand(MouseAction.CLICKJS, parent, child);
 	}
 	
 	/**
@@ -240,7 +240,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickJs(WebElement parent, By child) {
-		this.doBasicCommand(MouseAction.CLICKJS, parent, child);
+		this.doCommand(MouseAction.CLICKJS, parent, child);
 	}
 	
 	/**
@@ -250,7 +250,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickAndHold(By locator) {
-		this.doBasicCommand(MouseAction.CLICK_AND_HOLD, locator);
+		this.doCommand(MouseAction.CLICK_AND_HOLD, locator);
 	}
 	
 	/**
@@ -261,7 +261,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickAndHold(By parent, By child) {
-		this.doBasicCommand(MouseAction.CLICK_AND_HOLD, parent, child);
+		this.doCommand(MouseAction.CLICK_AND_HOLD, parent, child);
 	}
 	
 	/**
@@ -272,7 +272,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void clickAndHold(WebElement parent, By child) {
-		this.doBasicCommand(MouseAction.CLICK_AND_HOLD, parent, child);
+		this.doCommand(MouseAction.CLICK_AND_HOLD, parent, child);
 	}
 	
 	/**
@@ -282,7 +282,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void doubleClick(By locator) {
-		this.doBasicCommand(MouseAction.DOUBLE_CLICK, locator);
+		this.doCommand(MouseAction.DOUBLE_CLICK, locator);
 	}
 	
 	/**
@@ -293,7 +293,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void doubleClick(By parent, By child) {
-		this.doBasicCommand(MouseAction.DOUBLE_CLICK, parent, child);
+		this.doCommand(MouseAction.DOUBLE_CLICK, parent, child);
 	}
 	
 	/**
@@ -304,7 +304,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void doubleClick(WebElement parent, By child) {
-		this.doBasicCommand(MouseAction.DOUBLE_CLICK, parent, child);
+		this.doCommand(MouseAction.DOUBLE_CLICK, parent, child);
 	}
 	
 	/**
@@ -314,7 +314,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void point(By locator) {
-		this.doBasicCommand(MouseAction.POINT, locator);
+		this.doCommand(MouseAction.POINT, locator);
 	}
 	
 	/**
@@ -325,7 +325,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void point(By parent, By child) {
-		this.doBasicCommand(MouseAction.POINT, parent, child);
+		this.doCommand(MouseAction.POINT, parent, child);
 	}
 	
 	/**
@@ -336,7 +336,7 @@ public class MouseCommands extends Commands {
 	 */
 	
 	public final void point(WebElement parent, By child) {
-		this.doBasicCommand(MouseAction.POINT, parent, child);
+		this.doCommand(MouseAction.POINT, parent, child);
 	}
 	
 	/**
