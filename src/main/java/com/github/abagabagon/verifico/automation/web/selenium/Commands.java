@@ -16,14 +16,6 @@ public class Commands {
 	private WebDriver driver;
 	private SeleniumWait seleniumWait;
 	
-	enum BrowserAction {
-		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER
-	}
-	
-	enum SwitchAction {
-		BY_TITLE, BY_URL
-	}
-	
 	enum GetAction {
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
 	}
