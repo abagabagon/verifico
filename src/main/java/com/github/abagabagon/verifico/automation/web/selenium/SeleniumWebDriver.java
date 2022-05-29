@@ -12,10 +12,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.Browser;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import com.github.abagabagon.verifico.enums.Browser;
 import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
