@@ -56,30 +56,76 @@ public class WebElementFactory {
 		return index;
 	}
 	
+	/**
+	 * Creates Web Element based on the specified Locator.
+	 * 
+	 * @param	locator	Locator of Web Element to create.
+	 * @return	Created Web Element based on the Locator.
+	 */
+	
 	public final WebElement createElement(By locator) {
 		WebElement element = this.wait.waitForElementToBePresent(locator);
 		return element;
 	}
+	
+	/**
+	 * Creates Web Element based on the specified Child Locator within the context of the Web Element of the specified Parent Locator.
+	 * 
+	 * @param	parent	Locator of Parent Web Element
+	 * @param	child	Locator of Child Web Element to create.
+	 * @return	Created Web Element based on the Locator.
+	 */
 	
 	public final WebElement createElement(By parent, By child) {
 		WebElement nestedElement = this.wait.waitForNestedElementToBePresent(parent, child);
 		return nestedElement;
 	}
 	
+	/**
+	 * Creates Web Element based on the specified Child Locator within the context of the Parent Web Element.
+	 * 
+	 * @param	parent	Parent Web Element
+	 * @param	child	Locator of Child Web Element to create.
+	 * @return	Created Web Element based on the Locator.
+	 */
+	
 	public final WebElement createElement(WebElement parent, By child) {
 		WebElement nestedElement = this.wait.waitForNestedElementToBePresent(parent, child);
 		return nestedElement;
 	}
+	
+	/**
+	 * Creates List Web Element based on the specified Locator.
+	 * 
+	 * @param	locator	Locator of List Web Element to create.
+	 * @return	Created List Web Element based on the Locator.
+	 */
 	
 	public final List<WebElement> createListElement(By locator) {
 		List<WebElement> elements = this.wait.waitForListElementToBePresent(locator);
 		return elements;
 	}
 	
+	/**
+	 * Creates List Web Element based on the specified Child Locator within the context of the Web Element of the specified Parent Locator.
+	 * 
+	 * @param	parent	Locator of Parent Web Element
+	 * @param	child	Locator of Child List Web Element to create.
+	 * @return	Created Web Element based on the Locator.
+	 */
+	
 	public final List<WebElement> createListElement(By parent, By child) {
 		List<WebElement> nestedElement = this.wait.waitForNestedListElementToBePresent(parent, child);
 		return nestedElement;
 	}
+	
+	/**
+	 * Creates List Web Element based on the specified Child Locator within the context of the Parent Web Element.
+	 * 
+	 * @param	parent	Parent Web Element
+	 * @param	child	Locator of Child List Web Element to create.
+	 * @return	Created Web Element based on the Locator.
+	 */
 	
 	public final List<WebElement> createListElement(WebElement parent, By child) {
 		List<WebElement> nestedElement = this.wait.waitForNestedListElementToBeVisible(parent, child);
