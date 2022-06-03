@@ -2,7 +2,6 @@ package com.github.abagabagon.verifico.automation.web.selenium;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.InvalidElementStateException;
@@ -17,10 +16,7 @@ import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
 public class KeyboardCommands extends Commands {
 
-	protected WebDriver driver;
-	protected Logger log;
 	private Actions action;
-	private WaitCommands wait;
 	
 	private enum KeyboardAction {
 		CLEAR, PRESS, TYPE

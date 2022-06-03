@@ -2,7 +2,6 @@ package com.github.abagabagon.verifico.automation.web.selenium;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,10 +14,8 @@ import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 
 public class MouseCommands extends Commands {
 
-	private Logger log;
 	private JavascriptExecutor javascriptExecutor;
 	private Actions action;
-	private WaitCommands wait;
 	
 	private enum MouseAction {
 		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT

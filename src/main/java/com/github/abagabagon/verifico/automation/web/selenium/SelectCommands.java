@@ -2,7 +2,6 @@ package com.github.abagabagon.verifico.automation.web.selenium;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -11,10 +10,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 
 public class SelectCommands extends Commands {
-
-	protected WebDriver driver;
-	protected Logger log;
-	private WaitCommands wait;
 	
 	private enum SelectAction {
 		DESELECT, SELECT

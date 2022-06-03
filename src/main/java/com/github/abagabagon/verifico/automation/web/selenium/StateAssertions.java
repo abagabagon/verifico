@@ -3,17 +3,13 @@ package com.github.abagabagon.verifico.automation.web.selenium;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class StateAssertions extends Commands {
 
-	protected WebDriver driver;
-	protected Logger log;
 	private WebElementFactory elementFactory;
-	private WaitCommands wait;
 	
 	private enum StateAssertion {
 		DISPLAYED, NOT_DISPLAYED, ENABLED, DISABLED, SELECTED, DESELECTED
