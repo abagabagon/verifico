@@ -1,4 +1,4 @@
-package com.github.abagabagon.verifico.automation.web.selenium;
+package com.github.abagabagon.verifico.automation.web;
 
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.Alert;
