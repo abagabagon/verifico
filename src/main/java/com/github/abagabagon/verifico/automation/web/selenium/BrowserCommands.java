@@ -1,22 +1,22 @@
 package com.github.abagabagon.verifico.automation.web.selenium;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class BrowserCommands extends Commands {
 
-	protected WebDriver driver;
-	protected Logger log;
 	private JavascriptExecutor javascriptExecutor;
-	private WaitCommands wait;
 	
 	private enum BrowserAction {
 		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_COOKIE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER, SCROLL
@@ -298,6 +298,22 @@ public class BrowserCommands extends Commands {
 			this.log.error("Something went wrong while trying to scroll page.");
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
+	}
+	
+	/**
+	 * Counts instance of the Web Element of the specified Locator. 
+	 * 
+	 * @param locator	Locator of Web Element to count.
+	 * @return	Instance Count of the the Web Element. 
+	 */
+
+	public final int count(By locator) {
+		this.wait.waitForPage();
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+		List<WebElement> element = this.driver.findElements(locator);
+		int size = element.size();
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		return size;
 	}
 	
 }
