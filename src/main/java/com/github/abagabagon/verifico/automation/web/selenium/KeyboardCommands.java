@@ -28,6 +28,7 @@ public class KeyboardCommands extends Commands {
 		this.driver = driver;
 		this.action = action;
 		this.wait = wait;
+		this.elementFactory = new WebElementFactory(this.driver, this.wait);
 	}
 	
 	private boolean execute(KeyboardAction keyboardAction, WebElement element, String inputText, Keys keyButton) {
@@ -87,7 +88,7 @@ public class KeyboardCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.wait.waitForElementToBeVisible(locator);
+			element = this.elementFactory.createElement(locator);
 			actionPerformed = this.execute(keyboardAction, element, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -108,8 +109,8 @@ public class KeyboardCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.wait.waitForElementToBeVisible(parent);
-			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.elementFactory.createElement(parent);
+			childElement = this.elementFactory.createElement(parentElement, child);
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -127,11 +128,9 @@ public class KeyboardCommands extends Commands {
 	private void doCommand(KeyboardAction keyboardAction, WebElement parent, By child, String inputText, Keys keyButton) {
 		this.log.debug("Performing " + String.valueOf(keyboardAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
-		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.wait.waitForElementToBeVisible(parent);
-			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
+			childElement = this.elementFactory.createElement(parent, child);
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {

@@ -22,9 +22,10 @@ public class GetCommands extends Commands {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.wait = wait;
+		this.elementFactory = new WebElementFactory(this.driver, this.wait);
 	}
 	
-	boolean execute(GetAction getAction, WebElement element, String attribute) {
+	private boolean execute(GetAction getAction, WebElement element, String attribute) {
 		boolean actionPerformed = false;
 		this.retrievedValue = null;
 		Select select = null;
@@ -65,7 +66,7 @@ public class GetCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.wait.waitForElementToBePresent(locator);
+			element = this.elementFactory.createElement(locator);
 			actionPerformed = this.execute(getAction, element, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -87,8 +88,8 @@ public class GetCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.wait.waitForElementToBeVisible(parent);
-			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.elementFactory.createElement(parent);
+			childElement = this.elementFactory.createElement(parentElement, child);
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -107,11 +108,9 @@ public class GetCommands extends Commands {
 	private String doCommand(GetAction getAction, WebElement parent, By child, String attribute) {
 		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
-		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.wait.waitForElementToBeVisible(parent);
-			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
+			childElement = this.elementFactory.createElement(parent, child);
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {

@@ -9,6 +9,7 @@ public class Commands {
 
 	protected Logger log;
 	protected WebDriver driver;
+	protected WebElementFactory elementFactory;
 	protected WaitCommands wait;
 	
 	public Commands(WebDriver driver, WaitCommands wait) {

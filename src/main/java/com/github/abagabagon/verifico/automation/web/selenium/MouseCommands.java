@@ -27,6 +27,7 @@ public class MouseCommands extends Commands {
 		this.javascriptExecutor = javascriptExecutor;
 		this.action = action;
 		this.wait = wait;
+		this.elementFactory = new WebElementFactory(this.driver, this.wait);
 	}
 	
 	private boolean execute(MouseAction mouseAction, WebElement element) {
@@ -87,7 +88,7 @@ public class MouseCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
-			element = this.wait.waitForElementToBeVisible(locator);
+			element = this.elementFactory.createElement(locator);
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -108,8 +109,8 @@ public class MouseCommands extends Commands {
 		WebElement parentElement = null;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			parentElement = this.wait.waitForElementToBeVisible(parent);
-			childElement = this.wait.waitForNestedElementToBePresent(parentElement, child);
+			parentElement = this.elementFactory.createElement(parent);
+			childElement = this.elementFactory.createElement(parentElement, child);
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -129,7 +130,7 @@ public class MouseCommands extends Commands {
 		boolean actionPerformed = false;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {
-			childElement = this.wait.waitForNestedElementToBePresent(parent, child);
+			childElement = this.elementFactory.createElement(parent, child);
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
@@ -318,8 +319,8 @@ public class MouseCommands extends Commands {
 		WebElement targetElement = null;
 		for(int i = 1; i <= 4; i++) {
 			try {
-				sourceElement = this.wait.waitForObjectToBeClickable(sourceLocator);
-				targetElement = this.wait.waitForObjectToBeClickable(targetLocator);
+				sourceElement = this.elementFactory.createElement(sourceLocator);
+				targetElement = this.elementFactory.createElement(targetLocator);
 				this.action.dragAndDrop(sourceElement, targetElement).perform();
 				actionPerformed = true;
 			} catch (NullPointerException e) {
