@@ -140,7 +140,7 @@ Get Commands contains functions pertaining to get value actions done by a user i
 ```java
 GetCommands get = new GetCommands(driver, wait);
 browser.goTo("https://www.google.com/");
-get.getText(By.xpath("//h1[@name='Login Header']"));
+String header = get.getText(By.xpath("//h1[@name='Login Header']"));
 ```
 
 | Command					| Description																|
