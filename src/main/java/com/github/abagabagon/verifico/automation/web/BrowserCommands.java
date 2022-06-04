@@ -211,7 +211,7 @@ public class BrowserCommands extends Commands {
 	}
 	
 	/**
-	 * Delete cookie with the specified name.
+	 * Deletes cookie with the specified name.
 	 * 
 	 * @param name Name of the Cookie to be deleted.
 	 */
