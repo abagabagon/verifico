@@ -5,71 +5,71 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 
 # **Components**
 
-| Component         | Java API                                                                                                      | Version     |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- | ----------- |
-| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                              | 3.141.59    |
-| Mobile Automation | [Appium](http://appium.io/)                                                                                   | 7.4.1       |
-| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                  | 2.14.0      |
-| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                         | 5.0.1       |
-| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                            | 4.1.2       |
-| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                   | 8.0.22      |
-| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15)| 8.2.2.jre8  |
+| Component         | Java API                                                                                                       |
+| ----------------- | -------------------------------------------------------------------------------------------------------------- |
+| Web Automation    | [Selenium](https://www.seleniumhq.org/download/)                                                               |
+| Mobile Automation | [Appium](http://appium.io/)                                                                                    |
+| Logging Tool      | [Log4J2](https://logging.apache.org/log4j/2.0/download.html)                                                   |
+| Reporting Tool    | [ExtentReports](http://relevantcodes.com/extentreports-for-selenium/)                                          |
+| Excel             | [Apache POI](https://poi.apache.org/download.html)                                                             |
+| MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                    |
+| MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15) |
+| MariaDB           | [MariaDB Connector](https://mariadb.com/docs/connect/programming-languages/java/                               |
 
 # **Web Automation**
 
-For Web Application Automation, create an instance of the `WebAutomation` Object which is shown below:
+For Web Application Automation, create an instance of the `WebDriverFactory` and `WaitCommands` Classes to initialize and get WebDrivers and initialize waits respectively:
 
 ```java
-Browser browser = Browser.CHROME;
-boolean isHeadless = false;
 
-Verifico verifico = new Verifico();
-WebAutomation I = verifico.getWebAutomation(browser, isHeadless);
+// WebDriverFactory
+WebDriverFactory driverFactory = new WebDriverFactory();
+driverFactory.setChromeDriver();
+WebDriver driver = driverFactory.getChromeDriver();
+
+
+// WaitCommand
+int implicitWaitDuration = 10;
+int explicitWaitDuration = 5;
+WaitCommands wait = new WaitCommands(driver, implicitWaitDuration, explicitWaitDuration);
+
 ```
 
-Web Application Automation on Mobile Devices is also supported. Same as above, an instance of the `WebAutomation` Object will need to be created but with different parameters:
+Web Application Automation Commands are accessible into classes from which related commands are grouped. Available Command Classes are shown below:
+
+## **Browser Commands**
+
+Browser Commands contains functions relating to actions being done by the user at the Web Browser. Class name for this is `BrowserCommands`
+
+`BrowserCommands` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands`:
 
 ```java
-String deviceName = "YT9117XT7C";
-Mobile mobile = Mobile.Android
-String platformVersion = "6.0.1";
-Browser browser = Browser.CHROME;
-URL appiumServerUrl = new URL("http://127.0.0.1:4723/wd/hub");
-
-Verifico verifico = new Verifico();
-WebAutomation I = verifico.getWebAutomation(deviceName, mobile, platformVersion, browser, appiumServerUrl);
+JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+BrowserCommands browser = new BrowserCommands(driver, javascriptExecutor, wait);
+browser.goTo("https://www.google.com/");
+browser.maximize();
+browser.refresh();
 ```
 
-The created `WebAutomation` instance would be able to access Browser and User Action Commands.
+Browser Commands available are as follows:
 
-```java
-I.openBrowser();
-I.goTo("http://www.somewebsite.com/");
-I.type(PageLogin.EMAIL_ADDRESS_TEXTBOX, "abagabagon@yopmail.com");
-I.type(PageLogin.PASSWORD_TEXTBOX, "ABCabc123");
-I.click(PageLogin.LOGIN_BUTTON);
-```
-
-## **Web Automation Commands**
-
-### **Browser Actions**
-
-| Command                  | Description                                          |
-| ------------------------ | ---------------------------------------------------- |
-| Open Browser             | Opens Web Browser                                    |
-| Open Tab                 | Opens Tab                                            |
-| Go To                    | Navigates to the Url specified                       |
-| Switch Tab By Title      | Switches to a Tab based on Page Title                |
-| Switch Tab By URL        | Switches to a Tab based on Page URL                  |
-| Switch Tab To Original   | Switches back to Original Tab                        |
-| Back                     | Navigates one item back from the browser's history   |
-| Forward                  | Navigates one item forward from the browser's history|
-| Refresh                  | Refreshes current page                               |
-| Maximize Browser Window  | Maximizes Browser Window                             |
-| Delete All Cookies       | Deletes all cookies                                  |
-| Scroll                   | Scrolls Page                                         |
-| Close Tab                | Closes Tab of a Web Browser                          |
-| Close Browser            | Closes Web Browser                                   |
+| Command             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| openTab             | Opens Tab                                                    |
+| goTo                | Navigates to the Url specified                               |
+| switchTabByTitle    | Switches to a Tab based on Page Title                        |
+| switchTabByURL      | Switches to a Tab based on Page URL                          |
+| switchTabToOriginal | Switches back to Original Tab                                |
+| back                | Navigates one item back from the browser's history           |
+| forward             | Navigates one item forward from the browser's history        |
+| refresh             | Refreshes current page                                       |
+| maximize            | Maximizes Browser Window                                     |
+| deleteAllCookies    | Deletes all cookies                                          |
+| deleteCookie        | Deletes cookie with the specified name                       |
+| scroll              | Scrolls Page                                                 |
+| closeTab            | Closes Tab of a Web Browser                                  |
+| closeBrowser        | Closes Web Browser                                           |
+| count               | Counts instance of the Web Element of the specified Locator  |
 
 ### **User Actions**
 
