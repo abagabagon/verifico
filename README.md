@@ -21,7 +21,6 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 For Web Application Automation, create an instance of the `WebDriverFactory` Class to initialize and get WebDrivers:
 
 ```java
-// WebDriverFactory
 WebDriverFactory driverFactory = new WebDriverFactory();
 driverFactory.setChromeDriver();
 WebDriver driver = driverFactory.getChromeDriver();
@@ -36,7 +35,6 @@ Supported WebDrivers are as follows
 Wait Commands are also available at the `WaitCommands` Class by which functions are utilized by other Automation Command Classes. User will only need to initialize Implicit and Explict Waits. The instance of the `WaitCommands` Class will be utilized by Automation Command Classes which are discussed on below other sections.
 
 ```
-// WaitCommand
 int implicitWaitDuration = 10;
 int explicitWaitDuration = 5;
 WaitCommands wait = new WaitCommands(driver, implicitWaitDuration, explicitWaitDuration);
