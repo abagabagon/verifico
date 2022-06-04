@@ -154,10 +154,11 @@ public class WebElementFactory {
 	 * 
 	 * Note: Command is useful for manipulating a specific Web Element from a List Web Element.
 	 * 
-	 * @param elementList			List Web Element to create a Web Element
-	 * 								from based on the attribute reference value.
-	 * @param textReferenceValue	Attribute reference to check for each Web Element
-	 * 								of the List Web Element.
+	 * @param	elementList				List Web Element to create a Web Element
+	 * 									from based on the attribute reference value.
+	 * @param	attribute				Attribute of the Web Element to check value of.
+	 * @param	attributeReferenceValue	Attribute reference to check for each Web Element
+	 * 									of the List Web Element.
 	 * @return	Created Web Element from the List Web Element based on the attribute
 	 * 			reference value. 
 	 */
@@ -174,19 +175,16 @@ public class WebElementFactory {
 	 * value. Child Web Element to create under a Web Element from the List Web Element
 	 * that matches the text of the Child Reference Element will be returned.
 	 * 
-	 * <table border="1">
-	 *     <br>
-	 *         <th>Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Smith</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>Jane Doe</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>John Appleseed</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
+     * <br>
+	 * <table summary="Employee Table" border="1">
+	 * 	<thead>
+	 * 		<tr><th>Employee Name</th><th>Link</th></tr>
+	 * 	</thead>
+	 * 	<tbody>
+     * 		<tr><td>John Smith</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>Jane Doe</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>John Appleseed</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
      * </table>
      * <br>
 	 * 
@@ -228,19 +226,16 @@ public class WebElementFactory {
 	 * Element from the List Web Element that matches the attribute value of the
 	 * Child Reference Element will be returned.
 	 * 
-	 * <table border="1">
-	 *     <br>
-	 *         <th>Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Smith</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>Jane Doe</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>John Appleseed</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
+     * <br>
+	 * <table summary="Employee Table" border="1">
+	 * 	<thead>
+	 * 		<tr><th>Employee Name</th><th>Link</th></tr>
+	 * 	</thead>
+	 * 	<tbody>
+     * 		<tr><td>John Smith</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>Jane Doe</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>John Appleseed</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
      * </table>
      * <br>
 	 * 
@@ -263,7 +258,7 @@ public class WebElementFactory {
 	 * 										the Child Web Element Reference.
 	 * @param	childReference				Locator of the Child Web Element Reference.
 	 * @param	childElementToCreate		Locator of the Child Web Element to create.
-	 * @param	attribute					Attribute of the Child Web Element Reference to check.
+	 * @param	attribute					Attribute of the Child Web Element Reference to check value of.
 	 * @param	attributeReferenceValue		Attribute reference value to check at the Child Web
 	 * 										Element Reference for each Web Element
 	 * 										of the Parent List Web Element.
@@ -284,33 +279,28 @@ public class WebElementFactory {
 	 * Element to create under a Web Element from the List Web Element that matches
 	 * the text of the Child Reference Element will be returned.
 	 * 
-	 * <table border="1">
-	 *     <br>
-	 *         <th>Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Smith</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>Jane Doe</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>John Appleseed</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
-     * </table>
-     * 
-     * <table border="1">
-	 *     <br>
-	 *         <th>Resigned Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Hamilton</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>George Washington</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
+     * <br>
+	 * <table summary="Employee Table" border="1">
+	 * 	<thead>
+	 * 		<tr><th>Employee Name</th><th>Link</th></tr>
+	 * 	</thead>
+	 * 	<tbody>
+     * 		<tr><td>John Smith</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>Jane Doe</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>John Appleseed</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
      * </table>
      * <br>
+     * 
+     * <table summary="Resigned Employee Table" border="1">
+     * 	<thead>
+     * 		<tr><th>Resigned Employee Name</th><th>Link</th></tr>
+     * 	</thead>
+     * 	<tbody>
+     * 		<tr><td>John Hamilton</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>George Washington</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
+     * </table>
 	 * 
 	 * At the example above, user may want to manipulate the first table and the link specific to an
 	 * employee name. Using the command, the parameters should be set as follows:
@@ -354,33 +344,28 @@ public class WebElementFactory {
 	 * Element that matches the attribute value of the Child Reference Element
 	 * will be returned.
 	 * 
-	 * <table border="1">
-	 *     <br>
-	 *         <th>Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Smith</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>Jane Doe</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>John Appleseed</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
-     * </table>
-     * 
-     * <table border="1">
-	 *     <br>
-	 *         <th>Resigned Employee Name</th><th>Link</th>
-     *     <tr>
-     *         <td>John Hamilton</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <tr>
-     *         <td>George Washington</td> <td><a>Link</a></td>
-     *     </tr>
-     *     <br>
+     * <br>
+	 * <table summary="Employee Table" border="1">
+	 * 	<thead>
+	 * 		<tr><th>Employee Name</th><th>Link</th></tr>
+	 * 	</thead>
+	 * 	<tbody>
+     * 		<tr><td>John Smith</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>Jane Doe</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>John Appleseed</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
      * </table>
      * <br>
+     * 
+     * <table summary="Resigned Employee Table" border="1">
+     * 	<thead>
+     * 		<tr><th>Resigned Employee Name</th><th>Link</th></tr>
+     * 	</thead>
+     * 	<tbody>
+     * 		<tr><td>John Hamilton</td> <td><a>Link</a></td></tr>
+     * 		<tr><td>George Washington</td> <td><a>Link</a></td></tr>
+     * 	</tbody>
+     * </table>
 	 * 
 	 * At the example above, user may want to manipulate the first table and the link specific to an
 	 * employee name. Using the command, the parameters should be set as follows:
@@ -403,7 +388,7 @@ public class WebElementFactory {
 	 * 										the Child Web Element Reference.
 	 * @param	childReference				Locator of the Child Web Element Reference.
 	 * @param	childElementToCreate		Locator of the Child Web Element to create.
-	 * @param	attribute					Attribute of the Child Web Element Reference to check.
+	 * @param	attribute					Attribute of the Child Web Element Reference to check value of.
 	 * @param	attributeReferenceValue		Attribute reference value to check at the Child Web
 	 * 										Element Reference for each Web Element
 	 * 										of the Parent List Web Element.

@@ -308,8 +308,8 @@ public class MouseCommands extends Commands {
 	/**
 	 * Drags a Web Element and drops it at target Web Element. Used for Elements that can be dragged.
 	 * 
-	 * @param sourceObject Object used to locate Web Element to be dragged.
-	 * @param targetObject Object used to locate Web Element where the dragged Web Element will be dropped into.
+	 * @param sourceLocator Object used to locate Web Element to be dragged.
+	 * @param targetLocator Object used to locate Web Element where the dragged Web Element will be dropped into.
 	 */
 	
 	public final void dragAndDrop(By sourceLocator, By targetLocator) {

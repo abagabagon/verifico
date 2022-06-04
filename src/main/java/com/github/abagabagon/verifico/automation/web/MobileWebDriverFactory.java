@@ -27,6 +27,9 @@ public class MobileWebDriverFactory {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Google Chrome.
 	 * 
+	 * @param platform			Platform from which to run Google Chrome Driver.
+	 * @param platformVersion	Version of the Platform
+	 * @param deviceName		Name of the Device to run Google Chrome Driver. 
 	 * @return Google Chrome WebDriver Object
 	 */
 	
@@ -46,6 +49,9 @@ public class MobileWebDriverFactory {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Mozilla Firefox.
 	 * 
+	 * @param platform			Platform from which to run Mozilla Firefox Driver.
+	 * @param platformVersion	Version of the Platform
+	 * @param deviceName		Name of the Device to run Mozilla Firefox Driver. 
 	 * @return Mozilla Firefox WebDriver Object
 	 */
 	
@@ -65,6 +71,9 @@ public class MobileWebDriverFactory {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Safari.
 	 * 
+	 * @param platform			Platform from which to run Safari Driver.
+	 * @param platformVersion	Version of the Platform
+	 * @param deviceName		Name of the Device to run Safari Driver. 
 	 * @return Safari WebDriver Object
 	 */
 
@@ -84,6 +93,9 @@ public class MobileWebDriverFactory {
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Microsoft Edge.
 	 * 
+	 * @param platform			Platform from which to run Microsoft Edge Driver.
+	 * @param platformVersion	Version of the Platform
+	 * @param deviceName		Name of the Device to run Microsoft Edge Driver. 
 	 * @return Microsoft Edge WebDriver Object
 	 */
 

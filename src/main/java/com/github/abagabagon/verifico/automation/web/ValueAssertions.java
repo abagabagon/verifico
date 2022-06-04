@@ -191,7 +191,7 @@ public class ValueAssertions extends Commands {
 	/**
 	 * Verifies Page Title of Web Page if partially equal to the expected Title.
 	 * 
-	 * @param	title Expected Page Title to compare into
+	 * @param	partialTitle Expected Page Title to compare into
 	 * @return	<code>true</code> if Page Title is partially equal to expected Title.
 	 * 			<code>false</code> if Page Title is not partially equal to expected Title.
 	 */
@@ -204,7 +204,7 @@ public class ValueAssertions extends Commands {
 	/**
 	 * Verifies Page Title of Web Page if not partially equal to the specified Title.
 	 * 
-	 * @param	title Page Title to compare into
+	 * @param	partialTitle Page Title to compare into
 	 * @return	<code>true</code> if Page Title is not partially equal to specified Title.
 	 * 			<code>false</code> if Page Title is partially equal to specified Title.
 	 */

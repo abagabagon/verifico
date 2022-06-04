@@ -231,7 +231,7 @@ public class BrowserCommands extends Commands {
 	/**
 	 * Switches to a Tab based on Page Title.
 	 * 
-	 * @param 	expectedTitle Expected Page Title to switch into.
+	 * @param 	title Expected Page Title to switch into.
 	 * @return	<code>true</code> if switch is successful.
 	 * 			<code>false</code> if switch is unsuccessful.
 	 */

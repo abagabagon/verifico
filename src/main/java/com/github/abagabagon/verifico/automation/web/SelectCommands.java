@@ -139,8 +139,8 @@ public class SelectCommands extends Commands {
 	/**
 	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
 	 * 
-	 * @param locator	Locator of Parent Web Element.
-	 * @param locator	Locator of Child Web Element to select option.
+	 * @param parent	Locator of Parent Web Element.
+	 * @param child		Locator of Child Web Element to select option.
 	 * @param option	Option to be selected.
 	 */
 	
@@ -151,8 +151,8 @@ public class SelectCommands extends Commands {
 	/**
 	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
 	 * 
-	 * @param locator	Parent Web Element.
-	 * @param locator	Locator of Child Web Element to select option.
+	 * @param parent	Parent Web Element.
+	 * @param child		Locator of Child Web Element to select option.
 	 * @param option	Option to be selected.
 	 */
 	
@@ -174,8 +174,8 @@ public class SelectCommands extends Commands {
 	/**
 	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
 	 * 
-	 * @param locator	Locator of Parent Web Element.
-	 * @param locator	Locator of Child Web Element to de-select option.
+	 * @param parent	Locator of Parent Web Element.
+	 * @param child		Locator of Child Web Element to de-select option.
 	 * @param option	Option to be selected.
 	 */
 	
@@ -186,8 +186,8 @@ public class SelectCommands extends Commands {
 	/**
 	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
 	 * 
-	 * @param locator	Parent Web Element.
-	 * @param locator	Locator of Child Web Element to de-select option.
+	 * @param parent	Parent Web Element.
+	 * @param child		Locator of Child Web Element to de-select option.
 	 * @param option	Option to be selected.
 	 */
 	

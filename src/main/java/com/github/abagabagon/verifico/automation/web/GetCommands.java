@@ -142,7 +142,7 @@ public class GetCommands extends Commands {
 	 * Gets the text of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
 	 * 
 	 * @param parent	Locator of Parent Web Element
-	 * @param locator	Locator of Child Web Element to get text from.
+	 * @param child		Locator of Child Web Element to get text from.
 	 * @return Retrieved text from Child Web Element
 	 */
 	
@@ -155,7 +155,7 @@ public class GetCommands extends Commands {
 	 * Gets the text of the Web Element of the specified Child Locator within the context of the Parent Web Element.
 	 * 
 	 * @param parent	Parent Web Element
-	 * @param locator	Locator of Child Web Element to get text from.
+	 * @param child		Locator of Child Web Element to get text from.
 	 * @return Retrieved text from Child Web Element
 	 */
 	
@@ -167,7 +167,8 @@ public class GetCommands extends Commands {
 	/**
 	 * Gets the attribute value of the Web Element of the specified Locator.
 	 * 
-	 * @param locator	Locator of Web Element to get attribute value from.
+	 * @param locator		Locator of Web Element to get attribute value from.
+	 * @param attribute		Web Element Attribute to get value of
 	 * @return Retrieved attribute from Web Element
 	 */
 	
@@ -179,8 +180,9 @@ public class GetCommands extends Commands {
 	/**
 	 * Gets the attribute value of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
 	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param locator	Locator of Child Web Element to get attribute value from.
+	 * @param parent		Locator of Parent Web Element
+	 * @param child			Locator of Child Web Element to get attribute value from.
+	 * @param attribute		Web Element Attribute to get value of.
 	 * @return Retrieved attribute from Child Web Element
 	 */
 	
@@ -192,8 +194,9 @@ public class GetCommands extends Commands {
 	/**
 	 * Gets the attribute value of the Web Element of the specified Child Locator within the context of the Parent Web Element.
 	 * 
-	 * @param parent	Parent Web Element
-	 * @param locator	Locator of Child Web Element to get attribute value from.
+	 * @param parent	 	Parent Web Element
+	 * @param child			Locator of Child Web Element to get attribute value from.
+	 * @param attribute		Web Element Attribute to get value of
 	 * @return Retrieved attribute from Child Web Element
 	 */
 	
@@ -218,7 +221,7 @@ public class GetCommands extends Commands {
 	 * Gets the drop-down list value of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
 	 * 
 	 * @param parent	Locator of Parent Web Element
-	 * @param locator	Locator of Web Element to get drop-down list value from.
+	 * @param child		Locator of Web Element to get drop-down list value from.
 	 * @return Retrieved drop-down list value from Child Web Element
 	 */
 	
@@ -231,7 +234,7 @@ public class GetCommands extends Commands {
 	 * Gets the drop-down list value of the Web Element of the specified Child Locator within the context of the Parent Web Element.
 	 * 
 	 * @param parent	Parent Web Element
-	 * @param locator	Locator of Web Element to get drop-down list value from.
+	 * @param child		Locator of Web Element to get drop-down list value from.
 	 * @return Retrieved drop-down list value from Child Web Element
 	 */
 	

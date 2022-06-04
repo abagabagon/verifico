@@ -161,7 +161,7 @@ public class KeyboardCommands extends Commands {
 	 * Applicable for INPUT and TEXTAREA Web Elements.
 	 * 
 	 * @param parent	Locator of Parent Web Element
-	 * @param locator	Locator of Child Web Element to clear the value from.
+	 * @param child		Locator of Child Web Element to clear the value from.
 	 */
 	
 	public final void clear(By parent, By child) {
@@ -173,7 +173,7 @@ public class KeyboardCommands extends Commands {
 	 * Applicable for INPUT and TEXTAREA Web Elements.
 	 * 
 	 * @param parent	Parent Web Element
-	 * @param locator	Locator of Child Web Element to clear the value from.
+	 * @param child		Locator of Child Web Element to clear the value from.
 	 */
 	
 	public final void clear(WebElement parent, By child) {
