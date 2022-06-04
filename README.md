@@ -14,7 +14,7 @@ One of the disadvantages of Selenium and Appium is the steep learning curve requ
 | Excel             | [Apache POI](https://poi.apache.org/download.html)                                                             |
 | MySQL             | [MySQL Connector](https://dev.mysql.com/doc/connectors/en/)                                                    |
 | MSSQL             | [MSSQL Connector](https://docs.microsoft.com/en-us/sql/connect/sql-connection-libraries?view=sql-server-ver15) |
-| MariaDB           | [MariaDB Connector](https://mariadb.com/docs/connect/programming-languages/java/                               |
+| MariaDB           | [MariaDB Connector](https://mariadb.com/docs/connect/programming-languages/java/)                              |
 
 # **Web Automation**
 
