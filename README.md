@@ -217,7 +217,7 @@ State Assertions contains functions pertaining to checking the state of Web Elem
 StateAssertions state = new StateAssertions(driver, wait);
 browser.goTo("https://www.practicesite.com/");
 Assert.assertTrue(state.see(By.xpath("//input[@name='show-hide-text']")));
-mouse.click(By.xpath(//input[@id='hide-textbox']));
+mouse.click(By.xpath("//input[@id='hide-textbox']"));
 Assert.assertTrue(state.dontSee(By.xpath("//input[@name='show-hide-text']")));
 ```
 
