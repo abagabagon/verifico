@@ -101,7 +101,7 @@ mouse.click(By.xpath("//button[@name='Search']"));
 
 ## **Keyboard Commands**
 
-Keyboard Commands contains functions pertaining to keyboard actions done by a user at a Web Page. Class for this is `KeyboardCommands`.
+Keyboard Commands contains functions pertaining to keyboard actions done by a user in a Web Page. Class for this is `KeyboardCommands`.
 
 `KeyboardCommands` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
 
@@ -120,7 +120,7 @@ keyboard.type(By.xpath("//input[@name='password']"));
 
 ## **Select Commands**
 
-Select Commands contains functions pertaining to actions done by a user on drop-down elements at a Web Page. Class for this is `SelectCommands`.
+Select Commands contains functions pertaining to actions done by a user on drop-down elements in a Web Page. Class for this is `SelectCommands`.
 
 `SelectCommands` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
 
@@ -132,29 +132,46 @@ select.select(By.xpath("//select[@type='member-type']"), "Guest");
 
 | Command  | Description                                                              |
 | -------- | ------------------------------------------------------------------------ |
-| Select   | Selects a Drop-down List Web Element Option of the specified Locator.    |
-| Deselect | De-selects a Drop-down List Web Element Option of the specified Locator. |
+| select   | Selects a Drop-down List Web Element Option of the specified Locator.    |
+| deselect | De-selects a Drop-down List Web Element Option of the specified Locator. |
 
+## **Get Commands**
 
+Get Commands contains functions pertaining to get value actions done by a user in a Web Page. Class for this is `GetCommands`.
 
-| Get Text                                                                              | Gets the visible innerText of this Web Element, including sub-elements, without any leading or trailing whitespace.                                               |
-| Get Text                                                                              | Gets the visible innerText of the specified Child Web Element within the Parent Web Element.                                                                      |
-| Get Text From Table Row Element Based On Table Row Element Text                       | Gets the text of the specified Web Element from a row in a table based on text value from the same row.                                                           |
-| Get Text From Table Row Element Based On Table Row Element Attribute Value            | Gets the text of the specified Web Element from a row in a table based on an attribute value of an element from the same row.                                     |
-| Get Value                                                                             | Gets the value of the INPUT and TEXTAREA Web Element.                                                                                                             |
-| Get Value                                                                             | Gets the value of the INPUT and TEXTAREA Child Web Element within the Parent Web Element.                                                                         |
-| Get Value From Table Row Element Based On Table Row Element Text                      | Gets value of the specified Web Element from a row in a table based on text value from the same row.                                                              |
-| Get Value From Table Row Element Based On Table Row Element Attribute Value           | Gets the value of the specified Web Element from a row in a table based on an attribute value of an element from the same row.                                    |
-| Get Attribute Value                                                                   | Gets the value of the specified attribute of the Web Element.                                                                                                     |
-| Get Attribute Value                                                                   | Gets the value of the specified attribute of the Child Web Element within the Parent Web Element.                                                                 |
-| Get Attribute Value From Table Row Element Based On Table Row Element Text            | Gets the attribute value of the specified Web Element from a row in a table based on text value from the same row.                                                |
-| Get Attribute Value From Table Row Element Based On Table Row Element Attribute Value | Gets the attribute value of the specified Web Element from a row in a table based on an attribute value of an element from the same row.                          |
-| Get DropDown List Value                                                               | Gets the selected option of the Drop-down List Web Element                                                                                                        |
-| Accept Alert                                                                          | Accepts Javascript Alert                                                                                                                                          |
-| Cancel Alert                                                                          | Cancels Javascript Alert                                                                                                                                          |
-| Type Alert                                                                            | Simulates typing at Javascript Alert Text Box                                                                                                                     |
+`GetCommands` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
 
-### **Verifications**
+```java
+GetCommands get = new GetCommands(driver, wait);
+browser.goTo("https://www.google.com/");
+get.getText(By.xpath("//h1[@name='Login Header']"));
+```
+| Command              | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| getText              | Gets the text of the Web Element of the specified Locator.                 |
+| getAttributeValue    | Gets the attribute value of the Web Element of the specified Locator.      |
+| getDropDownListValue | Gets the drop-down list value of the Web Element of the specified Locator. |
+
+## **Alert Commands**
+
+Alert Commands contains functions pertaining to get value actions done by a user in a Web Page. Class for this is `AlertCommands`.
+
+`AlertCommands` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
+
+```java
+AlertCommands alert = new AlertCommands(driver, wait);
+mouse.click(By.xpath("//input[@id='alertbtn']"));
+alert.typeAlert("John");
+alert.acceptAlert();
+```
+
+| Command     | Description                                   |
+| ----------- | --------------------------------------------- |
+| acceptAlert | Accepts Javascript Alert                      |
+| cancelAlert | Cancels Javascript Alert                      |
+| typeAlert   | Simulates typing at Javascript Alert Text Box |
+
+## **Value Assertions**
 
 | Command                                                                          | Description                                                                                                                              |
 | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
