@@ -12,11 +12,11 @@ import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 public class GetCommands extends Commands {
 
 	private String retrievedValue;
-	
+
 	private enum GetAction {
 		GET_ATTRIBUTE, GET_DROPDOWN, GET_TEXT
 	}
-	
+
 	public GetCommands(WebDriver driver, WaitCommands wait) {
 		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
@@ -24,7 +24,7 @@ public class GetCommands extends Commands {
 		this.wait = wait;
 		this.elementFactory = new WebElementFactory(this.wait);
 	}
-	
+
 	private boolean execute(GetAction getAction, WebElement element, String attribute) {
 		boolean actionPerformed = false;
 		this.retrievedValue = null;
@@ -60,7 +60,7 @@ public class GetCommands extends Commands {
 		}
 		return actionPerformed;
 	}
-	
+
 	private String doCommand(GetAction getAction, By locator, String attribute) {
 		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
@@ -81,7 +81,7 @@ public class GetCommands extends Commands {
 		}
 		return retrievedValue;
 	}
-	
+
 	private String doCommand(GetAction getAction, By parent, By child, String attribute) {
 		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -104,7 +104,7 @@ public class GetCommands extends Commands {
 		}
 		return retrievedValue;
 	}
-	
+
 	private String doCommand(GetAction getAction, WebElement parent, By child, String attribute) {
 		this.log.debug("Performing " + String.valueOf(getAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -125,119 +125,126 @@ public class GetCommands extends Commands {
 		}
 		return retrievedValue;
 	}
-	
+
 	/**
 	 * Gets the text of the Web Element of the specified Locator.
-	 * 
-	 * @param locator	Locator of Web Element to get text from.
+	 *
+	 * @param locator Locator of Web Element to get text from.
 	 * @return Retrieved text from Web Element
 	 */
-	
+
 	public final String getText(By locator) {
 		String text = this.doCommand(GetAction.GET_TEXT, locator, null);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the text of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to get text from.
+	 * Gets the text of the Web Element of the specified Child Locator within the
+	 * context of the Web Element of the specified Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to get text from.
 	 * @return Retrieved text from Child Web Element
 	 */
-	
+
 	public final String getText(By parent, By child) {
 		String text = this.doCommand(GetAction.GET_TEXT, parent, child, null);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the text of the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to get text from.
+	 * Gets the text of the Web Element of the specified Child Locator within the
+	 * context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to get text from.
 	 * @return Retrieved text from Child Web Element
 	 */
-	
+
 	public final String getText(WebElement parent, By child) {
 		String text = this.doCommand(GetAction.GET_TEXT, parent, child, null);
 		return text;
 	}
-	
+
 	/**
 	 * Gets the attribute value of the Web Element of the specified Locator.
-	 * 
-	 * @param locator		Locator of Web Element to get attribute value from.
-	 * @param attribute		Web Element Attribute to get value of
+	 *
+	 * @param locator   Locator of Web Element to get attribute value from.
+	 * @param attribute Web Element Attribute to get value of
 	 * @return Retrieved attribute from Web Element
 	 */
-	
+
 	public final String getAttributeValue(By locator, String attribute) {
 		String text = this.doCommand(GetAction.GET_ATTRIBUTE, locator, attribute);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the attribute value of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
-	 * 
-	 * @param parent		Locator of Parent Web Element
-	 * @param child			Locator of Child Web Element to get attribute value from.
-	 * @param attribute		Web Element Attribute to get value of.
+	 * Gets the attribute value of the Web Element of the specified Child Locator
+	 * within the context of the Web Element of the specified Parent Locator.
+	 *
+	 * @param parent    Locator of Parent Web Element
+	 * @param child     Locator of Child Web Element to get attribute value from.
+	 * @param attribute Web Element Attribute to get value of.
 	 * @return Retrieved attribute from Child Web Element
 	 */
-	
+
 	public final String getAttributeValue(By parent, By child, String attribute) {
 		String text = this.doCommand(GetAction.GET_ATTRIBUTE, parent, child, attribute);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the attribute value of the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	 	Parent Web Element
-	 * @param child			Locator of Child Web Element to get attribute value from.
-	 * @param attribute		Web Element Attribute to get value of
+	 * Gets the attribute value of the Web Element of the specified Child Locator
+	 * within the context of the Parent Web Element.
+	 *
+	 * @param parent    Parent Web Element
+	 * @param child     Locator of Child Web Element to get attribute value from.
+	 * @param attribute Web Element Attribute to get value of
 	 * @return Retrieved attribute from Child Web Element
 	 */
-	
+
 	public final String getAttributeValue(WebElement parent, By child, String attribute) {
 		String text = this.doCommand(GetAction.GET_ATTRIBUTE, parent, child, attribute);
 		return text;
 	}
-	
+
 	/**
 	 * Gets the drop-down list value of the Web Element of the specified Locator.
-	 * 
-	 * @param locator	Locator of Web Element to get drop-down list value from.
+	 *
+	 * @param locator Locator of Web Element to get drop-down list value from.
 	 * @return Retrieved drop-down list value from Web Element
 	 */
-	
+
 	public final String getDropDownListValue(By locator) {
 		String text = this.doCommand(GetAction.GET_DROPDOWN, locator, null);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the drop-down list value of the Web Element of the specified Child Locator within the context of the Web Element of the specified Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Web Element to get drop-down list value from.
+	 * Gets the drop-down list value of the Web Element of the specified Child
+	 * Locator within the context of the Web Element of the specified Parent
+	 * Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Web Element to get drop-down list value from.
 	 * @return Retrieved drop-down list value from Child Web Element
 	 */
-	
+
 	public final String getDropDownListValue(By parent, By child) {
 		String text = this.doCommand(GetAction.GET_DROPDOWN, parent, child, null);
 		return text;
 	}
-	
+
 	/**
-	 * Gets the drop-down list value of the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Web Element to get drop-down list value from.
+	 * Gets the drop-down list value of the Web Element of the specified Child
+	 * Locator within the context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Web Element to get drop-down list value from.
 	 * @return Retrieved drop-down list value from Child Web Element
 	 */
-	
+
 	public final String getDropDownListValue(WebElement parent, By child) {
 		String text = this.doCommand(GetAction.GET_DROPDOWN, parent, child, null);
 		return text;

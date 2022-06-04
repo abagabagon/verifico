@@ -36,30 +36,30 @@ public class WaitCommands {
 			this.setExplicitWait(explicitWaitDuration);
 		}
 	}
-	
+
 	/**
 	 * Sets Implicit Wait
-	 * 
+	 *
 	 * @param implicitWaitDuration Implicit Wait Duration
 	 */
-	
+
 	public final void setImplicitWait(int implicitWaitDuration) {
 		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitDuration));
 	}
-	
+
 	/**
 	 * Sets Explicit Wait
-	 * 
+	 *
 	 * @param explicitWaitDuration Explicit Wait Duration
 	 */
-	
+
 	public final void setExplicitWait(int explicitWaitDuration) {
 		this.wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitDuration));
 	}
-	
+
 	/**
 	 * Waits for Page to be fully loaded.
-	 * 
+	 *
 	 */
 
 	final void waitForPage() {
@@ -69,12 +69,12 @@ public class WaitCommands {
 		this.waitForJQuery();
 		this.waitForAngular();
 	}
-	
+
 	/**
 	 * Waits for JS to be fully loaded.
-	 * 
-	 * @return <code>true</code> if JS is fully loaded.
-	 *         <code>false</code> if JS is not fully loaded.
+	 *
+	 * @return <code>true</code> if JS is fully loaded. <code>false</code> if JS is
+	 *         not fully loaded.
 	 */
 
 	final boolean waitForJS() {
@@ -84,7 +84,7 @@ public class WaitCommands {
 			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
 			try {
 				Thread.sleep(20);
-				String script = "return document.readyState";  
+				String script = "return document.readyState";
 				ExpectedCondition<Boolean> jsLoad = drivera -> javascriptExecutor.executeScript(script).toString().equals("complete");
 				boolean jsReady = javascriptExecutor.executeScript(script).toString().equals("complete");
 				if (!jsReady) {
@@ -106,12 +106,12 @@ public class WaitCommands {
 		}
 		return isLoaded;
 	}
-	
+
 	/**
 	 * Waits for Ajax to be fully loaded.
-	 * 
-	 * @return <code>true</code> if Ajax is fully loaded.
-	 *         <code>false</code> if Ajax is not fully loaded.
+	 *
+	 * @return <code>true</code> if Ajax is fully loaded. <code>false</code> if Ajax
+	 *         is not fully loaded.
 	 */
 
 	final void waitForAjax() {
@@ -120,7 +120,7 @@ public class WaitCommands {
 			JavascriptExecutor javascriptExecutor = (JavascriptExecutor) this.driver;
 			String script = "var callback = arguments[arguments.length - 1];" + "var xhr = new XMLHttpRequest();"
 					+ "xhr.open('GET', '/Ajax_call', true);" + "xhr.onreadystatechange = function() {"
-					+ "  if (xhr.readyState == 4) {" + "    callback(xhr.responseText);" + "  }" + "};" + "xhr.send();";  
+					+ "  if (xhr.readyState == 4) {" + "    callback(xhr.responseText);" + "  }" + "};" + "xhr.send();";
 			javascriptExecutor.executeScript(script);
 			this.log.trace("Ajax successfully loaded!");
 		} catch (TimeoutException e) {
@@ -131,12 +131,12 @@ public class WaitCommands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	/**
 	 * Waits for JQuery to be fully loaded.
-	 * 
-	 * @return <code>true</code> if JQuery is fully loaded.
-	 *         <code>false</code> if JQuery is not fully loaded.
+	 *
+	 * @return <code>true</code> if JQuery is fully loaded. <code>false</code> if
+	 *         JQuery is not fully loaded.
 	 */
 
 	final void waitForJQuery() {
@@ -147,7 +147,7 @@ public class WaitCommands {
 			if(!jQueryUndefined) {
 				try {
 					Thread.sleep(20);
-					String script = "return jQuery.active"; 
+					String script = "return jQuery.active";
 					ExpectedCondition<Boolean> jQueryLoad = drivera -> ((Long) (javascriptExecutor.executeScript(script)) == 0);
 					boolean jqueryReady = (Boolean) javascriptExecutor.executeScript("return jQuery.active==0");
 					if (!jqueryReady) {
@@ -169,12 +169,12 @@ public class WaitCommands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	/**
 	 * Waits for Angular to be fully loaded.
-	 * 
-	 * @return <code>true</code> if Angular is fully loaded.
-	 *         <code>false</code> if Angular is not fully loaded.
+	 *
+	 * @return <code>true</code> if Angular is fully loaded. <code>false</code> if
+	 *         Angular is not fully loaded.
 	 */
 
 	final boolean waitForAngular() {
@@ -186,7 +186,7 @@ public class WaitCommands {
 			if(!angularUnDefined) {
 				try {
 					Thread.sleep(20);
-					String script = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";  
+					String script = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
 					ExpectedCondition<Boolean> angularLoad = drivera -> Boolean.valueOf(((JavascriptExecutor) this.driver).executeScript(script).toString());
 					boolean angularReady = Boolean.valueOf(javascriptExecutor.executeScript(script).toString());
 					if (!angularReady) {
@@ -209,12 +209,12 @@ public class WaitCommands {
 		}
 		return isLoaded;
 	}
-	
+
 	/**
 	 * Waits for Angular 5 to be fully loaded.
-	 * 
-	 * @return <code>true</code> if Angular 5 is fully loaded.
-	 *         <code>false</code> if Angular 5 is not fully loaded.
+	 *
+	 * @return <code>true</code> if Angular 5 is fully loaded. <code>false</code> if
+	 *         Angular 5 is not fully loaded.
 	 */
 
 	final void waitForAngular5() {
@@ -227,7 +227,7 @@ public class WaitCommands {
 				if(!angularPageLoaded) {
 					try {
 						Thread.sleep(20);
-						String script = "return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1";  
+						String script = "return window.getAllAngularTestabilities().findIndex(x=>!x.isStable()) === -1";
 						ExpectedCondition<Boolean> angularLoad = drivera -> Boolean.valueOf(((JavascriptExecutor) this.driver).executeScript(script).toString());
 						boolean angularReady = Boolean.valueOf(javascriptExecutor.executeScript(script).toString());
 						if (!angularReady) {
@@ -253,7 +253,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Page URL Value to be the same as expected value.
-	 * 
+	 *
 	 * @param expectedUrl Expected Page URL to compare into
 	 * @return <code>true</code> if URL is same as expected value.
 	 *         <code>false</code> if URL is different from expected value.
@@ -278,7 +278,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Page URL Value to contain the expected value.
-	 * 
+	 *
 	 * @param expectedUrl Expected Page URL to compare into
 	 * @return <code>true</code> if URL contains the expected value.
 	 *         <code>false</code> if URL does not contain the expected value.
@@ -303,7 +303,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Page Title Value to be the same as expected value.
-	 * 
+	 *
 	 * @param expectedTitle Expected Page Title to compare into
 	 * @return <code>true</code> if Page Title is same as expected value.
 	 *         <code>false</code> if Page Title is different from expected value.
@@ -328,7 +328,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Page Title Value to contain the expected value.
-	 * 
+	 *
 	 * @param expectedTitle Expected Page Title to compare into
 	 * @return <code>true</code> if Page Title contains the expected value.
 	 *         <code>false</code> if Page Title does not contain the expected value.
@@ -353,7 +353,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be present at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
 	 * @return Created Web Element
 	 */
@@ -376,10 +376,10 @@ public class WaitCommands {
 		}
 		return element;
 	}
-	
+
 	/**
 	 * Waits for WebElement to be visible at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
 	 * @return Created Web Element
 	 */
@@ -405,7 +405,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be visible at the Web Page.
-	 * 
+	 *
 	 * @param element Web Element used to locate element to wait for.
 	 * @return Created Web Element
 	 */
@@ -427,13 +427,13 @@ public class WaitCommands {
 		}
 		return element;
 	}
-	
+
 	/**
 	 * Waits for WebElement to be invisible at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
-	 * @return	<code>true</code> if Web Element became invisible.
-	 * 			<code>false</code> if Web Element did not become invisible.
+	 * @return <code>true</code> if Web Element became invisible. <code>false</code>
+	 *         if Web Element did not become invisible.
 	 */
 
 	final boolean waitForElementToBeInvisible(By locator) {
@@ -457,10 +457,10 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be invisible at the Web Page.
-	 * 
+	 *
 	 * @param element Web Element used to locate element to wait for.
-	 * @return	<code>true</code> if Web Element became invisible.
-	 * 			<code>false</code> if Web Element did not become invisible.
+	 * @return <code>true</code> if Web Element became invisible. <code>false</code>
+	 *         if Web Element did not become invisible.
 	 */
 
 	final boolean waitForElementToBeInvisible(WebElement element) {
@@ -484,7 +484,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be present at the Web Page.
-	 * 
+	 *
 	 * @param parent Object used to locate parent element to wait for.
 	 * @param child  Object used to locate child element to wait for.
 	 * @return Created Web Element
@@ -511,7 +511,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be present at the Web Page.
-	 * 
+	 *
 	 * @param parent Web Element used to locate parent element to wait for.
 	 * @param child  Object used to locate child element to wait for.
 	 * @return Created Web Element
@@ -538,7 +538,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElements to be present at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate elements to wait for.
 	 * @return Created List of Web Elements
 	 */
@@ -561,10 +561,10 @@ public class WaitCommands {
 		}
 		return elements;
 	}
-	
+
 	/**
 	 * Waits for WebElements to be visible at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
 	 * @return Created List of Web Elements
 	 */
@@ -587,10 +587,10 @@ public class WaitCommands {
 		}
 		return elements;
 	}
-	
+
 	/**
 	 * Waits for WebElements to be visible at the Web Page.
-	 * 
+	 *
 	 * @param element WebElement used to locate element to wait for.
 	 * @return Created List of Web Elements
 	 */
@@ -616,7 +616,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElements to be visible at the Web Page.
-	 * 
+	 *
 	 * @param elements Web Element List used to locate element to wait for.
 	 * @return Created List of Web Elements
 	 */
@@ -638,13 +638,13 @@ public class WaitCommands {
 		}
 		return elements;
 	}
-	
+
 	/**
 	 * Waits for List Element to be invisible at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
-	 * @return	<code>true</code> if Web Element became invisible.
-	 * 			<code>false</code> if Web Element did not become invisible.
+	 * @return <code>true</code> if Web Element became invisible. <code>false</code>
+	 *         if Web Element did not become invisible.
 	 */
 
 	final boolean waitForListElementToBeInvisible(By locator) {
@@ -665,13 +665,13 @@ public class WaitCommands {
 		}
 		return isVisible;
 	}
-	
+
 	/**
 	 * Waits for List Element to be invisible at the Web Page.
-	 * 
+	 *
 	 * @param element WebElement used to locate element to wait for.
-	 * @return	<code>true</code> if Web Element became invisible.
-	 * 			<code>false</code> if Web Element did not become invisible.
+	 * @return <code>true</code> if Web Element became invisible. <code>false</code>
+	 *         if Web Element did not become invisible.
 	 */
 
 	final boolean waitForListElementToBeInvisible(WebElement element) {
@@ -695,10 +695,10 @@ public class WaitCommands {
 
 	/**
 	 * Waits for List Element to be invisible at the Web Page.
-	 * 
+	 *
 	 * @param elements Web Element List used to locate element to wait for.
-	 * @return	<code>true</code> if Web Element became invisible.
-	 * 			<code>false</code> if Web Element did not become invisible.
+	 * @return <code>true</code> if Web Element became invisible. <code>false</code>
+	 *         if Web Element did not become invisible.
 	 */
 
 	final boolean waitForListElementToBeInvisible(List<WebElement> elements) {
@@ -722,7 +722,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Web Elements to be present at the Web Page.
-	 * 
+	 *
 	 * @param parent Object used to locate parent element to wait for.
 	 * @param child  Object used to locate child element to wait for.
 	 * @return Created List Web Element
@@ -749,7 +749,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Web Elements to be visible at the Web Page.
-	 * 
+	 *
 	 * @param parent Object used to locate parent element to wait for.
 	 * @param child  Object used to locate child element to wait for.
 	 * @return Created List Web Element
@@ -776,7 +776,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Web Elements to be visible at the Web Page.
-	 * 
+	 *
 	 * @param parent Web Element used to locate parent element to wait for.
 	 * @param child  Object used to locate child element to wait for.
 	 * @return Created List Web Element
@@ -803,7 +803,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be clickable at the Web Page.
-	 * 
+	 *
 	 * @param locator Object used to locate element to wait for.
 	 * @return Created Web Element
 	 */
@@ -829,7 +829,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for WebElement to be clickable at the Web Page.
-	 * 
+	 *
 	 * @param element Web Element used to locate element to wait for.
 	 * @return Created Web Element
 	 */
@@ -851,7 +851,7 @@ public class WaitCommands {
 		}
 		return element;
 	}
-	
+
 	final List<WebElement> waitForListElement(By locator) {
 		this.log.trace("Waiting for List Element.");
 		this.waitForPage();
@@ -893,10 +893,10 @@ public class WaitCommands {
 		}
 		return element;
 	}
-	
+
 	/**
 	 * Waits for Text Box/Area Attribute, Value to be the same as expected value.
-	 * 
+	 *
 	 * @param locator       By Object used to locate element to wait for.
 	 * @param attribute     Attribute of the element to wait for.
 	 * @param expectedValue Expected Text Box/Area Value to compare into
@@ -923,7 +923,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Box/Area Attribute Value to be the same as expected value.
-	 * 
+	 *
 	 * @param element       Web Element used to locate element to wait for.
 	 * @param attribute     Attribute of the element to wait for.
 	 * @param expectedValue Expected Text Box/Area Value to compare into
@@ -950,7 +950,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Box/Area Attribute Value to contain the expected value.
-	 * 
+	 *
 	 * @param locator       By Object used to locate element to wait for.
 	 * @param attribute     Attribute of the element to wait for.
 	 * @param expectedValue Expected Text Box/Area Value to compare into
@@ -977,7 +977,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Box/Area Attribute Value to contain the expected value.
-	 * 
+	 *
 	 * @param element       Web Element used to locate element to wait for.
 	 * @param attribute     Attribute of the element to wait for.
 	 * @param expectedValue Expected Text Box/Area Value to compare into
@@ -1004,7 +1004,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Value to be the same as expected value.
-	 * 
+	 *
 	 * @param locator       By Object used to locate element to wait for.
 	 * @param expectedValue Expected Text Value to compare into
 	 * @return <code>true</code> if Text Value is same as expected value.
@@ -1031,7 +1031,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Value to be the same as expected value.
-	 * 
+	 *
 	 * @param element       Web Element used to locate element to wait for.
 	 * @param expectedValue Expected Text Value to compare into
 	 * @return <code>true</code> if Text Value is same as expected value.
@@ -1057,7 +1057,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Value to contain the expected value.
-	 * 
+	 *
 	 * @param locator       By Object used to locate element to wait for.
 	 * @param expectedValue Expected Text Value to compare into
 	 * @return <code>true</code> if Text Value contains the expected value.
@@ -1083,7 +1083,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Text Value to contain the expected value.
-	 * 
+	 *
 	 * @param element       Web Element used to locate element to wait for.
 	 * @param expectedValue Expected Text Value to compare into
 	 * @return <code>true</code> if Text Value contains the expected value.
@@ -1109,7 +1109,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for an element's selection state to be the expected selection state.
-	 * 
+	 *
 	 * @param locator        Target Object for checking of selection state.
 	 * @param selectionState expected selection state.
 	 * @return <code>true</code> if Selection State is same as expected value.
@@ -1138,7 +1138,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for an element's selection state to be the expected selection state.
-	 * 
+	 *
 	 * @param element        Target Web Element for checking of selection state.
 	 * @param selectionState expected selection state.
 	 * @return <code>true</code> if Selection State is same as expected value.
@@ -1167,8 +1167,8 @@ public class WaitCommands {
 
 	/**
 	 * Waits for Element Count to be the same as expected count.
-	 * 
-	 * @param locator Object to count
+	 *
+	 * @param locator       Object to count
 	 * @param expectedCount Expected Page URL to compare into
 	 * @return <code>true</code> if element count is same as expected count.
 	 *         <code>false</code> if element count is different from expected count.
@@ -1203,7 +1203,7 @@ public class WaitCommands {
 
 	/**
 	 * Waits for a Javascript Alert to be present on the WebPage.
-	 * 
+	 *
 	 * @return Alert Object
 	 */
 

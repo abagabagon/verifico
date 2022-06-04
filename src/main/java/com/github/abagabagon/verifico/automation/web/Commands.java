@@ -11,13 +11,13 @@ public class Commands {
 	protected WebDriver driver;
 	protected WebElementFactory elementFactory;
 	protected WaitCommands wait;
-	
+
 	public Commands(WebDriver driver, WaitCommands wait) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.wait = wait;
 	}
-	
+
 	protected void wait(int duration) {
 		try {
 			Thread.sleep(duration * 1000);
@@ -30,5 +30,5 @@ public class Commands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 }

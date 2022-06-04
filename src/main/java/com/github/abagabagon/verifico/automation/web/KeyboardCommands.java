@@ -17,20 +17,20 @@ import com.github.abagabagon.verifico.utilities.OperatingSystem;
 public class KeyboardCommands extends Commands {
 
 	private Actions action;
-	
+
 	private enum KeyboardAction {
 		CLEAR, PRESS, TYPE
 	}
-	
-	public KeyboardCommands(WebDriver driver, Actions action, WaitCommands wait) {
+
+	public KeyboardCommands(WebDriver driver, WaitCommands wait) {
 		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
-		this.action = action;
+		this.action = new Actions(this.driver);
 		this.wait = wait;
 		this.elementFactory = new WebElementFactory(this.wait);
 	}
-	
+
 	private boolean execute(KeyboardAction keyboardAction, WebElement element, String inputText, Keys keyButton) {
 		boolean actionPerformed = false;
 		try {
@@ -82,7 +82,7 @@ public class KeyboardCommands extends Commands {
 		}
 		return actionPerformed;
 	}
-	
+
 	private void doCommand(KeyboardAction keyboardAction, By locator, String inputText, Keys keyButton) {
 		this.log.debug("Performing " + String.valueOf(keyboardAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
@@ -102,7 +102,7 @@ public class KeyboardCommands extends Commands {
 			}
 		}
 	}
-	
+
 	private void doCommand(KeyboardAction keyboardAction, By parent, By child, String inputText, Keys keyButton) {
 		this.log.debug("Performing " + String.valueOf(keyboardAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -124,7 +124,7 @@ public class KeyboardCommands extends Commands {
 			}
 		}
 	}
-	
+
 	private void doCommand(KeyboardAction keyboardAction, WebElement parent, By child, String inputText, Keys keyButton) {
 		this.log.debug("Performing " + String.valueOf(keyboardAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -144,121 +144,131 @@ public class KeyboardCommands extends Commands {
 			}
 		}
 	}
-	
+
 	/**
-	 * Clears value of the Web Element of the specified Locator.
-	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
+	 * Clears value of the Web Element of the specified Locator. Applicable for
+	 * INPUT and TEXTAREA Web Elements.
+	 *
 	 * @param locator Locator of Web Element to clear the value from.
 	 */
-	
+
 	public final void clear(By locator) {
 		this.doCommand(KeyboardAction.CLEAR, locator, null, null);
 	}
-	
+
 	/**
-	 * Clears value of the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to clear the value from.
+	 * Clears value of the Web Element of the specified Child Locator within the
+	 * context of the Web Element of the Parent Locator. Applicable for INPUT and
+	 * TEXTAREA Web Elements.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to clear the value from.
 	 */
-	
+
 	public final void clear(By parent, By child) {
 		this.doCommand(KeyboardAction.CLEAR, parent, child, null, null);
 	}
-	
+
 	/**
-	 * Clears value of the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to clear the value from.
+	 * Clears value of the Web Element of the specified Child Locator within the
+	 * context of the Parent Web Element. Applicable for INPUT and TEXTAREA Web
+	 * Elements.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to clear the value from.
 	 */
-	
+
 	public final void clear(WebElement parent, By child) {
 		this.doCommand(KeyboardAction.CLEAR, parent, child, null, null);
 	}
-	
+
 	/**
 	 * Simulates pressing of characters.
-	 * 
+	 *
 	 * @param keyButton Key Button to press.
 	 */
-	
-	public final void press(Keys keyButton) { 
+
+	public final void press(Keys keyButton) {
 		this.action.sendKeys(keyButton).perform();;
 	}
-	
+
 	/**
-	 * Simulates pressing of characters into the Web Element of the specified Locator.
-	 * 
-	 * @param locator 	Locator of Web Element to simulate pressing of characters into.
-	 * @param keyButton	Key Button to press
+	 * Simulates pressing of characters into the Web Element of the specified
+	 * Locator.
+	 *
+	 * @param locator   Locator of Web Element to simulate pressing of characters
+	 *                  into.
+	 * @param keyButton Key Button to press
 	 */
-	
+
 	public final void press(By locator, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, locator, null, keyButton);
 	}
-	
+
 	/**
-	 * Simulates pressing of characters into the Web Element of the specified Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child 	Locator of Child Web Element to simulate pressing of characters into.
-	 * @param keyButton	Key Button to press
+	 * Simulates pressing of characters into the Web Element of the specified
+	 * Locator within the context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent    Locator of Parent Web Element
+	 * @param child     Locator of Child Web Element to simulate pressing of
+	 *                  characters into.
+	 * @param keyButton Key Button to press
 	 */
-	
+
 	public final void press(By parent, By child, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, parent, child, null, keyButton);
 	}
-	
+
 	/**
-	 * Simulates pressing of characters into the Web Element of the specified Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child 	Locator of Child Web Element to simulate pressing of characters into.
-	 * @param keyButton	Key Button to press
+	 * Simulates pressing of characters into the Web Element of the specified
+	 * Locator within the context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent    Parent Web Element
+	 * @param child     Locator of Child Web Element to simulate pressing of
+	 *                  characters into.
+	 * @param keyButton Key Button to press
 	 */
-	
+
 	public final void press(WebElement parent, By child, Keys keyButton) {
 		this.doCommand(KeyboardAction.PRESS, parent, child, null, keyButton);
 	}
-	
+
 	/**
 	 * Types the specified input text to the Web Element of the specified Locator.
 	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param locator 	Locator of Web Element to type the input text into.
+	 *
+	 * @param locator   Locator of Web Element to type the input text into.
 	 * @param inputText Text value to input.
 	 */
-	
+
 	public final void type(By locator, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, locator, inputText, null);
 	}
-	
+
 	/**
-	 * Types the specified input text to the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
+	 * Types the specified input text to the Web Element of the specified Child
+	 * Locator within the context of the Web Element of the Parent Locator.
 	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child 	Locator of Child Web Element to type the input text into.
+	 *
+	 * @param parent    Locator of Parent Web Element
+	 * @param child     Locator of Child Web Element to type the input text into.
 	 * @param inputText Text value to input.
 	 */
-	
+
 	public final void type(By parent, By child, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, parent, child, inputText, null);
 	}
-	
+
 	/**
-	 * Types the specified input text to the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * Applicable for INPUT and TEXTAREA Web Elements.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child 	Locator of Child Web Element to type the input text into.
+	 * Types the specified input text to the Web Element of the specified Child
+	 * Locator within the context of the Parent Web Element. Applicable for INPUT
+	 * and TEXTAREA Web Elements.
+	 *
+	 * @param parent    Parent Web Element
+	 * @param child     Locator of Child Web Element to type the input text into.
 	 * @param inputText Text value to input.
 	 */
-	
+
 	public final void type(WebElement parent, By child, String inputText) {
 		this.doCommand(KeyboardAction.TYPE, parent, child, inputText, null);
 	}

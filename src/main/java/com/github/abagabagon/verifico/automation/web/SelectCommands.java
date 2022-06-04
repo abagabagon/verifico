@@ -10,11 +10,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.UnexpectedTagNameException;
 
 public class SelectCommands extends Commands {
-	
+
 	private enum SelectAction {
 		DESELECT, SELECT
 	}
-	
+
 	public SelectCommands(WebDriver driver, WaitCommands wait) {
 		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
@@ -22,7 +22,7 @@ public class SelectCommands extends Commands {
 		this.wait = wait;
 		this.elementFactory = new WebElementFactory(this.wait);
 	}
-	
+
 	private boolean execute(SelectAction selectAction, WebElement element, String option) {
 		boolean actionPerformed = false;
 		try {
@@ -65,7 +65,7 @@ public class SelectCommands extends Commands {
 		}
 		return actionPerformed;
 	}
-	
+
 	private void doCommand(SelectAction selectAction, By locator, String option) {
 		boolean actionPerformed = false;
 		WebElement element = null;
@@ -105,7 +105,7 @@ public class SelectCommands extends Commands {
 			}
 		}
 	}
-	
+
 	private void doCommand(SelectAction selectAction, WebElement parent, By child, String option) {
 		boolean actionPerformed = false;
 		WebElement childElement = null;
@@ -124,75 +124,79 @@ public class SelectCommands extends Commands {
 			}
 		}
 	}
-	
+
 	/**
 	 * Selects a Drop-down List Web Element Option of the specified Locator.
-	 * 
-	 * @param locator	Locator of Web Element to select option.
-	 * @param option	Option to be selected.
+	 *
+	 * @param locator Locator of Web Element to select option.
+	 * @param option  Option to be selected.
 	 */
-	
+
 	public final void select(By locator, String option) {
 		this.doCommand(SelectAction.SELECT, locator, option);
 	}
-	
+
 	/**
-	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element.
-	 * @param child		Locator of Child Web Element to select option.
-	 * @param option	Option to be selected.
+	 * Selects a Drop-down List Web Element Option of the specified Child Locator
+	 * within the context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element.
+	 * @param child  Locator of Child Web Element to select option.
+	 * @param option Option to be selected.
 	 */
-	
+
 	public final void select(By parent, By child, String option) {
 		this.doCommand(SelectAction.SELECT, parent, child, option);
 	}
-	
+
 	/**
-	 * Selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element.
-	 * @param child		Locator of Child Web Element to select option.
-	 * @param option	Option to be selected.
+	 * Selects a Drop-down List Web Element Option of the specified Child Locator
+	 * within the context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element.
+	 * @param child  Locator of Child Web Element to select option.
+	 * @param option Option to be selected.
 	 */
-	
+
 	public final void select(WebElement parent, By child, String option) {
 		this.doCommand(SelectAction.SELECT, parent, child, option);
 	}
-	
+
 	/**
 	 * De-selects a Drop-down List Web Element Option of the specified Locator.
-	 * 
-	 * @param locator	Locator of Web Element to de-select option.
-	 * @param option	Option to be selected.
+	 *
+	 * @param locator Locator of Web Element to de-select option.
+	 * @param option  Option to be selected.
 	 */
-	
+
 	public final void deselect(By locator, String option) {
 		this.doCommand(SelectAction.DESELECT, locator, option);
 	}
-	
+
 	/**
-	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element.
-	 * @param child		Locator of Child Web Element to de-select option.
-	 * @param option	Option to be selected.
+	 * De-selects a Drop-down List Web Element Option of the specified Child Locator
+	 * within the context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element.
+	 * @param child  Locator of Child Web Element to de-select option.
+	 * @param option Option to be selected.
 	 */
-	
+
 	public final void deselect(By parent, By child, String option) {
 		this.doCommand(SelectAction.DESELECT, parent, child, option);
 	}
-	
+
 	/**
-	 * De-selects a Drop-down List Web Element Option of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element.
-	 * @param child		Locator of Child Web Element to de-select option.
-	 * @param option	Option to be selected.
+	 * De-selects a Drop-down List Web Element Option of the specified Child Locator
+	 * within the context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element.
+	 * @param child  Locator of Child Web Element to de-select option.
+	 * @param option Option to be selected.
 	 */
-	
+
 	public final void deselect(WebElement parent, By child, String option) {
 		this.doCommand(SelectAction.DESELECT, parent, child, option);
 	}
-	
+
 }

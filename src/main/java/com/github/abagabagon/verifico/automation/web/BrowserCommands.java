@@ -17,26 +17,26 @@ import org.openqa.selenium.WebElement;
 public class BrowserCommands extends Commands {
 
 	private JavascriptExecutor javascriptExecutor;
-	
+
 	private enum BrowserAction {
 		OPEN_TAB, GO_TO, MAXIMIZE, DELETE_COOKIE, DELETE_ALL_COOKIES, BACK, FORWARD, REFRESH, CLOSE_TAB, CLOSE_BROWSER, SCROLL
 	}
-	
+
 	private enum SwitchAction {
 		BY_TITLE, BY_URL, TO_ORIGINAL
 	}
-	
-	public BrowserCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, WaitCommands wait) {
+
+	public BrowserCommands(WebDriver driver, WaitCommands wait) {
 		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
-		this.javascriptExecutor = javascriptExecutor;
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
 		this.wait = wait;
 	}
 
 	private void execute(BrowserAction browserAction, String input) {
 		this.log.debug("Performing \"" + String.valueOf(browserAction).replace('_', ' ') + "\" Browser Action.");
-		
+
 		try {
 			switch(browserAction) {
 			case OPEN_TAB:
@@ -91,7 +91,7 @@ public class BrowserCommands extends Commands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	private boolean execute(SwitchAction switchAction, String input) {
 		this.log.debug("Performing \"SWITCH TAB " + String.valueOf(switchAction).replace('_', ' ') + "\": \"" + input + "\".");
 		boolean isExisting = false;
@@ -141,51 +141,51 @@ public class BrowserCommands extends Commands {
 		}
 		return isExisting;
 	}
-	
+
 	/**
 	 * Closes Web Browser.
 	 */
-	
+
 	public final void closeBrowser() {
 		this.execute(BrowserAction.CLOSE_BROWSER, null);
 	}
-	
+
 	/**
 	 * Opens Tab.
-	 * 
+	 *
 	 * @param url Url of the Web Page desired to navigate to.
 	 */
-	
+
 	public final void openTab(String url) {
 		this.execute(BrowserAction.OPEN_TAB, url);
 	}
-	
+
 	/**
 	 * Closes Tab of a Web Browser.
 	 */
-	
+
 	public final void closeTab() {
 		this.execute(BrowserAction.CLOSE_TAB, null);
 	}
-	
+
 	/**
 	 * Navigates to the Url specified.
-	 * 
+	 *
 	 * @param url Url of the Web Page desired to navigate to.
 	 */
 
 	public final void goTo(String url) {
 		this.execute(BrowserAction.GO_TO, url);
 	}
-	
+
 	/**
 	 * Navigates one item back from the browser's history.
 	 */
-	
+
 	public final void back() {
 		this.execute(BrowserAction.BACK, null);
 	}
-	
+
 	/**
 	 * Navigates one item forward from the browser's history.
 	 */
@@ -193,7 +193,7 @@ public class BrowserCommands extends Commands {
 	public final void forward() {
 		this.execute(BrowserAction.FORWARD, null);
 	}
-	
+
 	/**
 	 * Refreshes current page.
 	 */
@@ -201,7 +201,7 @@ public class BrowserCommands extends Commands {
 	public final void refresh() {
 		this.execute(BrowserAction.REFRESH, null);
 	}
-	
+
 	/**
 	 * Maximizes Browser Window.
 	 */
@@ -209,17 +209,17 @@ public class BrowserCommands extends Commands {
 	public final void maximize() {
 		this.execute(BrowserAction.MAXIMIZE, null);
 	}
-	
+
 	/**
 	 * Deletes cookie with the specified name.
-	 * 
+	 *
 	 * @param name Name of the Cookie to be deleted.
 	 */
-	
+
 	public final void deleteCookie(String name) {
 		this.execute(BrowserAction.DELETE_COOKIE, name);
 	}
-	
+
 	/**
 	 * Deletes all cookies.
 	 */
@@ -227,33 +227,33 @@ public class BrowserCommands extends Commands {
 	public final void deleteAllCookies() {
 		this.execute(BrowserAction.DELETE_ALL_COOKIES, null);
 	}
-	
+
 	/**
 	 * Switches to a Tab based on Page Title.
-	 * 
+	 *
 	 * @param 	title Expected Page Title to switch into.
 	 * @return	<code>true</code> if switch is successful.
 	 * 			<code>false</code> if switch is unsuccessful.
 	 */
-	
+
 	public boolean switchTabByTitle(String title) {
 		boolean isExisting = this.execute(SwitchAction.BY_TITLE, title);
 		return isExisting;
 	}
-	
+
 	/**
 	 * Switches to a Tab based on Page URL.
-	 * 
+	 *
 	 * @param 	url Expected Page URL to switch into.
 	 * @return	<code>true</code> if switch is successful.
 	 * 			<code>false</code> if switch is unsuccessful.
 	 */
-	
+
 	public boolean switchTabByURL(String url) {
 		boolean isExisting = this.execute(SwitchAction.BY_URL, url);
 		return isExisting;
 	}
-	
+
 	/**
 	 * Switches back to Original Tab
 	 */
@@ -278,14 +278,14 @@ public class BrowserCommands extends Commands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	/**
 	 * Scrolls Page
-	 * 
+	 *
 	 * @param pixelHorizontal	Horizontal Pixel Value to scroll to
 	 * @param pixelVertical 	Vertical Pixel Value to scroll to
 	 */
-	
+
 	public final void scroll(String pixelHorizontal, String pixelVertical) {
 		this.log.debug("Performing \"" + String.valueOf(BrowserAction.SCROLL).replace('_', ' ') + "\" Browser Action to coordinates \"" + pixelHorizontal + ", " + pixelVertical + "\".");
 		String script = "window.scrollBy(" + pixelHorizontal + ", " + pixelVertical + ")";
@@ -299,12 +299,12 @@ public class BrowserCommands extends Commands {
 			this.log.debug(ExceptionUtils.getStackTrace(e));
 		}
 	}
-	
+
 	/**
-	 * Counts instance of the Web Element of the specified Locator. 
-	 * 
+	 * Counts instance of the Web Element of the specified Locator.
+	 *
 	 * @param locator	Locator of Web Element to count.
-	 * @return	Instance Count of the the Web Element. 
+	 * @return	Instance Count of the the Web Element.
 	 */
 
 	public final int count(By locator) {
@@ -315,5 +315,5 @@ public class BrowserCommands extends Commands {
 		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		return size;
 	}
-	
+
 }

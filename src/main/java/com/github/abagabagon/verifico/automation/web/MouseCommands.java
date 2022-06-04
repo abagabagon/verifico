@@ -16,20 +16,21 @@ public class MouseCommands extends Commands {
 
 	private JavascriptExecutor javascriptExecutor;
 	private Actions action;
-	
+
 	private enum MouseAction {
 		CLICK, CLICKJS, CLICK_AND_HOLD, DOUBLE_CLICK, DRAG_AND_DROP, POINT
 	}
-	
-	public MouseCommands(WebDriver driver, JavascriptExecutor javascriptExecutor, Actions action, WaitCommands wait) {
+
+	public MouseCommands(WebDriver driver, WaitCommands wait) {
 		super(driver, wait);
 		this.log = LogManager.getLogger(this.getClass());
-		this.javascriptExecutor = javascriptExecutor;
-		this.action = action;
+		this.driver = driver;
+		this.javascriptExecutor = (JavascriptExecutor) this.driver;
+		this.action = new Actions(this.driver);
 		this.wait = wait;
 		this.elementFactory = new WebElementFactory(this.wait);
 	}
-	
+
 	private boolean execute(MouseAction mouseAction, WebElement element) {
 		boolean actionPerformed = false;
 		try {
@@ -82,7 +83,7 @@ public class MouseCommands extends Commands {
 		}
 		return actionPerformed;
 	}
-	
+
 	private void doCommand(MouseAction mouseAction, By locator) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Web Element: \"" + locator.toString() + "\".");
 		boolean actionPerformed = false;
@@ -102,7 +103,7 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
+
 	private void doCommand(MouseAction mouseAction, By parent, By child) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -124,7 +125,7 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
+
 	private void doCommand(MouseAction mouseAction, WebElement parent, By child) {
 		this.log.debug("Performing " + String.valueOf(mouseAction).replace('_', ' ') + " to the Child Web Element: \"" + child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
@@ -144,174 +145,186 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
+
 	/**
 	 * Clicks the Web Element of the specified Locator.
-	 * 
+	 *
 	 * @param locator Locator of Web Element to click.
 	 */
-	
+
 	public final void click(By locator) {
 		this.doCommand(MouseAction.CLICK, locator);
 	}
-	
+
 	/**
-	 * Clicks the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to click.
+	 * Clicks the Web Element of the specified Child Locator within the context of
+	 * the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to click.
 	 */
-	
+
 	public final void click(By parent, By child) {
 		this.doCommand(MouseAction.CLICK, parent, child);
 	}
-	
+
 	/**
-	 * Clicks the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to click.
+	 * Clicks the Web Element of the specified Child Locator within the context of
+	 * the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to click.
 	 */
-	
+
 	public final void click(WebElement parent, By child) {
 		this.doCommand(MouseAction.CLICK, parent, child);
 	}
-	
+
 	/**
 	 * Clicks the Web Element of the specified Locator using Javascript.
-	 * 
+	 *
 	 * @param locator Locator of Web Element to click.
 	 */
-	
+
 	public final void clickJs(By locator) {
 		this.doCommand(MouseAction.CLICKJS, locator);
 	}
-	
+
 	/**
-	 * Clicks the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator using Javascript.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to click.
+	 * Clicks the Web Element of the specified Child Locator within the context of
+	 * the Web Element of the Parent Locator using Javascript.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to click.
 	 */
-	
+
 	public final void clickJs(By parent, By child) {
 		this.doCommand(MouseAction.CLICKJS, parent, child);
 	}
-	
+
 	/**
-	 * Clicks the Web Element of the specified Child Locator within the context of the Parent Web Element using Javascipt.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to click.
+	 * Clicks the Web Element of the specified Child Locator within the context of
+	 * the Parent Web Element using Javascipt.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to click.
 	 */
-	
+
 	public final void clickJs(WebElement parent, By child) {
 		this.doCommand(MouseAction.CLICKJS, parent, child);
 	}
-	
+
 	/**
 	 * Clicks and holds the Web Element of the specified Locator.
-	 * 
+	 *
 	 * @param locator Locator of Web Element to click and hold.
 	 */
-	
+
 	public final void clickAndHold(By locator) {
 		this.doCommand(MouseAction.CLICK_AND_HOLD, locator);
 	}
-	
+
 	/**
-	 * Clicks and holds the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to click and hold.
+	 * Clicks and holds the Web Element of the specified Child Locator within the
+	 * context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to click and hold.
 	 */
-	
+
 	public final void clickAndHold(By parent, By child) {
 		this.doCommand(MouseAction.CLICK_AND_HOLD, parent, child);
 	}
-	
+
 	/**
-	 * Clicks and holds the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to click and hold.
+	 * Clicks and holds the Web Element of the specified Child Locator within the
+	 * context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to click and hold.
 	 */
-	
+
 	public final void clickAndHold(WebElement parent, By child) {
 		this.doCommand(MouseAction.CLICK_AND_HOLD, parent, child);
 	}
-	
+
 	/**
 	 * Double-clicks the Web Element of the specified Locator.
-	 * 
+	 *
 	 * @param locator Locator of Web Element to double-click.
 	 */
-	
+
 	public final void doubleClick(By locator) {
 		this.doCommand(MouseAction.DOUBLE_CLICK, locator);
 	}
-	
+
 	/**
-	 * Double-clicks the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to double-click.
+	 * Double-clicks the Web Element of the specified Child Locator within the
+	 * context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to double-click.
 	 */
-	
+
 	public final void doubleClick(By parent, By child) {
 		this.doCommand(MouseAction.DOUBLE_CLICK, parent, child);
 	}
-	
+
 	/**
-	 * Double-clicks the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to double-click.
+	 * Double-clicks the Web Element of the specified Child Locator within the
+	 * context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to double-click.
 	 */
-	
+
 	public final void doubleClick(WebElement parent, By child) {
 		this.doCommand(MouseAction.DOUBLE_CLICK, parent, child);
 	}
-	
+
 	/**
 	 * Points mouse to the Web Element of the specified Locator.
-	 * 
+	 *
 	 * @param locator Locator of Web Element to point the mouse into.
 	 */
-	
+
 	public final void point(By locator) {
 		this.doCommand(MouseAction.POINT, locator);
 	}
-	
+
 	/**
-	 * Points mouse to the Web Element of the specified Child Locator within the context of the Web Element of the Parent Locator.
-	 * 
-	 * @param parent	Locator of Parent Web Element
-	 * @param child		Locator of Child Web Element to point the mouse into.
+	 * Points mouse to the Web Element of the specified Child Locator within the
+	 * context of the Web Element of the Parent Locator.
+	 *
+	 * @param parent Locator of Parent Web Element
+	 * @param child  Locator of Child Web Element to point the mouse into.
 	 */
-	
+
 	public final void point(By parent, By child) {
 		this.doCommand(MouseAction.POINT, parent, child);
 	}
-	
+
 	/**
-	 * Points mouse to the Web Element of the specified Child Locator within the context of the Parent Web Element.
-	 * 
-	 * @param parent	Parent Web Element
-	 * @param child		Locator of Child Web Element to point the mouse into.
+	 * Points mouse to the Web Element of the specified Child Locator within the
+	 * context of the Parent Web Element.
+	 *
+	 * @param parent Parent Web Element
+	 * @param child  Locator of Child Web Element to point the mouse into.
 	 */
-	
+
 	public final void point(WebElement parent, By child) {
 		this.doCommand(MouseAction.POINT, parent, child);
 	}
-	
+
 	/**
-	 * Drags a Web Element and drops it at target Web Element. Used for Elements that can be dragged.
-	 * 
+	 * Drags a Web Element and drops it at target Web Element. Used for Elements
+	 * that can be dragged.
+	 *
 	 * @param sourceLocator Object used to locate Web Element to be dragged.
-	 * @param targetLocator Object used to locate Web Element where the dragged Web Element will be dropped into.
+	 * @param targetLocator Object used to locate Web Element where the dragged Web
+	 *                      Element will be dropped into.
 	 */
-	
+
 	public final void dragAndDrop(By sourceLocator, By targetLocator) {
 		this.log.debug("Performing " + String.valueOf(MouseAction.DRAG_AND_DROP) + " to the Web Element: \"" + sourceLocator.toString() + "\".");
 		boolean actionPerformed = false;
@@ -348,5 +361,5 @@ public class MouseCommands extends Commands {
 			}
 		}
 	}
-	
+
 }

@@ -14,25 +14,25 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class MobileWebDriverFactory {
-	
+
 	private Logger log;
 	public WebDriver driver;
 	private URL appiumServerUrl;
-	
+
 	public MobileWebDriverFactory(URL appiumServerUrl) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.appiumServerUrl = appiumServerUrl;
 	}
-	
+
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Google Chrome.
-	 * 
-	 * @param platform			Platform from which to run Google Chrome Driver.
-	 * @param platformVersion	Version of the Platform
-	 * @param deviceName		Name of the Device to run Google Chrome Driver. 
+	 *
+	 * @param platform        Platform from which to run Google Chrome Driver.
+	 * @param platformVersion Version of the Platform
+	 * @param deviceName      Name of the Device to run Google Chrome Driver.
 	 * @return Google Chrome WebDriver Object
 	 */
-	
+
 	public final WebDriver getChromeDriver(Platform platform, String platformVersion, String deviceName) {
 		this.log.trace("Initializing Google Chrome Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -45,16 +45,16 @@ public class MobileWebDriverFactory {
 		this.log.trace("Successfully initialized Google Chrome Driver.");
 		return this.driver;
 	}
-	
+
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Mozilla Firefox.
-	 * 
-	 * @param platform			Platform from which to run Mozilla Firefox Driver.
-	 * @param platformVersion	Version of the Platform
-	 * @param deviceName		Name of the Device to run Mozilla Firefox Driver. 
+	 *
+	 * @param platform        Platform from which to run Mozilla Firefox Driver.
+	 * @param platformVersion Version of the Platform
+	 * @param deviceName      Name of the Device to run Mozilla Firefox Driver.
 	 * @return Mozilla Firefox WebDriver Object
 	 */
-	
+
 	public final WebDriver getFirefoxDriver(Platform platform, String platformVersion, String deviceName) {
 		this.log.trace("Initializing Mozilla Firefox Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -67,13 +67,13 @@ public class MobileWebDriverFactory {
 		this.log.trace("Successfully initialized Mozilla Firefox Driver.");
 		return this.driver;
 	}
-	
+
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Safari.
-	 * 
-	 * @param platform			Platform from which to run Safari Driver.
-	 * @param platformVersion	Version of the Platform
-	 * @param deviceName		Name of the Device to run Safari Driver. 
+	 *
+	 * @param platform        Platform from which to run Safari Driver.
+	 * @param platformVersion Version of the Platform
+	 * @param deviceName      Name of the Device to run Safari Driver.
 	 * @return Safari WebDriver Object
 	 */
 
@@ -89,13 +89,13 @@ public class MobileWebDriverFactory {
 		this.log.trace("Successfully initialized Safari Driver.");
 		return this.driver;
 	}
-	
+
 	/**
 	 * Initializes and returns AppiumDriver Object configured for Microsoft Edge.
-	 * 
-	 * @param platform			Platform from which to run Microsoft Edge Driver.
-	 * @param platformVersion	Version of the Platform
-	 * @param deviceName		Name of the Device to run Microsoft Edge Driver. 
+	 *
+	 * @param platform        Platform from which to run Microsoft Edge Driver.
+	 * @param platformVersion Version of the Platform
+	 * @param deviceName      Name of the Device to run Microsoft Edge Driver.
 	 * @return Microsoft Edge WebDriver Object
 	 */
 
