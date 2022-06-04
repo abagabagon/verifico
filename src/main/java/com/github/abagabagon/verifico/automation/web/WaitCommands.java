@@ -1,5 +1,6 @@
 package com.github.abagabagon.verifico.automation.web;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -24,15 +25,36 @@ public class WaitCommands {
 	private WebDriverWait wait;
 	private Alert alert;
 
-	public WaitCommands(WebDriver driver, WebDriverWait wait) {
+	public WaitCommands(WebDriver driver, int implicitWaitDuration, int explicitWaitDuration) {
 		this.log = LogManager.getLogger(this.getClass());
-		if (driver == null || wait == null) {
-			this.log.fatal("WebDriver or WebDriverWait is NULL.");
+		if (driver == null) {
+			this.log.fatal("WebDriver is NULL.");
 			System.exit(1);
 		} else {
 			this.driver = driver;
-			this.wait = wait;
+			this.setImplicitWait(implicitWaitDuration);
+			this.setExplicitWait(explicitWaitDuration);
 		}
+	}
+	
+	/**
+	 * Sets Implicit Wait
+	 * 
+	 * @param implicitWaitDuration Implicit Wait Duration
+	 */
+	
+	public final void setImplicitWait(int implicitWaitDuration) {
+		this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWaitDuration));
+	}
+	
+	/**
+	 * Sets Explicit Wait
+	 * 
+	 * @param explicitWaitDuration Explicit Wait Duration
+	 */
+	
+	public final void setExplicitWait(int explicitWaitDuration) {
+		this.wait = new WebDriverWait(driver, Duration.ofSeconds(explicitWaitDuration));
 	}
 	
 	/**
