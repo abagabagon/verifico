@@ -8,11 +8,11 @@
 		<classes>
 			<class name="tests.automation.TestWebDriverFactory" >
 				<methods>
-					<include name="T1" description="Verify Google Chrome WebDriver initialization"></include>
-					<include name="T2" description="Verify Mozilla Firefox WebDriver initialization"></include>
-					<include name="T3" description="Verify Safari WebDriver initialization"></include>
-					<include name="T4" description="Verify Microsoft Edge WebDriver initialization"></include>
-					<include name="T5" description="Verify Internet Explorer WebDriver initialization"></include>
+					<include name="WDF1" description="Verify Google Chrome WebDriver initialization"></include>
+					<include name="WDF2" description="Verify Mozilla Firefox WebDriver initialization"></include>
+					<include name="WDF3" description="Verify Safari WebDriver initialization"></include>
+					<include name="WDF4" description="Verify Microsoft Edge WebDriver initialization"></include>
+					<include name="WDF5" description="Verify Internet Explorer WebDriver initialization"></include>
 				</methods>
 			</class>
 		</classes>

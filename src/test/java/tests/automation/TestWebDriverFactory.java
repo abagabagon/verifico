@@ -15,7 +15,7 @@ import tests.Tests;
 public class TestWebDriverFactory extends Tests {
 
 	@Test(groups = "WEBDRIVER", description = "Verify Google Chrome WebDriver initialization", enabled = true)
-	void T1() {
+	void WDF1() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setChromeDriver();
 		WebDriver driver = driverFactory.getChromeDriver();
@@ -28,7 +28,7 @@ public class TestWebDriverFactory extends Tests {
 	}
 
 	@Test(groups = "WEBDRIVER", description = "Verify Mozilla Firefox WebDriver initialization", enabled = true)
-	void T2() {
+	void WDF2() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setFirefoxDriver();
 		WebDriver driver = driverFactory.getFirefoxDriver();
@@ -41,7 +41,7 @@ public class TestWebDriverFactory extends Tests {
 	}
 
 	@Test(groups = "WEBDRIVER", description = "Verify Safari WebDriver initialization", enabled = true)
-	void T3() {
+	void WDF3() {
 		Platform operatingSystem = OperatingSystem.getOS();
 		if (operatingSystem == Platform.MAC) {
 			WebDriverFactory driverFactory = new WebDriverFactory();
@@ -60,7 +60,7 @@ public class TestWebDriverFactory extends Tests {
 	}
 
 	@Test(groups = "WEBDRIVER", description = "Verify Microsoft Edge WebDriver initialization", enabled = true)
-	void T4() {
+	void WDF4() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setEdgeDriver();
 		WebDriver driver = driverFactory.getEdgeDriver();
@@ -73,7 +73,7 @@ public class TestWebDriverFactory extends Tests {
 	}
 
 	@Test(groups = "WEBDRIVER", description = "Verify Internet Explorer WebDriver initialization", enabled = true)
-	void T5() {
+	void WDF5() {
 		Platform operatingSystem = OperatingSystem.getOS();
 		if (operatingSystem == Platform.WINDOWS) {
 			WebDriverFactory driverFactory = new WebDriverFactory();
