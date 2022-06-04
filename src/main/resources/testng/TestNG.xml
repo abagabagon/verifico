@@ -1,0 +1,20 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Verifico Test">
+	<listeners>
+		<listener class-name="tests.Listener" />
+		<listener class-name="tests.AnnotationTransformer" />
+	</listeners>
+	<test name="WebDriver Factory" preserve-order="true" enabled="true">
+		<classes>
+			<class name="tests.automation.TestWebDriverFactory" >
+				<methods>
+					<include name="T1" description="Verify Google Chrome WebDriver initialization"></include>
+					<include name="T2" description="Verify Mozilla Firefox WebDriver initialization"></include>
+					<include name="T3" description="Verify Safari WebDriver initialization"></include>
+					<include name="T4" description="Verify Microsoft Edge WebDriver initialization"></include>
+					<include name="T5" description="Verify Internet Explorer WebDriver initialization"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+</suite>
