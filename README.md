@@ -25,6 +25,7 @@ WebDriverFactory driverFactory = new WebDriverFactory();
 driverFactory.setChromeDriver();
 WebDriver driver = driverFactory.getChromeDriver();
 ```
+
 Supported WebDrivers are as follows
 * Google Chrome
 * Mozilla Firefox
@@ -141,6 +142,7 @@ GetCommands get = new GetCommands(driver, wait);
 browser.goTo("https://www.google.com/");
 get.getText(By.xpath("//h1[@name='Login Header']"));
 ```
+
 | Command					| Description																|
 | --------------------------	| ----------------------------------------------------------------------------	|
 | `getText`					| Gets the text of the Web Element of the specified Locator.					|
