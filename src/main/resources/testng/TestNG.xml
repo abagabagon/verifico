@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Verifico Test">
+<suite name="Web Automation">
 	<listeners>
 		<listener class-name="tests.Listener" />
 		<listener class-name="tests.AnnotationTransformer" />
@@ -13,6 +13,54 @@
 					<include name="WDF3" description="Verify Safari WebDriver initialization"></include>
 					<include name="WDF4" description="Verify Microsoft Edge WebDriver initialization"></include>
 					<include name="WDF5" description="Verify Internet Explorer WebDriver initialization"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<test name="Alert Commands Google Chrome" preserve-order="true" enabled="true">
+		<parameter name="browser" value="CHROME"></parameter>
+		<classes>
+			<class name="tests.automation.TestAlertCommands" >
+				<methods>
+					<include name="AC1" description="Verify Accepting of Alert"></include>
+					<include name="AC2" description="Verify Accepting of Alert with Multiple Options"></include>
+					<include name="AC3" description="Verify Cancelling of Alert with Multiple Options"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<test name="Alert Commands Mozilla Firefox" preserve-order="true" enabled="true">
+		<parameter name="browser" value="FIREFOX"></parameter>
+		<classes>
+			<class name="tests.automation.TestAlertCommands" >
+				<methods>
+					<include name="AC1" description="Verify Accepting of Alert"></include>
+					<include name="AC2" description="Verify Accepting of Alert with Multiple Options"></include>
+					<include name="AC3" description="Verify Cancelling of Alert with Multiple Options"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<test name="Alert Commands Safari" preserve-order="true" enabled="true">
+		<parameter name="browser" value="SAFARI"></parameter>
+		<classes>
+			<class name="tests.automation.TestAlertCommands" >
+				<methods>
+					<include name="AC1" description="Verify Accepting of Alert"></include>
+					<include name="AC2" description="Verify Accepting of Alert with Multiple Options"></include>
+					<include name="AC3" description="Verify Cancelling of Alert with Multiple Options"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
+	<test name="Alert Commands Microsoft Edge" preserve-order="true" enabled="true">
+		<parameter name="browser" value="EDGE"></parameter>
+		<classes>
+			<class name="tests.automation.TestAlertCommands" >
+				<methods>
+					<include name="AC1" description="Verify Accepting of Alert"></include>
+					<include name="AC2" description="Verify Accepting of Alert with Multiple Options"></include>
+					<include name="AC3" description="Verify Cancelling of Alert with Multiple Options"></include>
 				</methods>
 			</class>
 		</classes>
