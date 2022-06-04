@@ -14,7 +14,7 @@ import tests.Tests;
 
 public class TestWebDriverFactory extends Tests {
 
-	@Test(groups = "WEBDRIVER", description = "Verify Google Chrome WebDriver initialization", enabled = true)
+	@Test(groups = "WEB_DRIVER_FACTORY", description = "Verify Google Chrome WebDriver initialization", enabled = true)
 	void WDF1() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setChromeDriver();
@@ -27,7 +27,7 @@ public class TestWebDriverFactory extends Tests {
 		softAssert.assertAll();
 	}
 
-	@Test(groups = "WEBDRIVER", description = "Verify Mozilla Firefox WebDriver initialization", enabled = true)
+	@Test(groups = "WEB_DRIVER_FACTORY", description = "Verify Mozilla Firefox WebDriver initialization", enabled = true)
 	void WDF2() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setFirefoxDriver();
@@ -40,7 +40,7 @@ public class TestWebDriverFactory extends Tests {
 		softAssert.assertAll();
 	}
 
-	@Test(groups = "WEBDRIVER", description = "Verify Safari WebDriver initialization", enabled = true)
+	@Test(groups = "WEB_DRIVER_FACTORY", description = "Verify Safari WebDriver initialization", enabled = true)
 	void WDF3() {
 		Platform operatingSystem = OperatingSystem.getOS();
 		if (operatingSystem == Platform.MAC) {
@@ -59,7 +59,7 @@ public class TestWebDriverFactory extends Tests {
 
 	}
 
-	@Test(groups = "WEBDRIVER", description = "Verify Microsoft Edge WebDriver initialization", enabled = true)
+	@Test(groups = "WEB_DRIVER_FACTORY", description = "Verify Microsoft Edge WebDriver initialization", enabled = true)
 	void WDF4() {
 		WebDriverFactory driverFactory = new WebDriverFactory();
 		driverFactory.setEdgeDriver();
@@ -72,7 +72,7 @@ public class TestWebDriverFactory extends Tests {
 		softAssert.assertAll();
 	}
 
-	@Test(groups = "WEBDRIVER", description = "Verify Internet Explorer WebDriver initialization", enabled = true)
+	@Test(groups = "WEB_DRIVER_FACTORY", description = "Verify Internet Explorer WebDriver initialization", enabled = true)
 	void WDF5() {
 		Platform operatingSystem = OperatingSystem.getOS();
 		if (operatingSystem == Platform.WINDOWS) {
