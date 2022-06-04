@@ -2,11 +2,8 @@
 /test-output/
 /logs/
 /reports/
-/src/test
 .settings
 .classpath
 .project
 .DS_Store
 .factorypath
-phantomjsdriver.log
-
