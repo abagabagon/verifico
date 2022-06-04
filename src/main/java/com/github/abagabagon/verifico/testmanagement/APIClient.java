@@ -20,12 +20,12 @@ import org.json.simple.JSONValue;
 
 /**
  * APIClient for Test Rail Management Tool Integration
- * 
+ *
  * @author gurock
  */
 
 public class APIClient {
-	
+
 	private String m_user;
 	private String m_password;
 	private String m_url;
@@ -161,7 +161,7 @@ public class APIClient {
 
 			outputStream.close();
 			istream.close();
-			return (String) data;
+			return data;
 		}
 
 		// Not an attachment received

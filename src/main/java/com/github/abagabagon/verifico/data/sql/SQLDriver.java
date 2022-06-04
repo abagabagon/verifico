@@ -13,13 +13,13 @@ import com.github.abagabagon.verifico.enums.SQL;
 
 /**
  * SQL Data configurations and connections handling
- * 
+ *
  * @author albagabagon
  *
  */
 
 public class SQLDriver {
-	
+
 	private Logger log;
 	private SQL sqlType;
 	private String dbServer;
@@ -29,7 +29,7 @@ public class SQLDriver {
 	private boolean isSSLUsed;
 	private Connection connection;
 	private String url;
-	
+
 	public SQLDriver(SQL sqlType, String dbServer, String dbName, String user, String password, boolean isSSLUsed) {
 		this.log = LogManager.getLogger(this.getClass());
 		this.sqlType = sqlType;
@@ -39,14 +39,14 @@ public class SQLDriver {
 		this.password = password;
 		this.isSSLUsed = isSSLUsed;
 	}
-	
+
 	/**
 	 * Initializes SQL Connection.
-	 * 
+	 *
 	 * @throws ExceptionInInitializerError
 	 * @return SQL Connection
 	 */
-	
+
 	Connection getSQLConnection() throws ExceptionInInitializerError {
 		try {
 			this.log.debug("Initializing " + this.sqlType + " JDBC Driver.");
@@ -94,16 +94,16 @@ public class SQLDriver {
 			this.log.fatal("Encountered Exception while instantiating " + this.sqlType + " JDBC Driver!");
 			this.log.fatal(ExceptionUtils.getStackTrace(e));
 		}
-		
+
 		return this.connection;
 	}
-	
+
 	/**
 	 * Initializes MySQL Connection.
-	 * 
+	 *
 	 * @return MySQL Connection
 	 */
-	
+
 	private Connection getMySQLConnection() {
 		this.log.debug("Initializing MySQL Connection.");
 		this.url = "jdbc:mysql://" + this.dbServer + ":3306/" + this.dbName;
@@ -128,13 +128,13 @@ public class SQLDriver {
 		}
 		return connection;
 	}
-	
+
 	/**
 	 * Initializes MSSQL Connection.
-	 * 
+	 *
 	 * @return MSSQL Connection
 	 */
-	
+
 	private Connection getMSSQLConnection() {
 		this.log.debug("Initializing MSSQL Connection.");
 		this.url = "jdbc:sqlserver://" + this.dbServer + ":1433/" + this.dbName;
@@ -159,13 +159,13 @@ public class SQLDriver {
 		}
 		return connection;
 	}
-	
+
 	/**
 	 * Initializes MariaDB Connection.
-	 * 
+	 *
 	 * @return MariaDB Connection
 	 */
-	
+
 	private Connection getMariaDBConnection() {
 		this.log.debug("Initializing MariaDB Connection.");
 		this.url = "jdbc:mariadb://" + this.dbServer + ":3306/" + this.dbName;

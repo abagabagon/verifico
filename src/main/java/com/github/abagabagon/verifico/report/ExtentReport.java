@@ -14,22 +14,22 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 /**
  * Implemented Extent Report Reporter
- * 
+ *
  * @author albagabagon
  *
  */
 
 public class ExtentReport implements Reporter {
-	
+
 	private ExtentReports report;
 	private ExtentSparkReporter reporter;
 	private ExtentTest test;
 	private Logger log;
-	
+
 	public ExtentReport() {
 		this.log = LogManager.getLogger(this.getClass());
 	}
-	
+
 	@Override
 	public void setReport(String testSuiteName, String organization) {
 		this.log.debug("Initializing ExtentReport Instance.");
@@ -39,13 +39,13 @@ public class ExtentReport implements Reporter {
 		this.report.attachReporter(this.reporter);
 		this.log.debug("Successfully initialized ExtentReport Instance.");
 	}
-	
+
 	/**
 	 * Initializes ExtentSparkReporter instance.
-	 * 
+	 *
 	 * @param fileName Output File Name
 	 */
-	
+
 	private void setExtentSparkReporter(String fileName) {
 		this.log.debug("Initializing ExtentSparkReporter Instance.");
 		String filePath = "./reports/";
@@ -56,7 +56,7 @@ public class ExtentReport implements Reporter {
 		this.reporter.config().setReportName(fileName.toString());
 		this.log.debug("Successfully initialized ExtentSparkReporter Instance.");
 	}
-	
+
 	@Override
 	public void setTest(String testName, String description) {
 		this.log.debug("Initializing ExtentTest Instance.");
@@ -67,7 +67,7 @@ public class ExtentReport implements Reporter {
 			this.log.debug("Successfully initialized ExtentTest Instance.");
 		}
 	}
-	
+
 	@Override
 	public void setAuthor(String author) {
 		this.log.debug("Setting Author for ExtentTest.");
@@ -78,7 +78,7 @@ public class ExtentReport implements Reporter {
 			this.log.debug("Successfully set Author for ExtentTest.");
 		}
 	}
-	
+
 	@Override
 	public void setCategory(String category) {
 		this.log.debug("Setting Category for ExtentTest.");
@@ -89,7 +89,7 @@ public class ExtentReport implements Reporter {
 			this.log.debug("Successfully set Category for ExtentTest.");
 		}
 	}
-	
+
 	@Override
 	public void setDevice() {
 		this.log.debug("Setting Device for ExtentTest.");
@@ -101,7 +101,7 @@ public class ExtentReport implements Reporter {
 			this.log.debug("Successfully set Device for ExtentTest.");
 		}
 	}
-	
+
 	@Override
 	public void info(String details) {
 		if(this.isExtentTestNull()) {
@@ -111,7 +111,7 @@ public class ExtentReport implements Reporter {
 			this.test.log(Status.INFO, details);
 		}
 	}
-	
+
 	@Override
 	public void pass(String testCaseName) {
 		if(this.isExtentTestNull()) {
@@ -144,7 +144,7 @@ public class ExtentReport implements Reporter {
 			this.test.log(Status.SKIP, markUp);
 		}
 	}
-	
+
 	@Override
 	public void generateReport() {
 		this.log.debug("Generating ExtentReports.");
@@ -160,14 +160,14 @@ public class ExtentReport implements Reporter {
 			this.log.debug("Successfully generated ExtentReports.");
 		}
 	}
-	
+
 	/**
 	 * Checks if ExtentReports is NULL
-	 * 
-	 * @return	<code>true</code> if ExtentReports is NULL.
-	 * 			<code>false</code> if ExtentReports is not NULL.
+	 *
+	 * @return <code>true</code> if ExtentReports is NULL. <code>false</code> if
+	 *         ExtentReports is not NULL.
 	 */
-	
+
 	private boolean isExtentReportsNull() {
 		this.log.trace("Checking if ExtentReport is NULL");
 		if(this.report == null) {
@@ -177,14 +177,14 @@ public class ExtentReport implements Reporter {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Checks if ExtentTest is NULL
-	 * 
-	 * @return	<code>true</code> if ExtentTest is NULL.
-	 * 			<code>false</code> if ExtentTest is not NULL.
+	 *
+	 * @return <code>true</code> if ExtentTest is NULL. <code>false</code> if
+	 *         ExtentTest is not NULL.
 	 */
-	
+
 	private boolean isExtentTestNull() {
 		this.log.trace("Checking if ExtentTest is NULL");
 		if(this.test == null) {
@@ -194,5 +194,5 @@ public class ExtentReport implements Reporter {
 			return false;
 		}
 	}
-	
+
 }

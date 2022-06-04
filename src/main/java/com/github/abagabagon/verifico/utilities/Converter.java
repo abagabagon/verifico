@@ -12,28 +12,28 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * Converts data types
- * 
+ *
  * @author albagabagon
  *
  */
 
 public class Converter {
-	
+
 	private static Logger log;
-	
+
 	static {
 		log = LogManager.getLogger(Converter.class);
 		log.debug("Initializing Converter Class.");
 		log.debug("Successfully initialized Converter Class.");
 	}
-	
+
 	/**
 	 * Converts a String to Integer by parsing input string.
-	 * 
-	 * @param  input Input string for conversion to date format.
+	 *
+	 * @param input Input string for conversion to date format.
 	 * @return converted Integer
 	 */
-	
+
 	public static final int convertStringToInteger(String input) {
 		int index = 0;
 		try {
@@ -46,13 +46,12 @@ public class Converter {
 		}
 		return index;
 	}
-	
+
 	/**
 	 * Converts a String to Date by parsing input string.
-	 * 
-	 * @param  stringDate input string for conversion to date format.
-	 * @param  dateFormat format of the date. Follows format of
-	 *                    SimpleDateFormat.
+	 *
+	 * @param stringDate input string for conversion to date format.
+	 * @param dateFormat format of the date. Follows format of SimpleDateFormat.
 	 * @return converted Date
 	 */
 
@@ -69,12 +68,12 @@ public class Converter {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * Converts a Date to String by specified format.
-	 * 
-	 * @param  date			Date that will be converted to String.
-	 * @param  dateFormat	Format of the date.
+	 *
+	 * @param date       Date that will be converted to String.
+	 * @param dateFormat Format of the date.
 	 * @return Converted Date
 	 */
 
@@ -90,12 +89,12 @@ public class Converter {
 		}
 		return dateString;
 	}
-	
+
 	/**
 	 * Converts a Month String (e. g. "Sep") to its integer equivalent.
-	 * 
-	 * @param  month		Month String that will be converted to integer.
-	 * @param  monthFormat	Format of Month String.
+	 *
+	 * @param month       Month String that will be converted to integer.
+	 * @param monthFormat Format of Month String.
 	 * @return Month in integer
 	 */
 
@@ -109,8 +108,8 @@ public class Converter {
 			log.error("Encountered Exception while converting String to Date Format!");
 		}
 	    Calendar cal = Calendar.getInstance();
-	    cal.setTime(date); 
+		cal.setTime(date);
 		return cal.get(Calendar.MONTH) + 1;
 	}
-	
+
 }

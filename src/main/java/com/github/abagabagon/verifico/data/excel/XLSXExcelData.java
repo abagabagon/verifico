@@ -13,13 +13,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * Implemented Excel Data Retrieval for XLSX File Type
- * 
+ *
  * @author albagabagon
  *
  */
 
 public class XLSXExcelData implements ExcelData {
-	
+
 	private Logger log;
 	private FileInputStream excelIn;
 	private XSSFWorkbook book;
@@ -55,10 +55,10 @@ public class XLSXExcelData implements ExcelData {
 		} catch (Exception e) {
 			this.log.fatal("Encountered Exception while initializing Input Excel File for Apache POI!");
 		}
-		
+
 		this.log.trace("Successfully initialized Excel File.");
 	}
-	
+
 	/**
 	 * Closes the input Excel File.
 	 */
@@ -74,7 +74,7 @@ public class XLSXExcelData implements ExcelData {
 		}
 		this.log.trace("Successfully closed input Excel File.");
 	}
-	
+
 	@Override
 	public Object getCellData(String sheetName, int rowNum, int columnNum) {
 		initializeInputFile();
@@ -85,7 +85,7 @@ public class XLSXExcelData implements ExcelData {
 		closeInputFile();
 		return excelData;
 	}
-	
+
 	@Override
 	public Object[] getColumnData(String sheetName, String columnName) {
 		initializeInputFile();
@@ -113,7 +113,7 @@ public class XLSXExcelData implements ExcelData {
 		closeInputFile();
 		return excelData;
 	}
-	
+
 	@Override
 	public Object[][] getSheetData(String sheetName, boolean withHeader) {
 		initializeInputFile();
@@ -121,7 +121,7 @@ public class XLSXExcelData implements ExcelData {
 		int columnCount = this.book.getSheet(sheetName).getRow(0).getPhysicalNumberOfCells();
 		int rowCount    = this.book.getSheet(sheetName).getPhysicalNumberOfRows();
 		Object[][] excelData = null;
-		
+
 		if(withHeader) {
 			excelData = new Object[rowCount - 1][columnCount];
 			if (rowCount > 0) {
@@ -153,14 +153,14 @@ public class XLSXExcelData implements ExcelData {
 		closeInputFile();
 		return excelData;
 	}
-	
+
 	/**
 	 * Get value of a Excel Cell.
-	 * 
+	 *
 	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
-	
+
 	private Object getCellValue(XSSFCell cell) {
 		Object excelData = null;
 		switch(this.cell.getCellType()) {
@@ -180,14 +180,14 @@ public class XLSXExcelData implements ExcelData {
 		}
 		return excelData;
 	}
-	
+
 	/**
 	 * Get value of a String Type Excel Cell.
-	 * 
+	 *
 	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
-	
+
 	private Object getStringCellTypeData(XSSFCell cell) {
 		Object excelData = cell.getStringCellValue();
 		this.log.trace("Successfully retrieved String Value \"" + excelData.toString() + "\"");
@@ -196,11 +196,11 @@ public class XLSXExcelData implements ExcelData {
 
 	/**
 	 * Get value of a Numeric Type Excel Cell.
-	 * 
+	 *
 	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
-	
+
 	private Object getNumericCellTypeData(XSSFCell cell) {
 		Object excelData = null;
 		if (DateUtil.isCellDateFormatted(cell) == true) {
@@ -213,31 +213,31 @@ public class XLSXExcelData implements ExcelData {
 		}
 		return excelData.toString();
 	}
-	
+
 	/**
 	 * Get value of a Boolean Type Excel Cell.
-	 * 
+	 *
 	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
-	
+
 	private Object getBooleanCellTypeData(XSSFCell cell) {
 		Object excelData = cell.getBooleanCellValue();
 		this.log.trace("Successfully retrieved Boolean Value \"" + Boolean.parseBoolean(excelData.toString()) + "\" from a Boolean Type Cell.");
 		return excelData;
 	}
-	
+
 	/**
 	 * Get value of a Formula Type Excel Cell.
-	 * 
+	 *
 	 * @param cell XSSFCell Object
 	 * @return Cell data in a form of an Object.
 	 */
-	
+
 	private Object getFormulaCellTypeData(XSSFCell cell) {
 		Object excelData = cell.getRawValue();
 		this.log.trace("Successfully retrieved Formula Value \"" + excelData.toString() + "\" from a Formula Type Cell.");
 		return excelData;
 	}
-	
+
 }

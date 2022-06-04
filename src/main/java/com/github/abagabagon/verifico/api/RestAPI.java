@@ -13,18 +13,18 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 public class RestAPI {
-	
+
 	private Logger log;
-	
+
 	public RestAPI() {
 		this.log = LogManager.getLogger(RestAPI.class);
 	}
-	
+
 	public final Response sendRequest(Method method, String endPoint, RequestSpecification requestSpecification) {
 		Response response = null;
 		try {
 			URL url = new URL(RestAssured.baseURI + endPoint);
-			
+
 			switch(method) {
 			case GET:
 				response = requestSpecification.get(url);
@@ -57,7 +57,7 @@ public class RestAPI {
 			log.error("Encountered Exception while processing " + method + " API Request.");
 			log.debug(ExceptionUtils.getStackTrace(e));
 		}
-		
+
 		return response;
 	}
 

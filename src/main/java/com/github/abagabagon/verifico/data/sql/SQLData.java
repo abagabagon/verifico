@@ -14,13 +14,13 @@ import com.github.abagabagon.verifico.enums.SQL;
 
 /**
  * SQL Data manipulation and retrieval
- * 
+ *
  * @author albagabagon
  *
  */
 
 public class SQLData {
-	
+
 	private Logger log;
 	private Connection connection;
 	private ResultSet resultSet;
@@ -41,21 +41,21 @@ public class SQLData {
 		this.password = password;
 		this.isSSLUsed = isSSLUsed;
 	}
-	
+
 	enum SQLQuery {
 		SELECT, UPDATE, DELETE, INSERT
 	}
-	
+
 	/* ####################################################### */
 	/*                     MAIN OPERATIONS                     */
 	/* ####################################################### */
-	
+
 	/**
 	 * Opens SQL Connection.
-	 * 
+	 *
 	 * @return SQL Connection Object.
 	 */
-	
+
 	public Connection openConnection() {
 		this.log.debug("I open SQL Connection.");
 		this.sqlDriver = new SQLDriver(this.sqlType, this.dbServer, this.dbName, this.user, this.password, this.isSSLUsed);
@@ -70,12 +70,12 @@ public class SQLData {
 		}
 		return this.connection;
 	}
-	
+
 	private ResultSet execute(SQLQuery sqlQuery, PreparedStatement preparedStatement) {
 		this.log.debug("------------------------------------------------------------------------");
 		this.log.debug("EXECUTING " + String.valueOf(sqlQuery).toUpperCase() + " QUERY:\n" + preparedStatement.toString());
 		this.log.debug("------------------------------------------------------------------------");
-		
+
 		boolean status = false;
 		this.resultSet = null;
 		int count = 0;
@@ -110,12 +110,12 @@ public class SQLData {
 				default:
 					this.log.fatal(sqlQuery + " is an unsupported SQL Query.");
 				}
-				
+
 				if (this.resultSet != null || count > 0) {
 					status = true;
 					break;
 				}
-				
+
 			} catch (SQLTimeoutException e) {
 				this.log.fatal("Encountered SQLTimeoutException while executing " + sqlQuery + " Query! Retrying API Request (" + i + "/3).");
 				this.log.fatal("SQL State: " + e.getSQLState());
@@ -133,7 +133,7 @@ public class SQLData {
 				this.log.fatal(ExceptionUtils.getStackTrace(e));
 			}
 		}
-		
+
 		if(status) {
 			this.log.debug("------------------------------------------------------------------------");
 			this.log.debug("SUCCESSFUL EXECUTION OF " + String.valueOf(sqlQuery).toUpperCase() + " QUERY.");
@@ -146,59 +146,59 @@ public class SQLData {
 
 		return this.resultSet;
 	}
-	
+
 	/**
 	 * Executes a SQL SELECT Statement and returns the ResultSet.
-	 * 
+	 *
 	 * @param preparedStatement SQL SELECT Query in PreparedStatement Object
-	 * @return	ResultSet based on the SQL SELECT Query
+	 * @return ResultSet based on the SQL SELECT Query
 	 */
-	
+
 	public ResultSet select(PreparedStatement preparedStatement) {
 		this.resultSet = execute(SQLQuery.SELECT, preparedStatement);
 		return this.resultSet;
 	}
-	
+
 	/**
 	 * Executes a SQL UPDATE Statement.
-	 * 
+	 *
 	 * @param preparedStatement SQL UPDATE Query in PreparedStatement Object
 	 */
-	
+
 	public void update(PreparedStatement preparedStatement) {
 		this.execute(SQLQuery.UPDATE, preparedStatement);
 	}
-	
+
 	/**
 	 * Executes a SQL INSERT Statement.
-	 * 
+	 *
 	 * @param preparedStatement SQL INSERT Query in PreparedStatement Object
 	 */
-	
+
 	public void insert(PreparedStatement preparedStatement) {
 		this.execute(SQLQuery.INSERT, preparedStatement);
 	}
-	
+
 	/**
 	 * Executes a SQL DELETE Statement.
-	 * 
+	 *
 	 * @param preparedStatement SQL DELETE Query in PreparedStatement Object
 	 */
-	
+
 	public void delete(PreparedStatement preparedStatement) {
 		this.execute(SQLQuery.DELETE, preparedStatement);
 	}
-	
+
 	/**
 	 * Closes and empties the ResultSet.
 	 */
-	
+
 	private void closeResultSet() {
 		this.log.debug("I close SQL ResultSet.");
 		try {
 			if (this.resultSet != null) {
 				this.resultSet.close();
-				this.resultSet = null;	
+				this.resultSet = null;
 			}
 		} catch (SQLException e) {
 			this.log.fatal("Encountered SQLException while closing and emptying ResultSet!");
@@ -212,11 +212,11 @@ public class SQLData {
 		}
 		this.log.debug("Successfully closed and emptied ResultSet.");
 	}
-	
+
 	/**
 	 * Closes SQL Connection.
 	 */
-	
+
 	public void closeConnection() {
 		this.log.debug("I close SQL Connection.");
 		this.closeResultSet();
@@ -237,5 +237,5 @@ public class SQLData {
 		}
 		this.log.debug("Successfully closed all connections.");
 	}
-	
+
 }
