@@ -38,7 +38,6 @@ Wait Commands are also available at the `WaitCommands` Class by which functions 
 int implicitWaitDuration = 10;
 int explicitWaitDuration = 5;
 WaitCommands wait = new WaitCommands(driver, implicitWaitDuration, explicitWaitDuration);
-
 ```
 
 Web Application Automation Commands are accessible into classes from which related commands are grouped. Note that for commands that manipulates Web Elements, variations of the commands are created to accommodate actions for target Web Elements that are nested (e. g. tables, lists, etc.). Available Command Classes are shown below:
@@ -55,8 +54,6 @@ browser.goTo("https://www.google.com/");
 browser.maximize();
 browser.refresh();
 ```
-
-Browser Commands available are as follows:
 
 | Command					| Description												|
 | --------------------------	|-------------------------------------------------------------	|
@@ -106,8 +103,8 @@ Keyboard Commands contains functions pertaining to keyboard actions done by a us
 ```java
 KeyboardCommands keyboard = new KeyboardCommands(driver, wait);
 browser.goTo("https://www.google.com/");
-keyboard.type(By.xpath("//input[@name='username']"));
-keyboard.type(By.xpath("//input[@name='password']"));
+keyboard.type(By.xpath("//input[@name='username']"), "user@sample.com");
+keyboard.type(By.xpath("//input[@name='password']"), "password123");
 ```
 
 | Command	| Description																												|
@@ -164,62 +161,71 @@ alert.acceptAlert();
 ```
 
 | Command		| Description									|
-| -----------	| -----------------------------------------------	|
+| --------------	| -----------------------------------------------	|
 | `acceptAlert`	| Accepts Javascript Alert						|
 | `cancelAlert`	| Cancels Javascript Alert						|
 | `typeAlert`	| Simulates typing at Javascript Alert Text Box	|
 
 ## **Value Assertions**
 
-| Command                                                                          | Description                                                                                                                              |
-| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| See Url                                                                          | Verifies Page URL of Web Page if equal to the expected URL.                                                                              |
-| Don't See Url                                                                    | Verifies Page URL of Web Page if not equal to the specified URL.                                                                         |
-| See Partial Url                                                                  | Verifies Page URL of Web Page if partially equal to the expected URL.                                                                    |
-| Don't See Partial Url                                                            | Verifies Page URL of Web Page if not partially equal to the expected URL.                                                                |
-| See Title                                                                        | Verifies Page Title of Web Page if equal to the expected Title.                                                                          |
-| Don't See Title                                                                  | Verifies Page Title of Web Page if not equal to the specified Title.                                                                     |
-| See Partial Title                                                                | Verifies Page Title of Web Page if partially equal to the expected Title.                                                                |
-| Don't See Partial Title                                                          | Verifies Page Title of Web Page if not partially equal to the specified Title.                                                           |
-| Typed                                                                            | Verifies the value of INPUT or TEXTAREA Web Elements if equal to the expected value.                                                     |
-| Didn't Type                                                                      | Verifies the value of INPUT or TEXTAREA Web Elements if not equal to the specified value.                                                |
-| See Attribute Value                                                              | Verifies the value of the specified attribute if equal to the expected value.                                                            |
-| Don't See Attribute Value                                                        | Verifies the value of the specified attribute if equal to the expected value.                                                            |
-| See Partial Attribute Value                                                      | Verifies the value of the specified attribute if partially equal to the expected value.                                                  |
-| Don't See Partial Attribute Value                                                | Verifies the value of the specified attribute if not partially equal to the expected value.                                              |
-| Selected DropDown                                                                | Verifies Drop-down List Web Element Value if equal to expected text value.                                                               |
-| See Text                                                                         | Verifies Web Element with text if equal to expected text value.                                                                          |
-| Don't See Text                                                                   | Verifies Web Element with text if not equal to specified text value.                                                                     |
-| See Text Of List Element                                                         | Verifies if text value exists from texts on Web Element List.                                                                            |
-| Don't See Text Of List Element                                                   | Verifies if text value does not exist from texts on Web Element List.                                                                    |
-| See Text Of Table Row Element                                                    | Verifies if text value exists from text of a Web Element in a Table Row.                                                                 |
-| Don't See Text Of Table Row Element                                              | Verifies if text value does not exist from text of a Web Element in a Table Row.                                                         |
-| See Text Of Table Row Element Based On Table Row Element Text                    | Verifies Web Element with text if equal to expected text value from a row in a table based on text value from the same row.              |
-| Don't See Text Of Table Row Element Based On Table Row Element Text              | Verifies Web Element with text if not equal to specified text value from a row in a table based on text value from the same row.         |
-| See Text Of Table Row List Element Based On Table Row Element Text               | Verifies text value if it exists in a Web Element List from a row in a table based on text value from the same row.                      |
-| Don't See Text Of Table Row List Element Based On Table Row Element Text         | Verifies text value if it does not exist in a Web Element List from a row in a table based on text value from the same row.              |
-| See Partial Text                                                                 | Verifies Web Element with text if equal to expected partial text value.                                                                  |
-| Don't See Partial Text                                                           | Verifies Web Element with text if not equal to specified partial text value.                                                             |
-| See Partial Text Of List Element                                                 | Verifies if text value exists from texts on Web Element List.                                                                            |
-| Don't See Partial Text Of List Element                                           | Verifies if text value does not exist from texts on Web Element List.                                                                    |
-| See Partial Text Of Table Row Element                                            | Verifies if partial text value exists from text of a Web Element in a Table Row.                                                         |
-| Don't See Partial Text Of Table Row Element                                      | Verifies if partial text value does not exist from text of a Web Element in a Table Row.                                                 |
-| See Partial Text Of Table Row Element Based On Table Row Element Text            | Verifies Web Element with text if equal to expected partial text value from a row in a table based on text value from the same row.      |
-| Don't See Partial Text Of Table Row Element Based On Table Row Element Text      | Verifies Web Element with text if not equal to specified partial text value from a row in a table based on text value from the same row. |
-| See Partial Text Of Table Row List Element Based On Table Row Element Text       | Verifies partial text value if it exists in a Web Element List from a row in a table based on text value from the same row.              |
-| Don't See Partial Text Of Table Row List Element Based On Table Row Element Text | Verifies partial text value if it does not exist in a Web Element List from a row in a table based on text value from the same row.      |
-| See                                                                              | Verifies if Web Element is displayed on Web Page                                                                                         |
-| Don't See                                                                        | Verifies Web Element is not displayed on the Web Page                                                                                    |
-| See Table Row Element Based On Table Row Element Text                            | Verifies Web Element is displayed from a row in a table based on text value from the same row.                                           |
-| Don't See Table Row Element Based On Table Row Element Text                      | Verifies Web Element is not displayed from a row in a table based on text value from the same row.                                       |
-| See Enabled                                                                      | Verifies Web Element is enabled on the Web Page                                                                                          |
-| See Disabled                                                                     | Verifies Web Element is disabled on the Web Page                                                                                         |
-| Selected                                                                         | Verifies Web Element is selected on the Web Page. Used for Check Boxes and Radio Buttons                                                 |
-| Deselected                                                                       | Verifies Web Element is not selected on the Web Page. Used for Check Boxes and Radio Buttons                                             |
-| Counted                                                                          | Verifies Web Element Instance count is equal to expected count.                                                                          |
-| See Alert Message                                                                | Verifies Javascript Alert Message displayed if equal to expected message                                                                 |
+Value Assertions contains functions pertaining to checking of values done by a user in a Web Page. Class for this is `ValueAssertions`.
 
-                                                                                      |
+`ValueAssertions` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
+
+```java
+ValueAssertions value = new ValueAssertions(driver, wait);
+browser.goTo("https://www.google.com/");
+Assert.assertTrue(value.seeUrl("https://www.google.com/"));
+keyboard.type(By.xpath("//input[@id='search-box']"), "verifico");
+Assert.assertTrue(value.seeAttributeValue(By.xpath("//input[@id='search-box']"), "value", "verifico"));
+```
+
+| Command							| Description																											|
+| -----------------------------------	| --------------------------------------------------------------------------------------------------------------------------	|
+| `seeUrl`							| Verifies Page URL of Web Page if equal to the expected URL.																|
+| `dontSeeUrl`						| Verifies Page URL of Web Page if not equal to the specified URL.															|
+| `seePartialUrl`					| Verifies Page URL of Web Page if partially equal to the expected URL.													|
+| `dontSeePartialUrl`				| Verifies Page URL of Web Page if not partially equal to the expected URL.												|
+| `seeTitle`						| Verifies Page Title of Web Page if equal to the expected Title.															|
+| `dontSeeTitle`					| Verifies Page Title of Web Page if not equal to the specified Title.														|
+| `seePartialTitle`					| Verifies Page Title of Web Page if partially equal to the expected Title.												|
+| `dontSeePartialTitle`			| Verifies Page Title of Web Page if not partially equal to the specified Title.											|
+| `seeAttributeValue`				| Verifies the attribute value of the Web Element of the specified Locator if equal to the expected value.					|
+| `dontSeeAttributeValue`			| Verifies the attribute value of the Web Element of the specified Locator if not equal to the expected value.				|
+| `seePartialAttributeValue`		| Verifies the attribute value of the Web Element of the specified Locator if partially equal to the expected value.			|
+| `dontSeePartialAttributeValue`	| Verifies the attribute value of the Web Element of the specified Locator if not partially equal to the expected value.		|
+| `seeText`							| Verifies the text value of the Web Element of the specified Locator if equal to the expected value.						|
+| `dontSeeText`						| Verifies the text value of the Web Element of the specified Locator if not equal to the expected value.					|
+| `seePartialText`					| Verifies the text value of the Web Element of the specified Locator if partially equal to the expected value.				|
+| `dontSeePartialText`				| Verifies the text value of the Web Element of the specified Locator if not partially equal to the expected value.			|
+| `seeDropDownValue`				| Verifies the dropdown value of the Web Element of the specified Locator if equal to the expected value.					|
+| `dontSeeDropdownValue`			| Verifies the dropdown value of the Web Element of the specified Locator if not equal to the expected value.				|
+| `seePartialDropdownValue`		| Verifies the dropdown value of the Web Element of the specified Locator if equal to the expected value.					|
+| `dontSeePartialDropdownValue`	| Verifies the dropdown value of the Web Element of the specified Locator if not partially equal to the expected value.		|
+| `counted`							| Verifies Web Element Instance count is equal to expected count.															|
+| `seeAlertMessage`					| Verifies Javascript Alert Message displayed if equal to expected message													|
+## **State Assertions**
+
+State Assertions contains functions pertaining to checking the state of Web Elements done by a user in a Web Page. Class for this is `StateAssertions`.
+
+`StateAssertions` Class can be instantiated below using the instantiated `WebDriverFactory` and `WaitCommands` Classes:
+
+```java
+StateAssertions state = new StateAssertions(driver, wait);
+browser.goTo("https://www.practicesite.com/");
+Assert.assertTrue(state.see(By.xpath("//input[@name='show-hide-text']")));
+mouse.click(By.xpath(//input[@id='hide-textbox']));
+Assert.assertTrue(state.dontSee(By.xpath("//input[@name='show-hide-text']")));
+```
+
+| Command			| Description																																|
+| ------------------	| -----------------------------------------------------------------------------------------------------------------------------------------------	|
+| `see`				| Verifies if Web Element of specified Locator is displayed on Web Page.																		|
+| `dontSee`			| Verifies if Web Element of specified Locator is not displayed on Web Page.																	|
+| `seeEnabled`		| Verifies if Web Element of specified Locator is enabled on Web Page.																			|
+| `seeDisabled`		| Verifies if Web Element of specified Locator is disabled on Web Page.																		|
+| `seeSelected`		| Verifies if Web Element of specified Locator within the context of the Web Element of the specified Parent Locator is selected on Web Page.		|
+| `seeDeselected`	| Verifies if Web Element of specified Locator is deselected on Web Page.																		|                                                                                 |
 
 # **Excel Data**
 
