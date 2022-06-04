@@ -78,7 +78,7 @@ public class MobileWebDriverFactory {
 	 */
 
 	public final WebDriver getSafariDriver(Platform platform, String platformVersion, String deviceName) {
-		this.log.trace("Setting Property of Safari Driver.");
+		this.log.trace("Initializing Safari Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platform);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
@@ -100,7 +100,7 @@ public class MobileWebDriverFactory {
 	 */
 
 	public final WebDriver getEdgeDriver(Platform platform, String platformVersion, String deviceName) {
-		this.log.trace("Setting Property of Edge Driver.");
+		this.log.trace("Initializing Microsoft Edge Driver.");
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.PLATFORM_NAME, platform);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion);
