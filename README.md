@@ -61,7 +61,7 @@ browser.refresh();
 Browser Commands available are as follows:
 
 | Command					| Description												|
-| --------------------------	|-----------------------------------------------------------	|
+| --------------------------	|-------------------------------------------------------------	|
 | `openTab`					| Opens Tab													|
 | `goTo`					| Navigates to the Url specified								|
 | `switchTabByTitle`		| Switches to a Tab based on Page Title						|
@@ -90,14 +90,14 @@ browser.goTo("https://www.google.com/");
 mouse.click(By.xpath("//button[@name='Search']"));
 ```
 
-| Command      | Description                                                                                    |
-| ------------ | ---------------------------------------------------------------------------------------------- |
-| point        | Points mouse to the Web Element of the specified Locator.                                      |
-| click        | Clicks the Web Element of the specified Locator.                                               |
-| clickJS      | Clicks the Web Element of the specified Locator using Javascript.                              |
-| clickAndHold | Clicks and holds the Web Element of the specified Locator.                                     |
-| doubleClick  | Double-clicks the Web Element of the specified Locator.                                        |
-| dragAndDrop  | Drags a Web Element and drops it at target Web Element. Used for Elements that can be dragged. |
+| Command			| Description																					|
+| ------------------	| -------------------------------------------------------------------------------------------------	|
+| `point`			| Points mouse to the Web Element of the specified Locator.										|
+| `click`			| Clicks the Web Element of the specified Locator.												|
+| `clickJS`			| Clicks the Web Element of the specified Locator using Javascript.								|
+| `clickAndHold`	| Clicks and holds the Web Element of the specified Locator.										|
+| `doubleClick`		| Double-clicks the Web Element of the specified Locator.											|
+| `dragAndDrop`		| Drags a Web Element and drops it at target Web Element. Used for Elements that can be dragged.	|
 
 ## **Keyboard Commands**
 
@@ -112,11 +112,11 @@ keyboard.type(By.xpath("//input[@name='username']"));
 keyboard.type(By.xpath("//input[@name='password']"));
 ```
 
-| Command | Description                                                                                                                 |
-| ------- | --------------------------------------------------------------------------------------------------------------------------- |
-| type    | Types the specified input text to the Web Element of the specified Locator. Applicable for INPUT and TEXTAREA Web Elements. |
-| press   | Simulates pressing of characters into the Web Element of the specified Locator.                                             |
-| clear   | Clears value of the Web Element of the specified Locator. Applicable for INPUT and TEXTAREA Web Elements.                   |
+| Command	| Description																												|
+| ----------	| ------------------------------------------------------------------------------------------------------------------------------	|
+| `type`	| Types the specified input text to the Web Element of the specified Locator. Applicable for INPUT and TEXTAREA Web Elements.	|
+| `press`	| Simulates pressing of characters into the Web Element of the specified Locator.												|
+| `clear`	| Clears value of the Web Element of the specified Locator. Applicable for INPUT and TEXTAREA Web Elements.						|
 
 ## **Select Commands**
 
@@ -130,10 +130,10 @@ browser.goTo("https://www.google.com/");
 select.select(By.xpath("//select[@type='member-type']"), "Guest");
 ```
 
-| Command  | Description                                                              |
-| -------- | ------------------------------------------------------------------------ |
-| select   | Selects a Drop-down List Web Element Option of the specified Locator.    |
-| deselect | De-selects a Drop-down List Web Element Option of the specified Locator. |
+| Command		| Description															|
+| --------------	| ------------------------------------------------------------------------	|
+| `select`		| Selects a Drop-down List Web Element Option of the specified Locator.	|
+| `deselect`	| De-selects a Drop-down List Web Element Option of the specified Locator.	|
 
 ## **Get Commands**
 
@@ -146,11 +146,11 @@ GetCommands get = new GetCommands(driver, wait);
 browser.goTo("https://www.google.com/");
 get.getText(By.xpath("//h1[@name='Login Header']"));
 ```
-| Command              | Description                                                                |
-| -------------------- | -------------------------------------------------------------------------- |
-| getText              | Gets the text of the Web Element of the specified Locator.                 |
-| getAttributeValue    | Gets the attribute value of the Web Element of the specified Locator.      |
-| getDropDownListValue | Gets the drop-down list value of the Web Element of the specified Locator. |
+| Command					| Description																|
+| --------------------------	| ----------------------------------------------------------------------------	|
+| `getText`					| Gets the text of the Web Element of the specified Locator.					|
+| `getAttributeValue`		| Gets the attribute value of the Web Element of the specified Locator.		|
+| `getDropDownListValue`	| Gets the drop-down list value of the Web Element of the specified Locator.	|
 
 ## **Alert Commands**
 
@@ -165,11 +165,11 @@ alert.typeAlert("John");
 alert.acceptAlert();
 ```
 
-| Command     | Description                                   |
-| ----------- | --------------------------------------------- |
-| acceptAlert | Accepts Javascript Alert                      |
-| cancelAlert | Cancels Javascript Alert                      |
-| typeAlert   | Simulates typing at Javascript Alert Text Box |
+| Command		| Description									|
+| -----------	| -----------------------------------------------	|
+| `acceptAlert`	| Accepts Javascript Alert						|
+| `cancelAlert`	| Cancels Javascript Alert						|
+| `typeAlert`	| Simulates typing at Javascript Alert Text Box	|
 
 ## **Value Assertions**
 
