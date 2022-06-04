@@ -27,7 +27,7 @@ public class MouseCommands extends Commands {
 		this.javascriptExecutor = javascriptExecutor;
 		this.action = action;
 		this.wait = wait;
-		this.elementFactory = new WebElementFactory(this.driver, this.wait);
+		this.elementFactory = new WebElementFactory(this.wait);
 	}
 	
 	private boolean execute(MouseAction mouseAction, WebElement element) {

@@ -22,7 +22,7 @@ public class GetCommands extends Commands {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.wait = wait;
-		this.elementFactory = new WebElementFactory(this.driver, this.wait);
+		this.elementFactory = new WebElementFactory(this.wait);
 	}
 	
 	private boolean execute(GetAction getAction, WebElement element, String attribute) {

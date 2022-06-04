@@ -21,7 +21,7 @@ public class ValueAssertions extends Commands {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.wait = wait;
-		this.elementFactory = new WebElementFactory(this.driver, this.wait);
+		this.elementFactory = new WebElementFactory(this.wait);
 	}
 	
 	private boolean isValueDisplayed(ValueAssertion valueAssertionAction, WebElement element, String attribute, String value) {

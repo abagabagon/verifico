@@ -28,7 +28,7 @@ public class KeyboardCommands extends Commands {
 		this.driver = driver;
 		this.action = action;
 		this.wait = wait;
-		this.elementFactory = new WebElementFactory(this.driver, this.wait);
+		this.elementFactory = new WebElementFactory(this.wait);
 	}
 	
 	private boolean execute(KeyboardAction keyboardAction, WebElement element, String inputText, Keys keyButton) {

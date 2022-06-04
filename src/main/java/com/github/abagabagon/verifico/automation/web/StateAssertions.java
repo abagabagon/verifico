@@ -20,7 +20,7 @@ public class StateAssertions extends Commands {
 		this.log = LogManager.getLogger(this.getClass());
 		this.driver = driver;
 		this.wait = wait;
-		this.elementFactory = new WebElementFactory(this.driver, this.wait);
+		this.elementFactory = new WebElementFactory(this.wait);
 	}
 	
 	private boolean execute(StateAssertion stateAssertionAction, WebElement element, int size) {
