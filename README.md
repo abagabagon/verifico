@@ -60,23 +60,23 @@ browser.refresh();
 
 Browser Commands available are as follows:
 
-| Command             | Description                                                  |
-| ------------------- | ------------------------------------------------------------ |
-| openTab             | Opens Tab                                                    |
-| goTo                | Navigates to the Url specified                               |
-| switchTabByTitle    | Switches to a Tab based on Page Title                        |
-| switchTabByURL      | Switches to a Tab based on Page URL                          |
-| switchTabToOriginal | Switches back to Original Tab                                |
-| back                | Navigates one item back from the browser's history           |
-| forward             | Navigates one item forward from the browser's history        |
-| refresh             | Refreshes current page                                       |
-| maximize            | Maximizes Browser Window                                     |
-| deleteAllCookies    | Deletes all cookies                                          |
-| deleteCookie        | Deletes cookie with the specified name                       |
-| scroll              | Scrolls Page                                                 |
-| closeTab            | Closes Tab of a Web Browser                                  |
-| closeBrowser        | Closes Web Browser                                           |
-| count               | Counts instance of the Web Element of the specified Locator  |
+| Command					| Description												|
+| --------------------------	|-----------------------------------------------------------	|
+| `openTab`					| Opens Tab													|
+| `goTo`					| Navigates to the Url specified								|
+| `switchTabByTitle`		| Switches to a Tab based on Page Title						|
+| `switchTabByURL`			| Switches to a Tab based on Page URL							|
+| `switchTabToOriginal`	| Switches back to Original Tab								|
+| `back`					| Navigates one item back from the browser's history			|
+| `forward`					| Navigates one item forward from the browser's history		|
+| `refresh`					| Refreshes current page										|
+| `maximize`				| Maximizes Browser Window									|
+| `deleteAllCookies`		| Deletes all cookies										|
+| `deleteCookie`			| Deletes cookie with the specified name						|
+| `scroll`					| Scrolls Page												|
+| `closeTab`				| Closes Tab of a Web Browser									|
+| `closeBrowser`			| Closes Web Browser											|
+| `count`					| Counts instance of the Web Element of the specified Locator	|
 
 ## **Mouse Commands**
 
