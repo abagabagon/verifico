@@ -82,6 +82,7 @@ public class ValueAssertions extends Commands {
 			Alert alert = this.wait.waitForAlertToBePresent();
 			this.actualValue = alert.getText().trim();
 			status = this.actualValue.equals(value);
+			break;
 		default:
 			this.log.fatal("Unsupported Value Assertion Action.");
 		}
