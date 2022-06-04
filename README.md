@@ -204,6 +204,7 @@ Assert.assertTrue(value.seeAttributeValue(By.xpath("//input[@id='search-box']"),
 | `dontSeePartialDropdownValue`	| Verifies the dropdown value of the Web Element of the specified Locator if not partially equal to the expected value.		|
 | `counted`							| Verifies Web Element Instance count is equal to expected count.															|
 | `seeAlertMessage`					| Verifies Javascript Alert Message displayed if equal to expected message													|
+
 ## **State Assertions**
 
 State Assertions contains functions pertaining to checking the state of Web Elements done by a user in a Web Page. Class for this is `StateAssertions`.
@@ -225,27 +226,23 @@ Assert.assertTrue(state.dontSee(By.xpath("//input[@name='show-hide-text']")));
 | `seeEnabled`		| Verifies if Web Element of specified Locator is enabled on Web Page.																			|
 | `seeDisabled`		| Verifies if Web Element of specified Locator is disabled on Web Page.																		|
 | `seeSelected`		| Verifies if Web Element of specified Locator within the context of the Web Element of the specified Parent Locator is selected on Web Page.		|
-| `seeDeselected`	| Verifies if Web Element of specified Locator is deselected on Web Page.																		|                                                                                 |
+| `seeDeselected`	| Verifies if Web Element of specified Locator is deselected on Web Page.																		|
 
 # **Excel Data**
 
 ```java
-Excel excelType = Excel.XLS;
 String filePath = "./src/resources/data/excel/staff-accounts.XLS";
-
-Verifico verifico = new Verifico();
-ExcelData excelData = verifico.getExcelData(excelType, filePath);
+ExcelData excelData = new ExcelData(filePath);
 ```
 
 # **SQL Data**
 
 ```java
-SQL sqlType = "MySQL";
 String dbServer = "127.0.0.1";
 String dbName = "northwind";
 String user = "abagabagon";
 String password = "ABCabc123";
+boolean isSslUsed = true;
 
-Verifico verifico = new Verifico();
-SQLData sqlData = verifico.getSQLData(sqlType, dbServer, dbName, user, password);
+SQLData sqlData = new SQLData(SQL.MySQL, dbServer, dbName, user, password, isSslUsed);
 ```
