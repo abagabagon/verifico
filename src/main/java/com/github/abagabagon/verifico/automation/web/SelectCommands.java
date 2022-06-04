@@ -67,6 +67,8 @@ public class SelectCommands extends Commands {
 	}
 
 	private void doCommand(SelectAction selectAction, By locator, String option) {
+		this.log.debug("Performing " + String.valueOf(selectAction).replace('_', ' ') + " to the Web Element: \""
+				+ locator.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement element = null;
 		for(int i = 1; i <= 4; i++) {
@@ -86,6 +88,8 @@ public class SelectCommands extends Commands {
 	}
 
 	private void doCommand(SelectAction selectAction, By parent, By child, String option) {
+		this.log.debug("Performing " + String.valueOf(selectAction).replace('_', ' ') + " to the Child Web Element: \""
+				+ child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement parentElement = null;
 		WebElement childElement = null;
@@ -107,6 +111,8 @@ public class SelectCommands extends Commands {
 	}
 
 	private void doCommand(SelectAction selectAction, WebElement parent, By child, String option) {
+		this.log.debug("Performing " + String.valueOf(selectAction).replace('_', ' ') + " to the Child Web Element: \""
+				+ child.toString() + "\" of the Parent Web Element: \"" + parent.toString() + "\".");
 		boolean actionPerformed = false;
 		WebElement childElement = null;
 		for(int i = 1; i <= 4; i++) {

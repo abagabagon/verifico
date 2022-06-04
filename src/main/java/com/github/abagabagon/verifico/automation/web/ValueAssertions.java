@@ -91,9 +91,10 @@ public class ValueAssertions extends Commands {
 	private boolean isEqual(ValueAssertion valueAssertionAction, WebElement element, String attribute, String expectedValue) {
 		boolean status = this.isValueDisplayed(valueAssertionAction, element, attribute, expectedValue);
 		if(status) {
-			this.log.debug("I saw " + String.valueOf(valueAssertionAction) + " Value: \"" + expectedValue + "\".");
+			this.log.debug(String.valueOf(valueAssertionAction) + " Value is \"" + expectedValue + "\".");
 		} else {
-			this.log.error("I didn't see " + String.valueOf(valueAssertionAction) + " Value: \"" + expectedValue + "\". Actual value is \"" + this.actualValue + "\".");
+			this.log.error(String.valueOf(valueAssertionAction) + " Value is not \"" + expectedValue
+					+ "\". Actual value is \"" + this.actualValue + "\".");
 		}
 
 		return status;
@@ -102,9 +103,10 @@ public class ValueAssertions extends Commands {
 	private boolean isNotEqual(ValueAssertion valueAssertionAction, WebElement element, String attribute, String value) {
 		boolean status = this.isValueDisplayed(valueAssertionAction, element, attribute, value);
 		if(status) {
-			this.log.error("I saw " + String.valueOf(valueAssertionAction) + " Value: \"" + value + "\".");
+			this.log.error(String.valueOf(valueAssertionAction) + " Value is \"" + value + "\".");
 		} else {
-			this.log.debug("I didn't see " + String.valueOf(valueAssertionAction) + " Value: \"" + value + "\". Actual value is \"" + this.actualValue + "\".");
+			this.log.debug(String.valueOf(valueAssertionAction) + " Value is not \"" + value + "\". Actual value is \""
+					+ this.actualValue + "\".");
 		}
 
 		return !status;

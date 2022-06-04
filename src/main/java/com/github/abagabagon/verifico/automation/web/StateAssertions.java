@@ -23,9 +23,9 @@ public class StateAssertions extends Commands {
 		this.elementFactory = new WebElementFactory(this.wait);
 	}
 
-	private boolean execute(StateAssertion stateAssertionAction, WebElement element, int size) {
+	private boolean execute(StateAssertion stateAssertion, WebElement element, int size) {
 		boolean status = false;
-		switch(stateAssertionAction) {
+		switch (stateAssertion) {
 		case DISPLAYED:
 			status = element.isDisplayed();
 			break;
@@ -53,19 +53,32 @@ public class StateAssertions extends Commands {
 		return status;
 	}
 
-	private boolean doCommand(StateAssertion stateAssertionAction, WebElement element, int size) {
-		boolean status = this.execute(stateAssertionAction, element, size);
+	private boolean doCommand(StateAssertion stateAssertion, WebElement element, int size) {
+		boolean status = this.execute(stateAssertion, element, size);
+		if (stateAssertion == StateAssertion.NOT_DISPLAYED) {
+			this.log.debug("Performing " + String.valueOf(stateAssertion).replace('_', ' ')
+					+ " State Check to the Web Element.");
+		} else {
+			this.log.debug("Performing " + String.valueOf(stateAssertion).replace('_', ' ')
+					+ " State Check to the Web Element: \""
+					+ element.toString() + "\".");
+		}
+
 		if(status) {
-			if (stateAssertionAction == StateAssertion.NOT_DISPLAYED) {
-				this.log.debug("I saw state of the Web Element as " + String.valueOf(stateAssertionAction) + ".");
+			if (stateAssertion == StateAssertion.NOT_DISPLAYED) {
+				this.log.debug(
+						"State of " + element.toString() + " Web Element is " + String.valueOf(stateAssertion) + ".");
 			} else {
-				this.log.debug("I saw state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+				this.log.debug("State of " + element.toString() + " Web Element: \"" + element.toString() + "\" as "
+						+ String.valueOf(stateAssertion) + ".");
 			}
 		} else {
-			if (stateAssertionAction == StateAssertion.NOT_DISPLAYED) {
-				this.log.error("I didn't see state of the Web Element as " + String.valueOf(stateAssertionAction) + ".");
+			if (stateAssertion == StateAssertion.NOT_DISPLAYED) {
+				this.log.error(
+						"State of " + element.toString() + " Web Element as " + String.valueOf(stateAssertion) + ".");
 			} else {
-				this.log.error("I didn't see state of the Web Element: \"" + element.toString() + "\" as " + String.valueOf(stateAssertionAction) + ".");
+				this.log.error("State of " + element.toString() + " Web Element: \"" + element.toString() + "\" as "
+						+ String.valueOf(stateAssertion) + ".");
 			}
 
 		}

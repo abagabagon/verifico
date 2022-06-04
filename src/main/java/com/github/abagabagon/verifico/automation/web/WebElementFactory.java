@@ -43,12 +43,16 @@ public class WebElementFactory {
 			}
 			if (status) {
 				flgTextFound = true;
-				this.log.debug("I saw \"" + searchValue + "\" " + valueCheckType + " value from the Web Element List: \"" + elementList.toString() + "\".");
+				this.log.debug(searchValue + "\" " + valueCheckType + " value is found from the Web Element List: \""
+						+ elementList.toString() + "\".");
 				break;
 			}
 		}
 		if (!flgTextFound) {
-			this.log.error("I didn't see \"" + searchValue + "\" as the " + valueCheckType + " value of one of the Web Elements from the Web Element List: \"" + elementList.toString() + "\".");
+			this.log.error(searchValue + "\" " + valueCheckType
+					+ " value is not found from one of the Web Elements from the Web Element List: \""
+					+ elementList.toString()
+					+ "\".");
 		}
 		return element;
 	}
@@ -78,12 +82,15 @@ public class WebElementFactory {
 			if (status) {
 				flgTextFound = true;
 				elementCreated = this.wait.waitForNestedElementToBePresent(parentElement, elementToCreate);
-				this.log.debug("I saw \"" + searchValue + "\" " + valueCheckType + " value from the Web Element List: \"" + parentList.toString() + "\".");
+				this.log.debug(searchValue + "\" " + valueCheckType + " value is found from the Web Element List: \""
+						+ parentList.toString() + "\".");
 				break;
 			}
 		}
 		if (!flgTextFound) {
-			this.log.error("I didn't see \"" + searchValue + "\" as the " + valueCheckType + " value of one of the Web Elements from the Web Element List: \"" + parentList.toString() + "\".");
+			this.log.error(searchValue + "\" " + valueCheckType
+					+ " value is not found from one of the Web Elements from the Web Element List: \""
+					+ parentList.toString() + "\".");
 		}
 		return elementCreated;
 	}
