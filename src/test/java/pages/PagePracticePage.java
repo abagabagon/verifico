@@ -45,4 +45,32 @@ public class PagePracticePage {
 	public static final By ALERT_BUTTON = By.id("alertbtn");
 	public static final By CONFIRM_BUTTON = By.id("confirmbtn");
 
+	public static final By WEB_TABLE_EXAMPLE_DIVISION = By.id("table-example-div");
+	public static final By WEB_TABLE_EXAMPLE_TEXT = By.xpath("//legend[text()='Web Table Example']");
+	public static final By AUTHOR_COLUMN_NAME = By.xpath("//table[@id='product']//th[text()='Author ']");
+	public static final By COURSE_COLUMN_NAME = By.xpath("//table[@id='product']//th[text()='Course ']");
+	public static final By PRICE_COLUMN_NAME = By.xpath("//table[@id='product']//th[text()='Price ']");
+	public static final By PRODUCT_TABLE_ROWS = By.xpath("//table[@id='product']//td[@class='author-name']/parent::tr");
+	public static final By AUTHOR_COLUMN_VALUE = By.xpath("./td[@class='author-name']");
+	public static final By COURSE_COLUMN_VALUE = By.xpath("./td[@class='course-name']");
+	public static final By PRICE_COLUMN_VALUE = By.xpath("./td[@class='price']");
+
+	public static final By ENABLED_DISABLED_EXAMPLE_DIVISION = By.id("enabled-example-div");
+	public static final By ENABLED_DISABLED_EXAMPLE_TEXT = By.xpath("//legend[text()='Enabled/Disabled Example']");
+	public static final By DISABLE_BUTTON = By.id("disabled-button");
+	public static final By ENABLE_BUTTON = By.id("enabled-button");
+	public static final By ENABLE_DISABLE_TEXTBOX = By.id("enabled-example-input");
+
+	public static final By ELEMENT_DISPLAYED_EXAMPLE_DIVISION = By.id("hide-show-example-div");
+	public static final By ELEMENT_DISPLAYED_EXAMPLE_TEXT = By.xpath("//legend[text()='Element Displayed Example']");
+	public static final By HIDE_BUTTON = By.id("hide-textbox");
+	public static final By SHOW_BUTTON = By.id("show-textbox");
+	public static final By HIDE_SHOW_TEXTBOX = By.id("displayed-text");
+
+	public static final By MOUSE_HOVER_EXAMPLE_DIVISION = By.id("mouse-hover-example-div");
+	public static final By MOUSE_HOVER_EXAMPLE_TEXT = By.xpath("//legend[text()='Mouse Hover Example']");
+	public static final By MOUSE_HOVER_BUTTON = By.id("mousehover");
+	public static final By TOP_LINK = By.linkText("Top");
+	public static final By RELOAD_LINK = By.linkText("Reload");
+
 }
