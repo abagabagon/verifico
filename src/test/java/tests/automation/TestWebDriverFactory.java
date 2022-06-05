@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import com.github.abagabagon.verifico.automation.web.WebDriverFactory;
 import com.github.abagabagon.verifico.utilities.OperatingSystem;
 
+import pages.PagePractice;
 import tests.Tests;
 
 public class TestWebDriverFactory extends Tests {
@@ -21,8 +22,8 @@ public class TestWebDriverFactory extends Tests {
 		WebDriver driver = driverFactory.getChromeDriver();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		softAssert.assertNotNull(driver);
-		driver.get(URL);
-		softAssert.assertEquals(driver.getCurrentUrl(), URL);
+		driver.get(PagePractice.URL);
+		softAssert.assertEquals(driver.getCurrentUrl(), PagePractice.URL);
 		driver.quit();
 		softAssert.assertAll();
 	}
@@ -34,8 +35,8 @@ public class TestWebDriverFactory extends Tests {
 		WebDriver driver = driverFactory.getFirefoxDriver();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		softAssert.assertNotNull(driver);
-		driver.get(URL);
-		softAssert.assertEquals(driver.getCurrentUrl(), URL);
+		driver.get(PagePractice.URL);
+		softAssert.assertEquals(driver.getCurrentUrl(), PagePractice.URL);
 		driver.quit();
 		softAssert.assertAll();
 	}
@@ -49,8 +50,8 @@ public class TestWebDriverFactory extends Tests {
 			WebDriver driver = driverFactory.getSafariDriver();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			softAssert.assertNotNull(driver);
-			driver.get(URL);
-			softAssert.assertEquals(driver.getCurrentUrl(), URL);
+			driver.get(PagePractice.URL);
+			softAssert.assertEquals(driver.getCurrentUrl(), PagePractice.URL);
 			driver.quit();
 			softAssert.assertAll();
 		} else {
@@ -66,8 +67,8 @@ public class TestWebDriverFactory extends Tests {
 		WebDriver driver = driverFactory.getEdgeDriver();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		softAssert.assertNotNull(driver);
-		driver.get(URL);
-		softAssert.assertEquals(driver.getCurrentUrl(), URL);
+		driver.get(PagePractice.URL);
+		softAssert.assertEquals(driver.getCurrentUrl(), PagePractice.URL);
 		driver.quit();
 		softAssert.assertAll();
 	}
@@ -81,8 +82,8 @@ public class TestWebDriverFactory extends Tests {
 			WebDriver driver = driverFactory.getIeDriver();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			softAssert.assertNotNull(driver);
-			driver.get(URL);
-			softAssert.assertEquals(driver.getCurrentUrl(), URL);
+			driver.get(PagePractice.URL);
+			softAssert.assertEquals(driver.getCurrentUrl(), PagePractice.URL);
 			driver.quit();
 			softAssert.assertAll();
 		} else {

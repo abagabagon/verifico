@@ -2,7 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 
-public class PagePracticePage {
+public class PagePractice {
 
 	public static final By LETS_KODE_IT_IMAGE_LINK = By.xpath("//img[contains(@src,'letskodeit')]/parent::a");
 	public static final By HOME_LINK = By.xpath("//a[text()='HOME']");
@@ -72,5 +72,7 @@ public class PagePracticePage {
 	public static final By MOUSE_HOVER_BUTTON = By.id("mousehover");
 	public static final By TOP_LINK = By.linkText("Top");
 	public static final By RELOAD_LINK = By.linkText("Reload");
+
+	public static final String URL = "https://courses.letskodeit.com/practice";
 
 }

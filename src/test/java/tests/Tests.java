@@ -27,7 +27,6 @@ public class Tests implements ITestListener {
 	protected static Logger log;
 	protected static Reporter report;
 	protected static SoftAssert softAssert;
-	protected static final String URL = "https://courses.letskodeit.com/practice";
 
 	protected WebDriver driver;
 	protected WaitCommands wait;
