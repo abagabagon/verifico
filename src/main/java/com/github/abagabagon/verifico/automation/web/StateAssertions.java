@@ -328,9 +328,8 @@ public class StateAssertions extends Commands {
 	 */
 
 	public final boolean seeDeselected(By locator) {
-		this.wait.waitForListElementToBeInvisible(locator);
-		List<WebElement> elements = this.driver.findElements(locator);
-		boolean status = this.doCommand(StateAssertion.DESELECTED, null, elements.size());
+		WebElement element = this.elementFactory.createElement(locator);
+		boolean status = this.doCommand(StateAssertion.DESELECTED, element, 0);
 		return status;
 	}
 
@@ -345,9 +344,8 @@ public class StateAssertions extends Commands {
 	 */
 
 	public final boolean seeDeselected(By parent, By child) {
-		WebElement parentElement = this.elementFactory.createElement(parent);
-		List<WebElement> childElements = parentElement.findElements(child);
-		boolean status = this.doCommand(StateAssertion.DESELECTED, null, childElements.size());
+		WebElement element = this.elementFactory.createElement(parent, child);
+		boolean status = this.doCommand(StateAssertion.DESELECTED, element, 0);
 		return status;
 	}
 
@@ -362,8 +360,8 @@ public class StateAssertions extends Commands {
 	 */
 
 	public final boolean seeDeselected(WebElement parent, By child) {
-		List<WebElement> childElements = parent.findElements(child);
-		boolean status = this.doCommand(StateAssertion.DESELECTED, null, childElements.size());
+		WebElement element = this.elementFactory.createElement(parent, child);
+		boolean status = this.doCommand(StateAssertion.DESELECTED, element, 0);
 		return status;
 	}
 
