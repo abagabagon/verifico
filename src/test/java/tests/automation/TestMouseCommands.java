@@ -77,7 +77,7 @@ public class TestMouseCommands extends Tests {
 		this.driver.quit();
 	}
 
-	@Test(groups = "MOUSE_COMMANDS", description = "Verify Page Redirection on-click of Link", enabled = false)
+	@Test(groups = "MOUSE_COMMANDS", description = "Verify Page Redirection on-click of Link", enabled = true)
 	void MC1() {
 		mouse.click(PagePractice.SIGN_IN_LINK);
 		softAssert.assertTrue(value.seeUrl(PageLogin.URL));
@@ -90,6 +90,14 @@ public class TestMouseCommands extends Tests {
 		softAssert.assertTrue(state.seeSelected(PagePractice.BENZ_RADIO_BUTTON));
 		softAssert.assertTrue(state.seeDeselected(PagePractice.BMW_RADIO_BUTTON));
 		softAssert.assertTrue(state.seeDeselected(PagePractice.HONDA_RADIO_BUTTON));
+		mouse.click(PagePractice.BMW_RADIO_BUTTON);
+		softAssert.assertTrue(state.seeDeselected(PagePractice.BENZ_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeSelected(PagePractice.BMW_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeDeselected(PagePractice.HONDA_RADIO_BUTTON));
+		mouse.click(PagePractice.HONDA_RADIO_BUTTON);
+		softAssert.assertTrue(state.seeDeselected(PagePractice.BENZ_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeDeselected(PagePractice.BMW_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeSelected(PagePractice.HONDA_RADIO_BUTTON));
 		softAssert.assertAll();
 	}
 
