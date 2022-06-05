@@ -8,7 +8,7 @@ public class PagePractice {
 	public static final By HOME_LINK = By.xpath("//a[text()='HOME']");
 	public static final By ALL_COURSES_LINK = By.xpath("//a[text()='ALL COURSES'][@href='/courses']");
 	public static final By SUPPORT_LINK = By.xpath("//a[text()='SUPPORT'][@href='/support']");
-	public static final By SIGN_IN_LINK = By.linkText("Sign In");
+	public static final By SIGN_IN_LINK = By.xpath("//a[text()='Sign In']");
 	public static final By PRACTICE_PAGE_HEADER = By.xpath("//h1[@data-uniqid='1621702280245']");
 
 	public static final By RADIO_BUTTON_EXAMPLE_DIVISION = By.id("radio-btn-example");
