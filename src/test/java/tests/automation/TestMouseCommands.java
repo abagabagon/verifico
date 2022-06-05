@@ -12,6 +12,7 @@ import com.github.abagabagon.verifico.automation.web.AlertCommands;
 import com.github.abagabagon.verifico.automation.web.BrowserCommands;
 import com.github.abagabagon.verifico.automation.web.KeyboardCommands;
 import com.github.abagabagon.verifico.automation.web.MouseCommands;
+import com.github.abagabagon.verifico.automation.web.StateAssertions;
 import com.github.abagabagon.verifico.automation.web.ValueAssertions;
 import com.github.abagabagon.verifico.automation.web.WaitCommands;
 
@@ -61,6 +62,11 @@ public class TestMouseCommands extends Tests {
 		this.value = new ValueAssertions(this.driver, this.wait);
 	}
 
+	@BeforeTest(dependsOnMethods = { "setupWaitCommands" })
+	void setupStateAssertions() {
+		this.state = new StateAssertions(this.driver, this.wait);
+	}
+
 	@BeforeMethod(dependsOnMethods = { "setupSoftAssert" })
 	void goToPracticePage() {
 		this.browser.goTo(PagePractice.URL);
@@ -71,17 +77,19 @@ public class TestMouseCommands extends Tests {
 		this.driver.quit();
 	}
 
-	@Test(groups = "MOUSE_COMMANDS", description = "Verify Page Redirection on-click of Link", enabled = true)
+	@Test(groups = "MOUSE_COMMANDS", description = "Verify Page Redirection on-click of Link", enabled = false)
 	void MC1() {
 		mouse.click(PagePractice.SIGN_IN_LINK);
 		softAssert.assertTrue(value.seeUrl(PageLogin.URL));
 		softAssert.assertAll();
 	}
 
-	@Test(groups = "MOUSE_COMMANDS", description = "Verify Page Redirection on-click of Link", enabled = true)
+	@Test(groups = "MOUSE_COMMANDS", description = "Verify Radio Buttons are selected on-click of Link", enabled = true)
 	void MC2() {
-		mouse.click(PagePractice.SIGN_IN_LINK);
-		softAssert.assertTrue(value.seeUrl(PageLogin.URL));
+		mouse.click(PagePractice.BENZ_RADIO_BUTTON);
+		softAssert.assertTrue(state.seeSelected(PagePractice.BENZ_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeDeselected(PagePractice.BMW_RADIO_BUTTON));
+		softAssert.assertTrue(state.seeDeselected(PagePractice.HONDA_RADIO_BUTTON));
 		softAssert.assertAll();
 	}
 
