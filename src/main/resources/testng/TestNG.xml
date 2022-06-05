@@ -65,4 +65,15 @@
 			</class>
 		</classes>
 	</test>
+	<test name="Mouse Commands Google Chrome" preserve-order="true" enabled="true">
+		<parameter name="browser" value="CHROME"></parameter>
+		<classes>
+			<class name="tests.automation.TestMouseCommands" >
+				<methods>
+					<include name="MC1" description="Verify Page Redirection on-click of Link"></include>
+					<include name="MC2" description="Verify Radio Buttons are selected on-click of Link"></include>
+				</methods>
+			</class>
+		</classes>
+	</test>
 </suite>
