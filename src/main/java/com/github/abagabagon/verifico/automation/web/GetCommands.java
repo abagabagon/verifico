@@ -70,10 +70,12 @@ public class GetCommands extends Commands {
 			actionPerformed = this.execute(getAction, element, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(getAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Get Action \"" + String.valueOf(getAction) + "\" for Web Element \""
+							+ locator.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(getAction) + "\" for Web Element \"" + locator.toString() + "\".");
+					this.log.error("Failed to perform Get Action \"" + String.valueOf(getAction)
+							+ "\" for Web Element \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -93,10 +95,14 @@ public class GetCommands extends Commands {
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(getAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Get Action \"" + String.valueOf(getAction) + "\" for Child Web Element \""
+							+ child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i
+							+ "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(getAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Get Action \"" + String.valueOf(getAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
@@ -114,10 +120,14 @@ public class GetCommands extends Commands {
 			actionPerformed = this.execute(getAction, childElement, attribute);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(getAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Get Action \"" + String.valueOf(getAction) + "\" for Child Web Element \""
+							+ child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i
+							+ "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(getAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Get Action \"" + String.valueOf(getAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
