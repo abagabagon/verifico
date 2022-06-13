@@ -92,10 +92,12 @@ public class KeyboardCommands extends Commands {
 			actionPerformed = this.execute(keyboardAction, element, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(keyboardAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(keyboardAction) + "\" for Web Element \"" + locator.toString() + "\".");
+					this.log.error("Failed to perform Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Web Element \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -114,10 +116,14 @@ public class KeyboardCommands extends Commands {
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(keyboardAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(keyboardAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
@@ -134,10 +140,14 @@ public class KeyboardCommands extends Commands {
 			actionPerformed = this.execute(keyboardAction, childElement, inputText, keyButton);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(keyboardAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(keyboardAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Keyboard Action \"" + String.valueOf(keyboardAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;

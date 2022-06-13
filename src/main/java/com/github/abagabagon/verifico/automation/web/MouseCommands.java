@@ -93,10 +93,12 @@ public class MouseCommands extends Commands {
 			actionPerformed = this.execute(mouseAction, element);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(mouseAction) + "\" for Web Element \"" + element.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Mouse Action \"" + String.valueOf(mouseAction) + "\" for Web Element \""
+							+ element.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(mouseAction) + "\" for Web Element \"" + element.toString() + "\".");
+					this.log.error("Failed to perform Mouse Action \"" + String.valueOf(mouseAction)
+							+ "\" for Web Element \"" + element.toString() + "\".");
 				}
 			} else {
 				break;
@@ -115,10 +117,14 @@ public class MouseCommands extends Commands {
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(mouseAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Mouse Action \"" + String.valueOf(mouseAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(mouseAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Mouse Action \"" + String.valueOf(mouseAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
@@ -135,10 +141,14 @@ public class MouseCommands extends Commands {
 			actionPerformed = this.execute(mouseAction, childElement);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(mouseAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Mouse Action \"" + String.valueOf(mouseAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(mouseAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Mouse Action \"" + String.valueOf(mouseAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
@@ -351,10 +361,12 @@ public class MouseCommands extends Commands {
 			}
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceLocator.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Mouse Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP)
+							+ "\" for Web Element \"" + sourceLocator.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP) + "\" for Web Element \"" + sourceLocator.toString() + "\".");
+					this.log.error("Failed to perform Mouse Action \"" + String.valueOf(MouseAction.DRAG_AND_DROP)
+							+ "\" for Web Element \"" + sourceLocator.toString() + "\".");
 				}
 			} else {
 				break;

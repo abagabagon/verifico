@@ -76,10 +76,12 @@ public class SelectCommands extends Commands {
 			actionPerformed = this.execute(selectAction, element, option);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Select Action \"" + String.valueOf(selectAction) + "\" for Web Element \""
+							+ locator.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(selectAction) + "\" for Web Element \"" + locator.toString() + "\".");
+					this.log.error("Failed to perform Select Action \"" + String.valueOf(selectAction)
+							+ "\" for Web Element \"" + locator.toString() + "\".");
 				}
 			} else {
 				break;
@@ -99,10 +101,14 @@ public class SelectCommands extends Commands {
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Select Action \"" + String.valueOf(selectAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Select Action \"" + String.valueOf(selectAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
@@ -120,10 +126,14 @@ public class SelectCommands extends Commands {
 			actionPerformed = this.execute(selectAction, childElement, option);
 			if (!actionPerformed) {
 				if(i < 4) {
-					this.log.debug("Retrying User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\" " + i + "/3.");
+					this.log.debug("Retrying Select Action \"" + String.valueOf(selectAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\" " + i + "/3.");
 					wait(1);
 				} else {
-					this.log.error("Failed to perform User Action \"" + String.valueOf(selectAction) + "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \"" + parent.toString() + "\".");
+					this.log.error("Failed to perform Select Action \"" + String.valueOf(selectAction)
+							+ "\" for Child Web Element \"" + child.toString() + "\" under Parent Web Element \""
+							+ parent.toString() + "\".");
 				}
 			} else {
 				break;
