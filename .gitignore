@@ -2,6 +2,7 @@
 /test-output/
 /logs/
 /reports/
+.idea
 .settings
 .classpath
 .project
